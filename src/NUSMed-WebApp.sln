@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUSMed-WebApp", "NUSMed-WebApp\NUSMed-WebApp.csproj", "{04A4E48A-241A-4744-8B83-D7A011A3A928}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUSMed-WebApp.Tests", "NUSMed-WebApp.Tests\NUSMed-WebApp.Tests.csproj", "{D2EDD30A-91D6-4665-BBD1-DC03F6795672}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04A4E48A-241A-4744-8B83-D7A011A3A928}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A4E48A-241A-4744-8B83-D7A011A3A928}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A4E48A-241A-4744-8B83-D7A011A3A928}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A4E48A-241A-4744-8B83-D7A011A3A928}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2EDD30A-91D6-4665-BBD1-DC03F6795672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2EDD30A-91D6-4665-BBD1-DC03F6795672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2EDD30A-91D6-4665-BBD1-DC03F6795672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2EDD30A-91D6-4665-BBD1-DC03F6795672}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D47EDC04-709C-4BB0-AEE6-98CDE5043258}
+	EndGlobalSection
+EndGlobal

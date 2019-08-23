@@ -1,0 +1,152 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="NUSMed_WebApp.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - NUSMed</title>
+    <link href="~/Images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <webopt:BundleReference runat="server" Path="~/Content/master" />
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server" EnablePartialRendering="true" AsyncPostBackTimeout="360000">
+            <Scripts>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Path="~/Scripts/umd/popper.js" />
+                <asp:ScriptReference Path="~/Scripts/bootstrap.js" />
+                <asp:ScriptReference Name="WebFormsJs" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+                <asp:ScriptReference Path="~/Scripts/toastr.js" />
+                <asp:ScriptReference Path="~/Scripts/bootstrap-confirmation.js" />
+            </Scripts>
+        </asp:ScriptManager>
+
+        <nav id="topNav" class="navbar navbar-light bg-white">
+            <div class="container px-0 align-items-end">
+                <div class="navbar-brand py-2 my-1">
+                    <a href="http://www.nus.edu.sg" target="_blank">
+                        <img src="/Images/logo.png" alt="NUS" class="border-nus-blue pr-3" style="border-right: 1.5pt solid;">
+                    </a>
+                    <a href="/" target="_blank">
+                        <img src="/Images/sublogo.png" alt="NUSMed - A NHC Parady" class="pl-3">
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <nav id="defaultNav" class="mainNav navbar navbar-expand-md navbar-light bg-nus-white shadow-sm py-0" runat="server">
+            <div class="container px-0">
+                <a class="nus-orange d-md-none" href="/">NUSMed <span class="text-muted small">| A NHC Parady</span></a>
+
+                <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target=".mainNavLinks" aria-controls=".mainNavLinks" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <nav id="NavLinks" class="mainNavLinks collapse navbar-collapse" runat="server">
+                    <a id="navLinksHome" class="nav-link" href="/" runat="server">Home</a>
+                    <a id="navLinksAbout" class="nav-link" href="/about" runat="server">about</a>
+
+                    <%-- Patient Links--%>
+                    <a id="navLinksPatientTherapist" class="nav-link" href="/patient/my-therapists" runat="server">My Therapists</a>
+                    <a id="navLinksPatientRecords" class="nav-link" href="/patient/my-records" runat="server">My Records</a>
+
+                    <%-- Therapist Links --%>
+                    <a id="navLinksTherapistPatients" class="nav-link" href="/therapist/my-patients" runat="server">My Patients</a>
+                    <a id="navLinksTherapistRecords" class="nav-link" href="/therapist/view-records" runat="server">View Records</a>
+
+                    <%-- Researcher Links--%>
+                    <a id="navLinksResearcherData" class="nav-link" href="/researcher/data" runat="server">Data</a>
+
+                    <%-- Admin Links --%>
+                    <a id="navLinksAdminPatients" class="nav-link" href="/admin/manage-accounts" runat="server">Manage Accounts</a>
+                    <a id="navLinksAdminRecords" class="nav-link" href="/admin/manage-records" runat="server">Manage Records</a>
+
+                    <%-- Account Links --%>
+                    <div id="navLinksAdminManageAccounts" class="nav-item dropdown" runat="server">
+                        <a id="navLinksAdminManageAccountsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
+                            <i class="fas fa-fw fa-users-cog"></i>Manage Accounts<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
+                        </a>
+                        <div class="dropdown-menu py-0" aria-labelledby="navLinksHome">
+                            <a id="navLinksAdminViewAccounts" class="dropdown-item" href="/Admin/Manage-Accounts/View" runat="server">View Accounts</a>
+                            <a id="navLinksAdminAccountRegistration" class="dropdown-item" href="/Admin/Manage-Accounts/Register" runat="server">Register Account</a>
+                        </div>
+                    </div>
+
+                    <a id="navLinksAccount" class="nav-link ml-auto" href="/account" runat="server">Logged in as: <span runat="server"></span></a>
+                    <a id="navLinksLogout" class="nav-link mr-0" href="/logout" runat="server">Logout</a>
+                </nav>
+            </div>
+        </nav>
+        <%--<nav id="patientNav" class="mainNav navbar navbar-expand-md navbar-light bg-nus-white shadow-sm py-0" runat="server">
+            <div class="container px-0">
+                <a class="nus-orange d-md-none" href="/">NUSMed <span class="text-muted small">| A NHC Parady</span></a>
+
+                <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#defaultNavLinks" aria-controls="defaultNavLinks" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <nav id="patientNavLinks" class="mainNavLinks collapse navbar-collapse">
+                    <a id="A2" class="nav-link" href="/" runat="server">Home</a>
+                    <a id="A3" class="nav-link" href="/about" runat="server">about</a>
+                    <a id="A4" class="nav-link ml-auto mr-0" href="/about" runat="server">about</a>
+                </nav>
+            </div>
+        </nav>--%>
+
+        <asp:ContentPlaceHolder ID="BodyContent" runat="server">
+        </asp:ContentPlaceHolder>
+
+        <footer class="container-fluid bg-nus-blue mt-120">
+
+            <div class="row py-5">
+                <div class="col-12 text-center my-4">
+                    <h5 class="text-white">National University of Singapore Medical</h5>
+                    <h5 class="text-white small">A NHC Parady</h5>
+                    <ul class="list-unstyled fa-ul d-inline-block text-left nus-grey small">
+                        <li class="mb-1"><span class="fa-li"><i class="fas fa-fw fa-info text-white mr-5"></i></span>Developed for IFS4205,</li>
+                        <li class="mb-1">AY19/20 Semester 1, Team 02</li>
+                        <li class="mb-1"><span class="fa-li"><i class="fas fa-fw fa-id-card-alt text-white mr-5"></i></span>Sean Yap, Lim Ding Heng, Sun Shengran, Toh Yunqi Cheryl</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row nus-grey border-top-nus-darkblue py-4">
+                <div class="col-12 text-center">
+                    <p class="my-0 small">© Copyright 2001-2019 <a href="http://www.nus.edu.sg/" target="_blank">National University of Singapore</a>. All Rights Reserved.</p>
+                    <p class="my-0 small">Best viewed with Google Chrome and Mozilla Firefox.</p>
+                    <p class="my-0 small"><a href="http://www.nus.edu.sg/legal-information-notices" target="_blank">Legal</a></p>
+                </div>
+            </div>
+        </footer>
+
+        <a href="#" class="back-to-top"><i class="fas fa-chevron-up"></i></a>
+
+        <asp:PlaceHolder runat="server">
+            <%: Scripts.Render("~/bundles/SiteJSBack") %>
+        </asp:PlaceHolder>
+
+        <asp:ContentPlaceHolder ID="FooterContent" runat="server">
+        </asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>
