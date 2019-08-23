@@ -20,7 +20,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT EXISTS(SELECT * FROM nusmed_db.account a WHERE a.nric = @nric) as result;";
+                cmd.CommandText = @"SELECT EXISTS(SELECT * FROM account a WHERE a.nric = @nric) as result;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
 
@@ -56,11 +56,11 @@ namespace NUSMed_WebApp.Classes.DAL
                     a.`martial_status`, a.`name_last`, a.`address`, a.`address_postal_code`, a.`email`, a.`contact_number`, a.`create_time`,
                     a.`last_full_login_time`, a.date_of_birth, a.`status`, a.`associated_token_id`, a.`associated_device_id`, 
                     ap.`status` as patient_status, at.`status` as therapist_status, ar.`status` as researcher_status, aa.`status` as admin_status     
-                    FROM nusmed_db.account a
-                    INNER JOIN nusmed_db.account_patient ap ON a.nric = ap.nric
-                    INNER JOIN nusmed_db.account_therapist at ON a.nric = at.nric
-                    INNER JOIN nusmed_db.account_researcher ar ON a.nric = ar.nric
-                    INNER JOIN nusmed_db.account_admin aa ON a.nric = aa.nric
+                    FROM account a
+                    INNER JOIN account_patient ap ON a.nric = ap.nric
+                    INNER JOIN account_therapist at ON a.nric = at.nric
+                    INNER JOIN account_researcher ar ON a.nric = ar.nric
+                    INNER JOIN account_admin aa ON a.nric = aa.nric
                     ORDER BY nric;";
 
                 using (cmd.Connection = connection)
@@ -122,11 +122,11 @@ namespace NUSMed_WebApp.Classes.DAL
                     a.`martial_status`, a.`name_last`, a.`address`, a.`address_postal_code`, a.`email`, a.`contact_number`, a.`create_time`,
                     a.`last_full_login_time`, a.`date_of_birth`, a.`status`, a.`associated_token_id`, a.`associated_device_id`, 
                     ap.`status` as patient_status, at.`status` as therapist_status, ar.`status` as researcher_status, aa.`status` as admin_status     
-                    FROM nusmed_db.account a 
-                    INNER JOIN nusmed_db.account_patient ap ON a.nric = ap.nric
-                    INNER JOIN nusmed_db.account_therapist at ON a.nric = at.nric
-                    INNER JOIN nusmed_db.account_researcher ar ON a.nric = ar.nric
-                    INNER JOIN nusmed_db.account_admin aa ON a.nric = aa.nric
+                    FROM account a 
+                    INNER JOIN account_patient ap ON a.nric = ap.nric
+                    INNER JOIN account_therapist at ON a.nric = at.nric
+                    INNER JOIN account_researcher ar ON a.nric = ar.nric
+                    INNER JOIN account_admin aa ON a.nric = aa.nric
                     WHERE a.`nric` LIKE @term OR a.`name_first` LIKE @term OR a.`name_last` LIKE @term
                     ORDER BY nric
                     LIMIT 50;";
@@ -193,7 +193,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     `account`.`birthCountry`, `account`.`nationality`, `account`.`martialStatus`, `account`.`email`, `account`.`contact_number`,
                     `account`.`create_time`, `account`.`last_full_login_time`, `account`.`status`, 
                     `account`.`associated_token_id`, `account`.`associated_device_id` 
-                    FROM nusmed_db.account ORDER BY nric";
+                    FROM account ORDER BY nric";
 
                 using (cmd.Connection = connection)
                 {
@@ -235,19 +235,19 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"
-                    DELETE FROM nusmed_db.account_patient 
+                    DELETE FROM account_patient 
                         WHERE nric = @nric;
 
-                    DELETE FROM nusmed_db.account_therapist 
+                    DELETE FROM account_therapist 
                         WHERE nric = @nric;
 
-                    DELETE FROM nusmed_db.account_researcher
+                    DELETE FROM account_researcher
                         WHERE nric = @nric;
 
-                    DELETE FROM nusmed_db.account_admin
+                    DELETE FROM account_admin
                         WHERE nric = @nric;
 
-                    DELETE FROM nusmed_db.account 
+                    DELETE FROM account 
                         WHERE nric = @nric;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
@@ -269,20 +269,20 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"INSERT INTO `nusmed_db`.`account`
+                cmd.CommandText = @"INSERT INTO `account`
                     (`nric`, `salt`, `hash`, `associated_token_id`, `name_first`, `name_last`, `birth_country`, `nationality`, 
                     `martial_status`, `sex`, `gender`, `address`, `address_postal_code`, `email`, `contact_number`, `date_of_birth`, `status`)
                     VALUES
                     (@nric, @salt, @hash, @associated_token_id, @firstName, @lastName, @birthCountry, @nationality, @martialStatus, @sex, 
                     @gender, @address, @addressPostalCode, @email, @contactNumber, @dateOfBirth, @status);
 
-                    INSERT INTO `nusmed_db`.`account_patient` (`nric`)
+                    INSERT INTO `account_patient` (`nric`)
                         VALUES (@nric);
-                    INSERT INTO `nusmed_db`.`account_therapist` (`nric`)
+                    INSERT INTO `account_therapist` (`nric`)
                         VALUES (@nric);
-                    INSERT INTO `nusmed_db`.`account_researcher` (`nric`)
+                    INSERT INTO `account_researcher` (`nric`)
                         VALUES (@nric);
-                    INSERT INTO `nusmed_db`.`account_admin` (`nric`)
+                    INSERT INTO `account_admin` (`nric`)
                         VALUES (@nric);";
 
                 cmd.Parameters.AddWithValue("@nric", account.nric);
@@ -319,7 +319,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account 
+                cmd.CommandText = @"UPDATE account 
                             SET status = @status
                             WHERE nric= @nric;";
 
@@ -337,7 +337,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account 
+                cmd.CommandText = @"UPDATE account 
                             SET status = @status
                             WHERE nric= @nric;";
 
@@ -355,7 +355,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account 
+                cmd.CommandText = @"UPDATE account 
                             SET status = @status
                             WHERE nric= @nric;";
 
@@ -376,7 +376,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account_patient 
+                cmd.CommandText = @"UPDATE account_patient 
                             SET status = @status
                             WHERE nric= @nric;";
 
@@ -394,7 +394,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account_therapist 
+                cmd.CommandText = @"UPDATE account_therapist 
                             SET status = @status
                             WHERE nric= @nric;";
 
@@ -412,7 +412,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account_researcher 
+                cmd.CommandText = @"UPDATE account_researcher 
                             SET status = @status
                             WHERE nric= @nric;";
 
@@ -430,7 +430,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account_admin 
+                cmd.CommandText = @"UPDATE account_admin 
                             SET status = @status
                             WHERE nric= @nric;";
 
@@ -448,7 +448,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account_patient 
+                cmd.CommandText = @"UPDATE account_patient 
                             SET status = @status
                             WHERE nric= @nric;";
 
@@ -466,7 +466,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account_therapist 
+                cmd.CommandText = @"UPDATE account_therapist 
                             SET status = @status
                             WHERE nric= @nric;";
 
@@ -484,7 +484,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account_researcher 
+                cmd.CommandText = @"UPDATE account_researcher 
                             SET status = @status
                             WHERE nric= @nric;";
 
@@ -502,7 +502,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"UPDATE nusmed_db.account_admin 
+                cmd.CommandText = @"UPDATE account_admin 
                             SET status = @status
                             WHERE nric= @nric;";
 
