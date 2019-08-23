@@ -197,7 +197,7 @@ namespace NUSMed_WebApp
 
                 accountBLL.Register(nric, password, associatedTokenID, firstName, lastName, countryOfBirth, nationality, sex, gender, 
                     martialStatus, address, addressPostalCode, email, contactNumber, dateOfBirth, roles);
-                //ScriptManager.RegisterStartupScript(this, GetType(), "open modal", "$('#modelRegistration').modal('show')", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "open modal", "$('#modelRegistration').modal('show')", true);
             }
         }
 

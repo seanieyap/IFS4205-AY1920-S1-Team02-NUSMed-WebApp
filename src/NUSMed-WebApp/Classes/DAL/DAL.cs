@@ -19,8 +19,7 @@ namespace NUSMed_WebApp.Classes.DAL
         public static MySqlConnectionStringBuilder Get()
         {
             // GET from 64 Bit registry
-            MySqlConnectionStringBuilder mscsb = new MySqlConnectionStringBuilder();
-            mscsb.ConnectionString = ConfigurationManager.AppSettings["ConnectionString"].ToString();
+            MySqlConnectionStringBuilder mscsb = new MySqlConnectionStringBuilder(ConfigurationManager.AppSettings["ConnectionString"].ToString());
 
             return mscsb;
         }

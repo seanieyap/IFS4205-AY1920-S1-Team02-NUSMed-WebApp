@@ -30,7 +30,8 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="inputDoB">Date of Birth</label>
-                        <input id="inputDoB" type="date" class="form-control" placeholder="Date of Birth" required="required" runat="server">
+                        <%--<asp:TextBox ID="inputDoB" CssClass="form-control" runat="server" placeholder="DD/MM/YYYY"></asp:TextBox>--%>
+                        <input id="inputDoB" name="dateOfBirth" type="date" class="form-control" placeholder="Date of Birth" required="required" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Date of Birth is invalid.
                         </div>
@@ -518,11 +519,11 @@
                         </div>
                         <div class="form-check form-check-inline">
                             <asp:RadioButton ID="RadioButtonMartialStatusDivorced" CssClass="form-check-input" runat="server" GroupName="RadioButtonMartialStatus" />
-                            <label class="form-check-label" for="<%= RadioButtonMartialStatusMarried.ClientID %>">Divorced</label>
+                            <label class="form-check-label" for="<%= RadioButtonMartialStatusDivorced.ClientID %>">Divorced</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <asp:RadioButton ID="RadioButtonMartialStatusWidowed" CssClass="form-check-input" runat="server" GroupName="RadioButtonMartialStatus" />
-                            <label class="form-check-label" for="<%= RadioButtonMartialStatusMarried.ClientID %>">Widowed</label>
+                            <label class="form-check-label" for="<%= RadioButtonMartialStatusWidowed.ClientID %>">Widowed</label>
                         </div>
                     </div>
                 </div>

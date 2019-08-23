@@ -273,11 +273,11 @@ namespace NUSMed_WebApp.Classes.BLL
 
         private static bool TryParseDoB(string doB, ref DateTime dateOfBirth)
         {
-            return DateTime.TryParseExact(doB, "dd/M/yy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateOfBirth);
+            return DateTime.TryParseExact(doB, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateOfBirth);
         }
         public static bool IsDateOfBirthValid(string doB, ref DateTime dateOfBirth)
         {
-            if (TryParseDoB(doB, ref dateOfBirth))
+            if (!TryParseDoB(doB, ref dateOfBirth))
                 return false;
             else if (dateOfBirth > DateTime.Now)
                 return false;
