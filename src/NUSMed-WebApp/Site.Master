@@ -48,7 +48,7 @@
                     <a href="http://www.nus.edu.sg" target="_blank">
                         <img src="/Images/logo.png" alt="NUS" class="border-nus-blue pr-3" style="border-right: 1.5pt solid;">
                     </a>
-                    <a href="/" target="_blank">
+                    <a href="/">
                         <img src="/Images/sublogo.png" alt="NUSMed - A NHC Parady" class="pl-3">
                     </a>
                 </div>
@@ -64,61 +64,76 @@
                 </button>
 
                 <nav id="NavLinks" class="mainNavLinks collapse navbar-collapse" runat="server">
-                    <a id="navLinksHome" class="nav-link" href="/" runat="server">Home</a>
-                    <a id="navLinksAbout" class="nav-link" href="/about" runat="server">about</a>
+                    <a id="navLinksHome" class="nav-link" href="/" runat="server" visible="false">Home</a>
+                    <a id="navLinksData" class="nav-link" href="/data" runat="server" visible="false">Data</a>
+                    <a id="navLinksAbout" class="nav-link" href="/about" runat="server" visible="false">About</a>
 
                     <%-- Patient Links--%>
-                    <a id="navLinksPatientTherapist" class="nav-link" href="/patient/my-therapists" runat="server">My Therapists</a>
-                    <a id="navLinksPatientRecords" class="nav-link" href="/patient/my-records" runat="server">My Records</a>
+                    <a id="navLinksPatientDashboard" class="nav-link" href="~/Patient/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
+                    <a id="navLinksPatientTherapist" class="nav-link" href="/Patient/my-therapists" runat="server" visible="false">My Therapists</a>
+                    <a id="navLinksPatientRecords" class="nav-link" href="~/Patient/my-records" runat="server" visible="false">My Records</a>
 
                     <%-- Therapist Links --%>
-                    <a id="navLinksTherapistPatients" class="nav-link" href="/therapist/my-patients" runat="server">My Patients</a>
-                    <a id="navLinksTherapistRecords" class="nav-link" href="/therapist/view-records" runat="server">View Records</a>
+                    <a id="navLinksTherapistDashboard" class="nav-link" href="~/Therapist/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
+                    <a id="navLinksTherapistPatients" class="nav-link" href="~/Therapist/my-patients" runat="server" visible="false">My Patients</a>
+                    <a id="navLinksTherapistRecords" class="nav-link" href="~/Therapist/view-records" runat="server" visible="false">View Records</a>
 
                     <%-- Researcher Links--%>
-                    <a id="navLinksResearcherData" class="nav-link" href="/researcher/data" runat="server">Data</a>
+                    <a id="navLinksResearcherDashboard" class="nav-link" href="~/Researcher/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
+                    <a id="navLinksResearcherData" class="nav-link" href="~/Researcher/data" runat="server" visible="false">Data</a>
 
                     <%-- Admin Links --%>
-                    <a id="navLinksAdminPatients" class="nav-link" href="/admin/manage-accounts" runat="server">Manage Accounts</a>
-                    <a id="navLinksAdminRecords" class="nav-link" href="/admin/manage-records" runat="server">Manage Records</a>
+                    <%--                    <a id="navLinksAdminPatients" class="nav-link" href="/admin/manage-accounts" runat="server" visible="false">Manage Accounts</a>
+                    <a id="navLinksAdminRecords" class="nav-link" href="/admin/manage-records" runat="server" visible="false">Manage Records</a>--%>
 
-                    <%-- Account Links --%>
-                    <div id="navLinksAdminManageAccounts" class="nav-item dropdown" runat="server">
+                    <%-- Admin Links --%>
+                    <a id="navLinksAdminDashboard" class="nav-link" href="~/Admin/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
+                    <div id="navLinksAdminManageAccounts" class="nav-item dropdown" runat="server" visible="false">
                         <a id="navLinksAdminManageAccountsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
                             <i class="fas fa-fw fa-users-cog"></i>Manage Accounts<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
                         </a>
                         <div class="dropdown-menu py-0" aria-labelledby="navLinksHome">
-                            <a id="navLinksAdminViewAccounts" class="dropdown-item" href="/Admin/Manage-Accounts/View" runat="server">View Accounts</a>
-                            <a id="navLinksAdminAccountRegistration" class="dropdown-item" href="/Admin/Manage-Accounts/Register" runat="server">Register Account</a>
+                            <a id="navLinksAdminViewAccounts" class="dropdown-item" href="~/Admin/Manage-Accounts/View" runat="server">View Accounts</a>
+                            <a id="navLinksAdminAccountRegistration" class="dropdown-item" href="~/Admin/Manage-Accounts/Register" runat="server">Register Account</a>
+                        </div>
+                    </div>
+                    <div id="navLinksAdminManageLogs" class="nav-item dropdown" runat="server" visible="false">
+                        <a id="navLinksAdminManageLogsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
+                            <i class="fas fa-fw fa-database"></i>Manage Logs<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
+                        </a>
+                        <div class="dropdown-menu py-0" aria-labelledby="navLinksHome">
+                            <a id="navLinksAdminViewAccountLogs" class="dropdown-item" href="~/Admin/Manage-Logs/Account-Logs" runat="server">Account Logs</a>
+                            <a id="navLinksAdminViewRecordLogs" class="dropdown-item" href="~/Admin/Manage-Logs/Record_Logs" runat="server">Record Logs</a>
                         </div>
                     </div>
 
-                    <a id="navLinksAccount" class="nav-link ml-auto" href="/account" runat="server">Logged in as: <span runat="server"></span></a>
-                    <a id="navLinksLogout" class="nav-link mr-0" href="/logout" runat="server">Logout</a>
+                    <%-- Account Links --%>
+                    <div id="navLinksAccount" class="nav-item dropdown ml-auto" runat="server" visible="false">
+                        <a id="A1" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
+                            <i class="fas fa-fw fa-users-cog"></i>My Account<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
+                        </a>
+                        <div class="dropdown-menu" style="min-width: 250px;" aria-labelledby="navLinksAccount">
+                            <p class="mb-0 text-muted pt-2 pb-3 px-3">
+                                <i class="fas fa-fw fa-user"></i>NRIC: 
+                                <b>
+                                    <asp:Label ID="LabelNRIC" runat="server" CssClass="text-capitalize"></asp:Label></b><br />
+                                <i class="fas fa-fw fa-user-tag"></i>Role: <b>
+                                    <asp:Label ID="LabelRole" runat="server"></asp:Label></b>
+                            </p>
+                            <a id="navLinksAccountProfile" class="dropdown-item" href="/My-Profile" runat="server"><i class="fas fa-fw fa-id-card"></i>My Profile</a>
+                            <button type="button" class="dropdown-item" runat="server" onserverclick="buttonSwitchRole_ServerClick"><i class="fas fa-exchange-alt fa-fw"></i>Switch Role</button>
+                            <button type="button" class="dropdown-item" runat="server" onserverclick="ButtonLogout_ServerClick"><i class="fas fa-sign-out-alt fa-fw"></i>Logout</button>
+                            <%--<a id="navLinksLogout" class="dropdown-item" href="/Admin/Manage-Accounts/Register" runat="server">Logout</a>--%>
+                        </div>
+                    </div>
                 </nav>
             </div>
         </nav>
-        <%--<nav id="patientNav" class="mainNav navbar navbar-expand-md navbar-light bg-nus-white shadow-sm py-0" runat="server">
-            <div class="container px-0">
-                <a class="nus-orange d-md-none" href="/">NUSMed <span class="text-muted small">| A NHC Parady</span></a>
-
-                <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#defaultNavLinks" aria-controls="defaultNavLinks" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <nav id="patientNavLinks" class="mainNavLinks collapse navbar-collapse">
-                    <a id="A2" class="nav-link" href="/" runat="server">Home</a>
-                    <a id="A3" class="nav-link" href="/about" runat="server">about</a>
-                    <a id="A4" class="nav-link ml-auto mr-0" href="/about" runat="server">about</a>
-                </nav>
-            </div>
-        </nav>--%>
 
         <asp:ContentPlaceHolder ID="BodyContent" runat="server">
         </asp:ContentPlaceHolder>
 
         <footer class="container-fluid bg-nus-blue mt-120">
-
             <div class="row py-5">
                 <div class="col-12 text-center my-4">
                     <h5 class="text-white">National University of Singapore Medical</h5>
@@ -147,6 +162,44 @@
 
         <asp:ContentPlaceHolder ID="FooterContent" runat="server">
         </asp:ContentPlaceHolder>
+
+        <%-- Timeout Messages --%>
+        <asp:Panel ID="sessionWarningModal" class="modal" TabIndex="-1" role="dialog" data-backdrop="static" data-keyboard="false" runat="server" Visible="false" ClientIDMode="Static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-fw fa-exclamation-triangle text-warning"></i>Warning: Account Inactivity</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="my-1">This Web Session will end in 1 minute due to inactivity.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </asp:Panel>
+        <asp:Panel ID="sessionTimeoutModal" class="modal" TabIndex="-1" role="dialog" data-backdrop="static" data-keyboard="false" runat="server" Visible="false" ClientIDMode="Static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-fw fa-hourglass-end text-danger"></i>Web Session has been Terminated</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="my-1">This Web Session has been terminated due to inactivity.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" class="btn btn-secondary" data-dismiss="modal" href="~/" runat="server">Return Home</a>
+                    </div>
+                </div>
+            </div>
+        </asp:Panel>
     </form>
 </body>
 </html>

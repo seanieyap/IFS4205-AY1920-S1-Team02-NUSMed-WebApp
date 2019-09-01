@@ -22,7 +22,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Search</span>
                         </div>
-                        <asp:TextBox ID="TextboxSearch" CssClass="form-control" placeholder="NRIC or First Name or Last Name" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="TextboxSearch" CssClass="form-control" placeholder="NRIC" runat="server"></asp:TextBox>
                         <div class="input-group-append">
                             <asp:LinkButton ID="ButtonSearch" CssClass="btn btn-outline-info" OnClick="ButtonSearch_Click" runat="server">
                                         <i class="fas fa-fw fa-search"></i> Go
@@ -34,7 +34,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <asp:GridView ID="GridViewAccounts" CssClass="table table-sm table-responsive-md" AllowPaging="true" PageSize="2" PagerStyle-CssClass="pagination-gridview"
+                    <asp:GridView ID="GridViewAccounts" CssClass="table table-sm table-responsive-md" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
                         ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowDeleting="GridViewAccounts_RowDeleting" OnRowCommand="GridViewAccounts_RowCommand"
                         OnPageIndexChanging="GridViewAccounts_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
@@ -45,21 +45,9 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="First Name">
-                                <ItemTemplate>
-                                    <%# Item.firstName %>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Last Name">
-                                <ItemTemplate>
-                                    <%# Item.lastName %>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
                             <asp:TemplateField HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <HeaderTemplate>
-                                    <i class="fas fa-fw fa-user-circle"></i>Personal Information
+                                    <i class="fas fa-fw fa-id-card"></i>Personal Details
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <button type="button" class="view-modal btn btn-info btn-sm">
@@ -69,7 +57,7 @@
                                         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title"><i class="fas fa-fw fa-user-circle"></i>View Personal Information</h5>
+                                                    <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-id-card"></i><%# Item.nric %>: View Personal Information</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -148,9 +136,9 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="Contact Information" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
-                                                                <HeaderTemplate>
-                                    <i class="fas fa-fw fa-phone-square"></i>Contact Information
+                            <asp:TemplateField HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                <HeaderTemplate>
+                                    <i class="fas fa-fw fa-phone-square"></i>Contact Details
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <button type="button" class="view-modal btn btn-info btn-sm">
@@ -160,7 +148,7 @@
                                         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title"><i class="fas fa-fw fa-phone-square"></i>View Contact Information</h5>
+                                                    <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-phone-square"></i><%# Item.nric %>: View Contact Details</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -177,7 +165,7 @@
                                                             <div class="col-12 col-lg-6">
                                                                 <div class="form-group">
                                                                     <label>Postal Code</label>
-                                                                    <input type="date" class="form-control" readonly value='<%# Item.addressPostalCode %>'>
+                                                                    <input type="text" class="form-control" readonly value='<%# Item.addressPostalCode %>'>
                                                                 </div>
                                                             </div>
                                                             <div class="col-12 col-lg-6">
@@ -204,161 +192,216 @@
                                         </div>
                                     </div>
 
-
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="Last / Reg Login">
-                                <ItemTemplate>
-                                    <div class="col-6">
-                                        Contact Number: 
-                                    </div>
+                            <asp:TemplateField HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                <HeaderTemplate>
+                                    <i class="fas fa-fw fa-user-circle"></i>Account Details
+                                </HeaderTemplate>
 
-                                    <%# Item.lastFullLogin == null ? "Nil" : Item.lastFullLogin.ToString() %>
-                                    <%# Item.createTime %>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Account Status" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <div class="btn-group dropleft">
-                                        <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-eye"></i>View</button>
-                                        <div class="dropdown-menu">
-                                            <h6 class="dropdown-header">Current Status</h6>
-                                            <div class="px-4 py-0" style="min-width: 350px;">
-                                                <p class="mb-2"><%# Item.accountStatus %></p>
-                                            </div>
-                                            <div class="dropdown-divider"></div>
-                                            <h6 class="dropdown-header">Actions</h6>
-                                            <asp:LinkButton CssClass='<%# Convert.ToInt32(Eval("status")) == 0 ? "dropdown-item disabled" : "dropdown-item text-danger" %>' runat="server" CommandName="StatusDisable" data-toggle="confirmation" data-title="Confirm?" CommandArgument='<%# Eval("nric") %>'>
-                                        <i class="fas fa-fw fa-lock"></i> Disable Account
-                                            </asp:LinkButton>
-                                            <asp:LinkButton CssClass='<%# Convert.ToInt32(Eval("status")) == 1 ? "dropdown-item disabled" : "dropdown-item text-success" %>' runat="server" CommandName="StatusEnable" data-toggle="confirmation" data-title="Confirm?" CommandArgument='<%# Eval("nric") %>'>
-                                        <i class="fas fa-fw fa-unlock-alt"></i> Enable Account
-                                            </asp:LinkButton>
-                                            <asp:LinkButton CssClass='<%# Convert.ToInt32(Eval("status")) == 2 ? "dropdown-item disabled" : "dropdown-item text-success" %>' runat="server" CommandName="StatusEnableWoMFA" data-toggle="confirmation" data-title="Confirm?" CommandArgument='<%# Eval("nric") %>'>
-                                        <i class="fas fa-fw fa-unlock"></i> Enable Account and Omit from MFA 
-                                            </asp:LinkButton>
-                                        </div>
-                                    </div>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="MFA" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
-                                <ItemTemplate>
-                                    <div class="btn-group dropleft">
-                                        <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-eye"></i>View</button>
-                                        <div class="dropdown-menu dropdown-menu-lg-left">
-                                            <h6 class="dropdown-header">Current Status</h6>
-                                            <div class="px-4 py-0" style="min-width: 450px;">
-                                                <p class="mb-3">
-                                                    MFA Token: <%# Item.MFATokenStatus %><br />
-                                                    MFA Device: <%# Item.MFADeviceStatus %>
-                                                </p>
-                                            </div>
-                                            <div class="dropdown-divider"></div>
-                                            <h6 class="dropdown-header">Actions</h6>
-                                            <div class="px-4 pb-3">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">MFA Token ID</span>
-                                                    </div>
-                                                    <asp:TextBox ID="TextboxMFATokenIDEdit" CssClass="form-control" placeholder="Leave blank to Disable" aria-label="Leave blank to Disable" aria-describedby="LinkButtonMFATokenIDEdit" runat="server"></asp:TextBox>
-                                                    <div class="input-group-append">
-                                                        <asp:LinkButton ID="LinkButtonMFATokenIDEdit" CssClass="btn btn-outline-success" runat="server" CommandName="MFATokenIDEdit" data-toggle="confirmation" data-title="Confirm?" CommandArgument='<%# Eval("nric") %>'>
-                                                    <i class="far fa-fw fa-save"></i>
-                                                        </asp:LinkButton>
+                                    <button type="button" class="view-modal btn btn-info btn-sm">
+                                        <i class="fas fa-fw fa-eye"></i>View
+                                    </button>
+                                    <div class="modal" tabindex="-1" role="dialog" data-keyboard="false">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-user-circle"></i><%# Item.nric %>: View Account</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container-fluid">
+                                                        <div class="row text-left">
+                                                            <div class="col-12 col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label>Last 1FA Login</label>
+                                                                    <input type="text" class="form-control" readonly value='<%# Item.last1FALogin == null ? "Nil" : Item.last1FALogin.ToString() %>'>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label>Last Full Login</label>
+                                                                    <input type="text" class="form-control" readonly value='<%# Item.lastFullLogin == null ? "Nil" : Item.lastFullLogin.ToString() %>'>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label>Registered On</label>
+                                                                    <input type="text" class="form-control" readonly value='<%# Item.createTime.ToString() %>'>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label>Account Status: <%# Item.accountStatus %></label>
+                                                                    <br />
+                                                                    <div class="btn-group btn-group-sm" role="group" aria-label="Account Status">
+                                                                        <asp:LinkButton CssClass='<%# Convert.ToInt32(Eval("status")) == 0 ? "btn disabled" : "btn btn-danger" %>' runat="server" CommandName="StatusDisable" data-toggle="confirmation" data-title="Confirm?" CommandArgument='<%# Eval("nric") %>'>
+                                                                            <i class="fas fa-fw fa-lock"></i> Disable Account
+                                                                        </asp:LinkButton>
+                                                                        <asp:LinkButton CssClass='<%# Convert.ToInt32(Eval("status")) == 1 ? "btn disabled" : "btn btn-success" %>' runat="server" CommandName="StatusEnable" data-toggle="confirmation" data-title="Confirm?" CommandArgument='<%# Eval("nric") %>'>
+                                                                            <i class="fas fa-fw fa-unlock-alt"></i> Enable Account
+                                                                        </asp:LinkButton>
+                                                                        <asp:LinkButton CssClass='<%# Convert.ToInt32(Eval("status")) == 2 ? "btn disabled" : "btn btn-warning" %>' runat="server" CommandName="StatusEnableWoMFA" data-toggle="confirmation" data-title="Confirm?" CommandArgument='<%# Eval("nric") %>'>
+                                                                            <i class="fas fa-fw fa-unlock"></i> Enable Account and Omit from MFA 
+                                                                        </asp:LinkButton>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="px-4 pb-4">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">MFA Device ID</span>
-                                                    </div>
-                                                    <asp:TextBox ID="TextboxMFADeviceIDEdit" CssClass="form-control" placeholder="Leave blank to Enable Reset" aria-label="Leave blank to Enable Reset" aria-describedby="LinkButtonMFADeviceIDEdit" runat="server"></asp:TextBox>
-                                                    <div class="input-group-append">
-                                                        <asp:LinkButton ID="LinkButtonMFADeviceIDEdit" CssClass="btn btn-outline-success" runat="server" CommandName="MFADeviceIDEdit" data-toggle="confirmation" data-title="Confirm?" CommandArgument='<%# Eval("nric") %>'>
-                                                    <i class="far fa-fw fa-save"></i>
-                                                        </asp:LinkButton>
-                                                    </div>
+                                                <div class="modal-footer">
+                                                    <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Account Information cannot be Edited.</p>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
+                            <asp:TemplateField HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                <HeaderTemplate>
+                                    <i class="fas fa-fw fa-mobile-alt"></i>MFA
+                                </HeaderTemplate>
+
+                                <ItemTemplate>
+                                    <button type="button" class="view-modal btn btn-info btn-sm">
+                                        <i class="fas fa-fw fa-eye"></i>View
+                                    </button>
+                                    <div class="modal" tabindex="-1" role="dialog" data-keyboard="false">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-mobile-alt"></i><%# Item.nric %>: View MFA Information</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container-fluid">
+                                                        <div class="row text-left">
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label>MFA Token Status: <%# Item.MFATokenStatus %></label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text">MFA Token ID</span>
+                                                                        </div>
+                                                                        <asp:TextBox ID="TextboxMFATokenIDUpdate" CssClass="form-control" placeholder="Leave blank to Disable" aria-label="Leave blank to Disable" aria-describedby="LinkButtonMFATokenIDEdit" runat="server"></asp:TextBox>
+                                                                        <div class="input-group-append">
+                                                                            <asp:LinkButton CssClass="btn btn-outline-success" runat="server" CommandName="MFATokenIDUpdate" data-toggle="confirmation" data-title="Confirm?" CommandArgument='<%# Item.nric  + "; " + Container.DataItemIndex %>'>
+                                                                                <i class="far fa-fw fa-save"></i>
+                                                                            </asp:LinkButton>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label>MFA Device Status: <%# Item.MFADeviceStatus %></label>
+                                                                    <div class="form-group input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text">MFA Device ID</span>
+                                                                        </div>
+                                                                        <asp:TextBox ID="TextboxMFADeviceIDUpdate" CssClass="form-control" placeholder="Leave blank to Enable Reset" aria-label="Leave blank to Enable Reset" aria-describedby="LinkButtonMFADeviceIDEdit" runat="server"></asp:TextBox>
+                                                                        <div class="input-group-append">
+                                                                            <asp:LinkButton CssClass="btn btn-outline-success" runat="server" CommandName="MFADeviceIDUpdate" data-toggle="confirmation" data-title="Confirm?" CommandArgument='<%# Item.nric  + "; " + Container.DataItemIndex %>'>
+                                                                                <i class="far fa-fw fa-save"></i>
+                                                                            </asp:LinkButton>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>MFA Device cannot be automatically registered when first logged into mobile app.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </ItemTemplate>
                             </asp:TemplateField>
 
                             <asp:TemplateField HeaderText="Roles" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                <HeaderTemplate>
+                                    <i class="fas fa-fw fa-user-tag"></i>Roles
+                                </HeaderTemplate>
+
                                 <ItemTemplate>
-                                    <div class="btn-group dropleft">
-                                        <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-eye"></i>View</button>
-                                        <div class="dropdown-menu">
-                                            <div class="px-3 py-1" style="min-width: 250px;">
-                                                <p class="mb-2 text-muted">Account Role<span class="float-right">Toggle</span></p>
-                                                <p class="mb-0">
-                                                    Patient: 
-                                            <span visible='<%# Convert.ToBoolean(Eval("patientStatus")) %>' runat="server">
-                                                <i class="fas fa-fw fa-check-circle text-success"></i>
-                                                <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleDisablePatient" data-toggle="confirmation" data-title="Disable?" CommandArgument='<%# Eval("nric") %>'>
-                                                    <i class="fas fa-fw fa-toggle-off"></i>
-                                                </asp:LinkButton>
-                                            </span>
-                                                    <span visible='<%# !Convert.ToBoolean(Eval("patientStatus")) %>' runat="server">
-                                                        <i class="fas fa-fw fa-times-circle text-danger"></i>
-                                                        <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleEnablePatient" data-toggle="confirmation" data-title="Enable?" CommandArgument='<%# Eval("nric") %>'>
-                                                    <i class="fas fa-fw fa-toggle-on"></i>
-                                                        </asp:LinkButton>
-                                                    </span>
-                                                </p>
-                                                <p class="mb-0">
-                                                    Therapist: 
-                                            <span visible='<%# Convert.ToBoolean(Eval("therapistStatus")) %>' runat="server">
-                                                <i class="fas fa-fw fa-check-circle text-success"></i>
-                                                <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleDisableTherapist" data-toggle="confirmation" data-title="Disable?" CommandArgument='<%# Eval("nric") %>'>
-                                                    <i class="fas fa-fw fa-toggle-off"></i>
-                                                </asp:LinkButton>
-                                            </span>
-                                                    <span visible='<%# !Convert.ToBoolean(Eval("therapistStatus")) %>' runat="server">
-                                                        <i class="fas fa-fw fa-times-circle text-danger"></i>
-                                                        <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleEnableTherapist" data-toggle="confirmation" data-title="Enable?" CommandArgument='<%# Eval("nric") %>'>
-                                                    <i class="fas fa-fw fa-toggle-on"></i>
-                                                        </asp:LinkButton>
-                                                    </span>
-                                                </p>
-                                                <p class="mb-0">
-                                                    Researcher: 
-                                            <span visible='<%# Convert.ToBoolean(Eval("researcherStatus")) %>' runat="server">
-                                                <i class="fas fa-fw fa-check-circle text-success"></i>
-                                                <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleDisableResearcher" data-toggle="confirmation" data-title="Disable?" CommandArgument='<%# Eval("nric") %>'>
-                                                    <i class="fas fa-fw fa-toggle-off"></i>
-                                                </asp:LinkButton>
-                                            </span>
-                                                    <span visible='<%# !Convert.ToBoolean(Eval("researcherStatus"))%>' runat="server">
-                                                        <i class="fas fa-fw fa-times-circle text-danger"></i>
-                                                        <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleEnableResearcher" data-toggle="confirmation" data-title="Enable?" CommandArgument='<%# Eval("nric") %>'>
-                                                    <i class="fas fa-fw fa-toggle-on"></i>
-                                                        </asp:LinkButton>
-                                                    </span>
-                                                </p>
-                                                <p class="mb-0">
-                                                    Administrator: 
-                                            <span visible='<%# Convert.ToBoolean(Eval("adminStatus"))%>' runat="server">
-                                                <i class="fas fa-fw fa-check-circle text-success"></i>
-                                                <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleDisableAdmin" data-toggle="confirmation" data-title="Disable?" CommandArgument='<%# Eval("nric") %>'>
-                                                    <i class="fas fa-fw fa-toggle-off"></i>
-                                                </asp:LinkButton>
-                                            </span>
-                                                    <span visible='<%# !Convert.ToBoolean(Eval("adminStatus")) %>' runat="server">
-                                                        <i class="fas fa-fw fa-times-circle text-danger"></i>
-                                                        <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleEnableAdmin" data-toggle="confirmation" data-title="Enable?" CommandArgument='<%# Eval("nric") %>'>
-                                                    <i class="fas fa-fw fa-toggle-on"></i>
-                                                        </asp:LinkButton>
-                                                    </span>
-                                                </p>
+                                    <button type="button" class="view-modal btn btn-info btn-sm">
+                                        <i class="fas fa-fw fa-eye"></i>View
+                                    </button>
+                                    <div class="modal" tabindex="-1" role="dialog" data-keyboard="false">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-user-tag"></i><%# Item.nric %>: Account Roles</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container-fluid">
+                                                        <div class="row text-left">
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label><i class="fas fa-fw fa-user-injured"></i>Patient: <%# Convert.ToBoolean(Eval("patientStatus")) ? "Enabled" : "Disabled" %></label>
+                                                                    <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleDisablePatient" data-toggle="confirmation" data-title="Disable?" CommandArgument='<%# Eval("nric") %>' Visible='<%# Convert.ToBoolean(Eval("patientStatus")) %>'>
+                                                                        <i class="fas fa-fw fa-toggle-off"></i>
+                                                                    </asp:LinkButton>
+                                                                    <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleEnablePatient" data-toggle="confirmation" data-title="Enable?" CommandArgument='<%# Eval("nric") %>' Visible='<%# !Convert.ToBoolean(Eval("patientStatus")) %>'>
+                                                                        <i class="fas fa-fw fa-toggle-on"></i>
+                                                                    </asp:LinkButton>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label><i class="fas fa-fw fa-user-md"></i>Therapist: <%# Convert.ToBoolean(Eval("therapistStatus")) ? "Enabled" : "Disabled" %></label>
+                                                                    <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleDisableTherapist" data-toggle="confirmation" data-title="Disable?" CommandArgument='<%# Eval("nric") %>' Visible='<%# Convert.ToBoolean(Eval("therapistStatus")) %>'>
+                                                                        <i class="fas fa-fw fa-toggle-off"></i>
+                                                                    </asp:LinkButton>
+                                                                    <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleEnableTherapist" data-toggle="confirmation" data-title="Enable?" CommandArgument='<%# Eval("nric") %>' Visible='<%# !Convert.ToBoolean(Eval("therapistStatus")) %>'>
+                                                                        <i class="fas fa-fw fa-toggle-on"></i>
+                                                                    </asp:LinkButton>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label><i class="fas fa-fw fa-user-graduate"></i>Researcher: <%# Convert.ToBoolean(Eval("researcherStatus")) ? "Enabled" : "Disabled" %></label>
+                                                                    <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleDisableResearcher" data-toggle="confirmation" data-title="Disable?" CommandArgument='<%# Eval("nric") %>' Visible='<%# Convert.ToBoolean(Eval("researcherStatus")) %>'>
+                                                                        <i class="fas fa-fw fa-toggle-off"></i>
+                                                                    </asp:LinkButton>
+                                                                    <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleEnableResearcher" data-toggle="confirmation" data-title="Enable?" CommandArgument='<%# Eval("nric") %>' Visible='<%# !Convert.ToBoolean(Eval("researcherStatus")) %>'>
+                                                                        <i class="fas fa-fw fa-toggle-on"></i>
+                                                                    </asp:LinkButton>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label><i class="fas fa-fw fa-user-secret"></i>Administrator: <%# Convert.ToBoolean(Eval("adminStatus")) ? "Enabled" : "Disabled" %></label>
+                                                                    <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleDisableAdmin" data-toggle="confirmation" data-title="Disable?" CommandArgument='<%# Eval("nric") %>' Visible='<%# Convert.ToBoolean(Eval("adminStatus")) %>'>
+                                                                        <i class="fas fa-fw fa-toggle-off"></i>
+                                                                    </asp:LinkButton>
+                                                                    <asp:LinkButton CssClass="float-right" runat="server" CommandName="RoleEnableAdmin" data-toggle="confirmation" data-title="Enable?" CommandArgument='<%# Eval("nric") %>' Visible='<%# !Convert.ToBoolean(Eval("adminStatus")) %>'>
+                                                                        <i class="fas fa-fw fa-toggle-on"></i>
+                                                                    </asp:LinkButton>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </ItemTemplate>
+                                </ItemTemplate>                                
                             </asp:TemplateField>
 
                             <asp:TemplateField HeaderText="Admin Actions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
@@ -379,14 +422,9 @@
                                 <p class="mb-0">First visit? Try entering a search term and hit "Go"!</p>
                             </div>
                         </EmptyDataTemplate>
-                        <%--                        <PagerTemplate>
-
-                        </PagerTemplate>--%>
                     </asp:GridView>
                 </div>
             </div>
-
-
         </ContentTemplate>
     </asp:UpdatePanel>
     <asp:UpdateProgress ID="UpdateProgressAccounts" runat="server" AssociatedUpdatePanelID="UpdatePanelAccounts" DisplayAfter="0" DynamicLayout="false">
@@ -405,11 +443,18 @@
                     rootSelector: '[data-toggle=confirmation]'
                 });
             });
+
+            $(".view-modal").click(function () {
+                $($(this).parent().find(".modal")).modal('show');
+            });
         }
 
-        $(".view-modal").click(function () {
-            $($(this).parent().find(".modal")).modal('show');
-        });
-    </script>
 
+        function hideGridViewModals() {
+            $('.modal').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        }
+
+    </script>
 </asp:Content>

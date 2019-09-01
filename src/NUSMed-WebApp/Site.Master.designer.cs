@@ -49,6 +49,15 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksHome;
         
         /// <summary>
+        /// navLinksData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksData;
+        
+        /// <summary>
         /// navLinksAbout control.
         /// </summary>
         /// <remarks>
@@ -56,6 +65,15 @@ namespace NUSMed_WebApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAbout;
+        
+        /// <summary>
+        /// navLinksPatientDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksPatientDashboard;
         
         /// <summary>
         /// navLinksPatientTherapist control.
@@ -76,6 +94,15 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksPatientRecords;
         
         /// <summary>
+        /// navLinksTherapistDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksTherapistDashboard;
+        
+        /// <summary>
         /// navLinksTherapistPatients control.
         /// </summary>
         /// <remarks>
@@ -94,6 +121,15 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksTherapistRecords;
         
         /// <summary>
+        /// navLinksResearcherDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksResearcherDashboard;
+        
+        /// <summary>
         /// navLinksResearcherData control.
         /// </summary>
         /// <remarks>
@@ -103,22 +139,13 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksResearcherData;
         
         /// <summary>
-        /// navLinksAdminPatients control.
+        /// navLinksAdminDashboard control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAdminPatients;
-        
-        /// <summary>
-        /// navLinksAdminRecords control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAdminRecords;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAdminDashboard;
         
         /// <summary>
         /// navLinksAdminManageAccounts control.
@@ -157,22 +184,85 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAdminAccountRegistration;
         
         /// <summary>
+        /// navLinksAdminManageLogs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navLinksAdminManageLogs;
+        
+        /// <summary>
+        /// navLinksAdminManageLogsDropdown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAdminManageLogsDropdown;
+        
+        /// <summary>
+        /// navLinksAdminViewAccountLogs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAdminViewAccountLogs;
+        
+        /// <summary>
+        /// navLinksAdminViewRecordLogs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAdminViewRecordLogs;
+        
+        /// <summary>
         /// navLinksAccount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAccount;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navLinksAccount;
         
         /// <summary>
-        /// navLinksLogout control.
+        /// A1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksLogout;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor A1;
+        
+        /// <summary>
+        /// LabelNRIC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelNRIC;
+        
+        /// <summary>
+        /// LabelRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelRole;
+        
+        /// <summary>
+        /// navLinksAccountProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAccountProfile;
         
         /// <summary>
         /// BodyContent control.
@@ -191,5 +281,23 @@ namespace NUSMed_WebApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder FooterContent;
+        
+        /// <summary>
+        /// sessionWarningModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel sessionWarningModal;
+        
+        /// <summary>
+        /// sessionTimeoutModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel sessionTimeoutModal;
     }
 }

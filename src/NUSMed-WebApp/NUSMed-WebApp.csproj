@@ -58,8 +58,8 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Protobuf.3.6.1\lib\net45\Google.Protobuf.dll</HintPath>
+    <Reference Include="Google.Protobuf, Version=3.9.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.9.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="HtmlSanitizer, Version=4.0.0.0, Culture=neutral, PublicKeyToken=61c49a1a9e79cc28, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlSanitizer.4.0.217\lib\net45\HtmlSanitizer.dll</HintPath>
@@ -139,9 +139,14 @@
     <Content Include="Admin\Manage-Accounts\Register.aspx" />
     <Content Include="Admin\Manage-Accounts\View.aspx" />
     <Content Include="Admin\Dashboard.aspx" />
+    <Content Include="Admin\Manage-Logs\Account-Logs.aspx" />
+    <Content Include="Admin\Manage-Logs\Record_Logs.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\loading.css" />
     <Content Include="Images\logo-white.png" />
+    <Content Include="Patient\Dashboard.aspx" />
+    <Content Include="Researcher\Dashboard.aspx" />
+    <Content Include="Role-Selection.aspx" />
     <Content Include="Scripts\bootstrap-confirmation.js" />
     <Content Include="Scripts\bootstrap-confirmation.min.js" />
     <Content Include="Content\bootstrap-grid.css" />
@@ -261,6 +266,7 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
+    <Content Include="Therapist\Dashboard.aspx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -310,6 +316,20 @@
     <Compile Include="Admin\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Manage-Logs\Account-Logs.aspx.cs">
+      <DependentUpon>Account-Logs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Manage-Logs\Account-Logs.aspx.designer.cs">
+      <DependentUpon>Account-Logs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Manage-Logs\Record_Logs.aspx.cs">
+      <DependentUpon>Record_Logs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Manage-Logs\Record_Logs.aspx.designer.cs">
+      <DependentUpon>Record_Logs.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
@@ -320,9 +340,12 @@
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\BLL\AccountBLL.cs" />
+    <Compile Include="Classes\BLL\RecordBLL.cs" />
     <Compile Include="Classes\DAL\AccountDAL.cs" />
     <Compile Include="Classes\DAL\DAL.cs" />
+    <Compile Include="Classes\DAL\RecordDAL.cs" />
     <Compile Include="Classes\Entity\Account.cs" />
+    <Compile Include="Classes\Entity\Record.cs" />
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -361,7 +384,28 @@
     <Compile Include="Errors\404.aspx.designer.cs">
       <DependentUpon>404.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Patient\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Patient\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Researcher\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Researcher\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Role-Selection.aspx.cs">
+      <DependentUpon>Role-Selection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Role-Selection.aspx.designer.cs">
+      <DependentUpon>Role-Selection.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -369,13 +413,17 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="Therapist\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Therapist\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Account\" />
     <Folder Include="App_Data\" />
     <Folder Include="Data\" />
-    <Folder Include="Patient\" />
-    <Folder Include="Therapist\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

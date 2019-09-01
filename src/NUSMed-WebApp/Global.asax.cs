@@ -1,8 +1,11 @@
-﻿using System;
+﻿using NUSMed_WebApp.Classes.BLL;
+using NUSMed_WebApp.Classes.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
@@ -28,7 +31,6 @@ namespace NUSMed_WebApp
             {
                 try
                 {
-                    // Extract the username now           
                     FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value);
 
                     if (authTicket == null || authTicket.Expired)
@@ -36,16 +38,46 @@ namespace NUSMed_WebApp
                         return;
                     }
 
-                    string username = authTicket.Name;
+                    string nric = authTicket.Name;
+                    List<string> userData = new List<string>(authTicket.UserData.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
+                    string guid = string.Empty;
 
-                    string[] roles = authTicket.UserData.Split(new[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                    
-                    // Let us set the Pricipal with our user specific details and...
-                    // Extract the roles from our own custom cookie
-                    e.User = new GenericPrincipal(new GenericIdentity(authTicket.Name, "Forms"), roles);
+                    if (userData.Any()) //prevent IndexOutOfRangeException for empty list
+                    {
+                        guid = userData.ElementAt(userData.Count - 1);
+                        userData.RemoveAt(userData.Count - 1);
+                    }
+
+                    AccountBLL accountBLL = new AccountBLL();
+                    Account account = accountBLL.GetStatus(nric);
+
+                    if (account.status == 0 
+                        || !((account.roles.Count() > 0 && userData[0] == "Multiple") || account.roles.Contains(userData[0]))
+                        || authTicket.IssueDate < account.lastFullLogin)
+                    {
+                        FormsAuthentication.SignOut();
+                        FormsAuthentication.RedirectToLoginPage("fail-auth=true");
+                    }
+
+                    // if not cached, cache user
+                    if (HttpContext.Current.Cache[nric] == null || HttpRuntime.Cache.Get(nric).ToString().Equals(guid))
+                    {
+                        HttpRuntime.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(15));
+                    }
+                    else
+                    {
+                        // Cache does not match, hence multiple logins detected
+                        FormsAuthentication.SignOut();
+                        FormsAuthentication.RedirectToLoginPage("multiple-logins=true");
+                        return;
+                    }
+
+                    e.User = new GenericPrincipal(new GenericIdentity(authTicket.Name, "Forms"), userData.ToArray());
                 }
                 catch
                 {
+                    FormsAuthentication.SignOut();
+                    FormsAuthentication.RedirectToLoginPage();
                 }
             }
         }

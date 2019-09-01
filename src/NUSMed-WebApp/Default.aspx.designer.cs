@@ -13,6 +13,15 @@ namespace NUSMed_WebApp {
     public partial class _Default {
         
         /// <summary>
+        /// UpdatePanelAccount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelAccount;
+        
+        /// <summary>
         /// inputNRIC control.
         /// </summary>
         /// <remarks>
@@ -47,6 +56,60 @@ namespace NUSMed_WebApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanMessage;
+        
+        /// <summary>
+        /// multipleLoginsModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel multipleLoginsModal;
+        
+        /// <summary>
+        /// buttonMultipleLoginModalClose control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonMultipleLoginModalClose;
+        
+        /// <summary>
+        /// failAuthModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel failAuthModal;
+        
+        /// <summary>
+        /// buttonFailAuthModalClose control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonFailAuthModalClose;
+        
+        /// <summary>
+        /// NoRoleModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel NoRoleModal;
+        
+        /// <summary>
+        /// UpdateProgressOptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdateProgress UpdateProgressOptions;
         
         /// <summary>
         /// Master property.

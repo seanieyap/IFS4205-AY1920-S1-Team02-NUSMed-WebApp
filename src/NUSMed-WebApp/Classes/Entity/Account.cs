@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NUSMed_WebApp.Classes.Entity
 {
-    [Serializable]    public class Account
+    [Serializable]
+    public class Account
     {
         public string nric { get; set; }
         public string salt { get; set; }
@@ -76,7 +78,7 @@ namespace NUSMed_WebApp.Classes.Entity
             {
                 if (string.IsNullOrEmpty(associatedDeviceID))
                     return "Not Registered, Awaiting Sync";
-                else 
+                else
                     return "Active";
             }
         }
@@ -90,6 +92,25 @@ namespace NUSMed_WebApp.Classes.Entity
                 if (dateOfBirth.Date > today.AddYears(-age))
                     age--;
                 return age;
+            }
+        }
+
+        public List<string> roles
+        {
+            get
+            {
+                List<string> roles = new List<string>();
+
+                if (patientStatus == 1)
+                    roles.Add("Patient");
+                if (therapistStatus == 1)
+                    roles.Add("Therapist");
+                if (researcherStatus == 1)
+                    roles.Add("Researcher");
+                if (adminStatus == 1)
+                    roles.Add("Administrator");
+
+                return roles;
             }
         }
     }

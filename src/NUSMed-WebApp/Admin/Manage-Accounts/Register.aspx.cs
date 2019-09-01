@@ -18,6 +18,9 @@ namespace NUSMed_WebApp
             Master.LiActiveAdminManageAccounts();
             Master.LiActiveAdminAccountRegistration();
 
+            // set date min for date of birth
+            inputDoB.Attributes.Add("max", DateTime.Now.ToString("yyyy-MM-dd"));
+
             if (!IsPostBack)
             {
                 UpdatePanelRegistration.Update();

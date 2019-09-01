@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mail;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -26,21 +28,39 @@ namespace NUSMed_WebApp.Classes.BLL
             return HttpContext.Current.User.Identity.IsAuthenticated;
         }
 
-        public void Login(string nric, string[] roles)
+        public void Login(string nric, string role)
         {
+            Guid guid = Guid.NewGuid();
+            DateTime now = DateTime.Now;
+
+            new AccountDAL().UpdateFullLogin(nric, now.AddSeconds(-1));
+
             FormsAuthenticationTicket formsAuthenticationTicket = new FormsAuthenticationTicket(
                 version: 1,
                 name: nric,
-                issueDate: DateTime.Now,
-                expiration: DateTime.Now.AddSeconds(HttpContext.Current.Session.Timeout),
+                issueDate: now,
+                expiration: now.AddMinutes(HttpContext.Current.Session.Timeout),
                 isPersistent: false,
-                userData: string.Join("|", roles));
+                userData: role + ";" + guid);
 
             string encryptedTicket = FormsAuthentication.Encrypt(formsAuthenticationTicket);
             HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
 
+            HttpContext.Current.Cache.Insert(nric, guid, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(HttpContext.Current.Session.Timeout));
             HttpContext.Current.Response.Cookies.Add(cookie);
-            //FormsAuthentication.SetAuthCookie(nric, false);
+        }
+
+        // Serves as 1FA authentication
+        public Account GetStatus(string nric, string password)
+        {
+            string salt = accountDAL.RetrieveSalt(nric);
+            HashSalt hashSalt = GenerateSaltedHash(salt, password);
+
+            return accountDAL.RetrieveStatus(nric, hashSalt.Hash);
+        }
+        public Account GetStatus(string nric)
+        {
+            return accountDAL.RetrieveStatus(nric);
         }
 
         public void Logout()
@@ -49,6 +69,15 @@ namespace NUSMed_WebApp.Classes.BLL
         }
 
         #region Requires Authenticated Account
+        public Account GetStatus()
+        {
+            if (IsAuthenticated())
+                return accountDAL.RetrieveStatus(GetNRIC());
+
+            return null;
+
+        }
+
         public string GetNRIC()
         {
             if (IsAuthenticated())
@@ -56,28 +85,89 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-        public List<Account> GetAllAccounts()
-        {
-            //if (IsAuthenticated())
-            return accountDAL.RetrieveAllAccounts();
 
-            //return null;
+        public string GetRole()
+        {
+            if (IsAuthenticated())
+            {
+                if (HttpContext.Current.User.IsInRole("Multiple"))
+                {
+                    return "Not Selected";
+                }
+                else if (HttpContext.Current.User.IsInRole("Patient"))
+                {
+                    return "Patient";
+                }
+                else if (HttpContext.Current.User.IsInRole("Therapist"))
+                {
+                    return "Therapist";
+                }
+                else if (HttpContext.Current.User.IsInRole("Researcher"))
+                {
+                    return "Researcher";
+                }
+                else if (HttpContext.Current.User.IsInRole("Administrator"))
+                {
+                    return "Administrator";
+                }
+            }
+
+            return null;
         }
+        public bool IsMultiple()
+        {
+            if (IsAuthenticated())
+                return HttpContext.Current.User.IsInRole("Multiple");
+
+            return false;
+        }
+        public bool IsPatient()
+        {
+            if (IsAuthenticated())
+                return HttpContext.Current.User.IsInRole("Patient");
+
+            return false;
+        }
+        public bool IsTherapist()
+        {
+            if (IsAuthenticated())
+                return HttpContext.Current.User.IsInRole("Therapist");
+
+            return false;
+        }
+        public bool IsResearcher()
+        {
+            if (IsAuthenticated())
+                return HttpContext.Current.User.IsInRole("Researcher");
+
+            return false;
+        }
+        public bool IsAdministrator()
+        {
+            if (IsAuthenticated())
+                return HttpContext.Current.User.IsInRole("Administrator");
+
+            return false;
+        }
+
         public List<Account> GetAllAccounts(string term)
         {
-            //if (IsAuthenticated())
-            return accountDAL.RetrieveAllAccounts(term);
+            if (IsAuthenticated())
+                return accountDAL.RetrieveAllAccounts(term);
 
-            //return null;
+            return null;
         }
         #endregion
 
         #region Requires Admin Account
-        public void Register(string nric, string password, string associatedTokenID, string firstName, string lastName, string countryOfBirth, 
-            string nationality, string sex, string gender, string martialStatus, string address, string addressPostalCode, string email, 
+        public void Register(string nric, string password, string associatedTokenID, string firstName, string lastName, string countryOfBirth,
+            string nationality, string sex, string gender, string martialStatus, string address, string addressPostalCode, string email,
             string contactNumber, DateTime dateOfBirth, List<string> roles)
         {
-            HashSalt hashSalt = GenerateSaltedHash(64, password);
+            if (!IsAdministrator())
+                return;
+
+            HashSalt hashSalt = GenerateSaltedHash(password);
 
             Account account = new Account
             {
@@ -116,35 +206,32 @@ namespace NUSMed_WebApp.Classes.BLL
                 RoleEnableAdmin(account.nric);
         }
 
-        public bool DeleteAccount(string nric)
+        public void DeleteAccount(string nric)
         {
-            //if (IsAuthenticated())
-            //{
-            accountDAL.Delete(nric);
-            return true;
-            //}
-
-            //return false;
+            if (IsAdministrator())
+            {
+                new RecordBLL().DeleteRecord(nric);
+                accountDAL.Delete(nric);
+            }
         }
 
         #region Status
         public void StatusDisable(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdateStatusDisable(nric);
+            if (IsAdministrator())
+                accountDAL.UpdateStatusDisable(nric);
         }
         public void StatusEnable(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdateStatusEnable(nric);
+            if (IsAdministrator())
+                accountDAL.UpdateStatusEnable(nric);
         }
         public void StatusEnableWithoutMFA(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdateStatusEnableWithoutMFA(nric);
+            if (IsAdministrator())
+                accountDAL.UpdateStatusEnableWithoutMFA(nric);
         }
         #endregion
-
 
         #region Roles
         #region Enable
@@ -194,19 +281,32 @@ namespace NUSMed_WebApp.Classes.BLL
         #endregion
         #endregion
 
+        #region Status
+        public void MFATokenIDUpdate(string nric, string tokenID)
+        {
+            if (IsAdministrator())
+                accountDAL.UpdateMFATokenID(nric, tokenID);
+        }
+        public void MFADeviceIDUpdate(string nric, string deviceID)
+        {
+            if (IsAdministrator())
+                accountDAL.UpdateMFADeviceID(nric, deviceID);
+        }
+        #endregion
 
-        //public List<Account> GetAllAccounts()
-        //{
-        //    if (IsAuthenticated())
-        //        return accountDAL.RetrieveAllAccounts();
-
-        //    return null;
-        //}
+        public void Update1FALogin(string nric)
+        {
+            accountDAL.Update1FALogin(nric, DateTime.Now.AddSeconds(-1));
+        }
 
         public bool IsRegistered(string nric)
         {
-            return accountDAL.IsRegistered(nric);
+            if (IsAdministrator())
+                return accountDAL.IsRegistered(nric);
+
+            return false;
         }
+
 
         //public bool UpdateAccount(string oldUserID, string userID, string domain, string designation, string name, bool active)
         //{
@@ -242,15 +342,15 @@ namespace NUSMed_WebApp.Classes.BLL
         //}
 
         #region HashSalt
-        public class HashSalt
+        private class HashSalt
         {
             public string Hash { get; set; }
             public string Salt { get; set; }
         }
 
-        public static HashSalt GenerateSaltedHash(int size, string password)
+        private static HashSalt GenerateSaltedHash(string password)
         {
-            byte[] saltBytes = new byte[size];
+            byte[] saltBytes = new byte[64];
             RNGCryptoServiceProvider provider = rNGCryptoServiceProvider;
             provider.GetNonZeroBytes(saltBytes);
             string salt = Convert.ToBase64String(saltBytes);
@@ -262,9 +362,36 @@ namespace NUSMed_WebApp.Classes.BLL
             return hashSalt;
         }
 
+        private static HashSalt GenerateSaltedHash(string salt, string password)
+        {
+            Rfc2898DeriveBytes rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, Convert.FromBase64String(salt), 10000, HashAlgorithmName.SHA512);
+            string hashPassword = Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256));
+
+            HashSalt hashSalt = new HashSalt { Hash = hashPassword, Salt = salt };
+            return hashSalt;
+        }
+
         #endregion
 
         #region Helpers
+
+        public static string ConvertToUnsecureString(SecureString securePassword)
+        {
+            IntPtr unmanagedString = IntPtr.Zero;
+            try
+            {
+                unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(securePassword);
+                return Marshal.PtrToStringUni(unmanagedString);
+            }
+            finally
+            {
+                Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
+            }
+        }
+
+        #endregion
+
+        #region Validators
         public static bool IsNRICValid(string tokenID)
         {
             // TODO

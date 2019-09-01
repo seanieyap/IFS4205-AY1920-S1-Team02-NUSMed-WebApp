@@ -2,8 +2,6 @@
 
 <%@ MasterType VirtualPath="~/site.Master" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-</asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="BodyContent" runat="server">
     <div class="container">
         <div class="py-5 mx-auto text-center">
@@ -30,7 +28,6 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="inputDoB">Date of Birth</label>
-                        <%--<asp:TextBox ID="inputDoB" CssClass="form-control" runat="server" placeholder="DD/MM/YYYY"></asp:TextBox>--%>
                         <input id="inputDoB" name="dateOfBirth" type="date" class="form-control" placeholder="Date of Birth" required="required" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Date of Birth is invalid.
@@ -662,8 +659,4 @@
             </div>
         </div>
     </div>
-
-</asp:Content>
-
-<asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
 </asp:Content>
