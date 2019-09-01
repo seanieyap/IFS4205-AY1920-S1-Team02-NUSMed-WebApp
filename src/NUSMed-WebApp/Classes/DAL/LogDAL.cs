@@ -3,18 +3,18 @@ using System.Configuration;
 
 namespace NUSMed_WebApp.Classes.DAL
 {
-    public class DAL
+    public class LogDAL
     {
         protected MySqlConnection connection;
 
-        protected DAL()
+        protected LogDAL()
         {
             connection = new MySqlConnection(Get().ConnectionString);
         }
 
         public static MySqlConnectionStringBuilder Get()
         {
-            MySqlConnectionStringBuilder mscsb = new MySqlConnectionStringBuilder(ConfigurationManager.AppSettings["ConnectionString"].ToString());
+            MySqlConnectionStringBuilder mscsb = new MySqlConnectionStringBuilder(ConfigurationManager.AppSettings["ConnectionStringLogging"].ToString());
 
             return mscsb;
         }

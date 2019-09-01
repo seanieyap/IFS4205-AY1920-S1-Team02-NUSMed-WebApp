@@ -11,7 +11,6 @@ namespace NUSMed_WebApp.Classes.DAL
     {
         public RecordDAL() : base() { }
 
-
         /// <summary>
         /// Retrieve all Records registered in the database of particular nric
         /// </summary>

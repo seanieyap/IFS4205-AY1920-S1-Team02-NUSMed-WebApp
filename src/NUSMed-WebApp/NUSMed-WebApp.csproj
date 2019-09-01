@@ -340,10 +340,15 @@
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\BLL\AccountBLL.cs" />
+    <Compile Include="Classes\BLL\AccountLogBLL.cs" />
     <Compile Include="Classes\BLL\RecordBLL.cs" />
+    <Compile Include="Classes\BLL\RecordLogBLL.cs" />
     <Compile Include="Classes\DAL\AccountDAL.cs" />
+    <Compile Include="Classes\DAL\AccountLogDAL.cs" />
     <Compile Include="Classes\DAL\DAL.cs" />
+    <Compile Include="Classes\DAL\LogDAL.cs" />
     <Compile Include="Classes\DAL\RecordDAL.cs" />
+    <Compile Include="Classes\DAL\RecordLogDAL.cs" />
     <Compile Include="Classes\Entity\Account.cs" />
     <Compile Include="Classes\Entity\Record.cs" />
     <Compile Include="Contact.aspx.cs">

@@ -48,6 +48,8 @@ namespace NUSMed_WebApp.Classes.BLL
 
             HttpContext.Current.Cache.Insert(nric, guid, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(HttpContext.Current.Session.Timeout));
             HttpContext.Current.Response.Cookies.Add(cookie);
+
+            new AccountLogDAL().Insert(nric, nric, "Log in using role, " + role + ".", "Nil");
         }
 
         // Serves as 1FA authentication
