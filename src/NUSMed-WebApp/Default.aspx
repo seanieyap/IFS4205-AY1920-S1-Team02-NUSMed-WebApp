@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <asp:UpdatePanel ID="UpdatePanelAccount" class="container" runat="server" UpdateMode="Conditional">
+    <asp:UpdatePanel ID="UpdatePanelAccount" class="container" runat="server" UpdateMode="Always">
         <ContentTemplate>
             <div class="row">
                 <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">

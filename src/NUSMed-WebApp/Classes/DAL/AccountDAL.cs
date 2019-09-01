@@ -190,7 +190,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// </summary>
         public string RetrieveSalt(string nric)
         {
-            string result = "        ";
+            string result = "1234567812345678";
 
             using (MySqlCommand cmd = new MySqlCommand())
             {

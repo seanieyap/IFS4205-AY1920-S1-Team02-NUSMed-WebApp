@@ -77,7 +77,6 @@ namespace NUSMed_WebApp.Classes.BLL
                 return accountDAL.RetrieveStatus(GetNRIC());
 
             return null;
-
         }
 
         public string GetNRIC()
