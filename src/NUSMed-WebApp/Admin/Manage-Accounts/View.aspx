@@ -2,9 +2,6 @@
 
 <%@ MasterType VirtualPath="~/site.Master" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-</asp:Content>
-
 <asp:Content ID="BodyContent" ContentPlaceHolderID="BodyContent" runat="server">
     <div class="container">
         <div class="py-5 mx-auto text-center">
@@ -65,9 +62,6 @@
                                                 <div class="modal-body">
                                                     <div class="container-fluid">
                                                         <div class="row text-left">
-                                                            <div class="col-12">
-                                                            </div>
-
                                                             <div class="col-12 col-lg-6">
                                                                 <div class="form-group">
                                                                     <label>NRIC</label>
@@ -182,7 +176,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                                 <div class="modal-footer">
                                                     <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit contact information.</p>
@@ -455,6 +448,5 @@
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
         }
-
     </script>
 </asp:Content>

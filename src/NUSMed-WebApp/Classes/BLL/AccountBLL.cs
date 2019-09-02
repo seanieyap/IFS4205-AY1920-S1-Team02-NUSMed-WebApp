@@ -158,6 +158,35 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
+        public Account GetAccount(string nric)
+        {
+            if (IsAuthenticated())
+                return accountDAL.RetrieveAccount(nric);
+
+            return null;
+        }
+        public Account GetPatientDetails(string nric)
+        {
+            if (IsPatient())
+                return accountDAL.RetrievePatientdetails(nric);
+
+            return null;
+        }
+        public Account GetTherapistDetails(string nric)
+        {
+            if (IsTherapist())
+                return accountDAL.RetrieveTherapistdetails(nric);
+
+            return null;
+        }
+        public Account GetResearcherDetails(string nric)
+        {
+            if (IsResearcher())
+                return accountDAL.RetrieveReseearcherdetails(nric);
+
+            return null;
+        }
+
         #endregion
 
         #region Requires Admin Account
@@ -307,7 +336,26 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return false;
         }
-
+        public void UpdateContactDetails(string address, string addressPostalCode, string email, string contactNumber)
+        {
+            accountDAL.UpdateContactDetails(GetNRIC(), address, addressPostalCode, email, contactNumber);
+            return;
+        }
+        public void UpdatePatientDetails(string nokName, string nokContact)
+        {
+            accountDAL.UpdatePatientDetails(GetNRIC(), nokName, nokContact);
+            return;
+        }
+        public void UpdateTherapistDetails(string jobTitle, string department)
+        {
+            accountDAL.UpdateTherapistDetails(GetNRIC(), jobTitle, department);
+            return;
+        }
+        public void UpdateResearcherDetails(string jobTitle, string department)
+        {
+            accountDAL.UpdateResearcherDetails(GetNRIC(), jobTitle, department);
+            return;
+        }
 
         //public bool UpdateAccount(string oldUserID, string userID, string domain, string designation, string name, bool active)
         //{

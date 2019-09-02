@@ -24,11 +24,6 @@ namespace NUSMed_WebApp.Admin.Account
                 string term = TextboxSearch.Text.Trim().ToLower();
                 Bind_GridViewAccounts(term);
             }
-            //else
-            //{
-            //    GridViewAccounts.DataSource = null;
-            //    GridViewAccounts.DataBind();
-            //}
         }
 
         #region GridViewAccounts Functions

@@ -196,11 +196,15 @@ namespace NUSMed_WebApp
             {
                 spanMessage.Visible = false;
 
-                // TODO try catch
-
-                accountBLL.Register(nric, password, associatedTokenID, firstName, lastName, countryOfBirth, nationality, sex, gender, 
-                    martialStatus, address, addressPostalCode, email, contactNumber, dateOfBirth, roles);
-                ScriptManager.RegisterStartupScript(this, GetType(), "open modal", "$('#modelRegistration').modal('show')", true);
+                try {
+                    accountBLL.Register(nric, password, associatedTokenID, firstName, lastName, countryOfBirth, nationality, sex, gender,
+                        martialStatus, address, addressPostalCode, email, contactNumber, dateOfBirth, roles);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "open modal", "$('#modelRegistration').modal('show')", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Registering an Account');", true);
+                }
             }
         }
 

@@ -65,7 +65,7 @@
 
                 <nav id="NavLinks" class="mainNavLinks collapse navbar-collapse" runat="server">
                     <a id="navLinksHome" class="nav-link" href="/" runat="server" visible="false">Home</a>
-                    <a id="navLinksData" class="nav-link" href="/data" runat="server" visible="false">Data</a>
+                    <%--                    <a id="navLinksData" class="nav-link" href="/data" runat="server" visible="false">Data</a>--%>
                     <a id="navLinksAbout" class="nav-link" href="/about" runat="server" visible="false">About</a>
 
                     <%-- Patient Links--%>
@@ -112,7 +112,7 @@
                         <a id="A1" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
                             <i class="fas fa-fw fa-users-cog"></i>My Account<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
                         </a>
-                        <div class="dropdown-menu" style="min-width: 250px;" aria-labelledby="navLinksAccount">
+                        <div class="dropdown-menu py-0" style="min-width: 250px;" aria-labelledby="navLinksAccount">
                             <p class="mb-0 text-muted pt-2 pb-3 px-3">
                                 <i class="fas fa-fw fa-user"></i>NRIC: 
                                 <b>
@@ -121,7 +121,7 @@
                                     <asp:Label ID="LabelRole" runat="server"></asp:Label></b>
                             </p>
                             <a id="navLinksAccountProfile" class="dropdown-item" href="/My-Profile" runat="server"><i class="fas fa-fw fa-id-card"></i>My Profile</a>
-                            <button type="button" class="dropdown-item" runat="server" onserverclick="buttonSwitchRole_ServerClick"><i class="fas fa-exchange-alt fa-fw"></i>Switch Role</button>
+                            <button id="navLinksSiwtchRole" type="button" class="dropdown-item" runat="server" onserverclick="buttonSwitchRole_ServerClick"><i class="fas fa-exchange-alt fa-fw"></i>Switch Role</button>
                             <button type="button" class="dropdown-item" runat="server" onserverclick="ButtonLogout_ServerClick"><i class="fas fa-sign-out-alt fa-fw"></i>Logout</button>
                         </div>
                     </div>
@@ -138,8 +138,7 @@
                     <h5 class="text-white">National University of Singapore Medical</h5>
                     <h5 class="text-white small mb-3">A NHC Parady</h5>
                     <ul class="list-unstyled fa-ul d-inline-block text-left nus-grey small">
-                        <li class="mb-1"><span class="fa-li"><i class="fas fa-fw fa-info text-white mr-5"></i></span>Developed for IFS4205,</li>
-                        <li class="mb-1">AY19/20 Semester 1, Team 02</li>
+                        <li class="mb-1"><span class="fa-li"><i class="fas fa-fw fa-info text-white mr-5"></i></span>Developed for IFS4205, AY19/20 Semester 1, Team 02</li>
                         <li class="mb-1"><span class="fa-li"><i class="fas fa-fw fa-id-card-alt text-white mr-5"></i></span>Sean Yap, Lim Ding Heng, Sun Shengran, Toh Yunqi Cheryl</li>
                     </ul>
                 </div>
@@ -194,7 +193,8 @@
                         <p class="my-1">This Web Session has been terminated due to inactivity.</p>
                     </div>
                     <div class="modal-footer">
-                        <a type="button" class="btn btn-secondary" data-dismiss="modal" href="~/" runat="server">Return Home</a>
+                        <a type="button" class="btn btn-secondary mr-auto" data-dismiss="modal" href="~/" runat="server">Return Home</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

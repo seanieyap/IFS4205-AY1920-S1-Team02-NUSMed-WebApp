@@ -23,6 +23,7 @@ namespace NUSMed_WebApp
             {
                 if (accountBLL.IsMultiple())
                 {
+                    navLinksSiwtchRole.Visible = false;
                     navLinksAccountProfile.Visible = false;
                 }
                 else if (accountBLL.IsPatient())
@@ -48,17 +49,18 @@ namespace NUSMed_WebApp
                 LabelNRIC.Text = new AccountBLL().GetNRIC();
                 LabelRole.Text = new AccountBLL().GetRole();
 
+                // Timeout Timer
                 sessionWarningModal.Visible = true;
                 sessionTimeoutModal.Visible = true;
                 ScriptManager.RegisterStartupScript(this, GetType(), "timer",
-                    @"setTimeout(function() {$('.modal').modal('hide'); $('#sessionWarningModal').modal('show');}, " + (HttpContext.Current.Session.Timeout * 600000 - 60000).ToString() + @");
-                    setTimeout(function() {$('.modal').modal('hide'); $('#sessionTimeoutModal').modal('show');}, " + (HttpContext.Current.Session.Timeout * 600000).ToString() + ");"
+                    @"setTimeout(function() {$('.modal').modal('hide'); $('#sessionWarningModal').modal('show');}, " + (HttpContext.Current.Session.Timeout * 60000 - 60000).ToString() + @");
+                    setTimeout(function() {$('.modal').modal('hide'); $('#sessionTimeoutModal').modal('show');}, " + (HttpContext.Current.Session.Timeout * 60000).ToString() + ");"
                     , true);
             }
             else
             {
                 navLinksHome.Visible = true;
-                navLinksData.Visible = true;
+                //navLinksData.Visible = true;
                 navLinksAbout.Visible = true;
             }
 
@@ -79,6 +81,11 @@ namespace NUSMed_WebApp
         }
 
         #region UI
+        public void LiActiveMyProfile()
+        {
+            navLinksAccountProfile.Attributes.Add("class", "dropdown-item active");
+        }
+
         #region Patient
         public void LiActivePatientDashboard()
         {

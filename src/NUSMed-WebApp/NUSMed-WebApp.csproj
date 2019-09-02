@@ -144,8 +144,11 @@
     <Content Include="Contact.aspx" />
     <Content Include="Content\loading.css" />
     <Content Include="Images\logo-white.png" />
+    <Content Include="My-Profile.aspx" />
     <Content Include="Patient\Dashboard.aspx" />
+    <Content Include="Researcher\Aggregated-Search.aspx" />
     <Content Include="Researcher\Dashboard.aspx" />
+    <Content Include="Researcher\Record-Search.aspx" />
     <Content Include="Role-Selection.aspx" />
     <Content Include="Scripts\bootstrap-confirmation.js" />
     <Content Include="Scripts\bootstrap-confirmation.min.js" />
@@ -343,6 +346,7 @@
     <Compile Include="Classes\BLL\AccountLogBLL.cs" />
     <Compile Include="Classes\BLL\RecordBLL.cs" />
     <Compile Include="Classes\BLL\RecordLogBLL.cs" />
+    <Compile Include="Classes\Common\Sanitize.cs" />
     <Compile Include="Classes\DAL\AccountDAL.cs" />
     <Compile Include="Classes\DAL\AccountLogDAL.cs" />
     <Compile Include="Classes\DAL\DAL.cs" />
@@ -389,6 +393,13 @@
     <Compile Include="Errors\404.aspx.designer.cs">
       <DependentUpon>404.aspx</DependentUpon>
     </Compile>
+    <Compile Include="My-Profile.aspx.cs">
+      <DependentUpon>My-Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My-Profile.aspx.designer.cs">
+      <DependentUpon>My-Profile.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Patient\Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -397,12 +408,26 @@
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Researcher\Aggregated-Search.aspx.cs">
+      <DependentUpon>Aggregated-Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Researcher\Aggregated-Search.aspx.designer.cs">
+      <DependentUpon>Aggregated-Search.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Researcher\Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Researcher\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Researcher\Record-Search.aspx.cs">
+      <DependentUpon>Record-Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Researcher\Record-Search.aspx.designer.cs">
+      <DependentUpon>Record-Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="Role-Selection.aspx.cs">
       <DependentUpon>Role-Selection.aspx</DependentUpon>
@@ -428,7 +453,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

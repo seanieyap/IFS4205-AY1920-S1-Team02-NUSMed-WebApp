@@ -559,7 +559,7 @@
                 </div>
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
-                        <label for="inputContactNumber">Contact Number</label>
+                        <label for="inputContactNumber">Contact Number <span class="text-muted small">(8-digits)</span></label>
                         <input id="inputContactNumber" type="tel" class="form-control" placeholder="Contact Number" required="required" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Contact Number is invalid.

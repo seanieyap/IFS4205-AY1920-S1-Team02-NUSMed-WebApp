@@ -118,15 +118,18 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve all Accounts registered in the database search by term
         /// </summary>
-        public List<Account> RetrieveAccount(string nric)
+        public Account RetrieveAccount(string nric)
         {
-            List<Account> result = new List<Account>();
+            Account  result = new Account();
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT a.`nric`, a.`name_first`, a.`birth_country`, a.`nationality`, a.`sex`, a.`gender`,
                     a.`martial_status`, a.`name_last`, a.`address`, a.`address_postal_code`, a.`email`, a.`contact_number`, a.`create_time`,
                     a.last_1FA_login, a.`last_full_login`, a.`date_of_birth`, a.`status`, a.`associated_token_id`, a.`associated_device_id`, 
+                    ap.nok_name, ap.nok_contact_number,
+                    at.job_title as therapist_job_title, at.department as therapist_department,
+                    ar.job_title as researcher_job_title, ar.department as researcher_department,
                     ap.`status` as patient_status, at.`status` as therapist_status, ar.`status` as researcher_status, aa.`status` as admin_status     
                     FROM account a 
                     INNER JOIN account_patient ap ON a.nric = ap.nric
@@ -144,9 +147,9 @@ namespace NUSMed_WebApp.Classes.DAL
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        while (reader.Read())
+                        if (reader.Read())
                         {
-                            Account account = new Account
+                            result = new Account
                             {
                                 nric = Convert.ToString(reader["nric"]),
                                 firstName = Convert.ToString(reader["name_first"]),
@@ -169,14 +172,128 @@ namespace NUSMed_WebApp.Classes.DAL
                                 adminStatus = Convert.ToInt32(reader["admin_status"]),
                                 associatedTokenID = Convert.ToString(reader["associated_token_id"]),
                                 associatedDeviceID = Convert.ToString(reader["associated_device_id"]),
+                                nokName = Convert.ToString(reader["nok_name"]),
+                                nokContact = Convert.ToString(reader["nok_contact_number"]),
+                                therapistJobTitle = Convert.ToString(reader["therapist_job_title"]),
+                                therapistDepartment = Convert.ToString(reader["therapist_department"]),
+                                researcherJobTitle = Convert.ToString(reader["researcher_job_title"]),
+                                researcherDepartment = Convert.ToString(reader["researcher_department"]),
                             };
-                            account.last1FALogin = reader["last_1FA_login"] == DBNull.Value ? null :
+                            result.last1FALogin = reader["last_1FA_login"] == DBNull.Value ? null :
                                (DateTime?)Convert.ToDateTime(reader["last_1FA_login"]);
 
-                            account.lastFullLogin = reader["last_full_login"] == DBNull.Value ? null :
+                            result.lastFullLogin = reader["last_full_login"] == DBNull.Value ? null :
                                    (DateTime?)Convert.ToDateTime(reader["last_full_login"]);
+                        }
+                    }
+                }
+            }
 
-                            result.Add(account);
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve Patient Details of specific Account
+        /// </summary>
+        public Account RetrievePatientdetails(string nric)
+        {
+            Account result = new Account();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT nok_name, nok_contact_number
+                    FROM account_patient 
+                    WHERE nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = new Account
+                            {
+                                nokName = Convert.ToString(reader["nok_name"]),
+                                nokContact = Convert.ToString(reader["nok_contact_number"]),
+                            };
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve Therapist Details of specific Account
+        /// </summary>
+        public Account RetrieveTherapistdetails(string nric)
+        {
+            Account result = new Account();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT job_title, department
+                    FROM account_therapist 
+                    WHERE nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = new Account
+                            {
+                                therapistJobTitle = Convert.ToString(reader["job_title"]),
+                                therapistDepartment = Convert.ToString(reader["department"]),
+                            };
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// Retrieve Researcher Details of specific Account
+        /// </summary>
+        public Account RetrieveReseearcherdetails(string nric)
+        {
+            Account result = new Account();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT job_title, department
+                    FROM account_researcher 
+                    WHERE nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = new Account
+                            {
+                                researcherJobTitle = Convert.ToString(reader["job_title"]),
+                                researcherDepartment = Convert.ToString(reader["department"]),
+                            };
                         }
                     }
                 }
@@ -407,7 +524,85 @@ namespace NUSMed_WebApp.Classes.DAL
         #endregion
 
         #region Updates
+        public void UpdateContactDetails(string nric, string address, string addressPostalCode, string email, string contactNumber)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"UPDATE account 
+                            SET address = @address, address_postal_code = @addressPostalCode, 
+                                email = @email, contact_number = @contactNumber
+                            WHERE nric = @nric;";
 
+                cmd.Parameters.AddWithValue("@nric", nric);
+                cmd.Parameters.AddWithValue("@address", address);
+                cmd.Parameters.AddWithValue("@addressPostalCode", addressPostalCode);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@contactNumber", contactNumber);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void UpdatePatientDetails(string nric, string nokName, string nokContact)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"UPDATE account_patient 
+                            SET nok_name = @nokName, nok_contact_number = @nokContactNumber
+                            WHERE nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+                cmd.Parameters.AddWithValue("@nokName", nokName);
+                cmd.Parameters.AddWithValue("@nokContactNumber", nokContact);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void UpdateTherapistDetails(string nric, string jobTitle, string department)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"UPDATE account_therapist 
+                            SET job_title = @jobTitle, department = @department
+                            WHERE nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+                cmd.Parameters.AddWithValue("@jobTitle", jobTitle);
+                cmd.Parameters.AddWithValue("@department", department);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void UpdateResearcherDetails(string nric, string jobTitle, string department)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"UPDATE account_researcher
+                            SET job_title = @jobTitle, department = @department
+                            WHERE nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+                cmd.Parameters.AddWithValue("@jobTitle", jobTitle);
+                cmd.Parameters.AddWithValue("@department", department);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         #region Status
         public void UpdateStatusDisable(string nric)
         {
@@ -657,7 +852,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"UPDATE account 
                             SET last_1FA_login = @dateTime
-                            WHERE nric= @nric;";
+                            WHERE nric = @nric;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
                 cmd.Parameters.AddWithValue("@dateTime", dateTime);
@@ -676,7 +871,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"UPDATE account 
                             SET last_full_login = @dateTime
-                            WHERE nric= @nric;";
+                            WHERE nric = @nric;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
                 cmd.Parameters.AddWithValue("@dateTime", dateTime);
