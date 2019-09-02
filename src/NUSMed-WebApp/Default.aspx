@@ -29,31 +29,13 @@
                 </div>
             </div>
 
-            <%--MFA Modal--%>
-            <%--            <asp:Panel ID="multipleRolesModal" class="modal" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title"><i class="fas fa-fw fa-tag text-warning"></i>Select Roles</h5>
-                        </div>
-                        <div class="modal-body">
-                            <p class="mb-0">There are multiple roles associated with your account.</p>
-                            <p class="mb-1 text-muted small">Please select.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </asp:Panel>--%>
-
             <%--Multiple logins detected--%>
             <asp:Panel ID="multipleLoginsModal" class="modal" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title"><i class="fas fa-fw fa-exclamation-circle text-danger"></i>Multiple Logins Detected</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" runat="server" onserverclick="buttonCloseModal_ServerClick">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -73,7 +55,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title"><i class="fas fa-fw fa-exclamation-circle text-danger"></i>Fail to Authenticate</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" runat="server" onserverclick="buttonCloseModal_ServerClick">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -93,7 +75,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title"><i class="fas fa-fw fa-exclamation-circle text-danger"></i>Error</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" runat="server" onserverclick="buttonCloseModal_ServerClick">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -102,7 +84,7 @@
                             <p class="mb-1 text-muted small">Please contact Administrator if there is not expected.</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" runat="server" onserverclick="buttonCloseModal_ServerClick">Close</button>
                         </div>
                     </div>
                 </div>
@@ -114,5 +96,25 @@
             <div class="loading">Loading</div>
         </ProgressTemplate>
     </asp:UpdateProgress>
+
+    
+            <%--MFA Modal--%>
+            <%--            <asp:Panel ID="multipleRolesModal" class="modal" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fas fa-fw fa-tag text-warning"></i>Select Roles</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="mb-0">There are multiple roles associated with your account.</p>
+                            <p class="mb-1 text-muted small">Please select.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </asp:Panel>--%>
+
 
 </asp:Content>

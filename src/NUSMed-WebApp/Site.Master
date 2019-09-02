@@ -123,7 +123,6 @@
                             <a id="navLinksAccountProfile" class="dropdown-item" href="/My-Profile" runat="server"><i class="fas fa-fw fa-id-card"></i>My Profile</a>
                             <button type="button" class="dropdown-item" runat="server" onserverclick="buttonSwitchRole_ServerClick"><i class="fas fa-exchange-alt fa-fw"></i>Switch Role</button>
                             <button type="button" class="dropdown-item" runat="server" onserverclick="ButtonLogout_ServerClick"><i class="fas fa-sign-out-alt fa-fw"></i>Logout</button>
-                            <%--<a id="navLinksLogout" class="dropdown-item" href="/Admin/Manage-Accounts/Register" runat="server">Logout</a>--%>
                         </div>
                     </div>
                 </nav>
@@ -137,7 +136,7 @@
             <div class="row py-5">
                 <div class="col-12 text-center my-4">
                     <h5 class="text-white">National University of Singapore Medical</h5>
-                    <h5 class="text-white small">A NHC Parady</h5>
+                    <h5 class="text-white small mb-3">A NHC Parady</h5>
                     <ul class="list-unstyled fa-ul d-inline-block text-left nus-grey small">
                         <li class="mb-1"><span class="fa-li"><i class="fas fa-fw fa-info text-white mr-5"></i></span>Developed for IFS4205,</li>
                         <li class="mb-1">AY19/20 Semester 1, Team 02</li>
