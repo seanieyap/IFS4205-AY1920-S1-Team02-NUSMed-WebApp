@@ -23,11 +23,6 @@ namespace NUSMed_WebApp.Classes.BLL
         {
         }
 
-        public bool IsAuthenticated()
-        {
-            return HttpContext.Current.User.Identity.IsAuthenticated;
-        }
-
         public void Login(string nric, string role)
         {
             Guid guid = Guid.NewGuid();
@@ -43,16 +38,27 @@ namespace NUSMed_WebApp.Classes.BLL
                 isPersistent: false,
                 userData: role + ";" + guid);
 
-            string encryptedTicket = FormsAuthentication.Encrypt(formsAuthenticationTicket);
-            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(formsAuthenticationTicket));
+            cookie.HttpOnly = true;
+            cookie.Secure = FormsAuthentication.RequireSSL;
+            //cookie.Domain = "";
+            // SEAN TODO
 
             HttpContext.Current.Cache.Insert(nric, guid, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(HttpContext.Current.Session.Timeout));
             HttpContext.Current.Response.Cookies.Add(cookie);
 
             new AccountLogDAL().Insert(nric, nric, "Log in using role, " + role + ".", "Nil");
         }
+        public void Logout()
+        {
+            FormsAuthentication.SignOut();
+        }
+        public bool IsAuthenticated()
+        {
+            return HttpContext.Current.User.Identity.IsAuthenticated;
+        }
 
-        // Serves as 1FA authentication
+        // Serves as authentication
         public Account GetStatus(string nric, string password)
         {
             string salt = accountDAL.RetrieveSalt(nric);
@@ -65,11 +71,6 @@ namespace NUSMed_WebApp.Classes.BLL
             return accountDAL.RetrieveStatus(nric);
         }
 
-        public void Logout()
-        {
-            FormsAuthentication.SignOut();
-        }
-
         #region Requires Authenticated Account
         public Account GetStatus()
         {
@@ -78,7 +79,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-
         public string GetNRIC()
         {
             if (IsAuthenticated())
@@ -86,7 +86,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-
         public string GetRole()
         {
             if (IsAuthenticated())
@@ -153,40 +152,78 @@ namespace NUSMed_WebApp.Classes.BLL
 
         public List<Account> GetAllAccounts(string term)
         {
-            if (IsAuthenticated())
+            if (IsAdministrator())
                 return accountDAL.RetrieveAllAccounts(term);
 
             return null;
         }
         public Account GetAccount(string nric)
         {
-            if (IsAuthenticated())
-                return accountDAL.RetrieveAccount(nric);
+            if (IsAuthenticated() && !IsMultiple())
+                return accountDAL.Retrieve(nric);
 
             return null;
         }
-        public Account GetPatientDetails(string nric)
+        public Account GetPersonalInformation(string nric)
         {
-            if (IsPatient())
-                return accountDAL.RetrievePatientdetails(nric);
+            if (IsAdministrator())
+                return accountDAL.RetrievePersonalInformation(nric);
 
             return null;
         }
-        public Account GetTherapistDetails(string nric)
+        public Account GetContactInformation(string nric)
         {
-            if (IsTherapist())
-                return accountDAL.RetrieveTherapistdetails(nric);
+            if (IsAdministrator())
+                return accountDAL.RetrieveContactInformation(nric);
 
             return null;
         }
-        public Account GetResearcherDetails(string nric)
+        public Account GetPatientInformation(string nric)
         {
-            if (IsResearcher())
-                return accountDAL.RetrieveReseearcherdetails(nric);
+            if (IsPatient() || IsAdministrator())
+                return accountDAL.RetrievePatientInformation(nric);
 
             return null;
         }
+        public Account GetTherapistInformation(string nric)
+        {
+            if (IsTherapist() || IsAdministrator())
+                return accountDAL.RetrieveTherapistInformation(nric);
 
+            return null;
+        }
+        public Account GetResearcherInformation(string nric)
+        {
+            if (IsResearcher() || IsAdministrator())
+                return accountDAL.RetrieveReseearcherInformation(nric);
+
+            return null;
+        }
+        public List<Account> GetTherapists(string patientNRIC, string term)
+        {
+            if (IsAdministrator())
+                return accountDAL.RetrieveTherapists(patientNRIC, term);
+
+            return null;
+        }
+        public List<Account> GetEmergencyTherapists(string nric)
+        {
+            if (IsAdministrator())
+                return accountDAL.RetrieveEmergencyTherapists(nric);
+
+            return null;
+        }
+        public void AddEmergencyTherapist(string patientNRIC, string therapistNRIC)
+        {
+            if (IsAdministrator())
+                accountDAL.InsertEmergencyTherapist(patientNRIC, therapistNRIC);
+
+        }
+        public void RemoveEmergencyTherapist(string therapistNRIC)
+        {
+            if (IsAdministrator())
+                accountDAL.DeleteEmergencyTherapist(therapistNRIC);
+        }
         #endregion
 
         #region Requires Admin Account
@@ -441,12 +478,10 @@ namespace NUSMed_WebApp.Classes.BLL
         #endregion
 
         #region Validators
-        public static bool IsNRICValid(string tokenID)
+        public static bool IsNRICValid(string nric)
         {
-            // TODO
-            return true;
+            return nric.Length == 9;
         }
-
         private static bool TryParseDoB(string doB, ref DateTime dateOfBirth)
         {
             return DateTime.TryParseExact(doB, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateOfBirth);

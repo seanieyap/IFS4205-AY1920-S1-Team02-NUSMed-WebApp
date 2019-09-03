@@ -1,9 +1,6 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
-using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -12,7 +9,6 @@ namespace NUSMed_WebApp.Admin.Account
     public partial class View : Page
     {
         private readonly AccountBLL accountBLL = new AccountBLL();
-        //private List<Classes.Entity.Account> accounts;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -34,13 +30,12 @@ namespace NUSMed_WebApp.Admin.Account
             GridViewAccounts.DataSource = accounts;
             GridViewAccounts.DataBind();
         }
-
         protected void GridViewAccounts_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             string nric = GridViewAccounts.DataKeys[e.RowIndex].Values["nric"].ToString();
 
             #region Validation
-            if (string.Equals(nric, new AccountBLL().GetNRIC()))
+            if (string.Equals(nric, accountBLL.GetNRIC()))
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Unable to Delete the current Account \"" + nric + "\".')", true);
                 return;
@@ -63,10 +58,117 @@ namespace NUSMed_WebApp.Admin.Account
 
             Bind_GridViewAccounts(term);
         }
-
         protected void GridViewAccounts_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            // MFA
+            if (e.CommandName.Equals("ViewPersonal"))
+            {
+                string nric = e.CommandArgument.ToString();
+                try
+                {
+                    Classes.Entity.Account account = accountBLL.GetPersonalInformation(nric);
+                    labelPersonalNRIC.Text = nric;
+                    inputPersonalNRIC.Value = account.nric;
+                    inputPersonalDoB.Value = account.dateOfBirth.ToString("dd/MM/yyyy");
+                    inputPersonalFirstName.Value = account.firstName;
+                    inputPersonalLastName.Value = account.lastName;
+                    inputPersonalCountryofBirth.Value = account.countryOfBirth;
+                    inputPersonalNationality.Value = account.nationality;
+                    inputPersonalSex.Value = account.sex;
+                    inputPersonalGender.Value = account.gender;
+                    inputPersonalMartialStatus.Value = account.martialStatus;
+
+                    UpdatePanelPersonal.Update();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Personal Modal", "$('#modalPersonal').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error viewing Personal Information of " + nric + ".');", true);
+                }
+            }
+            if (e.CommandName.Equals("ViewContact"))
+            {
+                string nric = e.CommandArgument.ToString();
+                try
+                {
+                    Classes.Entity.Account account = accountBLL.GetContactInformation(nric);
+                    labelContactNRIC.Text = nric;
+                    inputAddress.Value = account.address;
+                    inputPostalCode.Value = account.addressPostalCode;
+                    inputEmailAddress.Value = account.email;
+                    inputContactNumber.Value = account.contactNumber;
+
+                    UpdatePanelContact.Update();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Contact Modal", "$('#modalContact').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error viewing Contact Information of " + nric + ".');", true);
+                }
+            }
+            if (e.CommandName.Equals("ViewPatient"))
+            {
+                string nric = e.CommandArgument.ToString();
+                try
+                {
+                    Classes.Entity.Account account = accountBLL.GetPatientInformation(nric);
+                    // Just info
+                    labelPatientNRIC.Text = nric;
+                    inputPatientNokName.Value = account.nokName;
+                    inputPatientNokContact.Value = account.nokContact;
+
+                    //Emergency
+                    ViewState["GridViewAccountsSelectedNRIC"] = nric;
+                    string therapistTerm = TextboxSearchTherapist.Text.Trim().ToLower();
+                    Bind_GridViewTherapists(nric, therapistTerm);
+                    Bind_GridViewTherapists2(nric);
+
+                    UpdatePanelPatient.Update();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Patient Modal", "$('#modalPatient').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error viewing Patient Information of " + nric + ".');", true);
+                }
+            }
+
+            if (e.CommandName.Equals("ViewTherapist"))
+            {
+                string nric = e.CommandArgument.ToString();
+                try
+                {
+                    Classes.Entity.Account account = accountBLL.GetTherapistInformation(nric);
+                    labelTherapistNRIC.Text = nric;
+                    inputTherapistJobTitle.Value = account.therapistJobTitle;
+                    inputTherapistDepartment.Value = account.therapistDepartment;
+
+                    UpdatePanelTherapist.Update();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Therapist Modal", "$('#modalTherapist').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error viewing Therapist Information of " + nric + ".');", true);
+                }
+            }
+            if (e.CommandName.Equals("ViewResearcher"))
+            {
+                string nric = e.CommandArgument.ToString();
+                try
+                {
+                    Classes.Entity.Account account = accountBLL.GetResearcherInformation(nric);
+                    labelResearcherNRIC.Text = nric;
+                    inputResearcherJobTitle.Value = account.researcherJobTitle;
+                    inputResearcherDepartment.Value = account.researcherDepartment;
+
+                    UpdatePanelResearcher.Update();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Researcher Modal", "$('#modalResearcher').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error viewing Researcher Information of " + nric + ".');", true);
+                }
+            }
+
+            #region MFA
             if (e.CommandName.Equals("MFATokenIDUpdate"))
             {
                 string[] ca = e.CommandArgument.ToString().Split(';');
@@ -101,6 +203,7 @@ namespace NUSMed_WebApp.Admin.Account
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when setting MFA Device ID of " + nric + ".');", true);
                 }
             }
+            #endregion
 
             #region Status Update
             if (e.CommandName.Equals("StatusDisable"))
@@ -272,19 +375,104 @@ namespace NUSMed_WebApp.Admin.Account
             string term = TextboxSearch.Text.Trim().ToLower();
             Bind_GridViewAccounts(term);
         }
-        #endregion
-
-        protected void ButtonSearch_Click(object sender, EventArgs e)
-        {
-            string term = TextboxSearch.Text.Trim().ToLower();
-            Bind_GridViewAccounts(term);
-        }
-
         protected void GridViewAccounts_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             GridViewAccounts.PageIndex = e.NewPageIndex;
             GridViewAccounts.DataSource = ViewState["GridViewAccounts"];
             GridViewAccounts.DataBind();
         }
+        protected void ButtonSearch_Click(object sender, EventArgs e)
+        {
+            string term = TextboxSearch.Text.Trim().ToLower();
+            Bind_GridViewAccounts(term);
+        }
+        #endregion
+
+        #region GridViewTherapists
+        protected void Bind_GridViewTherapists(string patientNRIC, string term)
+        {
+            List<Classes.Entity.Account> accounts = accountBLL.GetTherapists(patientNRIC, term);
+            ViewState["GridViewTherapists"] = accounts;
+            GridViewTherapists.DataSource = accounts;
+            GridViewTherapists.DataBind();
+        }
+        protected void GridViewTherapists_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName.Equals("AddEmergencyTherapist"))
+            {
+                string patientNRIC = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                try
+                {
+                    string therapistNRIC = e.CommandArgument.ToString();
+
+                    accountBLL.AddEmergencyTherapist(patientNRIC, therapistNRIC);
+                    string therapistTerm = TextboxSearchTherapist.Text.Trim().ToLower();
+                    Bind_GridViewTherapists(patientNRIC, therapistTerm);
+                    Bind_GridViewTherapists2(patientNRIC);
+                    UpdatePanelPatient.Update();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Emergency Therapist," + therapistNRIC + ", has been assigned to " + patientNRIC + ".');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when assigning emergency Therapist to " + patientNRIC + ".');", true);
+                }
+            }
+        }
+        protected void GridViewTherapists_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewTherapists.PageIndex = e.NewPageIndex;
+            GridViewTherapists.DataSource = ViewState["GridViewTherapists"];
+            GridViewTherapists.DataBind();
+            UpdatePanelPatient.Update();
+        }
+        protected void ButtonSearchTherapist_Click(object sender, EventArgs e)
+        {
+            string term = TextboxSearchTherapist.Text.Trim().ToLower();
+            string patientNRIC = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+            Bind_GridViewTherapists(patientNRIC, term);
+        }
+        #endregion
+
+        #region GridViewAllTherapists2
+        protected void Bind_GridViewTherapists2(string nric)
+        {
+            List<Classes.Entity.Account> accounts = accountBLL.GetEmergencyTherapists(nric);
+            ViewState["GridViewTherapists2"] = accounts;
+            GridViewTherapists2.DataSource = accounts;
+            GridViewTherapists2.DataBind();
+        }
+        protected void GridViewTherapists2_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName.Equals("RemoveEmergencyTherapist"))
+            {
+                string patientNRIC = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                try
+                {
+                    string therapistNRIC = e.CommandArgument.ToString();
+
+                    accountBLL.RemoveEmergencyTherapist(therapistNRIC);
+                    string therapistTerm = TextboxSearchTherapist.Text.Trim().ToLower();
+                    Bind_GridViewTherapists(patientNRIC, therapistTerm);
+                    Bind_GridViewTherapists2(patientNRIC);
+                    UpdatePanelPatient.Update();
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Emergency Therapist," + therapistNRIC + ", assigned to " + patientNRIC + " has been removed.');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when removing emergency Therapist assigned to " + patientNRIC + ".');", true);
+                }
+            }
+        }
+        protected void GridViewTherapists2_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewTherapists2.PageIndex = e.NewPageIndex;
+            GridViewTherapists2.DataSource = ViewState["GridViewTherapists2"];
+            GridViewTherapists2.DataBind();
+            UpdatePanelPatient.Update();
+        }
+        #endregion
     }
 }

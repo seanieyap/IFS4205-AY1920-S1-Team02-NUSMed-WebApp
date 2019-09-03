@@ -60,7 +60,7 @@ namespace NUSMed_WebApp
                     }
 
                     // if not cached, cache user
-                    if (HttpContext.Current.Cache[nric] == null || HttpRuntime.Cache.Get(nric).ToString().Equals(guid))
+                    if (HttpContext.Current == null || HttpContext.Current.Cache[nric] == null || HttpRuntime.Cache.Get(nric).ToString().Equals(guid))
                     {
                         HttpRuntime.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(15));
                     }

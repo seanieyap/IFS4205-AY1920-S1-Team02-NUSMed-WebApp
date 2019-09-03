@@ -165,7 +165,7 @@ namespace NUSMed_WebApp
             NOKNameEdit.Attributes.Add("class", "form-control");
             NOKContactEdit.Attributes.Add("class", "form-control");
 
-            Account account = accountBLL.GetPatientDetails(accountBLL.GetNRIC());
+            Account account = accountBLL.GetPatientInformation(accountBLL.GetNRIC());
             NOKNameEdit.Value = account.nokName;
             NOKContactEdit.Value = account.nokContact;
 
@@ -228,7 +228,7 @@ namespace NUSMed_WebApp
             TherapistJobTileEdit.Attributes.Add("class", "form-control");
             TherapistDepartmentEdit.Attributes.Add("class", "form-control");
 
-            Account account = accountBLL.GetTherapistDetails(accountBLL.GetNRIC());
+            Account account = accountBLL.GetTherapistInformation(accountBLL.GetNRIC());
             TherapistJobTileEdit.Value = account.therapistJobTitle;
             TherapistDepartmentEdit.Value = account.therapistDepartment;
 
@@ -291,7 +291,7 @@ namespace NUSMed_WebApp
             ResearcherJobTileEdit.Attributes.Add("class", "form-control");
             ResearcherDepartmentEdit.Attributes.Add("class", "form-control");
 
-            Account account = accountBLL.GetResearcherDetails(accountBLL.GetNRIC());
+            Account account = accountBLL.GetResearcherInformation(accountBLL.GetNRIC());
             ResearcherJobTileEdit.Value = account.researcherJobTitle;
             ResearcherDepartmentEdit.Value = account.researcherDepartment;
 
