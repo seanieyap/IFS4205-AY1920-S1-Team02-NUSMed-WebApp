@@ -568,31 +568,6 @@
                 </div>
             </div>
 
-            <%--TODO--%>
-            <div class="py-3 mx-auto">
-                <h1 class="display-5">Patient Information</h1>
-            </div>
-            <div class="row">
-                <div class="col-12 col-lg-6">
-                    <div class="form-group">
-                        <label for="inputNokName">Name of Next of Kin</label>
-                        <input id="inputNokName" type="text" class="form-control" placeholder="Name of Next of Kin" required="required" runat="server">
-                        <div class="invalid-feedback" runat="server">
-                            Name is invalid.
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-6">
-                    <div class="form-group">
-                        <label for="inputNokContactNumber">Contact Number of Next of Kin <span class="text-muted small">(8-digits)</span></label>
-                        <input id="inputNokContactNumber" type="tel" class="form-control" placeholder="Contact Number of Next of Kin" required="required" runat="server">
-                        <div class="invalid-feedback" runat="server">
-                            Contact Number is invalid.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="py-3 mx-auto">
                 <h1 class="display-5">Authentication <span class="text-muted small">(1FA and MFA)</span></h1>
             </div>

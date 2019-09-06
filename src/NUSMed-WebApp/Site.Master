@@ -49,7 +49,7 @@
                         <img src="/Images/logo.png" alt="NUS" class="border-nus-blue pr-3" style="border-right: 1.5pt solid;">
                     </a>
                     <a href="/">
-                        <img src="/Images/sublogo.png" alt="NUSMed - A NHC Parady" class="pl-3">
+                        <img src="/Images/sublogo.png" alt="NUSMed - A NHC Paroddy" class="pl-3">
                     </a>
                 </div>
             </div>
@@ -193,7 +193,7 @@
                         <p class="my-1">This Web Session has been terminated due to inactivity.</p>
                     </div>
                     <div class="modal-footer">
-                        <a type="button" class="btn btn-secondary mr-auto" data-dismiss="modal" href="~/" runat="server">Return Home</a>
+                        <a type="button" class="btn btn-secondary mr-auto" href="~/" runat="server">Return Home</a>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>

@@ -633,12 +633,12 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.CommandText = @"
                     DELETE FROM patient_diagnosis 
                         WHERE patient_nric = @nric;
-                    DELETE FROM patient_permission 
+                    DELETE FROM patient_emergency
                         WHERE patient_nric = @nric OR therapist_nric = @nric;
-                    DELETE FROM patient_emergency 
+                    DELETE FROM record_type_permission
                         WHERE patient_nric = @nric OR therapist_nric = @nric;
-                    DELETE FROM record_type_permission 
-                        WHERE patient_nric = @nric OR therapist_nric = @nric;
+                    DELETE FROM record
+                        WHERE patient_nric = @nric OR creator_nric = @nric;
 
                     DELETE FROM account_patient 
                         WHERE nric = @nric;
@@ -902,7 +902,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"UPDATE account_patient 
                             SET status = @status
-                            WHERE nric= @nric;";
+                            WHERE nric = @nric;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
                 cmd.Parameters.AddWithValue("@status", 1);
@@ -920,7 +920,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"UPDATE account_therapist 
                             SET status = @status
-                            WHERE nric= @nric;";
+                            WHERE nric = @nric;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
                 cmd.Parameters.AddWithValue("@status", 1);

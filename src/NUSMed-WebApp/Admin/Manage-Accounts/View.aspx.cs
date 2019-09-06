@@ -42,15 +42,15 @@ namespace NUSMed_WebApp.Admin.Account
             }
             #endregion
 
-            try
-            {
+            //try
+            //{
                 accountBLL.DeleteAccount(nric);
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account, \"" + nric + "\", was Deleted successfully');", true);
-            }
-            catch
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Deleting an Account');", true);
-            }
+            //}
+            //catch
+            //{
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Deleting an Account');", true);
+            //}
 
             GridViewAccounts.EditIndex = -1;
 

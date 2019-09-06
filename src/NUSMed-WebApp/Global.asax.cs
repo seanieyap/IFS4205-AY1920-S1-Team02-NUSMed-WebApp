@@ -3,6 +3,7 @@ using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Caching;
@@ -15,6 +16,16 @@ namespace NUSMed_WebApp
 {
     public class Global : HttpApplication
     {
+        protected void Application_BeginRequest()
+        {
+            // Remove insecure protocols (SSL3, TLS 1.0, TLS 1.1)
+            ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Ssl3;
+            ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls;
+            ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls11;
+            // Add TLS 1.2
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+        }
+
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
