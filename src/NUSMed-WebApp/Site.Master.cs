@@ -261,7 +261,7 @@ namespace NUSMed_WebApp
                     //Set the HttpOnly property to prevent the cookie from
                     //being accessed by client side script
                     HttpOnly = true,
-
+                    Domain = FormsAuthentication.CookieDomain,
                     //Add the Anti-XSRF token to the cookie value
                     Value = _antiXsrfTokenValue
                 };
