@@ -70,21 +70,33 @@
 
                     <%-- Patient Links--%>
                     <a id="navLinksPatientDashboard" class="nav-link" href="~/Patient/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
-                    <a id="navLinksPatientTherapist" class="nav-link" href="/Patient/my-therapists" runat="server" visible="false">My Therapists</a>
-                    <a id="navLinksPatientRecords" class="nav-link" href="~/Patient/my-records" runat="server" visible="false">My Records</a>
+                    <a id="navLinksPatientTherapist" class="nav-link" href="/Patient/My-Therapists" runat="server" visible="false"><i class="fas fa-fw fa-user-md"></i>My Therapists</a>
+                    <div id="navLinksPatientsMyRecords" class="nav-item dropdown" runat="server" visible="false">
+                        <a id="navLinksPatientMyRecordsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
+                            <i class="fas fa-fw fa-file-medical"></i>My Records<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
+                        </a>
+                        <div class="dropdown-menu py-0" aria-labelledby="navLinksPatientsMyRecords">
+                            <a id="navLinksPatientMyRecordView" class="dropdown-item" href="~/Patient/My-Records/View" runat="server">View</a>
+                            <a id="navLinksPatientMyRecordNew" class="dropdown-item" href="~/Patient/My-Records/New-Record" runat="server">New Record</a>
+                        </div>
+                    </div>
 
                     <%-- Therapist Links --%>
                     <a id="navLinksTherapistDashboard" class="nav-link" href="~/Therapist/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
-                    <a id="navLinksTherapistPatients" class="nav-link" href="~/Therapist/my-patients" runat="server" visible="false">My Patients</a>
-                    <a id="navLinksTherapistRecords" class="nav-link" href="~/Therapist/view-records" runat="server" visible="false">View Records</a>
+                    <div id="navLinksTherapistMyPatients" class="nav-item dropdown" runat="server" visible="false">
+                        <a id="navLinksTherapistMyPatientsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
+                            <i class="fas fa-fw fa-user-injured"></i>My Patients<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
+                        </a>
+                        <div class="dropdown-menu py-0" aria-labelledby="navLinksPatientsMyRecords">
+                            <a id="navLinksTherapistMyPatientsView" class="dropdown-item" href="~/Therapist/My-Patients/View" runat="server">View</a>
+                            <a id="navLinksTherapistMyPatientsNewRequest" class="dropdown-item" href="~/Therapist/My-Patients/New-Request" runat="server">New Request</a>
+                        </div>
+                    </div>
 
                     <%-- Researcher Links--%>
                     <a id="navLinksResearcherDashboard" class="nav-link" href="~/Researcher/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
-                    <a id="navLinksResearcherData" class="nav-link" href="~/Researcher/data" runat="server" visible="false">Data</a>
-
-                    <%-- Admin Links --%>
-                    <%--                    <a id="navLinksAdminPatients" class="nav-link" href="/admin/manage-accounts" runat="server" visible="false">Manage Accounts</a>
-                    <a id="navLinksAdminRecords" class="nav-link" href="/admin/manage-records" runat="server" visible="false">Manage Records</a>--%>
+                    <a id="navLinksResearcherAggregatedSearch" class="nav-link" href="/Researcher/Aggregated-Search" runat="server" visible="false"><i class="fab fa-fw fa-searchengin"></i>Aggregated Search</a>
+                    <a id="navLinksResearcherRecordSearch" class="nav-link" href="/Researcher/Record-Search" runat="server" visible="false"><i class="fas fa-fw fa-search"></i>Record Search</a>
 
                     <%-- Admin Links --%>
                     <a id="navLinksAdminDashboard" class="nav-link" href="~/Admin/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
@@ -92,7 +104,7 @@
                         <a id="navLinksAdminManageAccountsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
                             <i class="fas fa-fw fa-users-cog"></i>Manage Accounts<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
                         </a>
-                        <div class="dropdown-menu py-0" aria-labelledby="navLinksHome">
+                        <div class="dropdown-menu py-0" aria-labelledby="navLinksAdminManageAccountsDropdown">
                             <a id="navLinksAdminViewAccounts" class="dropdown-item" href="~/Admin/Manage-Accounts/View" runat="server">View Accounts</a>
                             <a id="navLinksAdminAccountRegistration" class="dropdown-item" href="~/Admin/Manage-Accounts/Register" runat="server">Register Account</a>
                         </div>
@@ -120,8 +132,9 @@
                                 <i class="fas fa-fw fa-user-tag"></i>Role: <b>
                                     <asp:Label ID="LabelRole" runat="server"></asp:Label></b>
                             </p>
-                            <a id="navLinksAccountProfile" class="dropdown-item" href="/My-Profile" runat="server"><i class="fas fa-fw fa-id-card"></i>My Profile</a>
-                            <button id="navLinksSiwtchRole" type="button" class="dropdown-item" runat="server" onserverclick="buttonSwitchRole_ServerClick"><i class="fas fa-exchange-alt fa-fw"></i>Switch Role</button>
+                            <a id="navLinksAccountProfile" class="dropdown-item" href="~\My-Account/My-Profile" runat="server"><i class="fas fa-fw fa-id-card"></i>My Profile</a>
+                            <a id="navLinksAccountChangePassword" class="dropdown-item" href="~\My-Account/Change-Password" runat="server"><i class="fas fa-fw fa-key"></i>Change Password</a>
+                            <button id="navLinksSwitchRole" type="button" class="dropdown-item" runat="server" onserverclick="buttonSwitchRole_ServerClick"><i class="fas fa-exchange-alt fa-fw"></i>Switch Role</button>
                             <button type="button" class="dropdown-item" runat="server" onserverclick="ButtonLogout_ServerClick"><i class="fas fa-sign-out-alt fa-fw"></i>Logout</button>
                         </div>
                     </div>

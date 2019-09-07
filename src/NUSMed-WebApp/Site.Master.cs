@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -23,20 +24,26 @@ namespace NUSMed_WebApp
             {
                 if (accountBLL.IsMultiple())
                 {
-                    navLinksSiwtchRole.Visible = false;
+                    navLinksSwitchRole.Visible = false;
                     navLinksAccountProfile.Visible = false;
+                    navLinksAccountChangePassword.Visible = false;
                 }
                 else if (accountBLL.IsPatient())
                 {
                     navLinksPatientDashboard.Visible = true;
+                    navLinksPatientTherapist.Visible = true;
+                    navLinksPatientsMyRecords.Visible = true;
                 }
                 else if (accountBLL.IsTherapist())
                 {
                     navLinksTherapistDashboard.Visible = true;
+                    navLinksTherapistMyPatients.Visible = true;
                 }
                 else if (accountBLL.IsResearcher())
                 {
                     navLinksResearcherDashboard.Visible = true;
+                    navLinksResearcherAggregatedSearch.Visible = true;
+                    navLinksResearcherRecordSearch.Visible = true;
                 }
                 else if (accountBLL.IsAdministrator())
                 {
@@ -81,15 +88,36 @@ namespace NUSMed_WebApp
         }
 
         #region UI
+        #region My Account
         public void LiActiveMyProfile()
         {
             navLinksAccountProfile.Attributes.Add("class", "dropdown-item active");
         }
-
+        public void LiActiveChangePassword()
+        {
+            navLinksAccountChangePassword.Attributes.Add("class", "dropdown-item active");
+        }
+        #endregion
         #region Patient
         public void LiActivePatientDashboard()
         {
             navLinksPatientDashboard.Attributes.Add("class", "nav-link active");
+        }
+        public void LiActivePatientMyTherapists()
+        {
+            navLinksPatientTherapist.Attributes.Add("class", "nav-link active");
+        }
+        public void LiActivePatientMyRecords()
+        {
+            navLinksPatientMyRecordsDropdown.Attributes.Add("class", "nav-link active");
+        }
+        public void LiActivePatientMyRecordView()
+        {
+            navLinksPatientMyRecordView.Attributes.Add("class", "dropdown-item active");
+        }
+        public void LiActivePatientMyRecordNew()
+        {
+            navLinksPatientMyRecordNew.Attributes.Add("class", "dropdown-item active");
         }
         #endregion
         #region Therapist
@@ -97,9 +125,29 @@ namespace NUSMed_WebApp
         {
             navLinksTherapistDashboard.Attributes.Add("class", "nav-link active");
         }
+        public void LiActiveTherapistMyPatients()
+        {
+            navLinksTherapistMyPatientsDropdown.Attributes.Add("class", "nav-link active");
+        }
+        public void LiActiveTherapistMyPatientsView()
+        {
+            navLinksTherapistMyPatientsView.Attributes.Add("class", "dropdown-item active");
+        }
+        public void LiActiveTherapistMyPatientsNewRequest()
+        {
+            navLinksTherapistMyPatientsNewRequest.Attributes.Add("class", "dropdown-item active");
+        }
         #endregion
         #region Researcher
-        public void LiActiveResearchertDashboard()
+        public void LiActiveResearcherDashboard()
+        {
+            navLinksResearcherDashboard.Attributes.Add("class", "nav-link active");
+        }
+        public void LiActiveResearcherAggregatedSearch()
+        {
+            navLinksResearcherDashboard.Attributes.Add("class", "nav-link active");
+        }
+        public void LiActiveResearcherRecordSearch()
         {
             navLinksResearcherDashboard.Attributes.Add("class", "nav-link active");
         }
@@ -135,6 +183,7 @@ namespace NUSMed_WebApp
         }
         #endregion
         #endregion
+
         protected void ButtonLogout_ServerClick(object sender, EventArgs e)
         {
             new AccountBLL().Logout();
@@ -142,7 +191,7 @@ namespace NUSMed_WebApp
             // Set session for toastr notification
             Session["toastr"] = "logout";
 
-            Response.Redirect("/");
+            FormsAuthentication.RedirectToLoginPage();
         }
 
         protected void buttonSwitchRole_ServerClick(object sender, EventArgs e)

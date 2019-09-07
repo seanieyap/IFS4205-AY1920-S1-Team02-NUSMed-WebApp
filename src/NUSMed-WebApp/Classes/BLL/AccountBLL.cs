@@ -10,6 +10,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Security;
 
 namespace NUSMed_WebApp.Classes.BLL
@@ -44,7 +45,7 @@ namespace NUSMed_WebApp.Classes.BLL
             //cookie.Domain = "";
             // SEAN TODO
 
-            HttpContext.Current.Cache.Insert(nric, guid, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(HttpContext.Current.Session.Timeout));
+            HttpContext.Current.Cache.Insert(nric, guid, null, DateTime.Now.AddMinutes(HttpContext.Current.Session.Timeout), Cache.NoSlidingExpiration);
             HttpContext.Current.Response.Cookies.Add(cookie);
 
             new AccountLogDAL().Insert(nric, nric, "Log in using role, " + role + ".", "Nil");
@@ -149,7 +150,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return false;
         }
-
         public List<Account> GetAllAccounts(string term)
         {
             if (IsAdministrator())
@@ -224,6 +224,17 @@ namespace NUSMed_WebApp.Classes.BLL
             if (IsAdministrator())
                 accountDAL.DeleteEmergencyTherapist(therapistNRIC);
         }
+        public void ChangePassword(string password)
+        {
+            if (!IsAuthenticated())
+                return;
+
+            string nric = GetNRIC();
+            HashSalt hashSalt = GenerateSaltedHash(password);
+
+            accountDAL.UpdatePassword(nric, hashSalt.Hash, hashSalt.Salt);
+        }
+
         #endregion
 
         #region Requires Admin Account
@@ -365,7 +376,6 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             accountDAL.Update1FALogin(nric, DateTime.Now.AddSeconds(-1));
         }
-
         public bool IsRegistered(string nric)
         {
             if (IsAdministrator())
@@ -383,15 +393,20 @@ namespace NUSMed_WebApp.Classes.BLL
             accountDAL.UpdatePatientDetails(GetNRIC(), nokName, nokContact);
             return;
         }
-        public void UpdateTherapistDetails(string jobTitle, string department)
+        public void UpdateTherapistDetails(string nric, string jobTitle, string department)
         {
-            accountDAL.UpdateTherapistDetails(GetNRIC(), jobTitle, department);
-            return;
+            if (!IsAdministrator())
+                return;
+
+            accountDAL.UpdateTherapistDetails(nric, jobTitle, department);
         }
-        public void UpdateResearcherDetails(string jobTitle, string department)
+
+        public void UpdateResearcherDetails(string nric, string jobTitle, string department)
         {
-            accountDAL.UpdateResearcherDetails(GetNRIC(), jobTitle, department);
-            return;
+            if (!IsAdministrator())
+                return;
+
+            accountDAL.UpdateResearcherDetails(nric, jobTitle, department);
         }
 
         //public bool UpdateAccount(string oldUserID, string userID, string domain, string designation, string name, bool active)

@@ -7,11 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace NUSMed_WebApp.Researcher
 {
-    public partial class Aggregated_Search : System.Web.UI.Page
+    public partial class Aggregated_Search : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Master.LiActiveResearcherAggregatedSearch();
         }
     }
 }

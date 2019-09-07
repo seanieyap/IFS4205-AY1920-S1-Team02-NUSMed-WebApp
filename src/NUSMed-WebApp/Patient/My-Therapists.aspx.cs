@@ -5,14 +5,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace NUSMed_WebApp.Researcher
+namespace NUSMed_WebApp.Patient
 {
-    public partial class Record_Search : Page
+    public partial class My_Therapists : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Master.LiActiveResearcherRecordSearch();
-
+            Master.LiActivePatientMyTherapists();
         }
     }
 }

@@ -632,16 +632,11 @@
                                         </EmptyDataTemplate>
                                     </asp:GridView>
                                 </div>
-
-                            </div>
-
-                            <div>
-                                <%--                                                                    <p class="text-center text-muted">Note: Search is set to return maximum results of 50.</p>--%>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit Patient information.</p>
+                        <p class="text-info mb-0 mx-auto text-center"><i class="fas fa-fw fa-info-circle"></i>Once the patient has been assigned an Emergency Therapist, the therapist requires physical approval via token scan to receive full permissions and access to patient.</p>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -670,20 +665,22 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Job Title</label>
-                                        <input id="inputTherapistJobTitle" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputTherapistJobTitle" type="text" class="form-control" runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Department</label>
-                                        <input id="inputTherapistDepartment" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputTherapistDepartment" type="text" class="form-control" runat="server">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit Therapist information.</p>
+                        <button id="buttonTherapistUpdate" type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonTherapistUpdate_ServerClick"><i class="fas fa-fw fa-edit"></i>Update</button>
+                        <span id="spanMessageTherapistDetailsUpdate" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>There are errors in the form.</span>
+                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -712,20 +709,22 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Job Title</label>
-                                        <input id="inputResearcherJobTitle" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputResearcherJobTitle" type="text" class="form-control" runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Department</label>
-                                        <input id="inputResearcherDepartment" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputResearcherDepartment" type="text" class="form-control" runat="server">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit Researcher information.</p>
+                        <button id="buttonResearcherUpdate" type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonResearcherUpdate_ServerClick"><i class="fas fa-fw fa-edit"></i>Update</button>
+                        <span id="spanMessageResearcherUpdate" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>There are errors in the form.</span>
+                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

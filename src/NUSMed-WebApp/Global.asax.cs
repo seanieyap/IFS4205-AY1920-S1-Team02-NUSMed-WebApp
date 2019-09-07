@@ -71,12 +71,16 @@ namespace NUSMed_WebApp
                     }
 
                     // if not cached, cache user
-                    if (HttpContext.Current == null || HttpContext.Current.Cache[nric] == null || HttpRuntime.Cache.Get(nric).ToString().Equals(guid))
+                    if (HttpContext.Current == null || HttpContext.Current.Cache[nric] == null)
                     {
                         HttpRuntime.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(15));
                     }
-                    else
+                    else if (!HttpRuntime.Cache.Get(nric).ToString().Equals(guid))
                     {
+
+                    //}
+                    //else
+                    //{
                         // Cache does not match, hence multiple logins detected
                         FormsAuthentication.SignOut();
                         FormsAuthentication.RedirectToLoginPage("multiple-logins=true");

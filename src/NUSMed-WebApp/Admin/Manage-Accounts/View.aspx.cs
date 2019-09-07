@@ -1,6 +1,7 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -42,15 +43,15 @@ namespace NUSMed_WebApp.Admin.Account
             }
             #endregion
 
-            //try
-            //{
+            try
+            {
                 accountBLL.DeleteAccount(nric);
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account, \"" + nric + "\", was Deleted successfully');", true);
-            //}
-            //catch
-            //{
-            //    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Deleting an Account');", true);
-            //}
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Deleting an Account');", true);
+            }
 
             GridViewAccounts.EditIndex = -1;
 
@@ -136,12 +137,11 @@ namespace NUSMed_WebApp.Admin.Account
                 string nric = e.CommandArgument.ToString();
                 try
                 {
-                    Classes.Entity.Account account = accountBLL.GetTherapistInformation(nric);
-                    labelTherapistNRIC.Text = nric;
-                    inputTherapistJobTitle.Value = account.therapistJobTitle;
-                    inputTherapistDepartment.Value = account.therapistDepartment;
-
-                    UpdatePanelTherapist.Update();
+                    ViewState["GridViewAccountsSelectedNRIC"] = nric;
+                    inputTherapistJobTitle.Attributes.Add("class", "form-control");
+                    inputTherapistDepartment.Attributes.Add("class", "form-control");
+                    spanMessageTherapistDetailsUpdate.Visible = false;
+                    RefreshTherapistModal(nric);
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open Therapist Modal", "$('#modalTherapist').modal('show');", true);
                 }
                 catch
@@ -154,12 +154,11 @@ namespace NUSMed_WebApp.Admin.Account
                 string nric = e.CommandArgument.ToString();
                 try
                 {
-                    Classes.Entity.Account account = accountBLL.GetResearcherInformation(nric);
-                    labelResearcherNRIC.Text = nric;
-                    inputResearcherJobTitle.Value = account.researcherJobTitle;
-                    inputResearcherDepartment.Value = account.researcherDepartment;
-
-                    UpdatePanelResearcher.Update();
+                    ViewState["GridViewAccountsSelectedNRIC"] = nric;
+                    inputResearcherJobTitle.Attributes.Add("class", "form-control");
+                    inputResearcherDepartment.Attributes.Add("class", "form-control");
+                    spanMessageResearcherUpdate.Visible = false;
+                    RefreshResearcherModal(nric);
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open Researcher Modal", "$('#modalResearcher').modal('show');", true);
                 }
                 catch
@@ -474,5 +473,118 @@ namespace NUSMed_WebApp.Admin.Account
             UpdatePanelPatient.Update();
         }
         #endregion
+
+        protected void buttonTherapistUpdate_ServerClick(object sender, EventArgs e)
+        {
+            string jobTitle = inputTherapistJobTitle.Value.Trim();
+            string department = inputTherapistDepartment.Value.Trim();
+
+            #region Validation
+            bool[] validate = Enumerable.Repeat(true, 2).ToArray();
+
+            // If any fields are empty
+            if (string.IsNullOrEmpty(jobTitle))
+            {
+                validate[0] = false;
+                inputTherapistJobTitle.Attributes.Add("class", "form-control is-invalid");
+            }
+            else
+                inputTherapistJobTitle.Attributes.Add("class", "form-control is-valid");
+
+            if (string.IsNullOrEmpty(department))
+            {
+                validate[1] = false;
+                inputTherapistDepartment.Attributes.Add("class", "form-control is-invalid");
+            }
+            else
+                inputTherapistDepartment.Attributes.Add("class", "form-control is-valid");
+            #endregion
+
+            if (validate.Contains(false))
+            {
+                spanMessageTherapistDetailsUpdate.Visible = true;
+            }
+            else
+            {
+                spanMessageTherapistDetailsUpdate.Visible = false;
+
+                try
+                {
+                    string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+                    accountBLL.UpdateTherapistDetails(nric, jobTitle, department);
+                    RefreshTherapistModal(nric);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Therapist Details were successfully Updated');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Updating Therapist Details');", true);
+                }
+            }
+        }
+        protected void buttonResearcherUpdate_ServerClick(object sender, EventArgs e)
+        {
+            string jobTitle = inputResearcherJobTitle.Value.Trim();
+            string department = inputResearcherDepartment.Value.Trim();
+
+            #region Validation
+            bool[] validate = Enumerable.Repeat(true, 2).ToArray();
+
+            // If any fields are empty
+            if (string.IsNullOrEmpty(jobTitle))
+            {
+                validate[0] = false;
+                inputResearcherJobTitle.Attributes.Add("class", "form-control is-invalid");
+            }
+            else
+                inputResearcherJobTitle.Attributes.Add("class", "form-control is-valid");
+
+            if (string.IsNullOrEmpty(department))
+            {
+                validate[1] = false;
+                inputResearcherDepartment.Attributes.Add("class", "form-control is-invalid");
+            }
+            else
+                inputResearcherDepartment.Attributes.Add("class", "form-control is-valid");
+            #endregion
+
+            if (validate.Contains(false))
+            {
+                spanMessageResearcherUpdate.Visible = true;
+            }
+            else
+            {
+                spanMessageResearcherUpdate.Visible = false;
+
+                try
+                {
+                    string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+                    accountBLL.UpdateResearcherDetails(nric, jobTitle, department);
+                    RefreshResearcherModal(nric);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Researcher Details were successfully Updated');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Updating Researcher Details');", true);
+                }
+            }
+        }
+        private void RefreshTherapistModal(string nric)
+        {
+            Classes.Entity.Account account = accountBLL.GetTherapistInformation(nric);
+            labelTherapistNRIC.Text = nric;
+            inputTherapistJobTitle.Value = account.therapistJobTitle;
+            inputTherapistDepartment.Value = account.therapistDepartment;
+
+            UpdatePanelTherapist.Update();
+        }
+        private void RefreshResearcherModal(string nric)
+        {
+            Classes.Entity.Account account = accountBLL.GetResearcherInformation(nric);
+            labelResearcherNRIC.Text = nric;
+            inputResearcherJobTitle.Value = account.researcherJobTitle;
+            inputResearcherDepartment.Value = account.researcherDepartment;
+
+            UpdatePanelResearcher.Update();
+        }
     }
 }

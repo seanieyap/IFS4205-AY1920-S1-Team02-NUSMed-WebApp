@@ -319,6 +319,24 @@ namespace NUSMed_WebApp.Admin.Account {
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputTherapistDepartment;
         
         /// <summary>
+        /// buttonTherapistUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonTherapistUpdate;
+        
+        /// <summary>
+        /// spanMessageTherapistDetailsUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanMessageTherapistDetailsUpdate;
+        
+        /// <summary>
         /// UpdatePanelResearcher control.
         /// </summary>
         /// <remarks>
@@ -353,6 +371,24 @@ namespace NUSMed_WebApp.Admin.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputResearcherDepartment;
+        
+        /// <summary>
+        /// buttonResearcherUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonResearcherUpdate;
+        
+        /// <summary>
+        /// spanMessageResearcherUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanMessageResearcherUpdate;
         
         /// <summary>
         /// Master property.

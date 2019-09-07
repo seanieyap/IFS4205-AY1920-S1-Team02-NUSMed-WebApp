@@ -759,6 +759,26 @@ namespace NUSMed_WebApp.Classes.DAL
         #endregion
 
         #region Updates
+        public void UpdatePassword(string nric, string hash, string salt)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"UPDATE account 
+                            SET salt = @salt, hash = @hash
+                            WHERE nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+                cmd.Parameters.AddWithValue("@salt", salt);
+                cmd.Parameters.AddWithValue("@hash", hash);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void UpdateContactDetails(string nric, string address, string addressPostalCode, string email, string contactNumber)
         {
             using (MySqlCommand cmd = new MySqlCommand())

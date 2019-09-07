@@ -7,7 +7,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
     <div class="container">
         <div class="py-5 mx-auto text-center">
-            <h1 class="display-4"><i class="fas fa-fw fa-users"></i>My Profile</h1>
+            <h1 class="display-4"><i class="fas fa-fw fa-id-card"></i>My Profile</h1>
             <p class="lead mb-1">View and Update your all your Information here !</p>
         </div>
     </div>
@@ -18,7 +18,6 @@
             <h2 class="mb-3 pb-2 border-bottom">Personal Details
                 <button type="button" class="btn btn-sm btn-secondary float-right disabled" data-toggle="tooltip" title="May not be edited" runat="server"><i class="fas fa-fw fa-edit"></i>Edit</button>
             </h2>
-
             <div class="row text-left mb-3">
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
@@ -153,7 +152,7 @@
 
             <%-- Therapist Details --%>
             <h2 id="HeaderTherapist" class="mt-5 mb-3 pb-2 border-bottom" runat="server" visible="false">Therapist Details
-                <button id="buttonTherapistDetailsEdit" type="button" class="btn btn-sm btn-warning float-right" runat="server" onserverclick="buttonTherapistDetailsEdit_ServerClick"><i class="fas fa-fw fa-edit"></i>Edit</button>
+                <button type="button" class="btn btn-sm btn-secondary float-right disabled" data-toggle="tooltip" title="May not be edited" runat="server"><i class="fas fa-fw fa-edit"></i>Edit</button>
             </h2>
             <div id="DivTherapist" class="row text-left" runat="server" visible="false">
                 <div class="col-12 col-lg-6">
@@ -172,7 +171,7 @@
 
             <%-- Researcher Details --%>
             <h2 id="HeaderResearcher" class="mt-5 mb-3 pb-2 border-bottom" runat="server" visible="false">Researcher Details
-                <button id="buttonResearcherDetailsEdit" type="button" class="btn btn-sm btn-warning float-right" runat="server" onserverclick="buttonResearcherDetailsEdit_ServerClick"><i class="fas fa-fw fa-edit"></i>Edit</button>
+                <button type="button" class="btn btn-sm btn-secondary float-right disabled" data-toggle="tooltip" title="May not be edited" runat="server"><i class="fas fa-fw fa-edit"></i>Edit</button>
             </h2>
             <div id="DivResearcher" class="row text-left" runat="server" visible="false">
                 <div class="col-12 col-lg-6">
@@ -316,7 +315,7 @@
         </div>
     </div>
 
-    <div id="modalTherapistDetails" class="modal" tabindex="-1" role="dialog">
+<%--    <div id="modalTherapistDetails" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelTherapistDetails" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -349,9 +348,7 @@
                         </div>
                     </div>
                     <div class="modal-footer text-left">
-                        <button type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonTherapistDetailsUpdate_ServerClick"><i class="fas fa-fw fa-edit"></i>Update</button>
-                        <span id="spanMessageTherapistDetailsUpdate" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>There are errors in the form.</span>
-                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit Contact information.</p>
                     </div>
                 </ContentTemplate>
                 <Triggers>
@@ -399,9 +396,7 @@
                         </div>
                     </div>
                     <div class="modal-footer text-left">
-                        <button type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonResearcherDetailsUpdate_ServerClick"><i class="fas fa-fw fa-edit"></i>Update</button>
-                        <span id="spanMessageResearcherDetailsUpdate" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>There are errors in the form.</span>
-                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit Contact information.</p>
                     </div>
                 </ContentTemplate>
                 <Triggers>
@@ -414,7 +409,7 @@
                 </ProgressTemplate>
             </asp:UpdateProgress>
         </div>
-    </div>
+    </div>--%>
 </asp:Content>
 
 <asp:Content ID="FooterContent" ContentPlaceHolderID="FooterContent" runat="server">

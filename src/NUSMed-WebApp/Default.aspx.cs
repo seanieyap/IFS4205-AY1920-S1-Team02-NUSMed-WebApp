@@ -49,7 +49,6 @@ namespace NUSMed_WebApp
                 multipleLoginsModal.Visible = true;
                 ScriptManager.RegisterStartupScript(this, GetType(), "Multiple logins detected", "$('#multipleLoginsModal').modal('show');", true);
             }
-
         }
 
         protected void ButtonLogin_ServerClick(object sender, EventArgs e)

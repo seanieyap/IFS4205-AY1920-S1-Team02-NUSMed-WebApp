@@ -144,8 +144,12 @@
     <Content Include="Contact.aspx" />
     <Content Include="Content\loading.css" />
     <Content Include="Images\logo-white.png" />
-    <Content Include="My-Profile.aspx" />
+    <Content Include="My-Account\Change-Password.aspx" />
+    <Content Include="My-Account\My-Profile.aspx" />
     <Content Include="Patient\Dashboard.aspx" />
+    <Content Include="Patient\My-Records\New-Record.aspx" />
+    <Content Include="Patient\My-Records\View.aspx" />
+    <Content Include="Patient\My-Therapists.aspx" />
     <Content Include="Researcher\Aggregated-Search.aspx" />
     <Content Include="Researcher\Dashboard.aspx" />
     <Content Include="Researcher\Record-Search.aspx" />
@@ -270,6 +274,8 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
     <Content Include="Therapist\Dashboard.aspx" />
+    <Content Include="Therapist\My-Patients\New-Request.aspx" />
+    <Content Include="Therapist\My-Patients\View.aspx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -393,11 +399,18 @@
     <Compile Include="Errors\404.aspx.designer.cs">
       <DependentUpon>404.aspx</DependentUpon>
     </Compile>
-    <Compile Include="My-Profile.aspx.cs">
+    <Compile Include="My-Account\Change-Password.aspx.cs">
+      <DependentUpon>Change-Password.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My-Account\Change-Password.aspx.designer.cs">
+      <DependentUpon>Change-Password.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="My-Account\My-Profile.aspx.cs">
       <DependentUpon>My-Profile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="My-Profile.aspx.designer.cs">
+    <Compile Include="My-Account\My-Profile.aspx.designer.cs">
       <DependentUpon>My-Profile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Patient\Dashboard.aspx.cs">
@@ -406,6 +419,27 @@
     </Compile>
     <Compile Include="Patient\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Patient\My-Records\New-Record.aspx.cs">
+      <DependentUpon>New-Record.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Patient\My-Records\New-Record.aspx.designer.cs">
+      <DependentUpon>New-Record.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Patient\My-Records\View.aspx.cs">
+      <DependentUpon>View.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Patient\My-Records\View.aspx.designer.cs">
+      <DependentUpon>View.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Patient\My-Therapists.aspx.cs">
+      <DependentUpon>My-Therapists.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Patient\My-Therapists.aspx.designer.cs">
+      <DependentUpon>My-Therapists.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Researcher\Aggregated-Search.aspx.cs">
@@ -449,6 +483,20 @@
     </Compile>
     <Compile Include="Therapist\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Therapist\My-Patients\New-Request.aspx.cs">
+      <DependentUpon>New-Request.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Therapist\My-Patients\New-Request.aspx.designer.cs">
+      <DependentUpon>New-Request.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Therapist\My-Patients\View.aspx.cs">
+      <DependentUpon>View.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Therapist\My-Patients\View.aspx.designer.cs">
+      <DependentUpon>View.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

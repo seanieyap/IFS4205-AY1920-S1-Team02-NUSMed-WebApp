@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NUSMed_WebApp.Researcher {
+namespace NUSMed_WebApp.Therapist.My_Patients {
     
     
-    public partial class Aggregated_Search {
+    public partial class New_Request {
         
         /// <summary>
         /// Master property.

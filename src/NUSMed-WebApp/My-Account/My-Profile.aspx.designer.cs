@@ -229,15 +229,6 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl HeaderTherapist;
         
         /// <summary>
-        /// buttonTherapistDetailsEdit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton buttonTherapistDetailsEdit;
-        
-        /// <summary>
         /// DivTherapist control.
         /// </summary>
         /// <remarks>
@@ -272,15 +263,6 @@ namespace NUSMed_WebApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl HeaderResearcher;
-        
-        /// <summary>
-        /// buttonResearcherDetailsEdit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton buttonResearcherDetailsEdit;
         
         /// <summary>
         /// DivResearcher control.
@@ -407,78 +389,6 @@ namespace NUSMed_WebApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanMessagePatientDetailsUpdate;
-        
-        /// <summary>
-        /// UpdatePanelTherapistDetails control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanelTherapistDetails;
-        
-        /// <summary>
-        /// TherapistJobTileEdit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText TherapistJobTileEdit;
-        
-        /// <summary>
-        /// TherapistDepartmentEdit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText TherapistDepartmentEdit;
-        
-        /// <summary>
-        /// spanMessageTherapistDetailsUpdate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanMessageTherapistDetailsUpdate;
-        
-        /// <summary>
-        /// UpdatePanelResearcherDetails control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanelResearcherDetails;
-        
-        /// <summary>
-        /// ResearcherJobTileEdit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText ResearcherJobTileEdit;
-        
-        /// <summary>
-        /// ResearcherDepartmentEdit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText ResearcherDepartmentEdit;
-        
-        /// <summary>
-        /// spanMessageResearcherDetailsUpdate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanMessageResearcherDetailsUpdate;
         
         /// <summary>
         /// Master property.
