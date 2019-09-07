@@ -42,7 +42,7 @@ namespace NUSMed_WebApp.Classes.BLL
             HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(formsAuthenticationTicket));
             cookie.HttpOnly = true;
             cookie.Secure = FormsAuthentication.RequireSSL;
-            //cookie.Domain = "";
+            cookie.Domain = FormsAuthentication.CookieDomain;
             // SEAN TODO
 
             HttpContext.Current.Cache.Insert(nric, guid, null, DateTime.Now.AddMinutes(HttpContext.Current.Session.Timeout), Cache.NoSlidingExpiration);
