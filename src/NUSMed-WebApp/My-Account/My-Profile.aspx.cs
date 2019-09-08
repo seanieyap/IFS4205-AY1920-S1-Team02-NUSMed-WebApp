@@ -23,7 +23,7 @@ namespace NUSMed_WebApp
         }
         private void UpdatePanelMyProfile_Bind()
         {
-            Account account = accountBLL.GetAccount(accountBLL.GetNRIC());
+            Account account = accountBLL.GetAccount(AccountBLL.GetNRIC());
 
             // Personal Details
             nric.Value = account.nric;
@@ -47,14 +47,14 @@ namespace NUSMed_WebApp
             LastFullLogin.Value = account.lastFullLogin.ToString();
             Registration.Value = account.createTime.ToString();
 
-            if (accountBLL.IsPatient())
+            if (AccountBLL.IsPatient())
             {
                 NOKName.Value = account.nokName;
                 NOKContact.Value = account.nokContact;
                 HeaderPatient.Visible = true;
                 DivPatient.Visible = true;
             }
-            else if (accountBLL.IsTherapist())
+            else if (AccountBLL.IsTherapist())
             {
                 // Therapist Details
                 TherapistJobTile.Value = account.therapistJobTitle;
@@ -62,7 +62,7 @@ namespace NUSMed_WebApp
                 HeaderTherapist.Visible = true;
                 DivTherapist.Visible = true;
             }
-            else if (accountBLL.IsResearcher())
+            else if (AccountBLL.IsResearcher())
             {
                 // Therapist Details
                 ResearcherJobTitle.Value = account.researcherJobTitle;
@@ -83,7 +83,7 @@ namespace NUSMed_WebApp
             EmailAddressEdit.Attributes.Add("class", "form-control");
             ContactNumberEdit.Attributes.Add("class", "form-control");
 
-            Account account = accountBLL.GetAccount(accountBLL.GetNRIC());
+            Account account = accountBLL.GetAccount(AccountBLL.GetNRIC());
             AddressEdit.Value = account.address;
             PostalCodeEdit.Value = account.addressPostalCode;
             EmailAddressEdit.Value = account.email;
@@ -165,7 +165,7 @@ namespace NUSMed_WebApp
             NOKNameEdit.Attributes.Add("class", "form-control");
             NOKContactEdit.Attributes.Add("class", "form-control");
 
-            Account account = accountBLL.GetPatientInformation(accountBLL.GetNRIC());
+            Account account = accountBLL.GetPatientInformation(AccountBLL.GetNRIC());
             NOKNameEdit.Value = account.nokName;
             NOKContactEdit.Value = account.nokContact;
 

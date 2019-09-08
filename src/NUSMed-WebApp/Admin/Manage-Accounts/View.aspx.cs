@@ -35,14 +35,6 @@ namespace NUSMed_WebApp.Admin.Account
         {
             string nric = GridViewAccounts.DataKeys[e.RowIndex].Values["nric"].ToString();
 
-            #region Validation
-            if (string.Equals(nric, accountBLL.GetNRIC()))
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Unable to Delete the current Account \"" + nric + "\".')", true);
-                return;
-            }
-            #endregion
-
             try
             {
                 accountBLL.DeleteAccount(nric);
@@ -410,7 +402,7 @@ namespace NUSMed_WebApp.Admin.Account
                     Bind_GridViewTherapists(patientNRIC, therapistTerm);
                     Bind_GridViewTherapists2(patientNRIC);
                     UpdatePanelPatient.Update();
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Emergency Therapist," + therapistNRIC + ", has been assigned to " + patientNRIC + ".');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Emergency Therapist, " + therapistNRIC + ", has been assigned to " + patientNRIC + ".');", true);
                 }
                 catch
                 {
@@ -451,7 +443,7 @@ namespace NUSMed_WebApp.Admin.Account
                 {
                     string therapistNRIC = e.CommandArgument.ToString();
 
-                    accountBLL.RemoveEmergencyTherapist(therapistNRIC);
+                    accountBLL.RemoveEmergencyTherapist(patientNRIC, therapistNRIC);
                     string therapistTerm = TextboxSearchTherapist.Text.Trim().ToLower();
                     Bind_GridViewTherapists(patientNRIC, therapistTerm);
                     Bind_GridViewTherapists2(patientNRIC);
@@ -479,7 +471,8 @@ namespace NUSMed_WebApp.Admin.Account
             string jobTitle = inputTherapistJobTitle.Value.Trim();
             string department = inputTherapistDepartment.Value.Trim();
 
-            #region Validation
+            #region Validation            
+
             bool[] validate = Enumerable.Repeat(true, 2).ToArray();
 
             // If any fields are empty

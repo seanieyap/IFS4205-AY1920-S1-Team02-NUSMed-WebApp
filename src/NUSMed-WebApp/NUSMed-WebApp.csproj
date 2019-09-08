@@ -361,6 +361,7 @@
     <Compile Include="Classes\DAL\RecordLogDAL.cs" />
     <Compile Include="Classes\Entity\Account.cs" />
     <Compile Include="Classes\Entity\Record.cs" />
+    <Compile Include="Classes\Entity\RecordType.cs" />
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

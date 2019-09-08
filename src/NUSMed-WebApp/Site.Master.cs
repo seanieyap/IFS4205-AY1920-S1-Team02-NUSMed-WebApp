@@ -19,33 +19,32 @@ namespace NUSMed_WebApp
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            AccountBLL accountBLL = new AccountBLL();
-            if (accountBLL.IsAuthenticated())
+            if (AccountBLL.IsAuthenticated())
             {
-                if (accountBLL.IsMultiple())
+                if (AccountBLL.IsMultiple())
                 {
                     navLinksSwitchRole.Visible = false;
                     navLinksAccountProfile.Visible = false;
                     navLinksAccountChangePassword.Visible = false;
                 }
-                else if (accountBLL.IsPatient())
+                else if (AccountBLL.IsPatient())
                 {
                     navLinksPatientDashboard.Visible = true;
                     navLinksPatientTherapist.Visible = true;
                     navLinksPatientsMyRecords.Visible = true;
                 }
-                else if (accountBLL.IsTherapist())
+                else if (AccountBLL.IsTherapist())
                 {
                     navLinksTherapistDashboard.Visible = true;
                     navLinksTherapistMyPatients.Visible = true;
                 }
-                else if (accountBLL.IsResearcher())
+                else if (AccountBLL.IsResearcher())
                 {
                     navLinksResearcherDashboard.Visible = true;
                     navLinksResearcherAggregatedSearch.Visible = true;
                     navLinksResearcherRecordSearch.Visible = true;
                 }
-                else if (accountBLL.IsAdministrator())
+                else if (AccountBLL.IsAdministrator())
                 {
                     navLinksAdminDashboard.Visible = true;
                     navLinksAdminManageAccounts.Visible = true;
@@ -53,15 +52,15 @@ namespace NUSMed_WebApp
                 }
 
                 navLinksAccount.Visible = true;
-                LabelNRIC.Text = new AccountBLL().GetNRIC();
-                LabelRole.Text = new AccountBLL().GetRole();
+                LabelNRIC.Text = AccountBLL.GetNRIC();
+                LabelRole.Text = AccountBLL.GetRole();
 
                 // Timeout Timer
                 sessionWarningModal.Visible = true;
                 sessionTimeoutModal.Visible = true;
                 ScriptManager.RegisterStartupScript(this, GetType(), "timer",
-                    @"setTimeout(function() {$('.modal').modal('hide'); $('#sessionWarningModal').modal('show');}, " + (HttpContext.Current.Session.Timeout * 60000 - 60000).ToString() + @");
-                    setTimeout(function() {$('.modal').modal('hide'); $('#sessionTimeoutModal').modal('show');}, " + (HttpContext.Current.Session.Timeout * 60000).ToString() + ");"
+                    @"setTimeout(function() {$('.modal').modal('hide'); $('#sessionWarningModal').modal('show');}, " + (FormsAuthentication.Timeout.TotalMilliseconds - 60000).ToString() + @");
+                    setTimeout(function() {$('.modal').modal('hide'); $('#sessionTimeoutModal').modal('show');}, " + (FormsAuthentication.Timeout.TotalMilliseconds).ToString() + ");"
                     , true);
             }
             else
@@ -81,7 +80,7 @@ namespace NUSMed_WebApp
                 }
                 else if (string.Equals(Session["toastr"].ToString(), "login"))
                 {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['info']('You have been Logged In as " + new AccountBLL().GetNRIC() + ".');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['info']('You have been Logged In as " + AccountBLL.GetNRIC() + ".');", true);
                     Session.Remove("toastr");
                 }
             }

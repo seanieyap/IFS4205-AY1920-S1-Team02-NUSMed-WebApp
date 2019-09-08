@@ -292,15 +292,6 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanMessage;
         
         /// <summary>
-        /// UpdateProgressRegistration control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdateProgress UpdateProgressRegistration;
-        
-        /// <summary>
         /// Master property.
         /// </summary>
         /// <remarks>

@@ -38,24 +38,28 @@ namespace NUSMed_WebApp
         protected void buttonLoginPatient_ServerClick(object sender, EventArgs e)
         {
             Select("Patient");
+            Session["toastr"] = "login";
             Response.Redirect("~/Patient/Dashboard");
         }
 
         protected void buttonLoginTherapist_ServerClick(object sender, EventArgs e)
         {
             Select("Therapist");
+            Session["toastr"] = "login";
             Response.Redirect("~/Therapist/Dashboard");
         }
 
         protected void buttonLoginResearcher_ServerClick(object sender, EventArgs e)
         {
             Select("Researcher");
+            Session["toastr"] = "login";
             Response.Redirect("~/Researcher/Dashboard");
         }
 
         protected void buttonLoginAdmin_ServerClick(object sender, EventArgs e)
         {
             Select("Administrator");
+            Session["toastr"] = "login";
             Response.Redirect("~/Admin/Dashboard");
         }
 

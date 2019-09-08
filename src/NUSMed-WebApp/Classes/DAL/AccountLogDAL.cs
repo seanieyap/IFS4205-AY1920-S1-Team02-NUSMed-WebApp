@@ -7,9 +7,9 @@ using System.Web;
 
 namespace NUSMed_WebApp.Classes.DAL
 {
-    public class AccountLogDAL : LogDAL
+    public class LogAccountDAL : LogDAL
     {
-        public AccountLogDAL() : base() { }
+        public LogAccountDAL() : base() { }
 
         #region Inserts
         /// <summary>

@@ -42,15 +42,15 @@ namespace NUSMed_WebApp
             {
                 try
                 {
-                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value);
+                    FormsAuthenticationTicket formAuthenticationTicket = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value);
 
-                    if (authTicket == null || authTicket.Expired)
+                    if (formAuthenticationTicket == null || formAuthenticationTicket.Expired)
                     {
                         return;
                     }
 
-                    string nric = authTicket.Name;
-                    List<string> userData = new List<string>(authTicket.UserData.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
+                    string nric = formAuthenticationTicket.Name;
+                    List<string> userData = new List<string>(formAuthenticationTicket.UserData.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
                     string guid = string.Empty;
 
                     if (userData.Any()) //prevent IndexOutOfRangeException for empty list
@@ -64,7 +64,7 @@ namespace NUSMed_WebApp
 
                     if (account.status == 0 
                         || !((account.roles.Count() > 0 && userData[0] == "Multiple") || account.roles.Contains(userData[0]))
-                        || authTicket.IssueDate < account.lastFullLogin)
+                        || formAuthenticationTicket.IssueDate < account.lastFullLogin)
                     {
                         FormsAuthentication.SignOut();
                         FormsAuthentication.RedirectToLoginPage("fail-auth=true");
@@ -73,7 +73,7 @@ namespace NUSMed_WebApp
                     // if not cached, cache user
                     if (HttpContext.Current == null || HttpContext.Current.Cache[nric] == null)
                     {
-                        HttpRuntime.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(15));
+                        HttpRuntime.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
                     }
                     else if (!HttpRuntime.Cache.Get(nric).ToString().Equals(guid))
                     {
@@ -87,7 +87,19 @@ namespace NUSMed_WebApp
                         return;
                     }
 
-                    e.User = new GenericPrincipal(new GenericIdentity(authTicket.Name, "Forms"), userData.ToArray());
+                    e.User = new GenericPrincipal(new GenericIdentity(formAuthenticationTicket.Name, "Forms"), userData.ToArray());
+
+                    // Renew
+                    FormsAuthenticationTicket newFormAuthenticationTicket = FormsAuthentication.RenewTicketIfOld(formAuthenticationTicket);
+                    if (formAuthenticationTicket != newFormAuthenticationTicket)
+                    {
+                        HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(newFormAuthenticationTicket));
+                        cookie.HttpOnly = true;
+                        cookie.Secure = FormsAuthentication.RequireSSL;
+                        cookie.Domain = FormsAuthentication.CookieDomain;
+                        cookie.Expires = newFormAuthenticationTicket.Expiration;
+                        HttpContext.Current.Response.Cookies.Add(cookie);
+                    }
                 }
                 catch
                 {

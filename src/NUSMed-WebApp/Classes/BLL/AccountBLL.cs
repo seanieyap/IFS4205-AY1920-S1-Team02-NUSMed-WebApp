@@ -35,25 +35,32 @@ namespace NUSMed_WebApp.Classes.BLL
                 version: 1,
                 name: nric,
                 issueDate: now,
-                expiration: now.AddMinutes(HttpContext.Current.Session.Timeout),
-                isPersistent: false,
+                expiration: now.AddMinutes(FormsAuthentication.Timeout.TotalMinutes),
+                isPersistent: true,
                 userData: role + ";" + guid);
 
             HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(formsAuthenticationTicket));
             cookie.HttpOnly = true;
+            cookie.Path = FormsAuthentication.FormsCookiePath;
             cookie.Secure = FormsAuthentication.RequireSSL;
             cookie.Domain = FormsAuthentication.CookieDomain;
+            cookie.Expires = formsAuthenticationTicket.Expiration;
 
-            HttpContext.Current.Cache.Insert(nric, guid, null, DateTime.Now.AddMinutes(HttpContext.Current.Session.Timeout), Cache.NoSlidingExpiration);
+            HttpContext.Current.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
             HttpContext.Current.Response.Cookies.Add(cookie);
 
-            new AccountLogDAL().Insert(nric, nric, "Log in using role, " + role + ".", "Nil");
+            new LogAccountDAL().Insert(nric, nric, "Login", "Using role, " + role + ".");
         }
+        public void Update1FALogin(string nric)
+        {
+            accountDAL.Update1FALogin(nric, DateTime.Now.AddSeconds(-1));
+        }
+
         public void Logout()
         {
             FormsAuthentication.SignOut();
         }
-        public bool IsAuthenticated()
+        public static bool IsAuthenticated()
         {
             return HttpContext.Current.User.Identity.IsAuthenticated;
         }
@@ -79,14 +86,14 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-        public string GetNRIC()
+        public static string GetNRIC()
         {
             if (IsAuthenticated())
                 return HttpContext.Current.User.Identity.Name;
 
             return null;
         }
-        public string GetRole()
+        public static string GetRole()
         {
             if (IsAuthenticated())
             {
@@ -114,48 +121,42 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-        public bool IsMultiple()
+        public static bool IsMultiple()
         {
             if (IsAuthenticated())
                 return HttpContext.Current.User.IsInRole("Multiple");
 
             return false;
         }
-        public bool IsPatient()
+        public static bool IsPatient()
         {
             if (IsAuthenticated())
                 return HttpContext.Current.User.IsInRole("Patient");
 
             return false;
         }
-        public bool IsTherapist()
+        public static bool IsTherapist()
         {
             if (IsAuthenticated())
                 return HttpContext.Current.User.IsInRole("Therapist");
 
             return false;
         }
-        public bool IsResearcher()
+        public static bool IsResearcher()
         {
             if (IsAuthenticated())
                 return HttpContext.Current.User.IsInRole("Researcher");
 
             return false;
         }
-        public bool IsAdministrator()
+        public static bool IsAdministrator()
         {
             if (IsAuthenticated())
                 return HttpContext.Current.User.IsInRole("Administrator");
 
             return false;
         }
-        public List<Account> GetAllAccounts(string term)
-        {
-            if (IsAdministrator())
-                return accountDAL.RetrieveAllAccounts(term);
 
-            return null;
-        }
         public Account GetAccount(string nric)
         {
             if (IsAuthenticated() && !IsMultiple())
@@ -212,17 +213,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-        public void AddEmergencyTherapist(string patientNRIC, string therapistNRIC)
-        {
-            if (IsAdministrator())
-                accountDAL.InsertEmergencyTherapist(patientNRIC, therapistNRIC);
-
-        }
-        public void RemoveEmergencyTherapist(string therapistNRIC)
-        {
-            if (IsAdministrator())
-                accountDAL.DeleteEmergencyTherapist(therapistNRIC);
-        }
         public void ChangePassword(string password)
         {
             if (!IsAuthenticated())
@@ -233,6 +223,26 @@ namespace NUSMed_WebApp.Classes.BLL
 
             accountDAL.UpdatePassword(nric, hashSalt.Hash, hashSalt.Salt);
         }
+        public void UpdateContactDetails(string address, string addressPostalCode, string email, string contactNumber)
+        {
+            if (IsAuthenticated())
+                accountDAL.UpdateContactDetails(GetNRIC(), address, addressPostalCode, email, contactNumber);
+        }
+        public void UpdatePatientDetails(string nokName, string nokContact)
+        {
+            if (IsAuthenticated())
+                accountDAL.UpdatePatientDetails(GetNRIC(), nokName, nokContact);
+        }
+        #endregion
+
+        #region Requires Therapist Account
+        public List<Account> GetAllPatients(string term)
+        {
+            if (IsTherapist())
+                return accountDAL.RetrieveAllPatients(term, GetNRIC());
+
+            return null;
+        }
 
         #endregion
 
@@ -240,7 +250,7 @@ namespace NUSMed_WebApp.Classes.BLL
         public void Register(string nric, string password, string associatedTokenID, string firstName, string lastName, string countryOfBirth,
             string nationality, string sex, string gender, string martialStatus, string address, string addressPostalCode, string email,
             string contactNumber, DateTime dateOfBirth, List<string> roles)
-        {
+            {
             if (!IsAdministrator())
                 return;
 
@@ -282,30 +292,63 @@ namespace NUSMed_WebApp.Classes.BLL
             if (roles.Contains("Administrator"))
                 RoleEnableAdmin(account.nric);
         }
-
-        public void DeleteAccount(string nric)
+        public bool IsRegistered(string nric)
         {
             if (IsAdministrator())
+                return accountDAL.IsRegistered(nric);
+
+            return false;
+        }
+        public List<Account> GetAllAccounts(string term)
+        {
+            if (IsAdministrator())
+                return accountDAL.RetrieveAllAccounts(term, GetNRIC());
+
+            return null;
+        }
+        public void DeleteAccount(string nric)
+        {
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
             {
-                new RecordBLL().DeleteRecord(nric);
+                //new RecordBLL().DeleteRecords(nric);
                 accountDAL.Delete(nric);
             }
         }
+        public void UpdateTherapistDetails(string nric, string jobTitle, string department)
+        {
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.UpdateTherapistDetails(nric, jobTitle, department);
+        }
+        public void UpdateResearcherDetails(string nric, string jobTitle, string department)
+        {
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.UpdateResearcherDetails(nric, jobTitle, department);
+        }
+        public void AddEmergencyTherapist(string nric, string therapistNRIC)
+        {
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.InsertEmergencyTherapist(nric, therapistNRIC);
 
+        }
+        public void RemoveEmergencyTherapist(string nric, string therapistNRIC)
+        {
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.DeleteEmergencyTherapist(nric, therapistNRIC);
+        }
         #region Status
         public void StatusDisable(string nric)
         {
-            if (IsAdministrator())
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
                 accountDAL.UpdateStatusDisable(nric);
         }
         public void StatusEnable(string nric)
         {
-            if (IsAdministrator())
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
                 accountDAL.UpdateStatusEnable(nric);
         }
         public void StatusEnableWithoutMFA(string nric)
         {
-            if (IsAdministrator())
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
                 accountDAL.UpdateStatusEnableWithoutMFA(nric);
         }
         #endregion
@@ -314,132 +357,62 @@ namespace NUSMed_WebApp.Classes.BLL
         #region Enable
         public void RoleEnablePatient(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdatePatientEnable(nric);
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.UpdatePatientEnable(nric);
         }
         public void RoleEnableTherapist(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdateTherapistEnable(nric);
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.UpdateTherapistEnable(nric);
         }
         public void RoleEnableResearcher(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdateResearcherEnable(nric);
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.UpdateResearcherEnable(nric);
         }
         public void RoleEnableAdmin(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdateAdminEnable(nric);
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.UpdateAdminEnable(nric);
         }
         #endregion
         #region Disable
         public void RoleDisablePatient(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdatePatientDisable(nric);
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.UpdatePatientDisable(nric);
         }
         public void RoleDisableTherapist(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdateTherapistDisable(nric);
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.UpdateTherapistDisable(nric);
         }
         public void RoleDisableResearcher(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdateResearcherDisable(nric);
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.UpdateResearcherDisable(nric);
         }
         public void RoleDisableAdmin(string nric)
         {
-            //if (IsAuthenticated())
-            accountDAL.UpdateAdminDisable(nric);
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
+                accountDAL.UpdateAdminDisable(nric);
         }
         #endregion
         #endregion
-        #endregion
 
-        #region Status
+        #region MFA
         public void MFATokenIDUpdate(string nric, string tokenID)
         {
-            if (IsAdministrator())
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
                 accountDAL.UpdateMFATokenID(nric, tokenID);
         }
         public void MFADeviceIDUpdate(string nric, string deviceID)
         {
-            if (IsAdministrator())
+            if (IsAdministrator() && !nric.Equals(GetNRIC()))
                 accountDAL.UpdateMFADeviceID(nric, deviceID);
         }
         #endregion
-
-        public void Update1FALogin(string nric)
-        {
-            accountDAL.Update1FALogin(nric, DateTime.Now.AddSeconds(-1));
-        }
-        public bool IsRegistered(string nric)
-        {
-            if (IsAdministrator())
-                return accountDAL.IsRegistered(nric);
-
-            return false;
-        }
-        public void UpdateContactDetails(string address, string addressPostalCode, string email, string contactNumber)
-        {
-            accountDAL.UpdateContactDetails(GetNRIC(), address, addressPostalCode, email, contactNumber);
-            return;
-        }
-        public void UpdatePatientDetails(string nokName, string nokContact)
-        {
-            accountDAL.UpdatePatientDetails(GetNRIC(), nokName, nokContact);
-            return;
-        }
-        public void UpdateTherapistDetails(string nric, string jobTitle, string department)
-        {
-            if (!IsAdministrator())
-                return;
-
-            accountDAL.UpdateTherapistDetails(nric, jobTitle, department);
-        }
-
-        public void UpdateResearcherDetails(string nric, string jobTitle, string department)
-        {
-            if (!IsAdministrator())
-                return;
-
-            accountDAL.UpdateResearcherDetails(nric, jobTitle, department);
-        }
-
-        //public bool UpdateAccount(string oldUserID, string userID, string domain, string designation, string name, bool active)
-        //{
-        //    if (IsAuthenticated())
-        //    {
-        //        accountDAL.Update(oldUserID, userID, domain, designation, name, active);
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        //public bool DeleteAccount(string userID, string domain)
-        //{
-        //    if (IsAuthenticated())
-        //    {
-        //        accountDAL.Delete(userID, domain);
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        //public bool InsertAccount(string userID, string domain, string designation, string name, bool active)
-        //{
-        //    if (IsAuthenticated())
-        //    {
-        //        accountDAL.Insert(userID, domain, designation, name, active);
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
+        #endregion
 
         #region HashSalt
         private class HashSalt

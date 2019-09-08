@@ -11,9 +11,34 @@ namespace NUSMed_WebApp.Classes.BLL
     {
         private readonly RecordDAL recordDAL = new RecordDAL();
 
-        public bool DeleteRecord(string nric)
+
+        public List<Record> GetRecords()
         {
-            //if (IsAuthenticated())
+            if (AccountBLL.IsPatient())
+                return recordDAL.Retrieve(AccountBLL.GetNRIC());
+
+            return null;
+        }
+
+        public void SubmitRecord(Record record)
+        {
+            //if (!AccountBLL.IsPatient())
+            //    return;
+
+            string nric = AccountBLL.GetNRIC();
+            recordDAL.Insert(record, nric, nric);
+            //{
+            // retrieve associated records
+
+            //}
+
+            //return false;
+        }
+
+        public bool DeleteRecords(string nric)
+        {
+            if (!AccountBLL.IsAdministrator())
+                return false;
             //{
             // retrieve associated records
             List<Record> records = recordDAL.RetrieveAssociated(nric);
@@ -22,6 +47,8 @@ namespace NUSMed_WebApp.Classes.BLL
             {
                 // delete all record diagnosis first
                 recordDAL.DeleteRecordDiagnosis(record.id);
+
+                // delete all permissions
                 recordDAL.DeleteRecordPermission(record.id);
 
                 // delete record
@@ -33,6 +60,8 @@ namespace NUSMed_WebApp.Classes.BLL
 
             //return false;
         }
+
+
 
     }
 }

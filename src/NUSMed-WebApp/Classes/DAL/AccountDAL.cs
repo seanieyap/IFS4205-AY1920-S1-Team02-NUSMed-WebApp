@@ -44,9 +44,9 @@ namespace NUSMed_WebApp.Classes.DAL
 
         #region Retrievals
         /// <summary>
-        /// Retrieve all Accounts registered in the database search by term
+        /// Retrieve all Accounts registered in the database search by term, except own account
         /// </summary>
-        public List<Account> RetrieveAllAccounts(string term)
+        public List<Account> RetrieveAllAccounts(string term, string nric)
         {
             List<Account> result = new List<Account>();
 
@@ -64,11 +64,12 @@ namespace NUSMed_WebApp.Classes.DAL
                     INNER JOIN account_therapist at ON a.nric = at.nric
                     INNER JOIN account_researcher ar ON a.nric = ar.nric
                     INNER JOIN account_admin aa ON a.nric = aa.nric
-                    WHERE a.`nric` LIKE @term
+                    WHERE a.`nric` LIKE @term AND a.nric != @nric
                     ORDER BY nric
                     LIMIT 50;";
 
                 cmd.Parameters.AddWithValue("@term", "%" + term + "%");
+                cmd.Parameters.AddWithValue("@nric", nric);
 
                 using (cmd.Connection = connection)
                 {
@@ -114,6 +115,58 @@ namespace NUSMed_WebApp.Classes.DAL
 
                             account.lastFullLogin = reader["last_full_login"] == DBNull.Value ? null :
                                 (DateTime?)Convert.ToDateTime(reader["last_full_login"]);
+
+                            result.Add(account);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// Retrieve all Accounts who are patients registered in the database search by term, except own account
+        /// </summary>
+        public List<Account> RetrieveAllPatients(string term, string nric)
+        {
+            List<Account> result = new List<Account>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT a.nric, rtp.patient_nric as acceptNewRequestRTP, pe.patient_nric as acceptNewRequestPE
+                    FROM account a 
+                    INNER JOIN account_patient ap ON a.nric = ap.nric
+                    INNER JOIN account_therapist at ON a.nric = at.nric
+                    INNER JOIN account_researcher ar ON a.nric = ar.nric
+                    INNER JOIN account_admin aa ON a.nric = aa.nric
+                    LEFT JOIN record_type_permission rtp ON rtp.patient_nric = a.nric
+                    LEFT JOIN patient_emergency pe ON pe.patient_nric = a.nric
+                    WHERE a.`nric` LIKE @term AND a.nric != @nric AND a.status > 0 AND ap.status = 1
+                    GROUP BY a.nric
+                    ORDER BY nric
+                    LIMIT 50;";
+
+                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
+                cmd.Parameters.AddWithValue("@nric", nric);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Account account = new Account
+                            {
+                                nric = Convert.ToString(reader["nric"])
+                            };
+
+                            if (!reader["acceptNewRequestRTP"].Equals(DBNull.Value) && !reader["acceptNewRequestPE"].Equals(DBNull.Value))
+                            {
+                                account.acceptNewRequest = true;
+                            }
 
                             result.Add(account);
                         }
@@ -664,13 +717,14 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Delete a Emergency relationship between Patient and Therapist
         /// </summary>
-        public void DeleteEmergencyTherapist(string therapistNRIC)
+        public void DeleteEmergencyTherapist(string patientNRIC, string therapistNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"DELETE FROM patient_emergency 
-                        WHERE therapist_nric = @therapistNRIC;";
+                        WHERE patient_nric = @patientNRIC AND therapist_nric = @therapistNRIC;";
 
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
                 cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
 
                 using (cmd.Connection = connection)

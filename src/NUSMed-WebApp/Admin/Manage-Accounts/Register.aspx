@@ -636,13 +636,13 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <asp:UpdateProgress ID="UpdateProgressRegistration" runat="server" AssociatedUpdatePanelID="UpdatePanelRegistration" DisplayAfter="0" DynamicLayout="false">
+    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRegistration" DisplayAfter="0" DynamicLayout="false">
         <ProgressTemplate>
             <div class="loading">Loading</div>
         </ProgressTemplate>
     </asp:UpdateProgress>
 
-    <div id="modelRegistration" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div id="modelSuccess" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -654,7 +654,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success mr-auto" runat="server" onserverclick="buttonRefresh_ServerClick">Register another Account</button>
-                    <a class="btn btn-secondary" href="/" role="button">Return to Dashboard</a>
+                    <a class="btn btn-secondary" href="~/Admin/Dashboard" role="button" runat="server">Return to Dashboard</a>
                 </div>
             </div>
         </div>

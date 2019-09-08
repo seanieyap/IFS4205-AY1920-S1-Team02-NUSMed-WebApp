@@ -15,25 +15,25 @@ namespace NUSMed_WebApp
         protected void Page_Load(object sender, EventArgs e)
         {
             AccountBLL accountBLL = new AccountBLL();
-            if (accountBLL.IsAuthenticated())
+            if (AccountBLL.IsAuthenticated())
             {
-                if (accountBLL.IsMultiple())
+                if (AccountBLL.IsMultiple())
                 {
                     Response.Redirect("~/Role-Selection");
                 }
-                else if (accountBLL.IsPatient())
+                else if (AccountBLL.IsPatient())
                 {
                     Response.Redirect("~/Patient/Dashboard");
                 }
-                else if (accountBLL.IsTherapist())
+                else if (AccountBLL.IsTherapist())
                 {
                     Response.Redirect("~/Therapist/Dashboard");
                 }
-                else if (accountBLL.IsResearcher())
+                else if (AccountBLL.IsResearcher())
                 {
                     Response.Redirect("~/Researcher/Dashboard");
                 }
-                else if (accountBLL.IsAdministrator())
+                else if (AccountBLL.IsAdministrator())
                 {
                     Response.Redirect("~/Admin/Dashboard");
                 }
@@ -81,31 +81,44 @@ namespace NUSMed_WebApp
                         // Trigger MFA
                         if (account.status == 1)
                         {
-
+                            try
+                            {
+                            }
+                            catch
+                            {
+                                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when attempting to Login');", true);
+                            }
                         }
 
                         // If omitted from mfa
                         else if (account.status == 2)
                         {
-                            // Check roles
-                            int numberOfRoles = account.roles.Count();
-                            if (numberOfRoles == 0)
+                            try
                             {
-                                NoRoleModal.Visible = true;
-                                ScriptManager.RegisterStartupScript(this, GetType(), "No roles", "$('#NoRoleModal').modal('show');", true);
-                                return;
-                            }
-                            else if (numberOfRoles == 1)
-                            {
-                                accountBLL.Login(nric, account.roles[0]);
-                                Session["toastr"] = "login";
-                            }
-                            else
-                            {
-                                accountBLL.Login(nric, "Multiple");
-                            }
+                                // Check roles
+                                int numberOfRoles = account.roles.Count();
+                                if (numberOfRoles == 0)
+                                {
+                                    NoRoleModal.Visible = true;
+                                    ScriptManager.RegisterStartupScript(this, GetType(), "No roles", "$('#NoRoleModal').modal('show');", true);
+                                    return;
+                                }
+                                else if (numberOfRoles == 1)
+                                {
+                                    accountBLL.Login(nric, account.roles[0]);
+                                    Session["toastr"] = "login";
+                                }
+                                else
+                                {
+                                    accountBLL.Login(nric, "Multiple");
+                                }
 
-                            Response.Redirect("~/");
+                                Response.Redirect("~/");
+                            }
+                            catch
+                            {
+                                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when attempting to Login');", true);
+                            }
                         }
                     }
 

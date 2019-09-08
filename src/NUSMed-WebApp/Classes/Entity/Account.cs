@@ -126,5 +126,8 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         #endregion
 
+        #region FOR Therapists
+        public bool acceptNewRequest { get; set; } = false;
+        #endregion
     }
 }

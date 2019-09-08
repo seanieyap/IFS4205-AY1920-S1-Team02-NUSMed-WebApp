@@ -26,7 +26,7 @@ namespace NUSMed_WebApp.My_Account
             bool[] validate = Enumerable.Repeat(true, 2).ToArray();
 
             // If any fields are empty
-            if (string.IsNullOrEmpty(passwordCurrent) || accountBLL.GetStatus(accountBLL.GetNRIC(), passwordCurrent).status == 0)
+            if (string.IsNullOrEmpty(passwordCurrent) || accountBLL.GetStatus(AccountBLL.GetNRIC(), passwordCurrent).status == 0)
             {
                 validate[0] = false;
                 inputPasswordCurrent.Attributes.Add("class", "form-control is-invalid");
