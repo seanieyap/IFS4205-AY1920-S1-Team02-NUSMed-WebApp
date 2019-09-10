@@ -27,7 +27,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         #region GridViewAccounts Functions
         protected void Bind_GridViewAccounts(string term)
         {
-            List<Classes.Entity.Account> accounts = accountBLL.GetAllPatients(term);
+            List<Classes.Entity.Account> accounts = accountBLL.GetUnrequestedPatients(term);
             ViewState["GridViewAccounts"] = accounts;
             GridViewAccounts.DataSource = accounts;
             GridViewAccounts.DataBind();
@@ -79,6 +79,8 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 {
                     linkButtonRequest.CssClass = "view-modal btn btn-success btn-sm";
                     linkButtonRequest.Text = "<i class=\"fas fa-fw fa-user-friends\"></i>Request";
+                    linkButtonRequest.CommandName = "ViewPersonal";
+                    linkButtonRequest.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
                 }
                 else
                 {

@@ -6,8 +6,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
     <div class="container">
         <div class="py-5 mx-auto text-center">
-            <h1 class="display-4"><%--<i class="fas fa-fw fa-user-injured"></i>--%>New Request</h1>
-            <p class="lead">Search for your Patients to Request for Permissions!</p>
+            <h1 class="display-4"><i class="fas fa-fw fa-plus-circle"></i>New Request</h1>
+            <p class="lead">Search for your Patients in order to Request for Permissions!</p>
         </div>
     </div>
     
@@ -30,13 +30,13 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
-                    <asp:GridView ID="GridViewAccounts" CssClass="table table-sm table-responsive-md" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
+                <div class="col-12 offset-lg-3 col-lg-6">
+                    <asp:GridView ID="GridViewAccounts" CssClass="table table-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
                         ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowDeleting="GridViewAccounts_RowDeleting" OnRowCommand="GridViewAccounts_RowCommand"
                         OnPageIndexChanging="GridViewAccounts_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowDataBound="GridViewAccounts_RowDataBound">
                         <Columns>
-                            <asp:TemplateField HeaderText="NRIC">
+                            <asp:TemplateField HeaderText="NRIC" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <%# Item.nric %>
                                 </ItemTemplate>
@@ -44,15 +44,11 @@
 
                             <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-<%--                                    <%# Item.acceptNewRequest ?  "" : "" %>--%>
-
-                                    <asp:LinkButton ID="LinkButtonRequest" runat="server" CommandName="ViewPersonal" CommandArgument='<%# Item.nric %>'>
+                                    <asp:LinkButton ID="LinkButtonRequest" runat="server">
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
-
                         </Columns>
-
                         <EmptyDataTemplate>
                             <div class="alert alert-info text-center py-4" role="alert">
                                 <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search has no results.

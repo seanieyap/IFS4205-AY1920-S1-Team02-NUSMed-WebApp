@@ -22,85 +22,76 @@ namespace NUSMed_WebApp.Patient.My_Records {
         protected global::System.Web.UI.UpdatePanel UpdatePanelNewRecord;
         
         /// <summary>
-        /// RadioButtonType01 control.
+        /// RadioButtonTypeHeightMeasurement control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonType01;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeHeightMeasurement;
         
         /// <summary>
-        /// RadioButtonType02 control.
+        /// RadioButtonTypeWeightMeasurement control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonType02;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeWeightMeasurement;
         
         /// <summary>
-        /// RadioButtonType03 control.
+        /// RadioButtonTypeTemperatureReading control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonType03;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeTemperatureReading;
         
         /// <summary>
-        /// RadioButtonType04 control.
+        /// RadioButtonTypeBloodPressureReading control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonType04;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeBloodPressureReading;
         
         /// <summary>
-        /// RadioButtonType05 control.
+        /// RadioButtonTypeECGReading control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonType05;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeECGReading;
         
         /// <summary>
-        /// RadioButtonType06 control.
+        /// RadioButtonTypeMRI control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonType06;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeMRI;
         
         /// <summary>
-        /// RadioButtonType07 control.
+        /// RadioButtonTypeXRay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonType07;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeXRay;
         
         /// <summary>
-        /// RadioButtonType08 control.
+        /// RadioButtonTypeGait control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonType08;
-        
-        /// <summary>
-        /// RadioButtonType09 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonType09;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeGait;
         
         /// <summary>
         /// PanelContent control.

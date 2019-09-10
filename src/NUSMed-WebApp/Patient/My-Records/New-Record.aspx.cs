@@ -33,44 +33,6 @@ namespace NUSMed_WebApp.Patient.My_Records
             record.content = string.Empty;
             record.type = GetSelectedType();
 
-            if (PanelContent.Visible == true)
-            {
-                record.content = Server.HtmlEncode(inputMethodContent.Text.Trim());
-            }
-            else
-            {
-                // Reset the other error message
-                //LabelMethodListDefault();
-
-                //if (!inputMethodFile.HasFile)
-                //{
-                //    inputMethodFile.CssClass = "custom-file-input is-invalid";
-                //    LabelMethodFile.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>Please choose a file.";
-                //    LabelMethodFile.CssClass = "invalid-feedback";
-                //    //ShowError("There are Errors detected in the form.");
-                //    return;
-                //}
-
-                // If CSV
-                //string fileExtension = Path.GetExtension(inputMethodFile.PostedFile.FileName).Substring(1);
-
-                //if (fileExtension == "csv" || fileExtension == ".txt")
-                //{
-                //    StreamReader csvreader = new StreamReader(inputMethodFile.FileContent);
-
-                //while (!csvreader.EndOfStream)
-                //{
-                //    string line = csvreader.ReadLine();
-                //    List<string> words = line.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(word => word.Trim()).ToList();
-
-                //    foreach (string word in new HashSet<string>(words))
-                //    {
-                //        dataBLL.SelectWord(word);
-                //    }
-                //}
-                //}
-            }
-
             #region Validation
             bool[] validate = Enumerable.Repeat(true, 3).ToArray();
 
@@ -93,7 +55,9 @@ namespace NUSMed_WebApp.Patient.My_Records
 
             if (record.type.isContent)
             {
-                if (string.IsNullOrEmpty(record.content))
+                record.content = inputMethodContent.Text.Trim();
+
+                if (string.IsNullOrEmpty(record.content) || record.IsContentValid())
                 {
                     validate[2] = false;
                     inputMethodContent.CssClass = "form-control is-invalid";
@@ -116,12 +80,25 @@ namespace NUSMed_WebApp.Patient.My_Records
                 }
                 else
                 {
+                    // validate extension via file extension and size
+                    // no need to care for directory traversal due to server hardening
+                    record.extension = Path.GetExtension(inputMethodFile.PostedFile.FileName).Substring(1);
+                    if (record.IsFileValid())
+                    {
+                        validate[2] = false;
+                        inputMethodFile.CssClass = "custom-file-input is-invalid";
+                        LabelMethodFile.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>Please choose a file.";
+                        LabelMethodFile.CssClass = "invalid-feedback";
+                    }
+                    //string fileExtension = Path.GetExtension(inputMethodFile.PostedFile.FileName).Substring(1);
+
+                    //if (fileExtension == "csv" || fileExtension == ".txt")
+
                     LabelMethodListDefault();
                 }
             }
 
             #endregion
-
 
 
             if (validate.Contains(false))
@@ -153,42 +130,22 @@ namespace NUSMed_WebApp.Patient.My_Records
         {
             bool IsContent = false;
 
-            if (RadioButtonType01.Checked)
-            {
+            if (RadioButtonTypeHeightMeasurement.Checked)
                 IsContent = true;
-            }
-            else if (RadioButtonType02.Checked)
-            {
+            else if (RadioButtonTypeWeightMeasurement.Checked)
                 IsContent = true;
-            }
-            else if (RadioButtonType03.Checked)
-            {
+            else if (RadioButtonTypeTemperatureReading.Checked)
                 IsContent = true;
-            }
-            else if (RadioButtonType04.Checked)
-            {
+            else if (RadioButtonTypeBloodPressureReading.Checked)
                 IsContent = true;
-            }
-            else if (RadioButtonType05.Checked)
-            {
-                IsContent = true;
-            }
-            else if (RadioButtonType06.Checked)
-            {
+            else if (RadioButtonTypeECGReading.Checked)
                 IsContent = false;
-            }
-            else if (RadioButtonType07.Checked)
-            {
+            else if (RadioButtonTypeMRI.Checked)
                 IsContent = false;
-            }
-            else if (RadioButtonType08.Checked)
-            {
+            else if (RadioButtonTypeXRay.Checked)
                 IsContent = false;
-            }
-            else if (RadioButtonType09.Checked)
-            {
+            else if (RadioButtonTypeGait.Checked)
                 IsContent = false;
-            }
 
             if (IsContent)
             {
@@ -205,62 +162,41 @@ namespace NUSMed_WebApp.Patient.My_Records
         }
         private void ResetPanel()
         {
-            RadioButtonType01.Checked = true;
-            RadioButtonType02.Checked = false;
-            RadioButtonType03.Checked = false;
-            RadioButtonType04.Checked = false;
-            RadioButtonType05.Checked = false;
-            RadioButtonType06.Checked = false;
-            RadioButtonType07.Checked = false;
-            RadioButtonType08.Checked = false;
-            RadioButtonType09.Checked = false;
-            ScriptManager.RegisterStartupScript(this, GetType(), "Reset Panels", "document.forms[0].reset();", true);
-        }
-        private RecordType GetSelectedType()
-        {
-            if (RadioButtonType01.Checked == true)
-            {
-                return new MedicalNote();
-            }
-            else if (RadioButtonType02.Checked == true)
-            {
-                return new HeightMeasurement();
-            }
-            else if (RadioButtonType03.Checked == true)
-            {
-                return new WeightMeasurement();
-            }
-            else if (RadioButtonType04.Checked == true)
-            {
-                return new TemperatureReading();
-            }
-            else if (RadioButtonType05.Checked == true)
-            {
-                return new BloodPressureReading();
-            }
-            else if (RadioButtonType06.Checked == true)
-            {
-                return new ECGReading();
-            }
-            else if (RadioButtonType07.Checked == true)
-            {
-                return new MRI();
-            }
-            else if (RadioButtonType08.Checked == true)
-            {
-                return new XRay();
-            }
-            //else if (RadioButtonType09.Checked == true)
-            //{
-            //    return new Gait();
-            //}
+            RadioButtonTypeHeightMeasurement.Checked = true;
+            RadioButtonTypeWeightMeasurement.Checked = false;
+            RadioButtonTypeTemperatureReading.Checked = false;
+            RadioButtonTypeBloodPressureReading.Checked = false;
+            RadioButtonTypeECGReading.Checked = false;
+            RadioButtonTypeMRI.Checked = false;
+            RadioButtonTypeXRay.Checked = false;
+            RadioButtonTypeGait.Checked = false;
 
-            return new Gait();
+            // TODO reset to Height Measurement details
+            ScriptManager.RegisterStartupScript(this, GetType(), "Reset Panels", "document.forms[0].reset();", true);
         }
 
         protected void buttonRefresh_ServerClick(object sender, EventArgs e)
         {
             Response.Redirect(Request.RawUrl);
+        }
+        private RecordType GetSelectedType()
+        {
+            if (RadioButtonTypeHeightMeasurement.Checked == true)
+                return new HeightMeasurement();
+            else if (RadioButtonTypeWeightMeasurement.Checked == true)
+                return new WeightMeasurement();
+            else if (RadioButtonTypeTemperatureReading.Checked == true)
+                return new TemperatureReading();
+            else if (RadioButtonTypeBloodPressureReading.Checked == true)
+                return new BloodPressureReading();
+            else if (RadioButtonTypeECGReading.Checked == true)
+                return new ECGReading();
+            else if (RadioButtonTypeMRI.Checked == true)
+                return new MRI();
+            else if (RadioButtonTypeXRay.Checked == true)
+                return new XRay();
+
+            return new Gait();
         }
 
         #region UI

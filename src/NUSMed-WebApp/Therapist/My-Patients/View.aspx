@@ -7,7 +7,7 @@
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-user-injured"></i>View My Patients</h1>
-            <p class="lead">!</p>
+            <p class="lead">View your Patients here!</p>
         </div>
     </div>
 

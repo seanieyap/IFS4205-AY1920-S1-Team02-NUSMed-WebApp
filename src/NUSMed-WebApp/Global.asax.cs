@@ -77,10 +77,6 @@ namespace NUSMed_WebApp
                     }
                     else if (!HttpRuntime.Cache.Get(nric).ToString().Equals(guid))
                     {
-
-                    //}
-                    //else
-                    //{
                         // Cache does not match, hence multiple logins detected
                         FormsAuthentication.SignOut();
                         FormsAuthentication.RedirectToLoginPage("multiple-logins=true");

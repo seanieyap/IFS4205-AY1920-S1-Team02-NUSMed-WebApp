@@ -125,29 +125,22 @@ namespace NUSMed_WebApp.Classes.DAL
             return result;
         }
         /// <summary>
-        /// Retrieve all Accounts who are patients registered in the database search by term, except own account
+        /// Retrieve all Accounts who are patients
         /// </summary>
-        public List<Account> RetrieveAllPatients(string term, string nric)
+        public List<Account> RetrieveAllPatients(string term)
         {
             List<Account> result = new List<Account>();
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT a.nric, rtp.patient_nric as acceptNewRequestRTP, pe.patient_nric as acceptNewRequestPE
+                cmd.CommandText = @"SELECT a.nric
                     FROM account a 
                     INNER JOIN account_patient ap ON a.nric = ap.nric
-                    INNER JOIN account_therapist at ON a.nric = at.nric
-                    INNER JOIN account_researcher ar ON a.nric = ar.nric
-                    INNER JOIN account_admin aa ON a.nric = aa.nric
-                    LEFT JOIN record_type_permission rtp ON rtp.patient_nric = a.nric
-                    LEFT JOIN patient_emergency pe ON pe.patient_nric = a.nric
-                    WHERE a.`nric` LIKE @term AND a.nric != @nric AND a.status > 0 AND ap.status = 1
-                    GROUP BY a.nric
+                    WHERE a.`nric` LIKE @term AND a.status > 0 AND ap.status = 1
                     ORDER BY nric
                     LIMIT 50;";
 
                 cmd.Parameters.AddWithValue("@term", "%" + term + "%");
-                cmd.Parameters.AddWithValue("@nric", nric);
 
                 using (cmd.Connection = connection)
                 {
@@ -163,10 +156,43 @@ namespace NUSMed_WebApp.Classes.DAL
                                 nric = Convert.ToString(reader["nric"])
                             };
 
-                            if (!reader["acceptNewRequestRTP"].Equals(DBNull.Value) && !reader["acceptNewRequestPE"].Equals(DBNull.Value))
+                            result.Add(account);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve all of therapist's existing patients
+        /// </summary>
+        public List<Account> RetrieveCurrentPatients(string nric)
+        {
+            List<Account> result = new List<Account>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT DISTINCT patient_nric
+                    FROM record_type_permission
+                    WHERE therapist_nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Account account = new Account
                             {
-                                account.acceptNewRequest = true;
-                            }
+                                nric = Convert.ToString(reader["patient_nric"])
+                            };
 
                             result.Add(account);
                         }
@@ -176,6 +202,8 @@ namespace NUSMed_WebApp.Classes.DAL
 
             return result;
         }
+
+
 
         /// <summary>
         /// Retrieve Account registered in the database

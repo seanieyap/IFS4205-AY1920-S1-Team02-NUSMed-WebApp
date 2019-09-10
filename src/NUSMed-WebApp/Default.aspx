@@ -40,11 +40,31 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p class="mb-0">You have been logged in via another location.</p>
-                            <p class="mb-1 text-muted small">If you did not perform these actions, please report this incident to help-desk.</p>
+                            <p class="mb-0">You have been Forcefully Logged Out as You have been logged in via another location</p>
+                            <p class="mb-1 text-muted small">If you did not perform this action, please report this incident to help-desk.</p>
                         </div>
                         <div class="modal-footer">
                             <button id="buttonMultipleLoginModalClose" type="button" class="btn btn-secondary" data-dismiss="modal" runat="server" onserverclick="buttonCloseModal_ServerClick">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </asp:Panel>
+
+            <asp:Panel ID="MFAFailModal" class="modal" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fas fa-fw fa-exclamation-circle text-danger"></i>Something went wrong with MFA</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" runat="server" onserverclick="buttonCloseModal_ServerClick">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="mb-0">There were issues with Multi-Factor Authentication (MFA).</p>
+                            <p class="mb-1 text-muted small">If you suspect Suspicious Activity, please report to help-desk.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="button1" type="button" class="btn btn-secondary" data-dismiss="modal" runat="server" onserverclick="buttonCloseModal_ServerClick">Close</button>
                         </div>
                     </div>
                 </div>
@@ -54,7 +74,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title"><i class="fas fa-fw fa-exclamation-circle text-danger"></i>Fail to Authenticate</h5>
+                            <h5 class="modal-title"><i class="fas fa-fw fa-exclamation-circle text-danger"></i>Something went wrong with Authentication</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close" runat="server" onserverclick="buttonCloseModal_ServerClick">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -70,7 +90,7 @@
                 </div>
             </asp:Panel>
 
-            <asp:Panel ID="NoRoleModal" class="modal" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
+            <asp:Panel ID="NoRoleModal" runat="server" class="modal" TabIndex="-1" role="dialog" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -84,37 +104,48 @@
                             <p class="mb-1 text-muted small">Please contact Administrator if there is not expected.</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" runat="server" onserverclick="buttonCloseModal_ServerClick">Close</button>
+                            <a class="btn btn-secondary mx-auto" href="~/" role="button" runat="server">Cancel</a>
                         </div>
                     </div>
                 </div>
             </asp:Panel>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <asp:UpdateProgress ID="UpdateProgressOptions" runat="server" AssociatedUpdatePanelID="UpdatePanelAccount" DisplayAfter="0" DynamicLayout="false">
+    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelAccount" DisplayAfter="0" DynamicLayout="false">
         <ProgressTemplate>
             <div class="loading">Loading</div>
         </ProgressTemplate>
     </asp:UpdateProgress>
 
-    
-            <%--MFA Modal--%>
-            <%--            <asp:Panel ID="multipleRolesModal" class="modal" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title"><i class="fas fa-fw fa-tag text-warning"></i>Select Roles</h5>
-                        </div>
-                        <div class="modal-body">
-                            <p class="mb-0">There are multiple roles associated with your account.</p>
-                            <p class="mb-1 text-muted small">Please select.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
+
+    <%--MFA Modal--%>
+    <div id="modalMFA" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto">Multi-Factor Authentication (MFA)</h5>
                 </div>
-            </asp:Panel>--%>
+                <asp:UpdatePanel ID="UpdatePanelMFA" class="modal-body text-warning" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+
+                        <asp:Timer ID="TimerMFA" OnTick="TimerMFA_Tick" runat="server" Interval="1000" Enabled="false" />
+                        <p class="mt-2">
+                            <asp:Label ID="LabelTimer" runat="server" CssClass="display-1" Text="30"></asp:Label>
+                            <asp:Label ID="LabelSeconds" runat="server" CssClass="text-muted small" Text="Seconds"></asp:Label>
+                        </p>
+                        <p id="pSubMessage" class="text-muted" runat="server">Please use your Registered Device to scan your Token.</p>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="TimerMFA" />
+                    </Triggers>
+                </asp:UpdatePanel>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary mx-auto" href="~/" role="button" runat="server">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 </asp:Content>

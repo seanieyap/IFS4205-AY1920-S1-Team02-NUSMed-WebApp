@@ -41,6 +41,24 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
 
+    <div id="modelSuccess" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto">Password has been Updated successfully.</h5>
+                </div>
+                <div class="modal-body text-success">
+                    <p class="mt-2"><i class="fas fa-check-circle fa-8x"></i></p>
+                    <p class="text-muted">You have been Logged out.<br />Please use your new password to Login.</p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary mx-auto" href="~/" role="button" runat="server">Return to Login Page</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
 </asp:Content>

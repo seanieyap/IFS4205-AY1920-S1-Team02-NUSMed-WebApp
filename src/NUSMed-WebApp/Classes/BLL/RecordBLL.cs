@@ -26,6 +26,8 @@ namespace NUSMed_WebApp.Classes.BLL
             //    return;
 
             string nric = AccountBLL.GetNRIC();
+            //             string fileServerPath = ConfigurationManager.AppSettings["fileServerPath"];
+
             recordDAL.Insert(record, nric, nric);
             //{
             // retrieve associated records
@@ -60,7 +62,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
             //return false;
         }
-
 
 
     }

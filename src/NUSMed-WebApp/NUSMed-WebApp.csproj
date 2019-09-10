@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Admin\Manage-Accounts\Manage-Researcher-Data.aspx" />
     <Content Include="Admin\Manage-Accounts\Register.aspx" />
     <Content Include="Admin\Manage-Accounts\View.aspx" />
     <Content Include="Admin\Dashboard.aspx" />
@@ -274,6 +275,8 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
     <Content Include="Therapist\Dashboard.aspx" />
+    <Content Include="Therapist\My-Medical-Notes\New-Medical-Note.aspx" />
+    <Content Include="Therapist\My-Medical-Notes\View.aspx" />
     <Content Include="Therapist\My-Patients\New-Request.aspx" />
     <Content Include="Therapist\My-Patients\View.aspx" />
     <Content Include="Web.config" />
@@ -304,6 +307,13 @@
     <Content Include="webfonts\fa-brands-400.eot" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\Manage-Accounts\Manage-Researcher-Data.aspx.cs">
+      <DependentUpon>Manage-Researcher-Data.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Manage-Accounts\Manage-Researcher-Data.aspx.designer.cs">
+      <DependentUpon>Manage-Researcher-Data.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Manage-Accounts\Register.aspx.cs">
       <DependentUpon>Register.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -484,6 +494,20 @@
     </Compile>
     <Compile Include="Therapist\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Therapist\My-Medical-Notes\New-Medical-Note.aspx.cs">
+      <DependentUpon>New-Medical-Note.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Therapist\My-Medical-Notes\New-Medical-Note.aspx.designer.cs">
+      <DependentUpon>New-Medical-Note.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Therapist\My-Medical-Notes\View.aspx.cs">
+      <DependentUpon>View.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Therapist\My-Medical-Notes\View.aspx.designer.cs">
+      <DependentUpon>View.aspx</DependentUpon>
     </Compile>
     <Compile Include="Therapist\My-Patients\New-Request.aspx.cs">
       <DependentUpon>New-Request.aspx</DependentUpon>

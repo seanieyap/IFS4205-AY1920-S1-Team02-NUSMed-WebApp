@@ -7,7 +7,7 @@
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-file-medical"></i>New Record</h1>
-            <p class="lead">!</p>
+            <p class="lead">Create a New Record for yourself!</p>
         </div>
     </div>
 
@@ -19,65 +19,58 @@
             <div class="row pb-3">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="form-check form-check-inline">
-                        <asp:RadioButton ID="RadioButtonType01" CssClass="form-check-input" runat="server" GroupName="recordType"
-                            ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" Checked="true" />
-                        <label class="form-check-label" for="<%= RadioButtonType01.ClientID %>">Medical Note</label>
+                        <asp:RadioButton ID="RadioButtonTypeHeightMeasurement" CssClass="form-check-input" runat="server" GroupName="recordType"
+                            ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" />
+                        <label class="form-check-label" for="<%= RadioButtonTypeHeightMeasurement.ClientID %>">Height Measurement</label>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="form-check form-check-inline">
-                        <asp:RadioButton ID="RadioButtonType02" CssClass="form-check-input" runat="server" GroupName="recordType"
+                        <asp:RadioButton ID="RadioButtonTypeWeightMeasurement" CssClass="form-check-input" runat="server" GroupName="recordType"
                             ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" />
-                        <label class="form-check-label" for="<%= RadioButtonType02.ClientID %>">Height Measurement</label>
+                        <label class="form-check-label" for="<%= RadioButtonTypeWeightMeasurement.ClientID %>">Weight Measurement</label>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="form-check form-check-inline">
-                        <asp:RadioButton ID="RadioButtonType03" CssClass="form-check-input" runat="server" GroupName="recordType"
+                        <asp:RadioButton ID="RadioButtonTypeTemperatureReading" CssClass="form-check-input" runat="server" GroupName="recordType"
                             ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" />
-                        <label class="form-check-label" for="<%= RadioButtonType03.ClientID %>">Weight Measurement</label>
+                        <label class="form-check-label" for="<%= RadioButtonTypeTemperatureReading.ClientID %>">Temperature Reading</label>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="form-check form-check-inline">
-                        <asp:RadioButton ID="RadioButtonType04" CssClass="form-check-input" runat="server" GroupName="recordType"
+                        <asp:RadioButton ID="RadioButtonTypeBloodPressureReading" CssClass="form-check-input" runat="server" GroupName="recordType"
                             ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" />
-                        <label class="form-check-label" for="<%= RadioButtonType04.ClientID %>">Temperature Reading</label>
+                        <label class="form-check-label" for="<%= RadioButtonTypeBloodPressureReading.ClientID %>">Blood Pressure Reading</label>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="form-check form-check-inline">
-                        <asp:RadioButton ID="RadioButtonType05" CssClass="form-check-input" runat="server" GroupName="recordType"
+                        <asp:RadioButton ID="RadioButtonTypeECGReading" CssClass="form-check-input" runat="server" GroupName="recordType"
                             ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" />
-                        <label class="form-check-label" for="<%= RadioButtonType05.ClientID %>">Blood Pressure Reading</label>
+                        <label class="form-check-label" for="<%= RadioButtonTypeECGReading.ClientID %>">ECG Reading</label>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="form-check form-check-inline">
-                        <asp:RadioButton ID="RadioButtonType06" CssClass="form-check-input" runat="server" GroupName="recordType"
+                        <asp:RadioButton ID="RadioButtonTypeMRI" CssClass="form-check-input" runat="server" GroupName="recordType"
                             ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" />
-                        <label class="form-check-label" for="<%= RadioButtonType06.ClientID %>">ECG Reading</label>
+                        <label class="form-check-label" for="<%= RadioButtonTypeMRI.ClientID %>">MRI</label>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="form-check form-check-inline">
-                        <asp:RadioButton ID="RadioButtonType07" CssClass="form-check-input" runat="server" GroupName="recordType"
+                        <asp:RadioButton ID="RadioButtonTypeXRay" CssClass="form-check-input" runat="server" GroupName="recordType"
                             ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" />
-                        <label class="form-check-label" for="<%= RadioButtonType07.ClientID %>">MRI</label>
+                        <label class="form-check-label" for="<%= RadioButtonTypeXRay.ClientID %>">X-ray</label>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="form-check form-check-inline">
-                        <asp:RadioButton ID="RadioButtonType08" CssClass="form-check-input" runat="server" GroupName="recordType"
+                        <asp:RadioButton ID="RadioButtonTypeGait" CssClass="form-check-input" runat="server" GroupName="recordType"
                             ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" />
-                        <label class="form-check-label" for="<%= RadioButtonType08.ClientID %>">X-ray</label>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="form-check form-check-inline">
-                        <asp:RadioButton ID="RadioButtonType09" CssClass="form-check-input" runat="server" GroupName="recordType"
-                            ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" />
-                        <label class="form-check-label" for="<%= RadioButtonType09.ClientID %>">Gait</label>
+                        <label class="form-check-label" for="<%= RadioButtonTypeGait.ClientID %>">Gait</label>
                     </div>
                 </div>
             </div>
@@ -135,15 +128,14 @@
             </div>
         </ContentTemplate>
         <Triggers>
-            <asp:AsyncPostBackTrigger ControlID="RadioButtonType01" />
-            <asp:AsyncPostBackTrigger ControlID="RadioButtonType02" />
-            <asp:AsyncPostBackTrigger ControlID="RadioButtonType03" />
-            <asp:AsyncPostBackTrigger ControlID="RadioButtonType04" />
-            <asp:AsyncPostBackTrigger ControlID="RadioButtonType05" />
-            <asp:AsyncPostBackTrigger ControlID="RadioButtonType06" />
-            <asp:AsyncPostBackTrigger ControlID="RadioButtonType07" />
-            <asp:AsyncPostBackTrigger ControlID="RadioButtonType08" />
-            <asp:AsyncPostBackTrigger ControlID="RadioButtonType09" />
+            <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeHeightMeasurement" />
+            <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeWeightMeasurement" />
+            <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeTemperatureReading" />
+            <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeBloodPressureReading" />
+            <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeECGReading" />
+            <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeMRI" />
+            <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeXRay" />
+            <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeGait" />
         </Triggers>
     </asp:UpdatePanel>
     <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelNewRecord" DisplayAfter="0" DynamicLayout="false">

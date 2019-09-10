@@ -215,13 +215,13 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public void ChangePassword(string password)
         {
-            if (!IsAuthenticated())
-                return;
-
-            string nric = GetNRIC();
-            HashSalt hashSalt = GenerateSaltedHash(password);
-
-            accountDAL.UpdatePassword(nric, hashSalt.Hash, hashSalt.Salt);
+            if (IsAuthenticated())
+            {
+                string nric = GetNRIC();
+                HashSalt hashSalt = GenerateSaltedHash(password);
+                accountDAL.UpdatePassword(nric, hashSalt.Hash, hashSalt.Salt);
+                Logout();
+            }
         }
         public void UpdateContactDetails(string address, string addressPostalCode, string email, string contactNumber)
         {
@@ -236,10 +236,26 @@ namespace NUSMed_WebApp.Classes.BLL
         #endregion
 
         #region Requires Therapist Account
-        public List<Account> GetAllPatients(string term)
+        public List<Account> GetUnrequestedPatients(string term)
         {
             if (IsTherapist())
-                return accountDAL.RetrieveAllPatients(term, GetNRIC());
+            {
+                List<Account> accountsAllPatients = accountDAL.RetrieveAllPatients(term);
+                List<Account> accountsCurrentPatients = accountDAL.RetrieveCurrentPatients(GetNRIC());
+
+                // remove current user
+                accountsAllPatients.RemoveAll(x => x.nric == GetNRIC());
+
+                foreach (Account account in accountsAllPatients)
+                {
+                    if (!accountsCurrentPatients.Any(x => x.nric.Equals(account.nric)))
+                    {
+                        account.acceptNewRequest = true;
+                    }
+                }
+
+                return accountsAllPatients;
+            }
 
             return null;
         }
@@ -250,7 +266,7 @@ namespace NUSMed_WebApp.Classes.BLL
         public void Register(string nric, string password, string associatedTokenID, string firstName, string lastName, string countryOfBirth,
             string nationality, string sex, string gender, string martialStatus, string address, string addressPostalCode, string email,
             string contactNumber, DateTime dateOfBirth, List<string> roles)
-            {
+        {
             if (!IsAdministrator())
                 return;
 
@@ -292,6 +308,7 @@ namespace NUSMed_WebApp.Classes.BLL
             if (roles.Contains("Administrator"))
                 RoleEnableAdmin(account.nric);
         }
+
         public bool IsRegistered(string nric)
         {
             if (IsAdministrator())
@@ -442,24 +459,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
             HashSalt hashSalt = new HashSalt { Hash = hashPassword, Salt = salt };
             return hashSalt;
-        }
-
-        #endregion
-
-        #region Helpers
-
-        public static string ConvertToUnsecureString(SecureString securePassword)
-        {
-            IntPtr unmanagedString = IntPtr.Zero;
-            try
-            {
-                unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(securePassword);
-                return Marshal.PtrToStringUni(unmanagedString);
-            }
-            finally
-            {
-                Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
-            }
         }
 
         #endregion

@@ -6,7 +6,8 @@ using System.Linq;
 using System.Security;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Web.Caching;
+using System.Web.Security;
 
 namespace NUSMed_WebApp
 {
@@ -38,6 +39,11 @@ namespace NUSMed_WebApp
                     Response.Redirect("~/Admin/Dashboard");
                 }
             }
+            else if (Request.QueryString["fail-mfa"] != null && Request.QueryString["fail-mfa"].ToString().Equals("true"))
+            {
+                MFAFailModal.Visible = true;
+                ScriptManager.RegisterStartupScript(this, GetType(), "fail-mfa", "$('#MFAFailModal').modal('show');", true);
+            }
             else if (Request.QueryString["fail-auth"] != null && Request.QueryString["fail-auth"].ToString().Equals("true"))
             {
                 failAuthModal.Visible = true;
@@ -47,86 +53,85 @@ namespace NUSMed_WebApp
             {
 
                 multipleLoginsModal.Visible = true;
-                ScriptManager.RegisterStartupScript(this, GetType(), "Multiple logins detected", "$('#multipleLoginsModal').modal('show');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "multiple-logins", "$('#multipleLoginsModal').modal('show');", true);
             }
         }
 
         protected void ButtonLogin_ServerClick(object sender, EventArgs e)
         {
             string nric = inputNRIC.Value.Trim();
+            string password = inputPassword.Value;
 
-            using (SecureString password = new SecureString())
+            AccountBLL accountBLL = new AccountBLL();
+
+            if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password.ToString()))
             {
-                foreach (char c in inputPassword.Value)
+                Account account = accountBLL.GetStatus(nric, password);
+
+                if (account.status == 0)
                 {
-                    password.AppendChar(c);
-                }
-
-                password.MakeReadOnly();
-                AccountBLL accountBLL = new AccountBLL();
-
-                if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password.ToString()))
-                {
-                    Account account = accountBLL.GetStatus(nric, AccountBLL.ConvertToUnsecureString(password));
-
-                    if (account.status == 0)
-                    {
-                        AuthenticationError();
-                        return;
-                    }
-                    else
-                    {
-                        accountBLL.Update1FALogin(nric);
-
-                        // Trigger MFA
-                        if (account.status == 1)
-                        {
-                            try
-                            {
-                            }
-                            catch
-                            {
-                                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when attempting to Login');", true);
-                            }
-                        }
-
-                        // If omitted from mfa
-                        else if (account.status == 2)
-                        {
-                            try
-                            {
-                                // Check roles
-                                int numberOfRoles = account.roles.Count();
-                                if (numberOfRoles == 0)
-                                {
-                                    NoRoleModal.Visible = true;
-                                    ScriptManager.RegisterStartupScript(this, GetType(), "No roles", "$('#NoRoleModal').modal('show');", true);
-                                    return;
-                                }
-                                else if (numberOfRoles == 1)
-                                {
-                                    accountBLL.Login(nric, account.roles[0]);
-                                    Session["toastr"] = "login";
-                                }
-                                else
-                                {
-                                    accountBLL.Login(nric, "Multiple");
-                                }
-
-                                Response.Redirect("~/");
-                            }
-                            catch
-                            {
-                                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when attempting to Login');", true);
-                            }
-                        }
-                    }
-
+                    AuthenticationError();
+                    return;
                 }
                 else
                 {
-                    AuthenticationError();
+                    accountBLL.Update1FALogin(nric);
+
+                    // Trigger MFA
+                    if (account.status == 1)
+                    {
+                        try
+                        {
+                            HttpContext.Current.Cache.Insert(nric + "_MFAAttempt", "Awaiting", null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
+                            HttpContext.Current.Cache.Insert(nric + "_MFAAttempt_Password", password, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
+                            //HttpContext.Current.Cache.Insert(nric + "_MFAAttempt_Session", Session.SessionID, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
+                            Session["nric_MFAAttempt"] = nric;
+                            Session["countdown"] = 30;
+                            TimerMFA.Enabled = true;
+                            ScriptManager.RegisterStartupScript(this, GetType(), "MFA", "$('#modalMFA').modal('show');", true);
+                        }
+                        catch
+                        {
+                            ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when attempting to launch MFA');", true);
+                        }
+                    }
+
+                    // If omitted from mfa
+                    else if (account.status == 2)
+                    {
+                        try
+                        {
+                            // Check roles
+                            int numberOfRoles = account.roles.Count();
+                            if (numberOfRoles == 0)
+                            {
+                                NoRoleModal.Visible = true;
+                                ScriptManager.RegisterStartupScript(this, GetType(), "No roles", "$('#NoRoleModal').modal('show');", true);
+                                return;
+                            }
+                            else if (numberOfRoles == 1)
+                            {
+                                accountBLL.Login(nric, account.roles[0]);
+                                Session["toastr"] = "login";
+                            }
+                            else
+                            {
+                                accountBLL.Login(nric, "Multiple");
+                            }
+
+                            Response.Redirect("~/");
+                        }
+                        catch
+                        {
+                            ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when attempting to Login');", true);
+                        }
+                    }
                 }
+
+            }
+            else
+            {
+                AuthenticationError();
             }
         }
 
@@ -134,18 +139,117 @@ namespace NUSMed_WebApp
         {
             var nameValueCollection = HttpUtility.ParseQueryString(HttpContext.Current.Request.QueryString.ToString());
             nameValueCollection.Remove("fail-auth");
+            nameValueCollection.Remove("fail-mfa");
             nameValueCollection.Remove("multiple-logins");
             string url = HttpContext.Current.Request.Path + "?" + nameValueCollection;
 
             Response.Redirect(url);
         }
+        protected void TimerMFA_Tick(object sender, EventArgs e)
+        {
+            if (Session["nric_MFAAttempt"] == null)
+            {
+                TimerMFA.Enabled = false;
+                Session.Abandon();
+                FormsAuthentication.RedirectToLoginPage("fail-mfa=true");
+                return;
+            }
+
+            if (HttpContext.Current.Cache.Get(Session["nric_MFAAttempt"].ToString() + "_MFAAttempt") == null)
+            {
+                LabelTimer.Text = "<i class=\"fas fa-8x fa-times-circle\"></i>";
+                LabelTimer.CssClass = "nus-orange";
+                LabelSeconds.Visible = false;
+                pSubMessage.InnerText = "30 Seconds have passed. Please Try Again from the start.";
+                TimerMFA.Enabled = false;
+                return;
+            }
+
+            string nric = Session["nric_MFAAttempt"].ToString();
+            if (HttpContext.Current.Cache.Get(nric + "_MFAAttempt").ToString().Equals("Approved")
+                && HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") != null)
+            {
+                TimerMFA.Enabled = false;
+
+                if (HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") == null)
+                {
+                    HttpContext.Current.Cache.Remove(nric + "_MFAAttempt");
+                    HttpContext.Current.Cache.Remove(nric + "_MFAAttempt_Password");
+                    Session.Abandon();
+                    FormsAuthentication.RedirectToLoginPage("fail-mfa=true");
+                    return;
+                }
+
+                string password = HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password").ToString();
+                AccountBLL accountBLL = new AccountBLL();
+                Account account = accountBLL.GetStatus(nric, password);
+
+                if (account.status != 1)
+                {
+                    HttpContext.Current.Cache.Remove(nric + "_MFAAttempt");
+                    HttpContext.Current.Cache.Remove(nric + "_MFAAttempt_Password");
+                    Session.Abandon();
+                    FormsAuthentication.RedirectToLoginPage("fail-mfa=true");
+                    return;
+                }
+                else
+                {
+                    // If omitted from mfa
+                    try
+                    {
+                        // Check roles
+                        int numberOfRoles = account.roles.Count();
+                        if (numberOfRoles == 0)
+                        {
+                            NoRoleModal.Visible = true;
+                            ScriptManager.RegisterStartupScript(this, GetType(), "No roles", "$('.modal').modal('hide'); $('#NoRoleModal').modal('show');", true);
+                            return;
+                        }
+                        else if (numberOfRoles == 1)
+                        {
+                            accountBLL.Login(nric, account.roles[0]);
+                            Session["toastr"] = "login";
+                        }
+                        else
+                        {
+                            accountBLL.Login(nric, "Multiple");
+                        }
+
+                        Response.Redirect("~/");
+                    }
+                    catch
+                    {
+                        HttpContext.Current.Cache.Remove(nric + "_MFAAttempt");
+                        HttpContext.Current.Cache.Remove(nric + "_MFAAttempt_Password");
+                        Session.Abandon();
+                        FormsAuthentication.RedirectToLoginPage("fail-mfa=true");
+                    }
+                }
+            }
+            else
+            {
+                int count = Convert.ToInt32(Session["countdown"]) - 1;
+                LabelTimer.Text = count.ToString();
+
+                Session["countdown"] = count;
+            }
+        }
+
 
         #region Helpers
         private void AuthenticationError()
         {
+            inputNRIC.Value = string.Empty;
+            inputPassword.Value = string.Empty;
             inputNRIC.Attributes.Add("class", "form-control is-invalid");
             inputPassword.Attributes.Add("class", "form-control is-invalid");
             spanMessage.Visible = true;
+        }
+
+        private void ClearCache()
+        {
+            //HttpContext.Current.Cache.Remove(string(entry.Key));
+            Session.Abandon();
         }
         #endregion
     }

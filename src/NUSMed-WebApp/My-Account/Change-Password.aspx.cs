@@ -68,13 +68,14 @@ namespace NUSMed_WebApp.My_Account
                     accountBLL.ChangePassword(passwordNew);
 
                     spanMessage.Visible = false;
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Password were successfully Updated');", true);
-                    UpdatePanelChangePassword.Update();
-
+                    ScriptManager.RegisterStartupScript(this, GetType(), "update password success", "toastr['success']('Password were successfully Updated');$('#modelSuccess').modal('show');", true);
                 }
                 catch
                 {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Updating Password');", true);
+                    inputPasswordCurrent.Attributes.Add("class", "form-control");
+                    inputPasswordNew.Attributes.Add("class", "form-control");
+                    inputPasswordNewRepeat.Attributes.Add("class", "form-control");
+                    ScriptManager.RegisterStartupScript(this, GetType(), "update password error", "toastr['error']('Error occured when Updating Password');", true);
                 }
 
             }

@@ -76,6 +76,24 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlButton buttonMultipleLoginModalClose;
         
         /// <summary>
+        /// MFAFailModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel MFAFailModal;
+        
+        /// <summary>
+        /// button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton button1;
+        
+        /// <summary>
         /// failAuthModal control.
         /// </summary>
         /// <remarks>
@@ -103,13 +121,49 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.WebControls.Panel NoRoleModal;
         
         /// <summary>
-        /// UpdateProgressOptions control.
+        /// UpdatePanelMFA control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdateProgress UpdateProgressOptions;
+        protected global::System.Web.UI.UpdatePanel UpdatePanelMFA;
+        
+        /// <summary>
+        /// TimerMFA control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer TimerMFA;
+        
+        /// <summary>
+        /// LabelTimer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelTimer;
+        
+        /// <summary>
+        /// LabelSeconds control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelSeconds;
+        
+        /// <summary>
+        /// pSubMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pSubMessage;
         
         /// <summary>
         /// Master property.
