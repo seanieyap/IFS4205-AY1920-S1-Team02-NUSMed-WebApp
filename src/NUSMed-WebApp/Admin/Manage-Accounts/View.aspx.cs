@@ -123,7 +123,6 @@ namespace NUSMed_WebApp.Admin.Account
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error viewing Patient Information of " + nric + ".');", true);
                 }
             }
-
             if (e.CommandName.Equals("ViewTherapist"))
             {
                 string nric = e.CommandArgument.ToString();
@@ -158,210 +157,21 @@ namespace NUSMed_WebApp.Admin.Account
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error viewing Researcher Information of " + nric + ".');", true);
                 }
             }
-
-            #region MFA
-            if (e.CommandName.Equals("MFATokenIDUpdate"))
-            {
-                string[] ca = e.CommandArgument.ToString().Split(';');
-                string nric = ca[0];
-                GridViewRow row = GridViewAccounts.Rows[Convert.ToInt32(ca[1])];
-                TextBox textBoxTokenID = row.FindControl("TextboxMFATokenIDUpdate") as TextBox;
-
-                try
-                {
-                    accountBLL.MFATokenIDUpdate(nric, textBoxTokenID.Text.Trim());
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('MFA Token ID of " + nric + " has been set accordingly.');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when setting MFA Token ID of " + nric + ".');", true);
-                }
-            }
-            if (e.CommandName.Equals("MFADeviceIDUpdate"))
-            {
-                string[] ca = e.CommandArgument.ToString().Split(';');
-                string nric = ca[0];
-                GridViewRow row = GridViewAccounts.Rows[Convert.ToInt32(ca[1])];
-                TextBox textBoxDeviceID = row.FindControl("TextboxMFADeviceIDUpdate") as TextBox;
-
-                try
-                {
-                    accountBLL.MFADeviceIDUpdate(nric, textBoxDeviceID.Text.Trim());
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('MFA Device ID of " + nric + " has been set accordingly.');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when setting MFA Device ID of " + nric + ".');", true);
-                }
-            }
-            #endregion
-
-            #region Status Update
-            if (e.CommandName.Equals("StatusDisable"))
+            if (e.CommandName.Equals("ViewStatus"))
             {
                 string nric = e.CommandArgument.ToString();
-
                 try
                 {
-                    accountBLL.StatusDisable(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Account Status of " + nric + " has been set to \"Disabled\".');", true);
+                    ViewState["GridViewAccountsSelectedNRIC"] = nric;
+
+                    RefreshStatusModal(nric);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Status Modal", "$('#modalStatus').modal('show');", true);
                 }
                 catch
                 {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when setting Account status of " + nric + " to \"Disabled\".');", true);
-                }
-
-            }
-            else if (e.CommandName.Equals("StatusEnable"))
-            {
-                string nric = e.CommandArgument.ToString();
-
-                try
-                {
-                    accountBLL.StatusEnable(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Account Status of " + nric + " has been set to \"Enabled\".');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when setting Account status of " + nric + " to \"Enabled\".');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error viewing Status Information of " + nric + ".');", true);
                 }
             }
-            else if (e.CommandName.Equals("StatusEnableWoMFA"))
-            {
-                string nric = e.CommandArgument.ToString();
-
-                try
-                {
-                    accountBLL.StatusEnableWithoutMFA(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Account Status of " + nric + " has been set to \"Enabled, Omitted from MFA\".');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals();  toastr['error']('Error occured when setting Account status of " + nric + " to \"Enabled, Omitted from MFA\".');", true);
-                }
-            }
-            #endregion
-
-            #region Role Update
-            #region Role Enable
-            else if (e.CommandName.Equals("RoleEnablePatient"))
-            {
-                string nric = e.CommandArgument.ToString();
-
-                try
-                {
-                    accountBLL.RoleEnablePatient(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Role of \"Patient\" has been Enabled for " + nric + ".');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when Enabling Role of \"Patient\" to " + nric + ".');", true);
-                }
-            }
-            else if (e.CommandName.Equals("RoleEnableTherapist"))
-            {
-                string nric = e.CommandArgument.ToString();
-
-                try
-                {
-                    accountBLL.RoleEnableTherapist(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Role of \"Therapist\" has been Enabled for " + nric + ".');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when Enabling Role of \"Therapist\" to " + nric + ".');", true);
-                }
-            }
-            else if (e.CommandName.Equals("RoleEnableResearcher"))
-            {
-                string nric = e.CommandArgument.ToString();
-
-                try
-                {
-                    accountBLL.RoleEnableResearcher(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Role of \"Researcher\" has been Enabled for " + nric + ".');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when Enabling Role of \"Researcher\" to " + nric + ".');", true);
-                }
-            }
-            else if (e.CommandName.Equals("RoleEnableAdmin"))
-            {
-                string nric = e.CommandArgument.ToString();
-
-                try
-                {
-                    accountBLL.RoleEnableAdmin(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Role of \"Administrator\" has been Enabled for " + nric + ".');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when Enabling Role of \"Administrator\" to " + nric + ".');", true);
-                }
-            }
-            #endregion
-
-            #region Role Disable
-            else if (e.CommandName.Equals("RoleDisablePatient"))
-            {
-                string nric = e.CommandArgument.ToString();
-
-                try
-                {
-                    accountBLL.RoleDisablePatient(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Role of \"Patient\" has been Disabled for " + nric + ".');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when Disabling Role of \"Patient\" to " + nric + ".');", true);
-                }
-            }
-            else if (e.CommandName.Equals("RoleDisableTherapist"))
-            {
-                string nric = e.CommandArgument.ToString();
-
-                try
-                {
-                    accountBLL.RoleDisableTherapist(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Role of \"Therapist\" has been Disabled for " + nric + ".');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when Disabling Role of \"Therapist\" to " + nric + ".');", true);
-                }
-            }
-            else if (e.CommandName.Equals("RoleDisableResearcher"))
-            {
-                string nric = e.CommandArgument.ToString();
-
-                try
-                {
-                    accountBLL.RoleDisableResearcher(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Role of \"Researcher\" has been Disabled for " + nric + ".');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when Disabling Role of \"Researcher\" to " + nric + ".');", true);
-                }
-
-            }
-            else if (e.CommandName.Equals("RoleDisableAdmin"))
-            {
-                string nric = e.CommandArgument.ToString();
-
-                try
-                {
-                    accountBLL.RoleDisableAdmin(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['success']('Role of \"Researcher\" has been Disabled for " + nric + ".');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "hideGridViewModals(); toastr['error']('Error occured when Disabling Role of \"Researcher\" to " + nric + ".');", true);
-                }
-            }
-            #endregion
-            #endregion
 
             string term = TextboxSearch.Text.Trim().ToLower();
             Bind_GridViewAccounts(term);
@@ -514,6 +324,16 @@ namespace NUSMed_WebApp.Admin.Account
                 }
             }
         }
+        private void RefreshTherapistModal(string nric)
+        {
+            Classes.Entity.Account account = accountBLL.GetTherapistInformation(nric);
+            labelTherapistNRIC.Text = nric;
+            inputTherapistJobTitle.Value = account.therapistJobTitle;
+            inputTherapistDepartment.Value = account.therapistDepartment;
+
+            UpdatePanelTherapist.Update();
+        }
+
         protected void buttonResearcherUpdate_ServerClick(object sender, EventArgs e)
         {
             string jobTitle = inputResearcherJobTitle.Value.Trim();
@@ -553,22 +373,13 @@ namespace NUSMed_WebApp.Admin.Account
                     string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
                     accountBLL.UpdateResearcherDetails(nric, jobTitle, department);
                     RefreshResearcherModal(nric);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Researcher Details were successfully Updated');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Researcher Details of " + nric + " were successfully Updated');", true);
                 }
                 catch
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Updating Researcher Details');", true);
                 }
             }
-        }
-        private void RefreshTherapistModal(string nric)
-        {
-            Classes.Entity.Account account = accountBLL.GetTherapistInformation(nric);
-            labelTherapistNRIC.Text = nric;
-            inputTherapistJobTitle.Value = account.therapistJobTitle;
-            inputTherapistDepartment.Value = account.therapistDepartment;
-
-            UpdatePanelTherapist.Update();
         }
         private void RefreshResearcherModal(string nric)
         {
@@ -579,5 +390,284 @@ namespace NUSMed_WebApp.Admin.Account
 
             UpdatePanelResearcher.Update();
         }
+
+        protected void LinkButtonStatusDisable_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.StatusDisable(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account Status of " + nric + " has been updated to \"Disabled\".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating Account status.');", true);
+            }
+        }
+        protected void LinkButtonStatusEnable_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.StatusEnable(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account Status of " + nric + " has been updated to \"Enabled\".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating Account status.');", true);
+            }
+        }
+        protected void LinkButtonStatusEnableWoMFA_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.StatusEnableWithoutMFA(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account Status of " + nric + " has been updated to \"Enabled, Omitted from MFA\".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating Account status.');", true);
+            }
+        }
+        protected void LinkButtonTokenIDUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.MFATokenIDUpdate(nric, TextboxMFATokenIDUpdate.Text.Trim());
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('MFA Token ID of " + nric + " has been set accordingly.');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating MFA Token ID.');", true);
+            }
+
+        }
+        protected void LinkButtonDeviceIDUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.MFADeviceIDUpdate(nric, TextboxMFADeviceIDUpdate.Text.Trim());
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('MFA Device ID of " + nric + " has been set accordingly.');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating MFA Device ID.');", true);
+            }
+        }
+        protected void LinkButtonRoleEnablePatient_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.RoleEnablePatient(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Role of \"Patient\" has been Enabled for " + nric + ".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Enabling Role.');", true);
+            }
+        }
+        protected void LinkButtonRoleEnableTherapist_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.RoleEnableTherapist(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Role of \"Therapist\" has been Enabled for " + nric + ".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Enabling Role.');", true);
+            }
+        }
+        protected void LinkButtonRoleEnableResearcher_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.RoleEnableResearcher(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Role of \"Researcher\" has been Enabled for " + nric + ".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Enabling Role.');", true);
+            }
+        }
+        protected void LinkButtonRoleRoleEnableAdmin_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.RoleEnableAdmin(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Role of \"Administrator\" has been Enabled for " + nric + ".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Enabling Role.');", true);
+            }
+        }
+        protected void LinkButtonRoleDisablePatient_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.RoleDisablePatient(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Role of \"Patient\" has been Disabled for " + nric + ".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Disabling Role.');", true);
+            }
+        }
+        protected void LinkButtonRoleDisableTherapist_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.RoleDisableTherapist(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Role of \"Therapist\" has been Disabled for " + nric + ".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Disabling Role.');", true);
+            }
+        }
+        protected void LinkButtonRoleDisableResearcher_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.RoleDisableResearcher(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Role of \"Researcher\" has been Disabled for " + nric + ".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Disabling Role.');", true);
+            }
+        }
+        protected void LinkButtonRoleRoleDisableAdmin_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+
+                accountBLL.RoleDisableAdmin(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Role of \"Administrator\" has been Disabled for " + nric + ".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Disabling Role.');", true);
+            }
+        }
+
+        private void RefreshStatusModal(string nric)
+        {
+            Classes.Entity.Account account = accountBLL.GetStatusInformation(nric);
+            labelStatusNRIC.Text = nric;
+            inputStatusCreateTime.Value = account.createTime.ToString();
+            inputStatusLastLogin.Value = account.lastFullLogin.ToString();
+
+            if (account.status == 0)
+            {
+                LinkButtonStatusDisable.CssClass = ("btn disabled");
+                LinkButtonStatusEnable.CssClass = ("btn btn-success");
+                LinkButtonStatusEnableWoMFA.CssClass = ("btn btn-warning");
+            }
+            else if (account.status == 1)
+            {
+                LinkButtonStatusDisable.CssClass = ("btn btn-danger");
+                LinkButtonStatusEnable.CssClass = ("btn disabled");
+                LinkButtonStatusEnableWoMFA.CssClass = ("btn btn-warning");
+            }
+            else if (account.status == 2)
+            {
+                LinkButtonStatusDisable.CssClass = ("btn btn-danger");
+                LinkButtonStatusEnable.CssClass = ("btn btn-success");
+                LinkButtonStatusEnableWoMFA.CssClass = ("btn disabled");
+            }
+            LabelMFATokenStatus.Text = account.MFATokenStatus;
+            LabelMFADeviceStatus.Text = account.MFADeviceStatus;
+            TextboxMFATokenIDUpdate.Text = string.Empty;
+            TextboxMFADeviceIDUpdate.Text = string.Empty;
+            if (account.patientStatus == 0)
+            {
+                LabelRolePatient.Text = "Disabled";
+                LinkButtonRolePatientDisable.CssClass = "btn btn-sm btn-danger float-right disabled";
+                LinkButtonRolePatientEnable.CssClass = "btn btn-sm btn-success float-right mr-2";
+            }
+            else if (account.patientStatus == 1)
+            {
+                LabelRolePatient.Text = "Enabled";
+                LinkButtonRolePatientDisable.CssClass = "btn btn-sm btn-danger float-right";
+                LinkButtonRolePatientEnable.CssClass = "btn btn-sm btn-success float-right disabled mr-2";
+            }
+            if (account.therapistStatus == 0)
+            {
+                LabelRoleTherapist.Text = "Disabled";
+                LinkButtonRoleTherapistDisable.CssClass = "btn btn-sm btn-danger float-right disabled";
+                LinkButtonRoleTherapistEnable.CssClass = "btn btn-sm btn-success float-right mr-2";
+            }
+            else if (account.therapistStatus == 1)
+            {
+                LabelRoleTherapist.Text = "Enabled";
+                LinkButtonRoleTherapistDisable.CssClass = "btn btn-sm btn-danger float-right";
+                LinkButtonRoleTherapistEnable.CssClass = "btn btn-sm btn-success float-right disabled mr-2";
+            }
+            if (account.researcherStatus == 0)
+            {
+                LabelRoleResearcher.Text = "Disabled";
+                LinkButtonRoleResearcherDisable.CssClass = "btn btn-sm btn-danger float-right disabled";
+                LinkButtonRoleResearcherEnable.CssClass = "btn btn-sm btn-success float-right mr-2";
+            }
+            else if (account.researcherStatus == 1)
+            {
+                LabelRoleResearcher.Text = "Enabled";
+                LinkButtonRoleResearcherDisable.CssClass = "btn btn-sm btn-danger float-right";
+                LinkButtonRoleResearcherEnable.CssClass = "btn btn-sm btn-success float-right disabled mr-2";
+            }
+            if (account.adminStatus == 0)
+            {
+                LabelRoleAdmin.Text = "Disabled";
+                LinkButtonRoleAdminDisable.CssClass = "btn btn-sm btn-danger float-right disabled";
+                LinkButtonRoleAdminEnable.CssClass = "btn btn-sm btn-success float-right mr-2";
+            }
+            else if (account.adminStatus == 1)
+            {
+                LabelRoleAdmin.Text = "Enabled";
+                LinkButtonRoleAdminDisable.CssClass = "btn btn-sm btn-danger float-right";
+                LinkButtonRoleAdminEnable.CssClass = "btn btn-sm btn-success float-right disabled mr-2";
+            }
+
+            UpdatePanelStatus.Update();
+        }
+
     }
 }

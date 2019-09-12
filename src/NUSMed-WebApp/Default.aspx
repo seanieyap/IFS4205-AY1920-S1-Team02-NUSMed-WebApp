@@ -40,7 +40,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p class="mb-0">You have been Forcefully Logged Out as You have been logged in via another location</p>
+                            <p class="mb-0">You have been logged in via another location.</p>
                             <p class="mb-1 text-muted small">If you did not perform this action, please report this incident to help-desk.</p>
                         </div>
                         <div class="modal-footer">

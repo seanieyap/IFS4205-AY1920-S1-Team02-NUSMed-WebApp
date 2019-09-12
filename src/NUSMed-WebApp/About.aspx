@@ -6,4 +6,6 @@
     <p>Use this area to provide additional information.</p>
     <asp:Button runat="server" OnClick="Unnamed_Click" Text="fake mfa success login"/>
     <asp:Button runat="server" OnClick="Unnamed_Click1" Text="fake mfa fail login"/>
+    <asp:Button runat="server" OnClick="Unnamed_Click2" Text="get session id"/>
+    <asp:Label ID="label1" Text="nil" runat="server"></asp:Label>
 </asp:Content>

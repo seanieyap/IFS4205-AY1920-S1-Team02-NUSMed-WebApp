@@ -18,7 +18,6 @@ namespace NUSMed_WebApp.Classes.BLL
     public class AccountBLL
     {
         private readonly AccountDAL accountDAL = new AccountDAL();
-        private static RNGCryptoServiceProvider rNGCryptoServiceProvider = new RNGCryptoServiceProvider();
 
         public AccountBLL()
         {
@@ -36,7 +35,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 name: nric,
                 issueDate: now,
                 expiration: now.AddMinutes(FormsAuthentication.Timeout.TotalMinutes),
-                isPersistent: true,
+                isPersistent: false,
                 userData: role + ";" + guid);
 
             HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(formsAuthenticationTicket));
@@ -58,6 +57,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
         public void Logout()
         {
+            HttpContext.Current.Cache.Remove(GetNRIC());
             FormsAuthentication.SignOut();
         }
         public static bool IsAuthenticated()
@@ -196,6 +196,13 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (IsResearcher() || IsAdministrator())
                 return accountDAL.RetrieveReseearcherInformation(nric);
+
+            return null;
+        }
+        public Account GetStatusInformation(string nric)
+        {
+            if (IsAdministrator())
+                return accountDAL.RetrieveStatusInformation(nric);
 
             return null;
         }
@@ -441,7 +448,7 @@ namespace NUSMed_WebApp.Classes.BLL
         private static HashSalt GenerateSaltedHash(string password)
         {
             byte[] saltBytes = new byte[64];
-            RNGCryptoServiceProvider provider = rNGCryptoServiceProvider;
+            RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
             provider.GetNonZeroBytes(saltBytes);
             string salt = Convert.ToBase64String(saltBytes);
 

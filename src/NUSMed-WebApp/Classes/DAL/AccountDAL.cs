@@ -203,14 +203,12 @@ namespace NUSMed_WebApp.Classes.DAL
             return result;
         }
 
-
-
         /// <summary>
         /// Retrieve Account registered in the database
         /// </summary>
         public Account Retrieve(string nric)
         {
-            Account  result = new Account();
+            Account result = new Account();
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
@@ -612,7 +610,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT a.status as status,
+                cmd.CommandText = @"SELECT a.status as status, 
                     ap.status as patient_status, at.status as therapist_status, 
                     ar.status as researcher_status, aa.status as admin_status
                     FROM account a 
@@ -659,9 +657,62 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT a.status as status, a.last_1FA_login, a.last_full_login,
+                cmd.CommandText = @"SELECT a.status as status, a.last_full_login, 
+                    a.associated_token_id, a.associated_device_id,
                     ap.status as patient_status, at.status as therapist_status, 
                     ar.status as researcher_status, aa.status as admin_status
+                    FROM account a 
+                    INNER JOIN account_patient ap ON a.nric = ap.nric
+                    INNER JOIN account_therapist at ON a.nric = at.nric
+                    INNER JOIN account_researcher ar ON a.nric = ar.nric
+                    INNER JOIN account_admin aa ON a.nric = aa.nric
+                    WHERE a.nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = new Account
+                            {
+                                status = Convert.ToInt32(reader["status"]),
+                                associatedTokenID = Convert.ToString(reader["associated_token_id"]),
+                                associatedDeviceID = Convert.ToString(reader["associated_device_id"]),
+                                patientStatus = Convert.ToInt32(reader["patient_status"]),
+                                therapistStatus = Convert.ToInt32(reader["therapist_status"]),
+                                researcherStatus = Convert.ToInt32(reader["researcher_status"]),
+                                adminStatus = Convert.ToInt32(reader["admin_status"]),
+                            };
+                            //result.last1FALogin = reader["last_1FA_login"] == DBNull.Value ? null :
+                            //   (DateTime?)Convert.ToDateTime(reader["last_1FA_login"]);
+
+                            result.lastFullLogin = reader["last_full_login"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["last_full_login"]);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve status of specific account registered in the database
+        /// </summary>
+        public Account RetrieveStatusInformation(string nric)
+        {
+            Account result = new Account();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT a.status as status, a.last_full_login, a.create_time, a.associated_token_id, a.associated_device_id,
+                    ap.status as patient_status, at.status as therapist_status, ar.status as researcher_status, aa.status as admin_status
                     FROM account a 
                     INNER JOIN account_patient ap ON a.nric = ap.nric
                     INNER JOIN account_therapist at ON a.nric = at.nric
@@ -687,10 +738,10 @@ namespace NUSMed_WebApp.Classes.DAL
                                 therapistStatus = Convert.ToInt32(reader["therapist_status"]),
                                 researcherStatus = Convert.ToInt32(reader["researcher_status"]),
                                 adminStatus = Convert.ToInt32(reader["admin_status"]),
+                                createTime = Convert.ToDateTime(reader["create_time"]),
+                                associatedTokenID = Convert.ToString(reader["associated_token_id"]),
+                                associatedDeviceID = Convert.ToString(reader["associated_device_id"])
                             };
-                            result.last1FALogin = reader["last_1FA_login"] == DBNull.Value ? null :
-                               (DateTime?)Convert.ToDateTime(reader["last_1FA_login"]);
-
                             result.lastFullLogin = reader["last_full_login"] == DBNull.Value ? null :
                                (DateTime?)Convert.ToDateTime(reader["last_full_login"]);
                         }
@@ -700,7 +751,6 @@ namespace NUSMed_WebApp.Classes.DAL
 
             return result;
         }
-
         #endregion
 
         #region Deletions
@@ -821,7 +871,7 @@ namespace NUSMed_WebApp.Classes.DAL
         {
             if (patientNRIC == therapistNRIC)
                 return;
-            
+
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"INSERT INTO patient_emergency
@@ -867,7 +917,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"UPDATE account 
                             SET address = @address, address_postal_code = @addressPostalCode, 
-                                email = @email, contact_number = @contactNumber
+                            email = @email, contact_number = @contactNumber
                             WHERE nric = @nric;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);

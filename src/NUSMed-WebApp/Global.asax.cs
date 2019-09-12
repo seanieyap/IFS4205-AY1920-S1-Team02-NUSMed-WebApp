@@ -1,4 +1,5 @@
-﻿using NUSMed_WebApp.Classes.BLL;
+﻿using NUSMed_WebApp.App_Start;
+using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Caching;
+using System.Web.Http;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
@@ -31,6 +33,10 @@ namespace NUSMed_WebApp
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //ASP.NET WEB API CONFIG
+            // Pass a delegate to the Configure method.
+            GlobalConfiguration.Configure(WebApiConfig.Register);
         }
 
         /// <summary>
@@ -64,25 +70,34 @@ namespace NUSMed_WebApp
 
                     if (account.status == 0 
                         || !((account.roles.Count() > 0 && userData[0] == "Multiple") || account.roles.Contains(userData[0]))
-                        || formAuthenticationTicket.IssueDate < account.lastFullLogin)
+                        || formAuthenticationTicket.IssueDate < account.lastFullLogin
+                        || HttpContext.Current == null || HttpContext.Current.Cache[nric] == null)
                     {
                         FormsAuthentication.SignOut();
                         FormsAuthentication.RedirectToLoginPage("fail-auth=true");
                     }
 
                     // if not cached, cache user
-                    if (HttpContext.Current == null || HttpContext.Current.Cache[nric] == null)
-                    {
-                        HttpRuntime.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
-                    }
-                    else if (!HttpRuntime.Cache.Get(nric).ToString().Equals(guid))
+                    //if (HttpContext.Current == null || HttpContext.Current.Cache[nric] == null)
+                    //{
+                    //    HttpRuntime.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
+                    //}
+                    //else if (!HttpRuntime.Cache[nric].ToString().Equals(guid))
+                    //{
+                    //    // Cache does not match, hence multiple logins detected
+                    //    FormsAuthentication.SignOut();
+                    //    FormsAuthentication.RedirectToLoginPage("multiple-logins=true");
+                    //    return;
+                    //}
+
+                    // if not cached, cache user
+                    if (!HttpRuntime.Cache[nric].ToString().Equals(guid))
                     {
                         // Cache does not match, hence multiple logins detected
                         FormsAuthentication.SignOut();
                         FormsAuthentication.RedirectToLoginPage("multiple-logins=true");
                         return;
                     }
-
                     e.User = new GenericPrincipal(new GenericIdentity(formAuthenticationTicket.Name, "Forms"), userData.ToArray());
 
                     // Renew

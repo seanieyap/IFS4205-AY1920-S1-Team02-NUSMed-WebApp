@@ -84,7 +84,6 @@ namespace NUSMed_WebApp
                         {
                             HttpContext.Current.Cache.Insert(nric + "_MFAAttempt", "Awaiting", null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
                             HttpContext.Current.Cache.Insert(nric + "_MFAAttempt_Password", password, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
-                            //HttpContext.Current.Cache.Insert(nric + "_MFAAttempt_Session", Session.SessionID, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
                             Session["nric_MFAAttempt"] = nric;
                             Session["countdown"] = 30;
                             TimerMFA.Enabled = true;
@@ -133,17 +132,6 @@ namespace NUSMed_WebApp
             {
                 AuthenticationError();
             }
-        }
-
-        protected void buttonCloseModal_ServerClick(object sender, EventArgs e)
-        {
-            var nameValueCollection = HttpUtility.ParseQueryString(HttpContext.Current.Request.QueryString.ToString());
-            nameValueCollection.Remove("fail-auth");
-            nameValueCollection.Remove("fail-mfa");
-            nameValueCollection.Remove("multiple-logins");
-            string url = HttpContext.Current.Request.Path + "?" + nameValueCollection;
-
-            Response.Redirect(url);
         }
         protected void TimerMFA_Tick(object sender, EventArgs e)
         {
@@ -237,6 +225,16 @@ namespace NUSMed_WebApp
 
 
         #region Helpers
+        protected void buttonCloseModal_ServerClick(object sender, EventArgs e)
+        {
+            var nameValueCollection = HttpUtility.ParseQueryString(HttpContext.Current.Request.QueryString.ToString());
+            nameValueCollection.Remove("fail-auth");
+            nameValueCollection.Remove("fail-mfa");
+            nameValueCollection.Remove("multiple-logins");
+            string url = HttpContext.Current.Request.Path + "?" + nameValueCollection;
+
+            Response.Redirect(url);
+        }
         private void AuthenticationError()
         {
             inputNRIC.Value = string.Empty;
@@ -244,12 +242,6 @@ namespace NUSMed_WebApp
             inputNRIC.Attributes.Add("class", "form-control is-invalid");
             inputPassword.Attributes.Add("class", "form-control is-invalid");
             spanMessage.Visible = true;
-        }
-
-        private void ClearCache()
-        {
-            //HttpContext.Current.Cache.Remove(string(entry.Key));
-            Session.Abandon();
         }
         #endregion
     }

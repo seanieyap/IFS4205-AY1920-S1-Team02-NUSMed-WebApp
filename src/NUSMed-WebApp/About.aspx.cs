@@ -22,9 +22,11 @@ namespace NUSMed_WebApp
         protected void Unnamed_Click1(object sender, EventArgs e)
         {
             Session.Abandon();
+        }
 
-            //HttpContext.Current.Cache.Insert("s90000004" + "_MFAAttempt", "Approved", null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
-
+        protected void Unnamed_Click2(object sender, EventArgs e)
+        {
+            label1.Text = Session.SessionID;
         }
     }
 }
