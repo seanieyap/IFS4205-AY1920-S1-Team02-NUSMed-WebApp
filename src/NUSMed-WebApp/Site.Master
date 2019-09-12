@@ -44,12 +44,12 @@
 
         <nav id="topNav" class="navbar navbar-light bg-white">
             <div class="container px-0 align-items-end">
-                <div class="navbar-brand py-2 my-1">
+                <div class="navbar-brand py-2 my-1 mx-auto mx-md-0">
                     <a href="http://www.nus.edu.sg" target="_blank">
                         <img src="/Images/logo.png" alt="NUS" class="border-nus-blue pr-3" style="border-right: 1.5pt solid;">
                     </a>
                     <a href="/">
-                        <img src="/Images/sublogo.png" alt="NUSMed - A NHC Paroddy" class="pl-3">
+                        <img src="/Images/sublogo.png" alt="NUSMed - A NHC Paroddy" class="pl-1 pl-md-2">
                     </a>
                 </div>
             </div>

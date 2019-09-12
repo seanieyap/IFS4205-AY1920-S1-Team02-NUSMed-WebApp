@@ -587,7 +587,6 @@ namespace NUSMed_WebApp.Admin.Account
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Disabling Role.');", true);
             }
         }
-
         private void RefreshStatusModal(string nric)
         {
             Classes.Entity.Account account = accountBLL.GetStatusInformation(nric);

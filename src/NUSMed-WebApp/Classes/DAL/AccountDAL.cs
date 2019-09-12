@@ -52,18 +52,8 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT a.`nric`, a.`name_first`, a.`birth_country`, a.`nationality`, a.`sex`, a.`gender`,
-                    a.`martial_status`, a.`name_last`, a.`address`, a.`address_postal_code`, a.`email`, a.`contact_number`, a.`create_time`,
-                    a.last_1FA_login, a.`last_full_login`, a.`date_of_birth`, a.`status`, a.`associated_token_id`, a.`associated_device_id`, 
-                    ap.nok_name, ap.nok_contact_number,
-                    at.job_title as therapist_job_title, at.department as therapist_department,
-                    ar.job_title as researcher_job_title, ar.department as researcher_department,
-                    ap.`status` as patient_status, at.`status` as therapist_status, ar.`status` as researcher_status, aa.`status` as admin_status     
+                cmd.CommandText = @"SELECT a.nric
                     FROM account a 
-                    INNER JOIN account_patient ap ON a.nric = ap.nric
-                    INNER JOIN account_therapist at ON a.nric = at.nric
-                    INNER JOIN account_researcher ar ON a.nric = ar.nric
-                    INNER JOIN account_admin aa ON a.nric = aa.nric
                     WHERE a.`nric` LIKE @term AND a.nric != @nric
                     ORDER BY nric
                     LIMIT 50;";
@@ -83,38 +73,7 @@ namespace NUSMed_WebApp.Classes.DAL
                             Account account = new Account
                             {
                                 nric = Convert.ToString(reader["nric"]),
-                                firstName = Convert.ToString(reader["name_first"]),
-                                lastName = Convert.ToString(reader["name_last"]),
-                                countryOfBirth = Convert.ToString(reader["birth_country"]),
-                                sex = Convert.ToString(reader["sex"]),
-                                gender = Convert.ToString(reader["gender"]),
-                                dateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
-                                nationality = Convert.ToString(reader["nationality"]),
-                                martialStatus = Convert.ToString(reader["martial_status"]),
-                                email = Convert.ToString(reader["email"]),
-                                address = Convert.ToString(reader["address"]),
-                                addressPostalCode = Convert.ToString(reader["address_postal_code"]),
-                                contactNumber = Convert.ToString(reader["contact_number"]),
-                                createTime = Convert.ToDateTime(reader["create_time"]),
-                                status = Convert.ToInt32(reader["status"]),
-                                patientStatus = Convert.ToInt32(reader["patient_status"]),
-                                therapistStatus = Convert.ToInt32(reader["therapist_status"]),
-                                researcherStatus = Convert.ToInt32(reader["researcher_status"]),
-                                adminStatus = Convert.ToInt32(reader["admin_status"]),
-                                associatedTokenID = Convert.ToString(reader["associated_token_id"]),
-                                associatedDeviceID = Convert.ToString(reader["associated_device_id"]),
-                                nokName = Convert.ToString(reader["nok_name"]),
-                                nokContact = Convert.ToString(reader["nok_contact_number"]),
-                                therapistJobTitle = Convert.ToString(reader["therapist_job_title"]),
-                                therapistDepartment = Convert.ToString(reader["therapist_department"]),
-                                researcherJobTitle = Convert.ToString(reader["researcher_job_title"]),
-                                researcherDepartment = Convert.ToString(reader["researcher_department"])
                             };
-                            account.last1FALogin = reader["last_1FA_login"] == DBNull.Value ? null :
-                               (DateTime?)Convert.ToDateTime(reader["last_1FA_login"]);
-
-                            account.lastFullLogin = reader["last_full_login"] == DBNull.Value ? null :
-                                (DateTime?)Convert.ToDateTime(reader["last_full_login"]);
 
                             result.Add(account);
                         }
@@ -124,6 +83,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
             return result;
         }
+
         /// <summary>
         /// Retrieve all Accounts who are patients
         /// </summary>
