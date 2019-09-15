@@ -59,7 +59,6 @@ namespace NUSMed_WebApp.Classes.DAL
             return result;
         }
 
-
         /// <summary>
         /// Retrieve all Records registered in the database of particular nric
         /// </summary>

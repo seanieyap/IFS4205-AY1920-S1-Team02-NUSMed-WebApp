@@ -1,4 +1,5 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
+using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
 {
     public partial class New_Request : Page
     {
-        private readonly AccountBLL accountBLL = new AccountBLL();
+        private readonly TherapistBLL therapistBLL = new TherapistBLL();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -19,56 +20,61 @@ namespace NUSMed_WebApp.Therapist.My_Patients
 
             if (!IsPostBack)
             {
-                string term = TextboxSearch.Text.Trim().ToLower();
-                Bind_GridViewAccounts(term);
+                Bind_GridViewPatient();
             }
         }
 
-        #region GridViewAccounts Functions
-        protected void Bind_GridViewAccounts(string term)
-        {
-            List<Classes.Entity.Account> accounts = accountBLL.GetUnrequestedPatients(term);
-            ViewState["GridViewAccounts"] = accounts;
-            GridViewAccounts.DataSource = accounts;
-            GridViewAccounts.DataBind();
-        }
-        protected void GridViewAccounts_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        {
-            string nric = GridViewAccounts.DataKeys[e.RowIndex].Values["nric"].ToString();
-
-            try
-            {
-                accountBLL.DeleteAccount(nric);
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account, \"" + nric + "\", was Deleted successfully');", true);
-            }
-            catch
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Deleting an Account');", true);
-            }
-
-            GridViewAccounts.EditIndex = -1;
-
-            string term = TextboxSearch.Text.Trim().ToLower();
-
-            Bind_GridViewAccounts(term);
-        }
-        protected void GridViewAccounts_RowCommand(object sender, GridViewCommandEventArgs e)
+        #region GridViewPatient Functions
+        protected void Bind_GridViewPatient()
         {
             string term = TextboxSearch.Text.Trim().ToLower();
-            Bind_GridViewAccounts(term);
+            List<Classes.Entity.Patient> patients = therapistBLL.GetUnrequestedPatients(term);
+            ViewState["GridViewPatient"] = patients;
+            GridViewPatient.DataSource = patients;
+            GridViewPatient.DataBind();
+            UpdatePanelAccounts.Update();
         }
-        protected void GridViewAccounts_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void GridViewPatient_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            GridViewAccounts.PageIndex = e.NewPageIndex;
-            GridViewAccounts.DataSource = ViewState["GridViewAccounts"];
-            GridViewAccounts.DataBind();
+            string nric = e.CommandArgument.ToString();
+
+            if (e.CommandName.Equals("Request"))
+            {
+                try
+                {
+                    CheckBoxTypeHeightMeasurement.Checked = false;
+                    CheckBoxTypeWeightMeasurement.Checked = false;
+                    CheckBoxTypeTemperatureReading.Checked = false;
+                    CheckBoxTypeBloodPressureReading.Checked = false;
+                    CheckBoxTypeECGReading.Checked = false;
+                    CheckBoxTypeMRI.Checked = false;
+                    CheckBoxTypeXRay.Checked = false;
+                    CheckBoxTypeGait.Checked = false;
+                    UpdatePanelSelectPermissions.Update();
+
+                    ViewState["GridViewPatientSelectedNRIC"] = nric;
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Permission Modal", "$('#modalSelectPermissions').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Select Permission View.');", true);
+                }
+            }
+
+            Bind_GridViewPatient();
+        }
+        protected void GridViewPatient_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewPatient.PageIndex = e.NewPageIndex;
+            GridViewPatient.DataSource = ViewState["GridViewPatient"];
+            GridViewPatient.DataBind();
         }
         protected void ButtonSearch_Click(object sender, EventArgs e)
         {
-            string term = TextboxSearch.Text.Trim().ToLower();
-            Bind_GridViewAccounts(term);
+            Bind_GridViewPatient();
         }
-        protected void GridViewAccounts_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void GridViewPatient_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -77,18 +83,70 @@ namespace NUSMed_WebApp.Therapist.My_Patients
 
                 if (acceptRequest)
                 {
-                    linkButtonRequest.CssClass = "view-modal btn btn-success btn-sm";
+                    linkButtonRequest.CssClass = "btn btn-success btn-sm";
                     linkButtonRequest.Text = "<i class=\"fas fa-fw fa-user-friends\"></i>Request";
-                    linkButtonRequest.CommandName = "ViewPersonal";
+                    linkButtonRequest.CommandName = "Request";
                     linkButtonRequest.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
                 }
                 else
                 {
-                    linkButtonRequest.CssClass = "view-modal btn btn-secondary btn-sm disabled";
-                    linkButtonRequest.Text = "Already Pending";
+                    linkButtonRequest.CssClass = "btn btn-secondary btn-sm disabled";
+                    linkButtonRequest.Text = "Requested / Granted";
                 }
             }
         }
         #endregion
+
+        protected void buttonRequest_ServerClick(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewPatientSelectedNRIC"].ToString();
+
+                short permission = 0;
+
+                if (CheckBoxTypeHeightMeasurement.Checked)
+                {
+                    permission += HeightMeasurement.permissionFlag;
+                }
+                if (CheckBoxTypeWeightMeasurement.Checked)
+                {
+                    permission += WeightMeasurement.permissionFlag;
+                }
+                if (CheckBoxTypeTemperatureReading.Checked)
+                {
+                    permission += TemperatureReading.permissionFlag;
+                }
+                if (CheckBoxTypeBloodPressureReading.Checked)
+                {
+                    permission += BloodPressureReading.permissionFlag;
+                }
+                if (CheckBoxTypeECGReading.Checked)
+                {
+                    permission += ECGReading.permissionFlag;
+                }
+                if (CheckBoxTypeMRI.Checked)
+                {
+                    permission += MRI.permissionFlag;
+                }
+                if (CheckBoxTypeXRay.Checked)
+                {
+                    permission += XRay.permissionFlag;
+                }
+                if (CheckBoxTypeGait.Checked)
+                {
+                    permission += Gait.permissionFlag;
+                }
+
+                therapistBLL.SubmitRequest(nric, permission);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "$('#modalSelectPermissions').modal('hide');toastr['success']('Request Submitted to " + nric + " for Permissions.');", true);
+                Bind_GridViewPatient();
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "$('#modalSelectPermissions').modal('hide');toastr['error']('Error occured when Submitting Request.');", true);
+            }
+
+        }
     }
 }

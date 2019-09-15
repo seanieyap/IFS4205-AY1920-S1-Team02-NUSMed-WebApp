@@ -53,9 +53,10 @@ namespace NUSMed_WebApp.Admin.Account
         }
         protected void GridViewAccounts_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            string nric = e.CommandArgument.ToString();
+
             if (e.CommandName.Equals("ViewPersonal"))
             {
-                string nric = e.CommandArgument.ToString();
                 try
                 {
                     Classes.Entity.Account account = accountBLL.GetPersonalInformation(nric);
@@ -80,7 +81,6 @@ namespace NUSMed_WebApp.Admin.Account
             }
             if (e.CommandName.Equals("ViewContact"))
             {
-                string nric = e.CommandArgument.ToString();
                 try
                 {
                     Classes.Entity.Account account = accountBLL.GetContactInformation(nric);
@@ -100,7 +100,6 @@ namespace NUSMed_WebApp.Admin.Account
             }
             if (e.CommandName.Equals("ViewPatient"))
             {
-                string nric = e.CommandArgument.ToString();
                 try
                 {
                     Classes.Entity.Account account = accountBLL.GetPatientInformation(nric);
@@ -125,7 +124,6 @@ namespace NUSMed_WebApp.Admin.Account
             }
             if (e.CommandName.Equals("ViewTherapist"))
             {
-                string nric = e.CommandArgument.ToString();
                 try
                 {
                     ViewState["GridViewAccountsSelectedNRIC"] = nric;
@@ -142,7 +140,6 @@ namespace NUSMed_WebApp.Admin.Account
             }
             if (e.CommandName.Equals("ViewResearcher"))
             {
-                string nric = e.CommandArgument.ToString();
                 try
                 {
                     ViewState["GridViewAccountsSelectedNRIC"] = nric;
@@ -159,7 +156,6 @@ namespace NUSMed_WebApp.Admin.Account
             }
             if (e.CommandName.Equals("ViewStatus"))
             {
-                string nric = e.CommandArgument.ToString();
                 try
                 {
                     ViewState["GridViewAccountsSelectedNRIC"] = nric;

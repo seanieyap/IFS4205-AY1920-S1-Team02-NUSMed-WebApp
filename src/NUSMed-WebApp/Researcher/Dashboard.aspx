@@ -6,7 +6,7 @@
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-tachometer-alt"></i>Researcher Dashboard</h1>
-            <p class="lead">!</p>
+            <p class="lead">Restricted. This page is meant for Researchers only.</p>
         </div>
     </div>
 

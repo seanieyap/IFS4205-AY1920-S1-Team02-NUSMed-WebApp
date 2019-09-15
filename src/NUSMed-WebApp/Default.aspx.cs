@@ -75,7 +75,6 @@ namespace NUSMed_WebApp
                 }
                 else
                 {
-                    accountBLL.Update1FALogin(nric);
 
                     // Trigger MFA
                     if (account.status == 1)

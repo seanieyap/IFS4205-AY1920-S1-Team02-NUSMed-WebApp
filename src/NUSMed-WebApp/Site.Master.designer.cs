@@ -157,6 +157,42 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksTherapistMyPatientsNewRequest;
         
         /// <summary>
+        /// navLinksTherapistMyMedicalNotes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navLinksTherapistMyMedicalNotes;
+        
+        /// <summary>
+        /// navLinksTherapistMyMedicalNotesDropdown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksTherapistMyMedicalNotesDropdown;
+        
+        /// <summary>
+        /// navLinksTherapistMyMedicalNotesView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksTherapistMyMedicalNotesView;
+        
+        /// <summary>
+        /// navLinksTherapistMyMedicalNotesNew control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksTherapistMyMedicalNotesNew;
+        
+        /// <summary>
         /// navLinksResearcherDashboard control.
         /// </summary>
         /// <remarks>

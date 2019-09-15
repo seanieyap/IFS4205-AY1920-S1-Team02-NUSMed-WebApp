@@ -48,7 +48,7 @@
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewPersonal" CommandArgument='<%# Item.nric %>'>
-                                        <i class="fas fa-fw fa-eye"></i>View
+                                        <i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -59,7 +59,7 @@
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewContact" CommandArgument='<%# Item.nric %>'>
-                                        <i class="fas fa-fw fa-eye"></i>View
+                                        <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -70,7 +70,7 @@
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewPatient" CommandArgument='<%# Item.nric %>'>
-                                        <i class="fas fa-fw fa-eye"></i>View
+                                        <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
 
@@ -82,7 +82,7 @@
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewTherapist" CommandArgument='<%# Item.nric %>'>
-                                        <i class="fas fa-fw fa-eye"></i>View
+                                        <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -93,7 +93,7 @@
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewResearcher" CommandArgument='<%# Item.nric %>'>
-                                        <i class="fas fa-fw fa-eye"></i>View
+                                        <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -105,15 +105,15 @@
 
                                 <ItemTemplate>
                                     <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewStatus" CommandArgument='<%# Item.nric %>'>
-                                        <i class="fas fa-fw fa-eye"></i>View
+                                        <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="Admin Actions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                            <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" CommandName="Delete" data-toggle="confirmation" data-title="Confirm Deletion?">
-                                        Delete <i class="fas fa-fw fa-trash"></i>
+                                        <i class="fas fa-fw fa-trash"></i></i><span class="d-none d-lg-inline-block">Delete</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -683,7 +683,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Account Information cannot be Edited.</p>
+                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Please note that all Actions are logged. Abuse of authority will not be tolerated.</p>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -706,17 +706,6 @@
                     rootSelector: '[data-toggle=confirmation]'
                 });
             });
-
-            $(".view-modal").click(function () {
-                $($(this).parent().find(".modal")).modal('show');
-            });
-        }
-
-
-        function hideGridViewModals() {
-            $('.modal').modal('hide');
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').remove();
         }
     </script>
 </asp:Content>

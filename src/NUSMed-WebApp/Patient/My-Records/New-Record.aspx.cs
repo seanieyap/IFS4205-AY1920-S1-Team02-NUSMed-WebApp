@@ -55,46 +55,33 @@ namespace NUSMed_WebApp.Patient.My_Records
 
             if (record.type.isContent)
             {
-                record.content = inputMethodContent.Text.Trim();
+                record.content = inputContent.Value.Trim();
 
-                if (string.IsNullOrEmpty(record.content) || record.IsContentValid())
+                if (!record.IsContentValid())
                 {
                     validate[2] = false;
-                    inputMethodContent.CssClass = "form-control is-invalid";
-                    LabelMethodContent.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>Please Enter some Content.";
-                    LabelMethodContent.CssClass = "invalid-feedback";
-                }
-                else
-                {
-                    LabelMethodFileDefault();
+                    inputContent.Attributes.Add("class", "form-control is-invalid");
                 }
             }
             else
             {
-                if (!inputMethodFile.HasFile)
-                {
-                    validate[2] = false;
-                    inputMethodFile.CssClass = "custom-file-input is-invalid";
-                    LabelMethodFile.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>Please choose a file.";
-                    LabelMethodFile.CssClass = "invalid-feedback";
-                }
-                else
+                if (inputFile.HasFile)
                 {
                     // validate extension via file extension and size
                     // no need to care for directory traversal due to server hardening
-                    record.extension = Path.GetExtension(inputMethodFile.PostedFile.FileName).Substring(1);
+                    record.extension = Path.GetExtension(inputFile.PostedFile.FileName).Substring(1);
                     if (record.IsFileValid())
                     {
                         validate[2] = false;
-                        inputMethodFile.CssClass = "custom-file-input is-invalid";
-                        LabelMethodFile.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>Please choose a file.";
-                        LabelMethodFile.CssClass = "invalid-feedback";
+
                     }
-                    //string fileExtension = Path.GetExtension(inputMethodFile.PostedFile.FileName).Substring(1);
-
-                    //if (fileExtension == "csv" || fileExtension == ".txt")
-
-                    LabelMethodListDefault();
+                }
+                else
+                {
+                    validate[2] = false;
+                    inputFile.CssClass = "custom-file-input is-invalid";
+                    LabelFileHelper.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>Please choose a file.";
+                    LabelFileHelper.CssClass = "invalid-feedback";
                 }
             }
 
@@ -131,21 +118,61 @@ namespace NUSMed_WebApp.Patient.My_Records
             bool IsContent = false;
 
             if (RadioButtonTypeHeightMeasurement.Checked)
+            {
                 IsContent = true;
+                LabelContent.Text = "Height Measurement";
+                LabelContentHelper.Text = "(Format: Centimetre, cm. Values: 0 - 280)";
+                inputContent.Attributes.Add("placeholder", "cm");
+            }
             else if (RadioButtonTypeWeightMeasurement.Checked)
+            {
                 IsContent = true;
+                LabelContent.Text = "Weight Measurement";
+                LabelContentHelper.Text = "(Format: Kilogram, KG. Values: 0 - 650)";
+                inputContent.Attributes.Add("placeholder", "kg");
+            }
             else if (RadioButtonTypeTemperatureReading.Checked)
+            {
                 IsContent = true;
+                LabelContent.Text = "Temperature Reading";
+                LabelContentHelper.Text = "(Format: Degree Celsius. Values: 0 - 100 °C)";
+                inputContent.Attributes.Add("placeholder", "°C");
+            }
             else if (RadioButtonTypeBloodPressureReading.Checked)
+            {
                 IsContent = true;
+                LabelContent.Text = "Blood Pressure Reading";
+                LabelContentHelper.Text = "(Format: Systolic Pressure (mmHG) over Diastolic Pressure (mmHG). Values: 0 - 250 / 0 - 250)";
+                inputContent.Attributes.Add("placeholder", "Systolic Pressure (mmHG) / Diastolic Pressure (mmHG)");
+            }
             else if (RadioButtonTypeECGReading.Checked)
+            {
                 IsContent = false;
+                LabelFile.Text = "ECG Reading";
+                LabelFileHelper.Text = "(File type: Timeseries, Format: .txt)";
+                inputFile.Attributes.Add("accept", ".txt");
+            }
             else if (RadioButtonTypeMRI.Checked)
+            {
                 IsContent = false;
+                LabelFile.Text = "MRI";
+                LabelFileHelper.Text = "(File type: Image. Accepted formats: .jpg, .jpeg, .png)";
+                inputContent.Attributes.Add("placeholder", ".txt, .jpeg, .png");
+            }
             else if (RadioButtonTypeXRay.Checked)
+            {
                 IsContent = false;
+                LabelFile.Text = "X-Ray";
+                LabelFileHelper.Text = "(File type: Image. Accepted formats: .jpg, .jpeg, .png)";
+                inputContent.Attributes.Add("placeholder", ".txt, .jpeg, .png");
+            }
             else if (RadioButtonTypeGait.Checked)
+            {
                 IsContent = false;
+                LabelFile.Text = "Gait";
+                LabelFileHelper.Text = "(File type: Timeseries or Movie. Accepted formats: .txt, .mp4)";
+                inputContent.Attributes.Add("placeholder", ".txt, .mp4");
+            }
 
             if (IsContent)
             {
@@ -203,16 +230,14 @@ namespace NUSMed_WebApp.Patient.My_Records
 
         private void LabelMethodFileDefault()
         {
-            LabelMethodFile.Text = "Note: Words should be seperated by commas.";
-            LabelMethodFile.CssClass = "small text-muted";
-            inputMethodFile.CssClass = "custom-file-input";
+            LabelFileHelper.Text = "Note: Words should be seperated by commas.";
+            LabelFileHelper.CssClass = "small text-muted";
+            inputFile.CssClass = "custom-file-input";
         }
 
         private void LabelMethodListDefault()
         {
-            inputMethodContent.Text = "Note: Words should be seperated by line-breaks or spaces.";
-            LabelMethodContent.CssClass = "small text-muted";
-            LabelMethodContent.CssClass = "form-control";
+            inputContent.Value = string.Empty;
         }
 
         //private void ShowError(string text)

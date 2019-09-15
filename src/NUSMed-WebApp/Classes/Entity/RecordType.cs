@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -11,9 +12,8 @@ namespace NUSMed_WebApp.Classes.Entity
     [Serializable]
     public abstract class RecordType
     {
-
         public abstract string name { get; }
-        public abstract short permissionFlag { get; }
+        //public abstract short permissionFlag { get; }
         public abstract bool isContent { get; }        // true = record contains content not file
         public virtual bool IsContentValid(string content)
         {
@@ -65,13 +65,24 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "Height Measurement"; }
         }
-        public override short permissionFlag
+        public static short permissionFlag
         {
             get { return 1; }
         }
         public override bool isContent { get { return true; } }
         public override bool IsContentValid(string content)
         {
+            if (!string.IsNullOrEmpty(content))
+            {
+                decimal contentDecimal;
+                if (decimal.TryParse(content, NumberStyles.Number, CultureInfo.InvariantCulture, out contentDecimal))
+                {
+                    if (contentDecimal > 0 && contentDecimal <= 280)
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
     }
@@ -82,13 +93,24 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "Weight Measurement"; }
         }
-        public override short permissionFlag
+        public static short permissionFlag
         {
             get { return 2; }
         }
         public override bool isContent { get { return true; } }
         public override bool IsContentValid(string content)
         {
+            if (!string.IsNullOrEmpty(content))
+            {
+                decimal contentDecimal;
+                if (decimal.TryParse(content, NumberStyles.Number, CultureInfo.InvariantCulture, out contentDecimal))
+                {
+                    if (contentDecimal >= 0 && contentDecimal <= 650)
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
     }
@@ -99,13 +121,24 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "Temperature Reading"; }
         }
-        public override short permissionFlag
+        public static short permissionFlag
         {
             get { return 4; }
         }
         public override bool isContent { get { return true; } }
         public override bool IsContentValid(string content)
         {
+            if (!string.IsNullOrEmpty(content))
+            {
+                decimal contentDecimal;
+                if (decimal.TryParse(content, NumberStyles.Number, CultureInfo.InvariantCulture, out contentDecimal))
+                {
+                    if (contentDecimal >= 0 && contentDecimal <= 100)
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
     }
@@ -116,13 +149,27 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "Blood Pressure Reading"; }
         }
-        public override short permissionFlag
+        public static short permissionFlag
         {
             get { return 8; }
         }
         public override bool isContent { get { return true; } }
         public override bool IsContentValid(string content)
         {
+            if (!string.IsNullOrEmpty(content))
+            {
+                string[] contents = content.Split('/');
+
+                int systolicPressure, distolicPressure;
+
+                if (int.TryParse(contents[0], out systolicPressure) && int.TryParse(contents[1], out distolicPressure))
+                {
+                    if (systolicPressure >= 0 && systolicPressure <= 250 && distolicPressure >= 0 && distolicPressure <=250)
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
     }
@@ -133,7 +180,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "ECG Reading"; }
         }
-        public override short permissionFlag
+        public static short permissionFlag
         {
             get { return 16; }
         }
@@ -150,7 +197,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "MRI"; }
         }
-        public override short permissionFlag
+        public static short permissionFlag
         {
             get { return 32; }
         }
@@ -167,7 +214,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "X-ray"; }
         }
-        public override short permissionFlag
+        public static short permissionFlag
         {
             get { return 64; }
         }
@@ -184,7 +231,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "Gait"; }
         }
-        public override short permissionFlag
+        public static short permissionFlag
         {
             get { return 128; }
         }

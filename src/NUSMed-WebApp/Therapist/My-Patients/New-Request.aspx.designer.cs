@@ -40,13 +40,13 @@ namespace NUSMed_WebApp.Therapist.My_Patients {
         protected global::System.Web.UI.WebControls.LinkButton ButtonSearch;
         
         /// <summary>
-        /// GridViewAccounts control.
+        /// GridViewPatient control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridViewAccounts;
+        protected global::System.Web.UI.WebControls.GridView GridViewPatient;
         
         /// <summary>
         /// UpdateProgressAccounts control.
@@ -56,6 +56,105 @@ namespace NUSMed_WebApp.Therapist.My_Patients {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdateProgress UpdateProgressAccounts;
+        
+        /// <summary>
+        /// UpdatePanelSelectPermissions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelSelectPermissions;
+        
+        /// <summary>
+        /// CheckBoxTypeHeightMeasurement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxTypeHeightMeasurement;
+        
+        /// <summary>
+        /// CheckBoxTypeWeightMeasurement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxTypeWeightMeasurement;
+        
+        /// <summary>
+        /// CheckBoxTypeTemperatureReading control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxTypeTemperatureReading;
+        
+        /// <summary>
+        /// CheckBoxTypeBloodPressureReading control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxTypeBloodPressureReading;
+        
+        /// <summary>
+        /// CheckBoxTypeECGReading control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxTypeECGReading;
+        
+        /// <summary>
+        /// CheckBoxTypeMRI control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxTypeMRI;
+        
+        /// <summary>
+        /// CheckBoxTypeXRay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxTypeXRay;
+        
+        /// <summary>
+        /// CheckBoxTypeGait control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxTypeGait;
+        
+        /// <summary>
+        /// buttonRequest control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonRequest;
+        
+        /// <summary>
+        /// spanMessageRequest control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanMessageRequest;
         
         /// <summary>
         /// Master property.

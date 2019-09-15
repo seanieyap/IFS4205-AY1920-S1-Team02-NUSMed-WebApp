@@ -103,22 +103,31 @@ namespace NUSMed_WebApp.Patient.My_Records {
         protected global::System.Web.UI.WebControls.Panel PanelContent;
         
         /// <summary>
-        /// inputMethodContent control.
+        /// LabelContent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox inputMethodContent;
+        protected global::System.Web.UI.WebControls.Label LabelContent;
         
         /// <summary>
-        /// LabelMethodContent control.
+        /// LabelContentHelper control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelMethodContent;
+        protected global::System.Web.UI.WebControls.Label LabelContentHelper;
+        
+        /// <summary>
+        /// inputContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputContent;
         
         /// <summary>
         /// PanelFile control.
@@ -130,22 +139,31 @@ namespace NUSMed_WebApp.Patient.My_Records {
         protected global::System.Web.UI.WebControls.Panel PanelFile;
         
         /// <summary>
-        /// inputMethodFile control.
+        /// LabelFile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload inputMethodFile;
+        protected global::System.Web.UI.WebControls.Label LabelFile;
         
         /// <summary>
-        /// LabelMethodFile control.
+        /// LabelFileHelper control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelMethodFile;
+        protected global::System.Web.UI.WebControls.Label LabelFileHelper;
+        
+        /// <summary>
+        /// inputFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload inputFile;
         
         /// <summary>
         /// inputTitle control.

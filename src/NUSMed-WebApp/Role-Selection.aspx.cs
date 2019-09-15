@@ -19,19 +19,19 @@ namespace NUSMed_WebApp
 
             if (account.patientStatus == 1)
             {
-                buttonLoginPatient.Visible = true;
+                divPatient.Visible = true;
             }
             if (account.therapistStatus == 1)
             {
-                buttonLoginTherapist.Visible = true;
+                divTherapist.Visible = true;
             }
             if (account.researcherStatus == 1)
             {
-                buttonLoginResearcher.Visible = true;
+                divResearcher.Visible = true;
             }
             if (account.adminStatus == 1)
             {
-                buttonLoginAdmin.Visible = true;
+                divAdmin.Visible = true;
             }
         }
 
@@ -70,6 +70,9 @@ namespace NUSMed_WebApp
                 // Check if account has role
                 AccountBLL accountBLL = new AccountBLL();
                 Account account = accountBLL.GetStatus();
+
+                if (!account.roles.Contains(role))
+                    return;
 
                 FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value);
 
