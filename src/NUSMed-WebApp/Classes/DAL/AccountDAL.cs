@@ -1191,6 +1191,24 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
+        public void UpdateMFADeviceIDFromPhone(string tokenID, string deviceID)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"UPDATE account 
+                            SET associated_device_id = @associatedDeviceID
+                            WHERE associated_token_id = @associatedTokenID;";
+
+                cmd.Parameters.AddWithValue("@associatedTokenID", tokenID);
+                cmd.Parameters.AddWithValue("@associatedDeviceID", deviceID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         #endregion
 
         public void Update1FALogin(string nric, DateTime dateTime)
