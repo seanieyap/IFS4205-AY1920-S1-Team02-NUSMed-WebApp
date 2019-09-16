@@ -52,12 +52,6 @@
                                     <%# Item.therapistDepartment %>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <%--                            <asp:TemplateField HeaderText="Information" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
-                                <ItemTemplate>
-                                    <asp:Label ID="LabelInformationStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
-                                    <asp:LinkButton ID="LinkButtonViewInformation" runat="server"><i class="fas fa-fw fa-eye"></i>View</asp:LinkButton>
-                                </ItemTemplate>
-                            </asp:TemplateField>--%>
                             <asp:TemplateField HeaderText="Permissions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LabelPermissionStatus" TabIndex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
@@ -96,8 +90,8 @@
             <asp:UpdatePanel ID="UpdatePanelPermissions" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
-                        <h5 class="modal-title">View Permissions of
-                            <asp:Label ID="LabelTherapistName" runat="server"></asp:Label></h5>
+                        <h5 class="modal-title">
+                            <asp:Label ID="LabelTherapistName" runat="server"></asp:Label>: Permissions</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -118,7 +112,6 @@
                         <div class="row">
                             <div class="col-12">
                                 <h4 class="text-center">Current Permissions</h4>
-
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="row">
@@ -253,7 +246,6 @@
                     </div>
                     <div class="modal-footer">
                         <button id="buttonPermissionApprove" type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonPermissionApprove_ServerClick"><i class="fas fa-fw fa-clipboard-check"></i>Approve</button>
-                        <%--<span class="text-muted small">(Use this button to update your requests too)</span>--%>
                         <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
                     </div>
                 </ContentTemplate>
@@ -268,4 +260,11 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
+    <script type="text/javascript">
+        function pageLoad(sender, args) {
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip({ html: true });
+            });
+        }
+    </script>
 </asp:Content>

@@ -52,20 +52,6 @@ namespace NUSMed_WebApp.Patient
                 }
 
             }
-            if (e.CommandName.Equals("ViewInformation"))
-            {
-                try
-                {
-
-
-
-                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Permission Modal", "$('#modalViewPermissions').modal('show');", true);
-                }
-                catch
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Information View.');", true);
-                }
-            }
             else if (e.CommandName.Equals("ViewInformation"))
             {
 

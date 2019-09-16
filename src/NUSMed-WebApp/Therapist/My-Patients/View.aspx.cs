@@ -52,24 +52,49 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 }
 
             }
-            if (e.CommandName.Equals("ViewInformation"))
+            else if (e.CommandName.Equals("ViewInformation"))
             {
                 try
                 {
+                    
+                    // not correct method, change to different method with authorization control.
+                    Account account = new AccountBLL().GetAccount(nric);
 
+                    // Personal Details
+                    LabelInformationNRIC.Text = account.nric;
+                    inputNRIC.Value = account.nric;
+                    DateofBirth.Value = account.dateOfBirth.ToString("MM/dd/yyyy");
+                    FirstName.Value = account.firstName;
+                    LastName.Value = account.lastName;
+                    CountryofBirth.Value = account.countryOfBirth;
+                    Nationality.Value = account.nationality;
+                    Sex.Value = account.sex;
+                    Gender.Value = account.gender;
+                    MartialStatus.Value = account.martialStatus;
 
+                    // Contact Details
+                    Address.Value = account.address;
+                    PostalCode.Value = account.addressPostalCode;
+                    EmailAddress.Value = account.email;
+                    ContactNumber.Value = account.contactNumber;
 
-                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Permission Modal", "$('#modalViewPermissions').modal('show');", true);
+                    // Patient NOK Details
+                    NOKName.Value = account.nokName;
+                    NOKContact.Value = account.nokContact;
+
+                    UpdatePanelInformation.Update();
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Information Modal", "$('#modalInformation').modal('show');", true);
                 }
                 catch
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Information View.');", true);
                 }
             }
-            else if (e.CommandName.Equals("ViewInformation"))
-            {
+            //else if (e.CommandName.Equals("ViewRecords"))
+            //{
 
-            }
+            //}
 
             Bind_GridViewPatient();
         }
@@ -87,10 +112,8 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                //Int16 permissionStatus = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionStatus"));
                 Int16 permissionApproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionApproved"));
                 Int16 permissionUnapproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionUnapproved"));
-                //bool hasPermissionApproved = Convert.ToBoolean(DataBinder.Eval(e.Row.DataItem, "hasPermissionApproved"));
                 Label LabelName = (Label)e.Row.FindControl("LabelName");
                 Label LabelNameStatus = (Label)e.Row.FindControl("LabelNameStatus");
                 LinkButton LinkButtonViewInformation = (LinkButton)e.Row.FindControl("LinkButtonViewInformation");

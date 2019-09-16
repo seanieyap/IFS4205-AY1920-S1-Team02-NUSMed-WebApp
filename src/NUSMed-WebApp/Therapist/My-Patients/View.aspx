@@ -91,7 +91,8 @@
             <asp:UpdatePanel ID="UpdatePanelPermissions" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
-                        <h5 class="modal-title">View Permissions for <asp:Label ID="LabelPatientNRIC" runat="server"></asp:Label></h5>
+                        <h5 class="modal-title">
+                            <asp:Label ID="LabelPatientNRIC" runat="server">: Permissions</asp:Label></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -179,8 +180,8 @@
 
                                 <div class="row">
                                     <div class="col-12 text-center mb-3">
-                                    <button type="button" class="btn btn-sm btn-info" runat="server" onclick=" $('.checkboxes .form-check-input input:checkbox').prop('checked', true);">Select All</button>
-                                            <button type="button" class="btn btn-sm btn-info mr-2" runat="server" onclick=" $('.checkboxes .form-check-input input:checkbox').prop('checked', false);">Deselect All</button>
+                                        <button type="button" class="btn btn-sm btn-info" runat="server" onclick=" $('.checkboxes .form-check-input input:checkbox').prop('checked', true);">Select All</button>
+                                        <button type="button" class="btn btn-sm btn-info mr-2" runat="server" onclick=" $('.checkboxes .form-check-input input:checkbox').prop('checked', false);">Deselect All</button>
                                     </div>
 
                                     <div class="col-12">
@@ -239,7 +240,8 @@
                             </div>
                             <div class="col-12">
                                 <div class="alert alert-info my-2 text-center" role="alert">
-                                    <i class="fas fa-fw fa-info-circle"></i><asp:Label ID="modalPermissionStatus" runat="server"></asp:Label>
+                                    <i class="fas fa-fw fa-info-circle"></i>
+                                    <asp:Label ID="modalPermissionStatus" runat="server"></asp:Label>
                                 </div>
 
                             </div>
@@ -247,12 +249,142 @@
                     </div>
                     <div class="modal-footer">
                         <button id="buttonPermissionRequest" type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonPermissionRequest_ServerClick"><i class="fas fa-fw fa-share"></i>Submit</button>
-                        <%--<span class="text-muted small">(Use this button to update your requests too)</span>--%>
                         <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
             <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPermissions" DisplayAfter="0" DynamicLayout="false">
+                <ProgressTemplate>
+                    <div class="loading">Loading</div>
+                </ProgressTemplate>
+            </asp:UpdateProgress>
+        </div>
+    </div>
+
+
+    <div id="modalInformation" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <asp:UpdatePanel ID="UpdatePanelInformation" class="modal-content" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <asp:Label ID="LabelInformationNRIC" runat="server"></asp:Label>: Personal Information</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h2 class="mt-5 mb-2 border-bottom">Personal Details</h2>
+
+                        <div class="row text-left mb-3">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>NRIC</label>
+                                    <input id="inputNRIC" type="text" class="form-control" readonly runat="server" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Date of Birth</label>
+                                    <input id="DateofBirth" type="text" class="form-control" readonly runat="server" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input id="FirstName" type="text" class="form-control" readonly runat="server" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input id="LastName" type="text" class="form-control" readonly runat="server">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Country of Birth</label>
+                                    <input id="CountryofBirth" type="text" class="form-control" readonly runat="server">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Nationality</label>
+                                    <input id="Nationality" type="text" class="form-control" readonly runat="server">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Sex</label>
+                                    <input id="Sex" type="text" class="form-control" readonly runat="server">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <input id="Gender" type="text" class="form-control" readonly runat="server">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Martial Status</label>
+                                    <input id="MartialStatus" type="text" class="form-control" readonly runat="server">
+                                </div>
+                            </div>
+                        </div>
+
+                        <%-- Contact Details --%>
+                        <h2 class="mt-5 mb-2 border-bottom">Contact Details</h2>
+                        <div class="row text-left">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <input id="Address" type="text" class="form-control" readonly runat="server">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Postal Code</label>
+                                    <input id="PostalCode" type="text" class="form-control" readonly runat="server">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input id="EmailAddress" type="text" class="form-control" readonly runat="server">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    <input id="ContactNumber" type="text" class="form-control" readonly runat="server">
+                                </div>
+                            </div>
+                        </div>
+
+                        <%-- Patient Details --%>
+                        <h2 class="mt-5 mb-2 border-bottom">Next of Kin Details</h2>
+                        <div id="DivPatient" class="row text-left" runat="server">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Name of Next of Kin</label>
+                                    <input id="NOKName" type="text" class="form-control" runat="server" readonly>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label>Contact Number of Next of Kin</label>
+                                    <input id="NOKContact" type="text" class="form-control" runat="server" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelInformation" DisplayAfter="0" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -269,5 +401,4 @@
             });
         }
     </script>
-
 </asp:Content>
