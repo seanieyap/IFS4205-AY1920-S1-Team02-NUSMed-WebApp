@@ -92,6 +92,15 @@
                             <a id="navLinksTherapistMyPatientsNewRequest" class="dropdown-item" href="~/Therapist/My-Patients/New-Request" runat="server">New Request</a>
                         </div>
                     </div>
+                    <div id="navLinksTherapistMyMedicalNotes" class="nav-item dropdown" runat="server" visible="false">
+                        <a id="navLinksTherapistMyMedicalNotesDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
+                            <i class="fas fa-fw fa-notes-medical"></i>My Medical Notes<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
+                        </a>
+                        <div class="dropdown-menu py-0" aria-labelledby="navLinksPatientsMyRecords">
+                            <a id="navLinksTherapistMyMedicalNotesView" class="dropdown-item" href="~/Therapist/My-Patients/View" runat="server">View</a>
+                            <a id="navLinksTherapistMyMedicalNotesNew" class="dropdown-item" href="~/Therapist/My-Patients/New-Request" runat="server">New Request</a>
+                        </div>
+                    </div>
 
                     <%-- Researcher Links--%>
                     <a id="navLinksResearcherDashboard" class="nav-link" href="~/Researcher/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>

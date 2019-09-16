@@ -37,6 +37,7 @@ namespace NUSMed_WebApp
                 {
                     navLinksTherapistDashboard.Visible = true;
                     navLinksTherapistMyPatients.Visible = true;
+                    navLinksTherapistMyMedicalNotes.Visible = true;
                 }
                 else if (AccountBLL.IsResearcher())
                 {
@@ -135,6 +136,18 @@ namespace NUSMed_WebApp
         public void LiActiveTherapistMyPatientsNewRequest()
         {
             navLinksTherapistMyPatientsNewRequest.Attributes.Add("class", "dropdown-item active");
+        }
+        public void LiActiveTherapistMyMedicalNotes()
+        {
+            navLinksTherapistMyMedicalNotesDropdown.Attributes.Add("class", "nav-link active");
+        }
+        public void LiActiveTherapistMyMedicalNotesView()
+        {
+            navLinksTherapistMyMedicalNotesView.Attributes.Add("class", "dropdown-item active");
+        }
+        public void LiActiveTherapistMyMedicalNotesNew()
+        {
+            navLinksTherapistMyMedicalNotesNew.Attributes.Add("class", "dropdown-item active");
         }
         #endregion
         #region Researcher

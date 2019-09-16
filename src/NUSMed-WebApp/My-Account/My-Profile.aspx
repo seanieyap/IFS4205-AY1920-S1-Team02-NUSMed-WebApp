@@ -113,12 +113,6 @@
             <div class="row text-left">
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <label>Last 1FA Login <span class="text-muted small">(After inputting password)</span></label>
-                        <input id="Last1FALogin" type="text" class="form-control" runat="server" readonly>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-6">
-                    <div class="form-group">
                         <label>Last Full Login <span class="text-muted small">(Finished entire login process)</span></label>
                         <input id="LastFullLogin" type="text" class="form-control" runat="server" readonly>
                     </div>

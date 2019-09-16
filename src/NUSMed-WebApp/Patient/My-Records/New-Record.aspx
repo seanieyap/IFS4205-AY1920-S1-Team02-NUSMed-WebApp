@@ -81,16 +81,27 @@
             <div class="row pb-3">
                 <asp:Panel ID="PanelContent" class="col-12" runat="server">
                     <div class="form-group mt-2 mb-0">
-                        <asp:TextBox ID="inputMethodContent" CssClass="form-control" TextMode="MultiLine" Rows="5" runat="server"></asp:TextBox>
-                        <asp:Label ID="LabelMethodContent" CssClass="small text-muted" for="<%= inputMethodContent.ClientID %>" runat="server" Text="Note: something."></asp:Label>
+                        <label for="inputContent">
+                            <asp:Label ID="LabelContent" runat="server" Text="Height Measurement"></asp:Label>
+                            <asp:Label ID="LabelContentHelper" class="text-muted small" runat="server" Text="(Format: Centimetre, cm. Values: 0 - 280)"></asp:Label></label>
+                        <input id="inputContent" type="text" class="form-control" runat="server" placeholder="cm">
+                        <div class="invalid-feedback" runat="server">
+                            <i class="fas fa-fw fa-exclamation-circle"></i> Content is Invalid.
+                        </div>
+
+                        <%--                        <asp:TextBox ID="inputMethodContent" CssClass="form-control" runat="server"></asp:TextBox>
+                        <asp:Label ID="LabelMethodContent" CssClass="small text-muted" for="<%= inputMethodContent.ClientID %>" runat="server" Text="Note: something."></asp:Label>--%>
                     </div>
                 </asp:Panel>
                 <asp:Panel ID="PanelFile" class="col-12" runat="server" Visible="false">
                     <div class="form-group mt-2 mb-0">
+                        <label for="inputContent">
+                            <asp:Label ID="LabelFile" runat="server" Text="Height Measurement"></asp:Label>
+                            <asp:Label ID="LabelFileHelper" class="text-muted small" runat="server"></asp:Label></label>
                         <div class="custom-file">
-                            <asp:FileUpload ID="inputMethodFile" CssClass="custom-file-input" runat="server" accept=".txt, .csv" />
-                            <label class="custom-file-label" for="<%= inputMethodFile.ClientID %>">Choose File</label>
-                            <asp:Label ID="LabelMethodFile" CssClass="small text-muted" runat="server" Text="Note: something."></asp:Label>
+                            <asp:FileUpload ID="inputFile" CssClass="custom-file-input" runat="server" />
+                            <label class="custom-file-label" for="<%= inputFile.ClientID %>">Choose File</label>
+                            <%--<asp:Label ID="LabelFileHelper" CssClass="small text-muted" runat="server" Text="Note: something."></asp:Label>--%>
                         </div>
                     </div>
                 </asp:Panel>
@@ -156,7 +167,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success mr-auto" runat="server" onserverclick="buttonRefresh_ServerClick">Submit New Record</button>
-                    <a class="btn btn-secondary" href="~/Patient/Dashboard" role="button" runat="server">Return to Dashboard</a>
+                    <a class="btn btn-secondary" href="~/Patient/My-Records/View" role="button" runat="server">View My Records</a>
                 </div>
             </div>
         </div>

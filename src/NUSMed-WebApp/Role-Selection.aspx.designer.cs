@@ -13,6 +13,15 @@ namespace NUSMed_WebApp {
     public partial class RoleSelection {
         
         /// <summary>
+        /// divPatient control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPatient;
+        
+        /// <summary>
         /// buttonLoginPatient control.
         /// </summary>
         /// <remarks>
@@ -20,6 +29,15 @@ namespace NUSMed_WebApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton buttonLoginPatient;
+        
+        /// <summary>
+        /// divTherapist control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divTherapist;
         
         /// <summary>
         /// buttonLoginTherapist control.
@@ -31,6 +49,15 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlButton buttonLoginTherapist;
         
         /// <summary>
+        /// divResearcher control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divResearcher;
+        
+        /// <summary>
         /// buttonLoginResearcher control.
         /// </summary>
         /// <remarks>
@@ -38,6 +65,15 @@ namespace NUSMed_WebApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton buttonLoginResearcher;
+        
+        /// <summary>
+        /// divAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAdmin;
         
         /// <summary>
         /// buttonLoginAdmin control.

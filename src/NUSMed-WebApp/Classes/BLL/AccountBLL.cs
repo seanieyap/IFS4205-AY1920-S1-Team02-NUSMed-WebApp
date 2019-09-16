@@ -28,7 +28,7 @@ namespace NUSMed_WebApp.Classes.BLL
             Guid guid = Guid.NewGuid();
             DateTime now = DateTime.Now;
 
-            new AccountDAL().UpdateFullLogin(nric, now.AddSeconds(-1));
+            accountDAL.UpdateFullLogin(nric, now.AddSeconds(-1));
 
             FormsAuthenticationTicket formsAuthenticationTicket = new FormsAuthenticationTicket(
                 version: 1,
@@ -49,10 +49,6 @@ namespace NUSMed_WebApp.Classes.BLL
             HttpContext.Current.Response.Cookies.Add(cookie);
 
             new LogAccountDAL().Insert(nric, nric, "Login", "Using role, " + role + ".");
-        }
-        public void Update1FALogin(string nric)
-        {
-            accountDAL.Update1FALogin(nric, DateTime.Now.AddSeconds(-1));
         }
 
         public void Logout()
@@ -242,33 +238,6 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         #endregion
 
-        #region Requires Therapist Account
-        public List<Account> GetUnrequestedPatients(string term)
-        {
-            if (IsTherapist())
-            {
-                List<Account> accountsAllPatients = accountDAL.RetrieveAllPatients(term);
-                List<Account> accountsCurrentPatients = accountDAL.RetrieveCurrentPatients(GetNRIC());
-
-                // remove current user
-                accountsAllPatients.RemoveAll(x => x.nric == GetNRIC());
-
-                foreach (Account account in accountsAllPatients)
-                {
-                    if (!accountsCurrentPatients.Any(x => x.nric.Equals(account.nric)))
-                    {
-                        account.acceptNewRequest = true;
-                    }
-                }
-
-                return accountsAllPatients;
-            }
-
-            return null;
-        }
-
-        #endregion
-
         #region Requires Admin Account
         public void Register(string nric, string password, string associatedTokenID, string firstName, string lastName, string countryOfBirth,
             string nationality, string sex, string gender, string martialStatus, string address, string addressPostalCode, string email,
@@ -334,7 +303,7 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
             {
-                //new RecordBLL().DeleteRecords(nric);
+                new RecordBLL().DeleteRecords(nric);
                 accountDAL.Delete(nric);
             }
         }

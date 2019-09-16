@@ -85,85 +85,6 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
-        /// Retrieve all Accounts who are patients
-        /// </summary>
-        public List<Account> RetrieveAllPatients(string term)
-        {
-            List<Account> result = new List<Account>();
-
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"SELECT a.nric
-                    FROM account a 
-                    INNER JOIN account_patient ap ON a.nric = ap.nric
-                    WHERE a.`nric` LIKE @term AND a.status > 0 AND ap.status = 1
-                    ORDER BY nric
-                    LIMIT 50;";
-
-                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
-
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Account account = new Account
-                            {
-                                nric = Convert.ToString(reader["nric"])
-                            };
-
-                            result.Add(account);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Retrieve all of therapist's existing patients
-        /// </summary>
-        public List<Account> RetrieveCurrentPatients(string nric)
-        {
-            List<Account> result = new List<Account>();
-
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"SELECT DISTINCT patient_nric
-                    FROM record_type_permission
-                    WHERE therapist_nric = @nric;";
-
-                cmd.Parameters.AddWithValue("@nric", nric);
-
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Account account = new Account
-                            {
-                                nric = Convert.ToString(reader["patient_nric"])
-                            };
-
-                            result.Add(account);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Retrieve Account registered in the database
         /// </summary>
         public Account Retrieve(string nric)
@@ -174,7 +95,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"SELECT a.`nric`, a.`name_first`, a.`birth_country`, a.`nationality`, a.`sex`, a.`gender`,
                     a.`martial_status`, a.`name_last`, a.`address`, a.`address_postal_code`, a.`email`, a.`contact_number`, a.`create_time`,
-                    a.last_1FA_login, a.`last_full_login`, a.`date_of_birth`, a.`status`, a.`associated_token_id`, a.`associated_device_id`, 
+                    a.`last_full_login`, a.`date_of_birth`, a.`status`, a.`associated_token_id`, a.`associated_device_id`, 
                     ap.nok_name, ap.nok_contact_number,
                     at.job_title as therapist_job_title, at.department as therapist_department,
                     ar.job_title as researcher_job_title, ar.department as researcher_department,
@@ -224,8 +145,6 @@ namespace NUSMed_WebApp.Classes.DAL
                                 researcherJobTitle = Convert.ToString(reader["researcher_job_title"]),
                                 researcherDepartment = Convert.ToString(reader["researcher_department"]),
                             };
-                            result.last1FALogin = reader["last_1FA_login"] == DBNull.Value ? null :
-                               (DateTime?)Convert.ToDateTime(reader["last_1FA_login"]);
 
                             result.lastFullLogin = reader["last_full_login"] == DBNull.Value ? null :
                                    (DateTime?)Convert.ToDateTime(reader["last_full_login"]);
@@ -649,8 +568,6 @@ namespace NUSMed_WebApp.Classes.DAL
                                 researcherStatus = Convert.ToInt32(reader["researcher_status"]),
                                 adminStatus = Convert.ToInt32(reader["admin_status"]),
                             };
-                            //result.last1FALogin = reader["last_1FA_login"] == DBNull.Value ? null :
-                            //   (DateTime?)Convert.ToDateTime(reader["last_1FA_login"]);
 
                             result.lastFullLogin = reader["last_full_login"] == DBNull.Value ? null :
                                (DateTime?)Convert.ToDateTime(reader["last_full_login"]);
@@ -825,7 +742,7 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
-        /// Insert a Emergency relationship between Patient and Therapist
+        /// Insert a Emergency relationship between Therapist and Patient
         /// </summary>
         public void InsertEmergencyTherapist(string patientNRIC, string therapistNRIC)
         {
@@ -870,7 +787,6 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
-
         public void UpdateContactDetails(string nric, string address, string addressPostalCode, string email, string contactNumber)
         {
             using (MySqlCommand cmd = new MySqlCommand())
@@ -950,6 +866,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
+
         #region Status
         public void UpdateStatusDisable(string nric)
         {
@@ -1210,25 +1127,6 @@ namespace NUSMed_WebApp.Classes.DAL
             }
         }
         #endregion
-
-        public void Update1FALogin(string nric, DateTime dateTime)
-        {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"UPDATE account 
-                            SET last_1FA_login = @dateTime
-                            WHERE nric = @nric;";
-
-                cmd.Parameters.AddWithValue("@nric", nric);
-                cmd.Parameters.AddWithValue("@dateTime", dateTime);
-
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
 
         public void UpdateFullLogin(string nric, DateTime dateTime)
         {

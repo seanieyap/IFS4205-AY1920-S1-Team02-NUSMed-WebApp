@@ -2,6 +2,7 @@
 using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 
@@ -28,6 +29,11 @@ namespace NUSMed_WebApp.Classes.BLL
             string nric = AccountBLL.GetNRIC();
             //             string fileServerPath = ConfigurationManager.AppSettings["fileServerPath"];
 
+            if (!record.type.isContent)
+            {
+                // upload file
+                UploadRecord();
+            }
             recordDAL.Insert(record, nric, nric);
             //{
             // retrieve associated records
@@ -36,6 +42,12 @@ namespace NUSMed_WebApp.Classes.BLL
 
             //return false;
         }
+        private void UploadRecord()
+        {
+            string fileServerPath = ConfigurationManager.AppSettings["fileServerPath"];
+
+        }
+
 
         public bool DeleteRecords(string nric)
         {

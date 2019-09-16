@@ -31,7 +31,11 @@ namespace NUSMed_WebApp.Classes.DAL
                 using (cmd.Connection = connection)
                 {
                     cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch { }
                 }
             }
         }

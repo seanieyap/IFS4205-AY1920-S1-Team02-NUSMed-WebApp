@@ -43,7 +43,6 @@ namespace NUSMed_WebApp
             ContactNumber.Value = account.contactNumber;
 
             // Account Details
-            Last1FALogin.Value = account.last1FALogin.ToString();
             LastFullLogin.Value = account.lastFullLogin.ToString();
             Registration.Value = account.createTime.ToString();
 

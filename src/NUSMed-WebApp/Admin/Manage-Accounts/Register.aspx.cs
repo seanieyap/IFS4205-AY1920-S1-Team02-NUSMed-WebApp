@@ -29,12 +29,12 @@ namespace NUSMed_WebApp
 
         protected void ButtonRegister_ServerClick(object sender, EventArgs e)
         {
-            string nric = inputNRIC.Value.Trim();
+            string nric = inputNRIC.Value.Trim().ToLower();
             string password = inputPassword.Value.Trim();
             string passwordConfirm = inputPasswordConfirm.Value.Trim();
             string associatedTokenID = inputAssociatedTokenID.Value.Trim();
-            string firstName = inputFirstName.Value.Trim();
-            string lastName = inputLastName.Value.Trim();
+            string firstName = inputFirstName.Value.Trim().ToLower();
+            string lastName = inputLastName.Value.Trim().ToLower();
             string countryOfBirth = inputCountryofBirth.Value.Trim();
             string nationality = inputNationality.Value.Trim();
             string sex = "";

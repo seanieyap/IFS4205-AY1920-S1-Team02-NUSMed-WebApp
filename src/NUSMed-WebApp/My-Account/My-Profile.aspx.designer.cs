@@ -148,15 +148,6 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlInputText ContactNumber;
         
         /// <summary>
-        /// Last1FALogin control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText Last1FALogin;
-        
-        /// <summary>
         /// LastFullLogin control.
         /// </summary>
         /// <remarks>

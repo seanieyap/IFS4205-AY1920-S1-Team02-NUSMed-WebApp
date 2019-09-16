@@ -1,16 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace NUSMed_WebApp.Classes.Entity
 {
     [Serializable]
     public class Account
     {
-        public string nric { get; set; }
+        private string _nric;
+        public string nric
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_nric))
+                {
+                    return _nric;
+                }
+                return _nric.ToUpper();
+            }
+            set
+            {
+                _nric = value;
+            }
+        }
         public string salt { get; set; }
         public string hash { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
+        private string _firstName;
+        public string firstName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_firstName))
+                {
+                    return _firstName;
+                }
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_firstName.ToLower());
+            }
+            set
+            {
+                _firstName = value;
+            }
+        }
+        private string _lastName;
+        public string lastName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_lastName))
+                {
+                    return _lastName;
+                }
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_lastName.ToLower());
+            }
+            set
+            {
+                _lastName = value;
+            }
+        }
         public string countryOfBirth { get; set; }
         public string nationality { get; set; }
         public string martialStatus { get; set; }
@@ -21,7 +67,6 @@ namespace NUSMed_WebApp.Classes.Entity
         public string email { get; set; }
         public string contactNumber { get; set; }
         public DateTime dateOfBirth { get; set; }
-        public DateTime? last1FALogin { get; set; } = null;
         public DateTime createTime { get; set; }
         public DateTime? lastFullLogin { get; set; } = null;
 
@@ -126,8 +171,5 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         #endregion
 
-        #region FOR Therapists
-        public bool acceptNewRequest { get; set; } = false;
-        #endregion
     }
 }
