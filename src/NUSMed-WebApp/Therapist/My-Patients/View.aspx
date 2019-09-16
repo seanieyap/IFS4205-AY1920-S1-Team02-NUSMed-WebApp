@@ -268,14 +268,13 @@
                 <ContentTemplate>
                     <div class="modal-header">
                         <h5 class="modal-title">
-                            <asp:Label ID="LabelInformationNRIC" runat="server"></asp:Label>: Personal Information</h5>
+                            <asp:Label ID="LabelInformationNRIC" runat="server"></asp:Label>: View Information</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h2 class="mt-5 mb-2 border-bottom">Personal Details</h2>
-
+                        <h2 class="mb-3 border-bottom">Personal Details</h2>
                         <div class="row text-left mb-3">
                             <div class="col-12 col-lg-6">
                                 <div class="form-group">
@@ -334,8 +333,8 @@
                         </div>
 
                         <%-- Contact Details --%>
-                        <h2 class="mt-5 mb-2 border-bottom">Contact Details</h2>
-                        <div class="row text-left">
+                        <h2 class="mb-3 border-bottom">Contact Details</h2>
+                        <div class="row text-left mb-3">
                             <div class="col-12 col-lg-6">
                                 <div class="form-group">
                                     <label>Address</label>
@@ -363,8 +362,8 @@
                         </div>
 
                         <%-- Patient Details --%>
-                        <h2 class="mt-5 mb-2 border-bottom">Next of Kin Details</h2>
-                        <div id="DivPatient" class="row text-left" runat="server">
+                        <h2 class="mb-3 border-bottom">Next of Kin Details</h2>
+                        <div class="row text-left mb-3" runat="server">
                             <div class="col-12 col-lg-6">
                                 <div class="form-group">
                                     <label>Name of Next of Kin</label>
