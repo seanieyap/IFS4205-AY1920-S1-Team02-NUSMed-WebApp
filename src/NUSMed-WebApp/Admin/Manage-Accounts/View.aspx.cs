@@ -69,7 +69,7 @@ namespace NUSMed_WebApp.Admin.Account
                     inputPersonalNationality.Value = account.nationality;
                     inputPersonalSex.Value = account.sex;
                     inputPersonalGender.Value = account.gender;
-                    inputPersonalMartialStatus.Value = account.martialStatus;
+                    inputPersonalMaritalStatus.Value = account.maritalStatus;
 
                     UpdatePanelPersonal.Update();
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open Personal Modal", "$('#modalPersonal').modal('show');", true);

@@ -12,14 +12,18 @@ namespace NUSMed_WebApp.Classes.Entity
     [Serializable]
     public abstract class RecordType
     {
+        protected const int maxTextSize = 524288;
+        protected const int maxImageSize = 5242880;
+        protected const int maxVideoSize = 52428800;
+
         public abstract string name { get; }
-        //public abstract short permissionFlag { get; }
         public abstract bool isContent { get; }        // true = record contains content not file
+        public virtual string prefix { get; }
         public virtual bool IsContentValid(string content)
         {
             return false;
         }
-        public virtual bool IsFileValid(string content)
+        public virtual bool IsFileValid(string fileExtension, int fileSize)
         {
             return false;
         }
@@ -85,6 +89,10 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             return false;
         }
+        public override string prefix
+        {
+            get { return "m"; }
+        }
     }
     [Serializable]
     public class WeightMeasurement : RecordType
@@ -113,6 +121,11 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             return false;
         }
+        public override string prefix
+        {
+            get { return "KG"; }
+        }
+
     }
     [Serializable]
     public class TemperatureReading : RecordType
@@ -141,6 +154,10 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             return false;
         }
+        public override string prefix
+        {
+            get { return "°C"; }
+        }
     }
     [Serializable]
     public class BloodPressureReading : RecordType
@@ -164,13 +181,17 @@ namespace NUSMed_WebApp.Classes.Entity
 
                 if (int.TryParse(contents[0], out systolicPressure) && int.TryParse(contents[1], out distolicPressure))
                 {
-                    if (systolicPressure >= 0 && systolicPressure <= 250 && distolicPressure >= 0 && distolicPressure <=250)
+                    if (systolicPressure >= 0 && systolicPressure <= 250 && distolicPressure >= 0 && distolicPressure <= 250)
                     {
                         return true;
                     }
                 }
             }
             return false;
+        }
+        public override string prefix
+        {
+            get { return "mmHG"; }
         }
     }
     [Serializable]
@@ -185,8 +206,12 @@ namespace NUSMed_WebApp.Classes.Entity
             get { return 16; }
         }
         public override bool isContent { get { return false; } }
-        public override bool IsFileValid(string extension)
+        public override bool IsFileValid(string extension, int size)
         {
+            if (extension.Equals(".txt") && size < maxTextSize)
+            {
+                return true;
+            }
             return false;
         }
     }
@@ -202,8 +227,12 @@ namespace NUSMed_WebApp.Classes.Entity
             get { return 32; }
         }
         public override bool isContent { get { return false; } }
-        public override bool IsFileValid(string extension)
+        public override bool IsFileValid(string extension, int size)
         {
+            if ((extension.Equals(".jpg") || extension.Equals(".jpeg") || extension.Equals(".png")) && size < maxImageSize)
+            {
+                return true;
+            }
             return false;
         }
     }
@@ -219,8 +248,12 @@ namespace NUSMed_WebApp.Classes.Entity
             get { return 64; }
         }
         public override bool isContent { get { return false; } }
-        public override bool IsFileValid(string extension)
+        public override bool IsFileValid(string extension, int size)
         {
+            if ((extension.Equals(".jpg") || extension.Equals(".jpeg") || extension.Equals(".png")) && size < maxImageSize)
+            {
+                return true;
+            }
             return false;
         }
     }
@@ -236,8 +269,13 @@ namespace NUSMed_WebApp.Classes.Entity
             get { return 128; }
         }
         public override bool isContent { get { return false; } }
-        public override bool IsFileValid(string extension)
+        public override bool IsFileValid(string extension, int size)
         {
+            if (((extension.Equals(".mp4")) && size < maxVideoSize) ||
+                ((extension.Equals(".txt")) && size < maxTextSize))
+            {
+                return true;
+            }
             return false;
         }
     }

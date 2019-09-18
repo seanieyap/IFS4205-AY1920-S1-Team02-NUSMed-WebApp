@@ -12,12 +12,42 @@ namespace NUSMed_WebApp.Patient.My_Records
 {
     public partial class New_Record : Page
     {
-        RecordBLL recordBLL = new RecordBLL();
+        private readonly RecordBLL recordBLL = new RecordBLL();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.LiActivePatientMyRecords();
             Master.LiActivePatientMyRecordNew();
+            Page.Form.Attributes.Add("enctype", "multipart/form-data");
+
+            // Show success modal 
+            if (Session["NewRecordSuccess"] != null)
+            {
+                if (string.Equals(Session["NewRecordSuccess"].ToString(), "success"))
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "open modal", "$('#modelSuccess').modal('show');", true);
+                    Session.Remove("NewRecordSuccess");
+                }
+                else if (string.Equals(Session["NewRecordSuccess"].ToString(), "error"))
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Submitting a Record');", true);
+                    Session.Remove("NewRecordSuccess");
+                }
+            }
+
+            // store FileUpload object in Session to enable persistence between postbacks. 
+            if (Session["inputFile"] == null && inputFile.HasFile)
+            {
+                Session["inputFile"] = inputFile;
+            }
+            else if (Session["inputFile"] != null && (!inputFile.HasFile))
+            {
+                inputFile = (FileUpload)Session["inputFile"];
+            }
+            else if (inputFile.HasFile)
+            {
+                Session["inputFile"] = inputFile;
+            }
 
             if (!IsPostBack)
             {
@@ -28,8 +58,8 @@ namespace NUSMed_WebApp.Patient.My_Records
         protected void buttonSubmit_ServerClick(object sender, EventArgs e)
         {
             Record record = new Record();
-            record.title = Server.HtmlEncode(inputTitle.Value.Trim());
-            record.description = Server.HtmlEncode(inputDescription.Value.Trim());
+            record.title = inputTitle.Value.Trim();
+            record.description = inputDescription.Value.Trim();
             record.content = string.Empty;
             record.type = GetSelectedType();
 
@@ -37,7 +67,7 @@ namespace NUSMed_WebApp.Patient.My_Records
             bool[] validate = Enumerable.Repeat(true, 3).ToArray();
 
             // If any fields are empty
-            if (string.IsNullOrEmpty(record.title))
+            if (record.IsTitleValid())
             {
                 validate[0] = false;
                 inputTitle.Attributes.Add("class", "form-control is-invalid");
@@ -45,7 +75,7 @@ namespace NUSMed_WebApp.Patient.My_Records
             else
                 inputTitle.Attributes.Add("class", "form-control is-valid");
 
-            if (string.IsNullOrEmpty(record.description))
+            if (record.IsDescriptionValid())
             {
                 validate[1] = false;
                 inputDescription.Attributes.Add("class", "form-control is-invalid");
@@ -62,31 +92,40 @@ namespace NUSMed_WebApp.Patient.My_Records
                     validate[2] = false;
                     inputContent.Attributes.Add("class", "form-control is-invalid");
                 }
+                else
+                {
+                    inputContent.Attributes.Add("class", "form-control is-valid");
+                }
             }
             else
             {
-                if (inputFile.HasFile)
-                {
-                    // validate extension via file extension and size
-                    // no need to care for directory traversal due to server hardening
-                    record.extension = Path.GetExtension(inputFile.PostedFile.FileName).Substring(1);
-                    if (record.IsFileValid())
-                    {
-                        validate[2] = false;
+                inputContent.Attributes.Add("class", "form-control is-invalid");
 
-                    }
+                record.fileName = Path.GetFileNameWithoutExtension(inputFile.FileName);
+                record.fileExtension = Path.GetExtension(inputFile.FileName);
+                record.fileSize = inputFile.PostedFile.ContentLength;
+
+                //record.fileMimeType = inputFile.PostedFile.ContentType;
+
+                if (!inputFile.HasFile)
+                {
+                    validate[2] = false;
+                    LabelFileError.Visible = true;
+                    LabelFileError.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>No file chosen.";
+                }
+                else if (!record.IsFileValid())
+                {
+                    validate[2] = false;
+                    LabelFileError.Visible = true;
+                    LabelFileError.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>Chosen file is of incorrect format for this type of record.";
                 }
                 else
                 {
-                    validate[2] = false;
-                    inputFile.CssClass = "custom-file-input is-invalid";
-                    LabelFileHelper.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>Please choose a file.";
-                    LabelFileHelper.CssClass = "invalid-feedback";
+                    LabelFileError.Visible = false;
                 }
             }
 
             #endregion
-
 
             if (validate.Contains(false))
             {
@@ -98,22 +137,38 @@ namespace NUSMed_WebApp.Patient.My_Records
 
                 try
                 {
-                    recordBLL.SubmitRecord(record);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "open modal", "$('#modelSuccess').modal('show')", true);
+                    if (record.type.isContent)
+                    {
+                        recordBLL.SubmitRecordContent(record);
+
+                    }
+                    else if (!record.type.isContent)
+                    {
+                        record.createTime = DateTime.Now;
+                        string fileServerPath = RecordBLL.GetFileServerPath();
+                        string fileDirectoryNameHash = RecordBLL.GetFileDirectoryNameHash();
+                        string fileNameHash = RecordBLL.GetFileNameHash(record.fileName, record.createTime);
+
+                        Directory.CreateDirectory(fileServerPath + "\\" + fileDirectoryNameHash);
+
+                        // Not possible for file with same hashed file name to exist
+                        inputFile.SaveAs(fileServerPath + "\\" + fileDirectoryNameHash + "\\" + fileNameHash);
+                        
+                        recordBLL.SubmitRecordFile(record, fileServerPath + "\\" + fileDirectoryNameHash + "\\" + fileNameHash);
+
+                    }
+
+                    Session["NewRecordSuccess"] = "success";
                 }
                 catch
                 {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Submitting a Record');", true);
+                    Session["NewRecordSuccess"] = "error";
                 }
+                Response.Redirect(Request.RawUrl);
             }
         }
 
         protected void RadioButtonType_CheckedChanged(object sender, EventArgs e)
-        {
-            SwitchPanel();
-        }
-
-        private void SwitchPanel()
         {
             bool IsContent = false;
 
@@ -157,21 +212,21 @@ namespace NUSMed_WebApp.Patient.My_Records
                 IsContent = false;
                 LabelFile.Text = "MRI";
                 LabelFileHelper.Text = "(File type: Image. Accepted formats: .jpg, .jpeg, .png)";
-                inputContent.Attributes.Add("placeholder", ".txt, .jpeg, .png");
+                inputFile.Attributes.Add("accept", ".jpg, .jpeg, .png");
             }
             else if (RadioButtonTypeXRay.Checked)
             {
                 IsContent = false;
                 LabelFile.Text = "X-Ray";
                 LabelFileHelper.Text = "(File type: Image. Accepted formats: .jpg, .jpeg, .png)";
-                inputContent.Attributes.Add("placeholder", ".txt, .jpeg, .png");
+                inputFile.Attributes.Add("accept", ".jpg, .jpeg, .png");
             }
             else if (RadioButtonTypeGait.Checked)
             {
                 IsContent = false;
                 LabelFile.Text = "Gait";
                 LabelFileHelper.Text = "(File type: Timeseries or Movie. Accepted formats: .txt, .mp4)";
-                inputContent.Attributes.Add("placeholder", ".txt, .mp4");
+                inputFile.Attributes.Add("accept", ".txt, .mp4");
             }
 
             if (IsContent)
@@ -185,8 +240,8 @@ namespace NUSMed_WebApp.Patient.My_Records
                 PanelFile.Visible = true;
             }
             UpdatePanelNewRecord.Update();
-
         }
+
         private void ResetPanel()
         {
             RadioButtonTypeHeightMeasurement.Checked = true;
@@ -226,19 +281,19 @@ namespace NUSMed_WebApp.Patient.My_Records
             return new Gait();
         }
 
-        #region UI
+        //#region UI
 
-        private void LabelMethodFileDefault()
-        {
-            LabelFileHelper.Text = "Note: Words should be seperated by commas.";
-            LabelFileHelper.CssClass = "small text-muted";
-            inputFile.CssClass = "custom-file-input";
-        }
+        //private void LabelMethodFileDefault()
+        //{
+        //    LabelFileHelper.Text = "Note: Words should be seperated by commas.";
+        //    LabelFileHelper.CssClass = "small text-muted";
+        //    inputFile.CssClass = "custom-file-input";
+        //}
 
-        private void LabelMethodListDefault()
-        {
-            inputContent.Value = string.Empty;
-        }
+        //private void LabelMethodListDefault()
+        //{
+        //    inputContent.Value = string.Empty;
+        //}
 
         //private void ShowError(string text)
         //{
@@ -246,6 +301,6 @@ namespace NUSMed_WebApp.Patient.My_Records
         //    LabelSecondaryInstructions.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>" + text;
         //}
 
-        #endregion
+        //#endregion
     }
 }

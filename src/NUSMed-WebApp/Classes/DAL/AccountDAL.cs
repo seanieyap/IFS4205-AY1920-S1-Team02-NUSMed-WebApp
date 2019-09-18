@@ -94,7 +94,7 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT a.`nric`, a.`name_first`, a.`birth_country`, a.`nationality`, a.`sex`, a.`gender`,
-                    a.`martial_status`, a.`name_last`, a.`address`, a.`address_postal_code`, a.`email`, a.`contact_number`, a.`create_time`,
+                    a.`marital_status`, a.`name_last`, a.`address`, a.`address_postal_code`, a.`email`, a.`contact_number`, a.`create_time`,
                     a.`last_full_login`, a.`date_of_birth`, a.`status`, a.`associated_token_id`, a.`associated_device_id`, 
                     ap.nok_name, ap.nok_contact_number,
                     at.job_title as therapist_job_title, at.department as therapist_department,
@@ -128,7 +128,7 @@ namespace NUSMed_WebApp.Classes.DAL
                                 gender = Convert.ToString(reader["gender"]),
                                 dateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
                                 nationality = Convert.ToString(reader["nationality"]),
-                                martialStatus = Convert.ToString(reader["martial_status"]),
+                                maritalStatus = Convert.ToString(reader["marital_status"]),
                                 email = Convert.ToString(reader["email"]),
                                 address = Convert.ToString(reader["address"]),
                                 addressPostalCode = Convert.ToString(reader["address_postal_code"]),
@@ -166,7 +166,7 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT nric, name_first, name_last, birth_country, nationality, sex, gender,
-                    martial_status, date_of_birth
+                    marital_status, date_of_birth
                     FROM account
                     WHERE nric = @nric;";
 
@@ -191,7 +191,7 @@ namespace NUSMed_WebApp.Classes.DAL
                                 gender = Convert.ToString(reader["gender"]),
                                 dateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
                                 nationality = Convert.ToString(reader["nationality"]),
-                                martialStatus = Convert.ToString(reader["martial_status"])
+                                maritalStatus = Convert.ToString(reader["marital_status"])
                             };
                         }
                     }
@@ -582,6 +582,41 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve status of specific account registered in the database
         /// </summary>
+        public DateTime RetrieveCreateTime(string nric)
+        {
+            DateTime result = new DateTime();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT create_time
+                    FROM account 
+                    WHERE nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            DateTime status = Convert.ToDateTime(reader["create_time"]);
+
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Retrieve status of specific account registered in the database
+        /// </summary>
         public Account RetrieveStatusInformation(string nric)
         {
             Account result = new Account();
@@ -701,9 +736,9 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"INSERT INTO `account`
                     (`nric`, `salt`, `hash`, `associated_token_id`, `name_first`, `name_last`, `birth_country`, `nationality`, 
-                    `martial_status`, `sex`, `gender`, `address`, `address_postal_code`, `email`, `contact_number`, `date_of_birth`, `status`)
+                    `marital_status`, `sex`, `gender`, `address`, `address_postal_code`, `email`, `contact_number`, `date_of_birth`, `status`)
                     VALUES
-                    (@nric, @salt, @hash, @associated_token_id, @firstName, @lastName, @birthCountry, @nationality, @martialStatus, @sex, 
+                    (@nric, @salt, @hash, @associated_token_id, @firstName, @lastName, @birthCountry, @nationality, @MaritalStatus, @sex, 
                     @gender, @address, @addressPostalCode, @email, @contactNumber, @dateOfBirth, @status);
 
                     INSERT INTO `account_patient` (`nric`)
@@ -722,7 +757,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.Parameters.AddWithValue("@lastName", account.lastName);
                 cmd.Parameters.AddWithValue("@birthCountry", account.countryOfBirth);
                 cmd.Parameters.AddWithValue("@nationality", account.nationality);
-                cmd.Parameters.AddWithValue("@martialStatus", account.martialStatus);
+                cmd.Parameters.AddWithValue("@MaritalStatus", account.maritalStatus);
                 cmd.Parameters.AddWithValue("@sex", account.sex);
                 cmd.Parameters.AddWithValue("@gender", account.gender);
                 cmd.Parameters.AddWithValue("@address", account.address);

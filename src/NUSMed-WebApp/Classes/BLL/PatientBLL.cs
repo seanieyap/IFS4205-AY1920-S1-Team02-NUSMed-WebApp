@@ -61,7 +61,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-        public void RequestApprove(string therapistNRIC, short permission)
+        public void ApproveRequest(string therapistNRIC, short permission)
         {
             if (AccountBLL.IsPatient())
             {

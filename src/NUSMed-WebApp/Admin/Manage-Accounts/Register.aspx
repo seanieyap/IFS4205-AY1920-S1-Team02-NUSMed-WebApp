@@ -497,8 +497,8 @@
                             <label class="form-check-label" for="<%= RadioButtonGenderFemale.ClientID %>">Female</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <asp:RadioButton ID="RadioButtonGenderIntersex" CssClass="form-check-input" runat="server" GroupName="RadioButtonGender" />
-                            <label class="form-check-label" for="<%= RadioButtonGenderIntersex.ClientID %>">Intersex</label>
+                            <asp:RadioButton ID="RadioButtonGenderTrans" CssClass="form-check-input" runat="server" GroupName="RadioButtonGender" />
+                            <label class="form-check-label" for="<%= RadioButtonGenderTrans.ClientID %>">Trans</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <asp:RadioButton ID="RadioButtonGenderOther" CssClass="form-check-input" runat="server" GroupName="RadioButtonGender" />
@@ -513,23 +513,23 @@
 
                 <div class="col-12">
                     <div class="form-group">
-                        <label>Martial Status</label>
+                        <label>Marital Status</label>
                         <br />
                         <div class="form-check form-check-inline">
-                            <asp:RadioButton ID="RadioButtonMartialStatusSingle" CssClass="form-check-input" runat="server" GroupName="RadioButtonMartialStatus" Checked="true" />
-                            <label class="form-check-label" for="<%= RadioButtonMartialStatusSingle.ClientID %>">Single</label>
+                            <asp:RadioButton ID="RadioButtonMaritalStatusSingle" CssClass="form-check-input" runat="server" GroupName="RadioButtonMaritalStatus" Checked="true" />
+                            <label class="form-check-label" for="<%= RadioButtonMaritalStatusSingle.ClientID %>">Single</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <asp:RadioButton ID="RadioButtonMartialStatusMarried" CssClass="form-check-input" runat="server" GroupName="RadioButtonMartialStatus" />
-                            <label class="form-check-label" for="<%= RadioButtonMartialStatusMarried.ClientID %>">Married</label>
+                            <asp:RadioButton ID="RadioButtonMaritalStatusMarried" CssClass="form-check-input" runat="server" GroupName="RadioButtonMaritalStatus" />
+                            <label class="form-check-label" for="<%= RadioButtonMaritalStatusMarried.ClientID %>">Married</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <asp:RadioButton ID="RadioButtonMartialStatusDivorced" CssClass="form-check-input" runat="server" GroupName="RadioButtonMartialStatus" />
-                            <label class="form-check-label" for="<%= RadioButtonMartialStatusDivorced.ClientID %>">Divorced</label>
+                            <asp:RadioButton ID="RadioButtonMaritalStatusDivorced" CssClass="form-check-input" runat="server" GroupName="RadioButtonMaritalStatus" />
+                            <label class="form-check-label" for="<%= RadioButtonMaritalStatusDivorced.ClientID %>">Divorced</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <asp:RadioButton ID="RadioButtonMartialStatusWidowed" CssClass="form-check-input" runat="server" GroupName="RadioButtonMartialStatus" />
-                            <label class="form-check-label" for="<%= RadioButtonMartialStatusWidowed.ClientID %>">Widowed</label>
+                            <asp:RadioButton ID="RadioButtonMaritalStatusWidowed" CssClass="form-check-input" runat="server" GroupName="RadioButtonMaritalStatus" />
+                            <label class="form-check-label" for="<%= RadioButtonMaritalStatusWidowed.ClientID %>">Widowed</label>
                         </div>
                     </div>
                 </div>

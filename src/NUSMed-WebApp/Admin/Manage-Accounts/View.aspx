@@ -203,8 +203,8 @@
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
-                                        <label>Martial Status</label>
-                                        <input id="inputPersonalMartialStatus" type="text" class="form-control" readonly runat="server">
+                                        <label>Marital Status</label>
+                                        <input id="inputPersonalMaritalStatus" type="text" class="form-control" readonly runat="server">
                                     </div>
                                 </div>
                             </div>

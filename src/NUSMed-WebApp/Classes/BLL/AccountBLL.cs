@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
@@ -74,6 +75,16 @@ namespace NUSMed_WebApp.Classes.BLL
             return accountDAL.RetrieveStatus(nric);
         }
 
+        public DateTime GetCreateTime()
+        {
+            if (IsAuthenticated())
+            {
+                return accountDAL.RetrieveCreateTime(GetNRIC());
+            }
+
+            return DateTime.Now;
+        }
+
         #region Requires Authenticated Account
         public Account GetStatus()
         {
@@ -85,7 +96,9 @@ namespace NUSMed_WebApp.Classes.BLL
         public static string GetNRIC()
         {
             if (IsAuthenticated())
-                return HttpContext.Current.User.Identity.Name;
+            {
+                return HttpContext.Current.User.Identity.Name.ToUpper();
+            }
 
             return null;
         }
@@ -240,7 +253,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
         #region Requires Admin Account
         public void Register(string nric, string password, string associatedTokenID, string firstName, string lastName, string countryOfBirth,
-            string nationality, string sex, string gender, string martialStatus, string address, string addressPostalCode, string email,
+            string nationality, string sex, string gender, string MaritalStatus, string address, string addressPostalCode, string email,
             string contactNumber, DateTime dateOfBirth, List<string> roles)
         {
             if (!IsAdministrator())
@@ -260,7 +273,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 nationality = nationality,
                 sex = sex,
                 gender = gender,
-                martialStatus = martialStatus,
+                maritalStatus = MaritalStatus,
                 address = address,
                 addressPostalCode = addressPostalCode,
                 email = email,

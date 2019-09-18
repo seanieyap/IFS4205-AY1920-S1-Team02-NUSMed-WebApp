@@ -20,7 +20,9 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT r.id, r.creator_nric, r.description, r.type, r.content, r.file_type, r.title, r.path, r.create_time, a.name_first as creator_name_first, a.name_last as creator_name_last
+                cmd.CommandText = @"SELECT r.id, r.creator_nric, r.description, r.type, r.content, r.title, 
+                    r.file_name, r.file_extension, r.create_time, 
+                    a.name_first as creator_name_first, a.name_last as creator_name_last
                     FROM record r
                     INNER JOIN account a ON a.nric = r.creator_nric
                     WHERE patient_nric = @patientNRIC;";
@@ -43,9 +45,9 @@ namespace NUSMed_WebApp.Classes.DAL
                                 description = Convert.ToString(reader["description"]),
                                 type = RecordType.Get(Convert.ToString(reader["type"])),
                                 content = Convert.ToString(reader["content"]),
-                                fileType = Convert.ToString(reader["file_type"]),
                                 title = Convert.ToString(reader["title"]),
-                                path = Convert.ToString(reader["path"]),
+                                fileName = Convert.ToString(reader["file_name"]),
+                                fileExtension = Convert.ToString(reader["file_extension"]),
                                 createTime = Convert.ToDateTime(reader["create_time"]),
                                 creatorFirstName = Convert.ToString(reader["creator_name_first"]),
                                 creatorLastName = Convert.ToString(reader["creator_name_last"])
@@ -97,15 +99,19 @@ namespace NUSMed_WebApp.Classes.DAL
 
             return result;
         }
+
         #region Insertions
-        public void Insert(Record record, string patientNRIC, string creatorNRIC)
+        /// <summary>
+        /// Insert new record
+        /// </summary>
+        public void InsertContent(Record record, string patientNRIC, string creatorNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"INSERT INTO record
-                    (patient_nric, creator_nric, title, description, content, type)
+                    (patient_nric, creator_nric, title, description, type, content)
                     VALUES
-                    (@patientNRIC, @creatorNRIC, @title, @description, @content, @type);";
+                    (@patientNRIC, @creatorNRIC, @title, @description, @type, @content);";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
                 cmd.Parameters.AddWithValue("@creatorNRIC", creatorNRIC);
@@ -121,7 +127,39 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
+        /// <summary>
+        /// Insert new record
+        /// </summary>
+        public void InsertFile(Record record, string patientNRIC, string creatorNRIC)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"INSERT INTO record
+                    (patient_nric, creator_nric, title, description, type,
+                    file_name, file_extension, file_size, file_checksum, create_time)
+                    VALUES
+                    (@patientNRIC, @creatorNRIC, @title, @description, @type,
+                    @fileName, @fileExtension, @fileSize, @fileChecksum, @createTime);";
 
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@creatorNRIC", creatorNRIC);
+                cmd.Parameters.AddWithValue("@title", record.title);
+                cmd.Parameters.AddWithValue("@description", record.description);
+                cmd.Parameters.AddWithValue("@type", record.type.name);
+
+                cmd.Parameters.AddWithValue("@fileName", record.fileName);
+                cmd.Parameters.AddWithValue("@fileExtension", record.fileExtension);
+                cmd.Parameters.AddWithValue("@fileSize", record.fileSize);
+                cmd.Parameters.AddWithValue("@fileChecksum", record.fileChecksum);
+                cmd.Parameters.AddWithValue("@createTime", record.createTime);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         #endregion
 
         #region Deletions

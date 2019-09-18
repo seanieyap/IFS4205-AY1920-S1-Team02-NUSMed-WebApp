@@ -10,6 +10,19 @@ namespace NUSMed_WebApp.Classes.BLL
     {
         private readonly TherapistDAL therapistDAL = new TherapistDAL();
         #region Requires Therapist Account
+        public Entity.Patient GetPatientInformation(string patientNRIC)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+
+                if (therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).permissionApproved > 0)
+                {
+                    return therapistDAL.RetrievePatientInformation(patientNRIC, AccountBLL.GetNRIC());
+                }
+            }
+
+            return null;
+        }
         public List<Entity.Patient> GetUnrequestedPatients(string term)
         {
             if (AccountBLL.IsTherapist())
@@ -65,7 +78,6 @@ namespace NUSMed_WebApp.Classes.BLL
                 therapistDAL.UpdateRecordTypeRequest(patientNRIC, AccountBLL.GetNRIC(), permission);
             }
         }
-
         #endregion
     }
 }

@@ -11,7 +11,7 @@ namespace NUSMed_WebApp
 {
     public partial class My_Profile : Page
     {
-        AccountBLL accountBLL = new AccountBLL();
+        private readonly AccountBLL accountBLL = new AccountBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.LiActiveMyProfile();
@@ -34,7 +34,7 @@ namespace NUSMed_WebApp
             Nationality.Value = account.nationality;
             Sex.Value = account.sex;
             Gender.Value = account.gender;
-            MartialStatus.Value = account.martialStatus;
+            MaritalStatus.Value = account.maritalStatus;
 
             // Contact Details
             Address.Value = account.address;

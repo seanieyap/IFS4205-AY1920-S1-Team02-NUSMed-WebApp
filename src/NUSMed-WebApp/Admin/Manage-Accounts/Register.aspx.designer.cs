@@ -112,13 +112,13 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.WebControls.RadioButton RadioButtonGenderFemale;
         
         /// <summary>
-        /// RadioButtonGenderIntersex control.
+        /// RadioButtonGenderTrans control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonGenderIntersex;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonGenderTrans;
         
         /// <summary>
         /// RadioButtonGenderOther control.
@@ -139,40 +139,40 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.WebControls.RadioButton RadioButtonGenderPreferNot;
         
         /// <summary>
-        /// RadioButtonMartialStatusSingle control.
+        /// RadioButtonMaritalStatusSingle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonMartialStatusSingle;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonMaritalStatusSingle;
         
         /// <summary>
-        /// RadioButtonMartialStatusMarried control.
+        /// RadioButtonMaritalStatusMarried control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonMartialStatusMarried;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonMaritalStatusMarried;
         
         /// <summary>
-        /// RadioButtonMartialStatusDivorced control.
+        /// RadioButtonMaritalStatusDivorced control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonMartialStatusDivorced;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonMaritalStatusDivorced;
         
         /// <summary>
-        /// RadioButtonMartialStatusWidowed control.
+        /// RadioButtonMaritalStatusWidowed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton RadioButtonMartialStatusWidowed;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonMaritalStatusWidowed;
         
         /// <summary>
         /// inputAddress control.

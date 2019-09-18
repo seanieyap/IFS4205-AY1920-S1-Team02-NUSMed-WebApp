@@ -94,13 +94,13 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlInputText Gender;
         
         /// <summary>
-        /// MartialStatus control.
+        /// MaritalStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText MartialStatus;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText MaritalStatus;
         
         /// <summary>
         /// buttonContactDetailsEdit control.

@@ -29,7 +29,7 @@ namespace NUSMed_WebApp
 
         protected void ButtonRegister_ServerClick(object sender, EventArgs e)
         {
-            string nric = inputNRIC.Value.Trim().ToLower();
+            string nric = inputNRIC.Value.Trim().ToUpper();
             string password = inputPassword.Value.Trim();
             string passwordConfirm = inputPasswordConfirm.Value.Trim();
             string associatedTokenID = inputAssociatedTokenID.Value.Trim();
@@ -47,19 +47,19 @@ namespace NUSMed_WebApp
                 gender = "Male";
             else if (RadioButtonGenderFemale.Checked)
                 gender = "Female";
-            else if (RadioButtonGenderIntersex.Checked)
-                gender = "Intersex";
+            else if (RadioButtonGenderTrans.Checked)
+                gender = "Trans";
             else if (RadioButtonGenderOther.Checked)
                 gender = "Other";
-            string martialStatus = "Widowed";
-            if (RadioButtonMartialStatusSingle.Checked)
-                martialStatus = "Single";
-            if (RadioButtonMartialStatusMarried.Checked)
-                martialStatus = "Married";
-            if (RadioButtonMartialStatusDivorced.Checked)
-                martialStatus = "Divorced";
-            if (RadioButtonMartialStatusMarried.Checked)
-                martialStatus = "Married";
+            string maritalStatus = "Widowed";
+            if (RadioButtonMaritalStatusSingle.Checked)
+                maritalStatus = "Single";
+            if (RadioButtonMaritalStatusMarried.Checked)
+                maritalStatus = "Married";
+            if (RadioButtonMaritalStatusDivorced.Checked)
+                maritalStatus = "Divorced";
+            if (RadioButtonMaritalStatusWidowed.Checked)
+                maritalStatus = "Married";
             string address = inputAddress.Value.Trim();
             string addressPostalCode = inputPostalCode.Value.Trim();
             string email = inputEmail.Value.Trim();
@@ -198,7 +198,7 @@ namespace NUSMed_WebApp
 
                 try {
                     accountBLL.Register(nric, password, associatedTokenID, firstName, lastName, countryOfBirth, nationality, sex, gender,
-                        martialStatus, address, addressPostalCode, email, contactNumber, dateOfBirth, roles);
+                        maritalStatus, address, addressPostalCode, email, contactNumber, dateOfBirth, roles);
                     ScriptManager.RegisterStartupScript(this, GetType(), "open modal", "$('#modelSuccess').modal('show')", true);
                 }
                 catch

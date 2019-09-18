@@ -274,86 +274,86 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h2 class="mb-3 border-bottom">Personal Details</h2>
+                        <h4 class="mb-3 border-bottom">Personal Details</h2>
                         <div class="row text-left mb-3">
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>NRIC</label>
                                     <input id="inputNRIC" type="text" class="form-control" readonly runat="server" disabled="disabled">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Date of Birth</label>
                                     <input id="DateofBirth" type="text" class="form-control" readonly runat="server" disabled="disabled">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>First Name</label>
                                     <input id="FirstName" type="text" class="form-control" readonly runat="server" disabled="disabled">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Last Name</label>
                                     <input id="LastName" type="text" class="form-control" readonly runat="server">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Country of Birth</label>
                                     <input id="CountryofBirth" type="text" class="form-control" readonly runat="server">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Nationality</label>
                                     <input id="Nationality" type="text" class="form-control" readonly runat="server">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Sex</label>
                                     <input id="Sex" type="text" class="form-control" readonly runat="server">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Gender</label>
                                     <input id="Gender" type="text" class="form-control" readonly runat="server">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>Martial Status</label>
-                                    <input id="MartialStatus" type="text" class="form-control" readonly runat="server">
+                                    <label>Marital Status</label>
+                                    <input id="MaritalStatus" type="text" class="form-control" readonly runat="server">
                                 </div>
                             </div>
                         </div>
 
                         <%-- Contact Details --%>
-                        <h2 class="mb-3 border-bottom">Contact Details</h2>
+                        <h4 class="mb-3 border-bottom">Contact Details</h4>
                         <div class="row text-left mb-3">
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Address</label>
                                     <input id="Address" type="text" class="form-control" readonly runat="server">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Postal Code</label>
                                     <input id="PostalCode" type="text" class="form-control" readonly runat="server">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Email Address</label>
                                     <input id="EmailAddress" type="text" class="form-control" readonly runat="server">
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Contact Number</label>
                                     <input id="ContactNumber" type="text" class="form-control" readonly runat="server">
@@ -362,15 +362,15 @@
                         </div>
 
                         <%-- Patient Details --%>
-                        <h2 class="mb-3 border-bottom">Next of Kin Details</h2>
+                        <h4 class="mb-3 border-bottom">Next of Kin Details</h4>
                         <div class="row text-left mb-3" runat="server">
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Name of Next of Kin</label>
                                     <input id="NOKName" type="text" class="form-control" runat="server" readonly>
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Contact Number of Next of Kin</label>
                                     <input id="NOKContact" type="text" class="form-control" runat="server" readonly>

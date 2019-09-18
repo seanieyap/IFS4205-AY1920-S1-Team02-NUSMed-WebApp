@@ -148,13 +148,13 @@ namespace NUSMed_WebApp.Admin.Account {
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputPersonalGender;
         
         /// <summary>
-        /// inputPersonalMartialStatus control.
+        /// inputPersonalMaritalStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText inputPersonalMartialStatus;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputPersonalMaritalStatus;
         
         /// <summary>
         /// UpdatePanelContact control.

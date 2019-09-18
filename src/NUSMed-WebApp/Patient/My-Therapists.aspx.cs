@@ -181,7 +181,7 @@ namespace NUSMed_WebApp.Patient
                     permission += Gait.permissionFlag;
                 }
 
-                patientBLL.RequestApprove(nric, permission);
+                patientBLL.ApproveRequest(nric, permission);
                 Bind_GridViewTherapist();
                 Update_UpdatePanelPermissions(nric);
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Request Approved, Permissions of " + nric + " has been Updated.');", true);

@@ -1,9 +1,15 @@
 ﻿<%@ Page Title="New Record" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="New-Record.aspx.cs" Inherits="NUSMed_WebApp.Patient.My_Records.New_Record" %>
 
+<%--<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>--%>
+
 <%@ MasterType VirtualPath="~/site.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/bs-custom-file-input.min.js") %>
+    </asp:PlaceHolder>
+
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-file-medical"></i>New Record</h1>
@@ -20,7 +26,7 @@
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="form-check form-check-inline">
                         <asp:RadioButton ID="RadioButtonTypeHeightMeasurement" CssClass="form-check-input" runat="server" GroupName="recordType"
-                            ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" />
+                            ClientIDMode="Static" AutoPostBack="true" OnCheckedChanged="RadioButtonType_CheckedChanged" Checked="true" />
                         <label class="form-check-label" for="<%= RadioButtonTypeHeightMeasurement.ClientID %>">Height Measurement</label>
                     </div>
                 </div>
@@ -86,22 +92,19 @@
                             <asp:Label ID="LabelContentHelper" class="text-muted small" runat="server" Text="(Format: Centimetre, cm. Values: 0 - 280)"></asp:Label></label>
                         <input id="inputContent" type="text" class="form-control" runat="server" placeholder="cm">
                         <div class="invalid-feedback" runat="server">
-                            <i class="fas fa-fw fa-exclamation-circle"></i> Content is Invalid.
+                            <i class="fas fa-fw fa-exclamation-circle"></i>Content is Invalid.
                         </div>
-
-                        <%--                        <asp:TextBox ID="inputMethodContent" CssClass="form-control" runat="server"></asp:TextBox>
-                        <asp:Label ID="LabelMethodContent" CssClass="small text-muted" for="<%= inputMethodContent.ClientID %>" runat="server" Text="Note: something."></asp:Label>--%>
                     </div>
                 </asp:Panel>
                 <asp:Panel ID="PanelFile" class="col-12" runat="server" Visible="false">
                     <div class="form-group mt-2 mb-0">
-                        <label for="inputContent">
+                        <label for="inputFile">
                             <asp:Label ID="LabelFile" runat="server" Text="Height Measurement"></asp:Label>
                             <asp:Label ID="LabelFileHelper" class="text-muted small" runat="server"></asp:Label></label>
                         <div class="custom-file">
                             <asp:FileUpload ID="inputFile" CssClass="custom-file-input" runat="server" />
-                            <label class="custom-file-label" for="<%= inputFile.ClientID %>">Choose File</label>
-                            <%--<asp:Label ID="LabelFileHelper" CssClass="small text-muted" runat="server" Text="Note: something."></asp:Label>--%>
+                            <label class="custom-file-label" for="<%= inputFile.ClientID %>">Choose File...</label>
+                            <asp:Label ID="LabelFileError" CssClass="small text-danger" runat="server" Visible="false"></asp:Label>
                         </div>
                     </div>
                 </asp:Panel>
@@ -113,7 +116,7 @@
             <div class="row pb-3">
                 <div class="col-12">
                     <div class="form-group">
-                        <label for="inputTitle">Title</label>
+                        <label for="inputTitle">Title <span class="text-muted small">(Maximum of 45 characters)</span></label>
                         <input id="inputTitle" type="text" class="form-control" placeholder="Title" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Title is invalid.
@@ -122,7 +125,7 @@
                 </div>
                 <div class="col-12">
                     <div class="form-group">
-                        <label for="inputDescription">Description</label>
+                        <label for="inputDescription">Description <span class="text-muted small">(Maximum of 120 characters)</span></label>
                         <input id="inputDescription" type="text" class="form-control" placeholder="Description" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Description is invalid.
@@ -133,8 +136,10 @@
 
             <div class="row mt-3">
                 <div class="col-12 text-left">
-                    <button type="submit" id="buttonSubmit" class="btn btn-success mr-auto ml-auto" runat="server" onserverclick="buttonSubmit_ServerClick">Register</button>
-                    <span id="spanMessage" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>There are errors in the form.</span>
+                    <button type="submit" id="buttonSubmit" class="btn btn-success mr-auto ml-auto" runat="server" onserverclick="buttonSubmit_ServerClick">Submit</button>
+                    <span id="spanMessage" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false">
+                        <i class="fas fa-exclamation-circle fa-fw"></i>There are errors in the form.
+                    </span>
                 </div>
             </div>
         </ContentTemplate>
@@ -147,6 +152,7 @@
             <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeMRI" />
             <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeXRay" />
             <asp:AsyncPostBackTrigger ControlID="RadioButtonTypeGait" />
+            <asp:PostBackTrigger ControlID="buttonSubmit" />
         </Triggers>
     </asp:UpdatePanel>
     <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelNewRecord" DisplayAfter="0" DynamicLayout="false">
@@ -155,7 +161,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
 
-    <div id="modelSuccess" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div id="modelSuccess" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -166,8 +172,8 @@
                     <p class="display-3">success</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success mr-auto" runat="server" onserverclick="buttonRefresh_ServerClick">Submit New Record</button>
-                    <a class="btn btn-secondary" href="~/Patient/My-Records/View" role="button" runat="server">View My Records</a>
+                    <a class="btn btn-secondary mr-auto" href="~/Patient/My-Records/View" role="button" runat="server">View your Records</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -175,4 +181,12 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
+    <script type="text/javascript">
+        function pageLoad(sender, args) {
+            $(function () {
+                // init file input
+                bsCustomFileInput.init();
+            });
+        }
+    </script>
 </asp:Content>

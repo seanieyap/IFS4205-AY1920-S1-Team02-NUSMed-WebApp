@@ -152,7 +152,8 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"UPDATE record_type_permission
-                    SET permission_approved = @permissionApproved, permission_unapproved = 0
+                    SET permission_approved = @permissionApproved, 
+                    permission_unapproved = 0, approved_time = NOW() 
                     WHERE patient_nric = @patientNRIC AND therapist_nric = @therapistNRIC;";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);

@@ -10,11 +10,12 @@ using System.Web.UI.WebControls;
 
 namespace NUSMed_WebApp
 {
-    public partial class RoleSelection : System.Web.UI.Page
+    public partial class RoleSelection : Page
     {
+        private readonly AccountBLL accountBLL = new AccountBLL();
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            AccountBLL accountBLL = new AccountBLL();
             Account account = accountBLL.GetStatus();
 
             if (account.patientStatus == 1)
@@ -68,7 +69,6 @@ namespace NUSMed_WebApp
             try
             {
                 // Check if account has role
-                AccountBLL accountBLL = new AccountBLL();
                 Account account = accountBLL.GetStatus();
 
                 if (!account.roles.Contains(role))

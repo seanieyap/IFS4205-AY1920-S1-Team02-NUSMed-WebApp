@@ -19,58 +19,58 @@
                 <button type="button" class="btn btn-sm btn-secondary float-right disabled" data-toggle="tooltip" title="May not be edited" runat="server"><i class="fas fa-fw fa-edit"></i>Edit</button>
             </h2>
             <div class="row text-left mb-3">
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>NRIC</label>
                         <input id="nric" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Date of Birth</label>
                         <input id="DateofBirth" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>First Name</label>
                         <input id="FirstName" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Last Name</label>
                         <input id="LastName" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Country of Birth</label>
                         <input id="CountryofBirth" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Nationality</label>
                         <input id="Nationality" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Sex</label>
                         <input id="Sex" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Gender</label>
                         <input id="Gender" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
-                        <label>Martial Status</label>
-                        <input id="MartialStatus" type="text" class="form-control" readonly runat="server">
+                        <label>Marital Status</label>
+                        <input id="MaritalStatus" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
             </div>
@@ -80,25 +80,25 @@
                 <button id="buttonContactDetailsEdit" type="button" class="btn btn-sm btn-warning float-right" runat="server" onserverclick="buttonContactDetailsEdit_ServerClick"><i class="fas fa-fw fa-edit"></i>Edit</button>
             </h2>
             <div class="row text-left">
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Address</label>
                         <input id="Address" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Postal Code</label>
                         <input id="PostalCode" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Email Address</label>
                         <input id="EmailAddress" type="text" class="form-control" readonly runat="server">
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Contact Number</label>
                         <input id="ContactNumber" type="text" class="form-control" readonly runat="server">
@@ -111,13 +111,13 @@
                 <button type="button" class="btn btn-sm btn-secondary float-right disabled" data-toggle="tooltip" title="May not be edited" runat="server"><i class="fas fa-fw fa-edit"></i>Edit</button>
             </h2>
             <div class="row text-left">
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Last Full Login <span class="text-muted small">(Finished entire login process)</span></label>
                         <input id="LastFullLogin" type="text" class="form-control" runat="server" readonly>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Registered On</label>
                         <input id="Registration" type="text" class="form-control" runat="server" readonly>
@@ -130,13 +130,13 @@
                 <button id="buttonPatientDetailsEdit" type="button" class="btn btn-sm btn-warning float-right" runat="server" onserverclick="buttonPatientDetailsEdit_ServerClick"><i class="fas fa-fw fa-edit"></i>Edit</button>
             </h2>
             <div id="DivPatient" class="row text-left" runat="server" visible="false">
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Name of Next of Kin</label>
                         <input id="NOKName" type="text" class="form-control" runat="server" readonly>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Contact Number of Next of Kin</label>
                         <input id="NOKContact" type="text" class="form-control" runat="server" readonly>
@@ -149,13 +149,13 @@
                 <button type="button" class="btn btn-sm btn-secondary float-right disabled" data-toggle="tooltip" title="May not be edited" runat="server"><i class="fas fa-fw fa-edit"></i>Edit</button>
             </h2>
             <div id="DivTherapist" class="row text-left" runat="server" visible="false">
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Job Title</label>
                         <input id="TherapistJobTile" type="text" class="form-control" runat="server" readonly>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Department</label>
                         <input id="TherapistDepartment" type="text" class="form-control" runat="server" readonly>
@@ -168,13 +168,13 @@
                 <button type="button" class="btn btn-sm btn-secondary float-right disabled" data-toggle="tooltip" title="May not be edited" runat="server"><i class="fas fa-fw fa-edit"></i>Edit</button>
             </h2>
             <div id="DivResearcher" class="row text-left" runat="server" visible="false">
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Job Title</label>
                         <input id="ResearcherJobTitle" type="text" class="form-control" runat="server" readonly>
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>Department</label>
                         <input id="ResearcherDepartment" type="text" class="form-control" runat="server" readonly>
@@ -201,7 +201,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="row text-left">
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Address</label>
                                     <input id="AddressEdit" type="text" class="form-control" runat="server">
@@ -210,7 +210,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Postal Code <span class="text-muted small">(6-digits)</span></label>
                                     <input id="PostalCodeEdit" type="text" class="form-control" runat="server">
@@ -220,7 +220,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Email Address</label>
                                     <input id="EmailAddressEdit" type="text" class="form-control" runat="server">
@@ -230,7 +230,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Contact Number <span class="text-muted small">(8-digits)</span></label>
                                     <input id="ContactNumberEdit" type="text" class="form-control" runat="server">
@@ -271,7 +271,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="row text-left">
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Name of Next of Kin</label>
                                     <input id="NOKNameEdit" type="text" class="form-control" runat="server">
@@ -280,7 +280,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Contact Number of Next of Kin <span class="text-muted small">(8-digits)</span></label>
                                     <input id="NOKContactEdit" type="text" class="form-control" runat="server">
@@ -308,102 +308,6 @@
             </asp:UpdateProgress>
         </div>
     </div>
-
-<%--    <div id="modalTherapistDetails" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <asp:UpdatePanel ID="UpdatePanelTherapistDetails" class="modal-content" runat="server" UpdateMode="Conditional">
-                <ContentTemplate>
-                    <div class="modal-header">
-                        <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-edit"></i>Edit Therapist Details</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row text-left">
-                            <div class="col-12 col-lg-6">
-                                <div class="form-group">
-                                    <label>Job Title</label>
-                                    <input id="TherapistJobTileEdit" type="text" class="form-control" runat="server">
-                                    <div class="invalid-feedback" runat="server">
-                                        Job Title is invalid.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-lg-6">
-                                <div class="form-group">
-                                    <label>Department</label>
-                                    <input id="TherapistDepartmentEdit" type="text" class="form-control" runat="server">
-                                    <div class="invalid-feedback" runat="server">
-                                        Department is invalid.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer text-left">
-                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit Contact information.</p>
-                    </div>
-                </ContentTemplate>
-                <Triggers>
-                    <asp:AsyncPostBackTrigger ControlID="buttonTherapistDetailsEdit" />
-                </Triggers>
-            </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelTherapistDetails" DisplayAfter="0" DynamicLayout="false">
-                <ProgressTemplate>
-                    <div class="loading">Loading</div>
-                </ProgressTemplate>
-            </asp:UpdateProgress>
-        </div>
-    </div>
-
-    <div id="modalResearcherDetails" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <asp:UpdatePanel ID="UpdatePanelResearcherDetails" class="modal-content" runat="server" UpdateMode="Conditional">
-                <ContentTemplate>
-                    <div class="modal-header">
-                        <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-edit"></i>Edit Researcher Details</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row text-left">
-                            <div class="col-12 col-lg-6">
-                                <div class="form-group">
-                                    <label>Job Title</label>
-                                    <input id="ResearcherJobTileEdit" type="text" class="form-control" runat="server">
-                                    <div class="invalid-feedback" runat="server">
-                                        Job Title is invalid.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-lg-6">
-                                <div class="form-group">
-                                    <label>Department</label>
-                                    <input id="ResearcherDepartmentEdit" type="text" class="form-control" runat="server">
-                                    <div class="invalid-feedback" runat="server">
-                                        Department is invalid.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer text-left">
-                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit Contact information.</p>
-                    </div>
-                </ContentTemplate>
-                <Triggers>
-                    <asp:AsyncPostBackTrigger ControlID="buttonResearcherDetailsEdit" />
-                </Triggers>
-            </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelResearcherDetails" DisplayAfter="0" DynamicLayout="false">
-                <ProgressTemplate>
-                    <div class="loading">Loading</div>
-                </ProgressTemplate>
-            </asp:UpdateProgress>
-        </div>
-    </div>--%>
 </asp:Content>
 
 <asp:Content ID="FooterContent" ContentPlaceHolderID="FooterContent" runat="server">

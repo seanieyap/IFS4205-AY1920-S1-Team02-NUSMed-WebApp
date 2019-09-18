@@ -34,7 +34,8 @@
                             <ItemTemplate>
                                 <%# Item.description %>
                             </ItemTemplate>
-                        </asp:TemplateField>                        <asp:TemplateField HeaderText="Created By">
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Created By">
                             <ItemTemplate>
                                 <%# Item.creatorLastName + " " + Item.creatorFirstName %>
                             </ItemTemplate>
@@ -47,11 +48,9 @@
 
                         <asp:TemplateField HeaderText="">
                             <ItemTemplate>
-                                <%# Item.content %>
+                                <%# Item.content +" " +  Item.type.prefix %>
                             </ItemTemplate>
                         </asp:TemplateField>
-
-
                     </Columns>
 
                     <EmptyDataTemplate>

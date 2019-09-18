@@ -56,31 +56,31 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             {
                 try
                 {
-                    
+
                     // not correct method, change to different method with authorization control.
-                    Account account = new AccountBLL().GetAccount(nric);
+                    Classes.Entity.Patient patient = therapistBLL.GetPatientInformation(nric);
 
                     // Personal Details
-                    LabelInformationNRIC.Text = account.nric;
-                    inputNRIC.Value = account.nric;
-                    DateofBirth.Value = account.dateOfBirth.ToString("MM/dd/yyyy");
-                    FirstName.Value = account.firstName;
-                    LastName.Value = account.lastName;
-                    CountryofBirth.Value = account.countryOfBirth;
-                    Nationality.Value = account.nationality;
-                    Sex.Value = account.sex;
-                    Gender.Value = account.gender;
-                    MartialStatus.Value = account.martialStatus;
+                    LabelInformationNRIC.Text = patient.nric;
+                    inputNRIC.Value = patient.nric;
+                    DateofBirth.Value = patient.dateOfBirth.ToString("MM/dd/yyyy");
+                    FirstName.Value = patient.firstName;
+                    LastName.Value = patient.lastName;
+                    CountryofBirth.Value = patient.countryOfBirth;
+                    Nationality.Value = patient.nationality;
+                    Sex.Value = patient.sex;
+                    Gender.Value = patient.gender;
+                    MaritalStatus.Value = patient.maritalStatus;
 
                     // Contact Details
-                    Address.Value = account.address;
-                    PostalCode.Value = account.addressPostalCode;
-                    EmailAddress.Value = account.email;
-                    ContactNumber.Value = account.contactNumber;
+                    Address.Value = patient.address;
+                    PostalCode.Value = patient.addressPostalCode;
+                    EmailAddress.Value = patient.email;
+                    ContactNumber.Value = patient.contactNumber;
 
                     // Patient NOK Details
-                    NOKName.Value = account.nokName;
-                    NOKContact.Value = account.nokContact;
+                    NOKName.Value = patient.nokName;
+                    NOKContact.Value = patient.nokContact;
 
                     UpdatePanelInformation.Update();
 
@@ -235,11 +235,11 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 therapistBLL.UpdateRequest(nric, permission);
                 Bind_GridViewPatient();
                 Update_UpdatePanelPermissions(nric);
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Request Submitted / Updated to " + nric + " for Permissions.');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Request Submitted to " + nric + " for Permissions.');", true);
             }
             catch
             {
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Submitting / Updating Request.');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Submitting Request for Permissions.');", true);
             }
 
         }

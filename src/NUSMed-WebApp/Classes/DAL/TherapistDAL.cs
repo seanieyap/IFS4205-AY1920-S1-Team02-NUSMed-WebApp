@@ -183,6 +183,65 @@ namespace NUSMed_WebApp.Classes.DAL
             return result;
         }
         /// <summary>
+        /// Retrieve a specific patient's permissions
+        /// </summary>
+        public Entity.Patient RetrievePatientInformation(string patientNRIC, string therapistNRIC)
+        {
+            Entity.Patient result = new Entity.Patient();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT a.nric, a.name_first, a.birth_country, a.nationality, a.sex, a.gender,
+                    a.marital_status, a.name_last, a.address, a.address_postal_code, a.email, a.contact_number, a.create_time,
+                    a.last_full_login, a.date_of_birth,
+                    ap.nok_name, ap.nok_contact_number
+                    FROM record_type_permission rtp
+                    INNER JOIN account a ON a.nric = rtp.patient_nric 
+                    INNER JOIN account_patient ap ON ap.nric = rtp.patient_nric
+                    WHERE rtp.therapist_nric = @therapistNRIC AND rtp.patient_nric = @patientNRIC AND 
+                        rtp.permission_approved > 0 AND a.status > 0 AND ap.status = 1;";
+
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            Entity.Patient patient = new Entity.Patient
+                            {
+                                nric = Convert.ToString(reader["nric"]),
+                                firstName = Convert.ToString(reader["name_first"]),
+                                lastName = Convert.ToString(reader["name_last"]),
+                                countryOfBirth = Convert.ToString(reader["birth_country"]),
+                                sex = Convert.ToString(reader["sex"]),
+                                gender = Convert.ToString(reader["gender"]),
+                                dateOfBirth = Convert.ToDateTime(reader["date_of_birth"]),
+                                nationality = Convert.ToString(reader["nationality"]),
+                                maritalStatus = Convert.ToString(reader["marital_status"]),
+                                email = Convert.ToString(reader["email"]),
+                                address = Convert.ToString(reader["address"]),
+                                addressPostalCode = Convert.ToString(reader["address_postal_code"]),
+                                contactNumber = Convert.ToString(reader["contact_number"]),
+                                createTime = Convert.ToDateTime(reader["create_time"]),
+                                nokName = Convert.ToString(reader["nok_name"]),
+                                nokContact = Convert.ToString(reader["nok_contact_number"]),
+                            };
+
+                            result = patient;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+        /// <summary>
         /// Insert a Request for Permissions relationship between Therapist and Patient
         /// </summary>
         public void InsertRecordTypeRequest(string patientNRIC, string therapistNRIC, short permission)

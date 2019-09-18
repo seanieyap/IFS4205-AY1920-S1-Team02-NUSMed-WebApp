@@ -20,7 +20,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _nric = value;
+                _nric = value.ToUpper();
             }
         }
         public string salt { get; set; }
@@ -38,7 +38,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _firstName = value;
+                _firstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
             }
         }
         private string _lastName;
@@ -54,12 +54,12 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _lastName = value;
+                _lastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
             }
         }
         public string countryOfBirth { get; set; }
         public string nationality { get; set; }
-        public string martialStatus { get; set; }
+        public string maritalStatus { get; set; }
         public string sex { get; set; }
         public string gender { get; set; }
         public string address { get; set; }
@@ -102,11 +102,43 @@ namespace NUSMed_WebApp.Classes.Entity
         public string nokContact { get; set; }
         #endregion
         #region Therapist
-        public string therapistJobTitle { get; set; }
+        private string _therapistJobTitle;
+        public string therapistJobTitle
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_therapistJobTitle))
+                {
+                    return _therapistJobTitle;
+                }
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_therapistJobTitle.ToLower());
+            }
+            set
+            {
+                _therapistJobTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+            }
+        }
+
         public string therapistDepartment { get; set; }
         #endregion
         #region Researcher
-        public string researcherJobTitle { get; set; }
+        private string _researcherJobTitle;
+        public string researcherJobTitle
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_researcherJobTitle))
+                {
+                    return _therapistJobTitle;
+                }
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_researcherJobTitle.ToLower());
+            }
+            set
+            {
+                _researcherJobTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+            }
+        }
+
         public string researcherDepartment { get; set; }
         #endregion
 
