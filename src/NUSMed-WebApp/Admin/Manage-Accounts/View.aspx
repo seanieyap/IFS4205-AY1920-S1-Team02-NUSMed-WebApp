@@ -47,7 +47,7 @@
                                     <i class="fas fa-fw fa-id-card"></i>Personal
                                 </HeaderTemplate>
                                 <ItemTemplate>
-                                    <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewPersonal" CommandArgument='<%# Item.nric %>'>
+                                    <asp:LinkButton CssClass="btn btn-info btn-sm" runat="server" CommandName="ViewPersonal" CommandArgument='<%# Item.nric %>'>
                                         <i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
@@ -58,7 +58,7 @@
                                     <i class="fas fa-fw fa-phone-square"></i>Contact
                                 </HeaderTemplate>
                                 <ItemTemplate>
-                                    <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewContact" CommandArgument='<%# Item.nric %>'>
+                                    <asp:LinkButton CssClass="tn btn-info btn-sm" runat="server" CommandName="ViewContact" CommandArgument='<%# Item.nric %>'>
                                         <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
@@ -69,7 +69,7 @@
                                     <i class="fas fa-fw fa-user-injured"></i>Patient
                                 </HeaderTemplate>
                                 <ItemTemplate>
-                                    <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewPatient" CommandArgument='<%# Item.nric %>'>
+                                    <asp:LinkButton CssClass="tn btn-info btn-sm" runat="server" CommandName="ViewPatient" CommandArgument='<%# Item.nric %>'>
                                         <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
@@ -81,7 +81,7 @@
                                     <i class="fas fa-fw fa-user-md"></i>Therapist
                                 </HeaderTemplate>
                                 <ItemTemplate>
-                                    <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewTherapist" CommandArgument='<%# Item.nric %>'>
+                                    <asp:LinkButton CssClass="tn btn-info btn-sm" runat="server" CommandName="ViewTherapist" CommandArgument='<%# Item.nric %>'>
                                         <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
@@ -92,7 +92,7 @@
                                     <i class="fas fa-fw fa-user-graduate"></i>Researcher
                                 </HeaderTemplate>
                                 <ItemTemplate>
-                                    <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewResearcher" CommandArgument='<%# Item.nric %>'>
+                                    <asp:LinkButton CssClass="btn btn-info btn-sm" runat="server" CommandName="ViewResearcher" CommandArgument='<%# Item.nric %>'>
                                         <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
@@ -104,7 +104,7 @@
                                 </HeaderTemplate>
 
                                 <ItemTemplate>
-                                    <asp:LinkButton CssClass="view-modal btn btn-info btn-sm" runat="server" CommandName="ViewStatus" CommandArgument='<%# Item.nric %>'>
+                                    <asp:LinkButton CssClass="btn btn-info btn-sm" runat="server" CommandName="ViewStatus" CommandArgument='<%# Item.nric %>'>
                                         <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
@@ -133,7 +133,7 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <asp:UpdateProgress ID="UpdateProgressAccounts" runat="server" AssociatedUpdatePanelID="UpdatePanelAccounts" DisplayAfter="0" DynamicLayout="false">
+    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelAccounts" DisplayAfter="0" DynamicLayout="false">
         <ProgressTemplate>
             <div class="loading">Loading</div>
         </ProgressTemplate>

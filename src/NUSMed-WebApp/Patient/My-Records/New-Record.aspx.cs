@@ -147,24 +147,22 @@ namespace NUSMed_WebApp.Patient.My_Records
                         record.createTime = DateTime.Now;
                         string fileServerPath = RecordBLL.GetFileServerPath();
                         string fileDirectoryNameHash = RecordBLL.GetFileDirectoryNameHash();
-                        string fileNameHash = RecordBLL.GetFileNameHash(record.fileName, record.createTime);
 
                         Directory.CreateDirectory(fileServerPath + "\\" + fileDirectoryNameHash);
 
                         // Not possible for file with same hashed file name to exist
-                        inputFile.SaveAs(fileServerPath + "\\" + fileDirectoryNameHash + "\\" + fileNameHash);
+                        inputFile.SaveAs(record.fullpath);
                         
-                        recordBLL.SubmitRecordFile(record, fileServerPath + "\\" + fileDirectoryNameHash + "\\" + fileNameHash);
-
+                        recordBLL.SubmitRecordFile(record);
                     }
 
                     Session["NewRecordSuccess"] = "success";
-                }
+            }
                 catch
-                {
-                    Session["NewRecordSuccess"] = "error";
-                }
-                Response.Redirect(Request.RawUrl);
+            {
+                Session["NewRecordSuccess"] = "error";
+            }
+            Response.Redirect(Request.RawUrl);
             }
         }
 
@@ -253,7 +251,6 @@ namespace NUSMed_WebApp.Patient.My_Records
             RadioButtonTypeXRay.Checked = false;
             RadioButtonTypeGait.Checked = false;
 
-            // TODO reset to Height Measurement details
             ScriptManager.RegisterStartupScript(this, GetType(), "Reset Panels", "document.forms[0].reset();", true);
         }
 

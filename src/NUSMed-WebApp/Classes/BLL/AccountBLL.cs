@@ -74,7 +74,6 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             return accountDAL.RetrieveStatus(nric);
         }
-
         public DateTime GetCreateTime()
         {
             if (IsAuthenticated())
@@ -84,7 +83,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return DateTime.Now;
         }
-
         #region Requires Authenticated Account
         public Account GetStatus()
         {

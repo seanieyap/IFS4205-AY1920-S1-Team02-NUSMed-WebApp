@@ -12,7 +12,7 @@ namespace NUSMed_WebApp.Classes.DAL
         public RecordDAL() : base() { }
 
         /// <summary>
-        /// Retrieve Records registered in the database owned by patient NRIC
+        /// Retrieve Records information owned by specific patient
         /// </summary>
         public List<Record> Retrieve(string patientNRIC)
         {
@@ -21,11 +21,12 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT r.id, r.creator_nric, r.description, r.type, r.content, r.title, 
-                    r.file_name, r.file_extension, r.create_time, 
+                    r.create_time, r.is_emergency, r.file_extension,
                     a.name_first as creator_name_first, a.name_last as creator_name_last
                     FROM record r
                     INNER JOIN account a ON a.nric = r.creator_nric
-                    WHERE patient_nric = @patientNRIC;";
+                    WHERE patient_nric = @patientNRIC
+                    ORDER BY r.create_time DESC;";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
 
@@ -46,13 +47,67 @@ namespace NUSMed_WebApp.Classes.DAL
                                 type = RecordType.Get(Convert.ToString(reader["type"])),
                                 content = Convert.ToString(reader["content"]),
                                 title = Convert.ToString(reader["title"]),
-                                fileName = Convert.ToString(reader["file_name"]),
+                                isEmergency = Convert.ToBoolean(reader["is_emergency"]),
+                                createTime = Convert.ToDateTime(reader["create_time"]),
+                                creatorFirstName = Convert.ToString(reader["creator_name_first"]),
+                                creatorLastName = Convert.ToString(reader["creator_name_last"]),
+                                fileExtension = Convert.ToString(reader["file_extension"])
+                            };
+                            result.Add(record);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve Record's associated file information owned by specific patient NRIC
+        /// </summary>
+        public Record RetrieveFileInformation(string patientNRIC, int id)
+        {
+            Record result = new Record();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT DISTINCT r.id, r.creator_nric, r.description, r.type, r.content, r.title, 
+                    r.file_name, r.file_extension, r.file_checksum, r.file_size, r.create_time, r.is_emergency,
+                    a.name_first as creator_name_first, a.name_last as creator_name_last
+                    FROM record r
+                    INNER JOIN account a ON a.nric = r.creator_nric
+                    WHERE patient_nric = @patientNRIC AND r.id = @id;";
+
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            Record record = new Record
+                            {
+                                id = Convert.ToInt32(reader["id"]),
+                                creatorNRIC = Convert.ToString(reader["creator_nric"]),
+                                description = Convert.ToString(reader["description"]),
+                                type = RecordType.Get(Convert.ToString(reader["type"])),
+                                content = Convert.ToString(reader["content"]),
+                                title = Convert.ToString(reader["title"]),
+                                isEmergency = Convert.ToBoolean(reader["is_emergency"]),
                                 fileExtension = Convert.ToString(reader["file_extension"]),
+                                fileName = Convert.ToString(reader["file_name"]),
+                                fileSize = Convert.ToInt32(reader["file_size"]),
+                                fileChecksum = Convert.ToString(reader["file_checksum"]),
                                 createTime = Convert.ToDateTime(reader["create_time"]),
                                 creatorFirstName = Convert.ToString(reader["creator_name_first"]),
                                 creatorLastName = Convert.ToString(reader["creator_name_last"])
                             };
-                            result.Add(record);
+                            result = record;
                         }
                     }
                 }

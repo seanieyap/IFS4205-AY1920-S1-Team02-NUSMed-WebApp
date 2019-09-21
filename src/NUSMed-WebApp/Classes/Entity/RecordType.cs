@@ -29,39 +29,42 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         public static RecordType Get(string type)
         {
-            if (type == "Height Measurement")
+            if (type.Equals(new HeightMeasurement().name))
             {
                 return new HeightMeasurement();
             }
-            else if (type == "Weight Measurement")
+            else if (type.Equals(new WeightMeasurement().name))
             {
                 return new WeightMeasurement();
             }
-            else if (type == "Temperature Reading")
+            else if (type.Equals(new TemperatureReading().name))
             {
                 return new TemperatureReading();
             }
-            else if (type == "Blood Pressure Reading")
+            else if (type.Equals(new BloodPressureReading().name))
             {
                 return new BloodPressureReading();
             }
-            else if (type == "ECG Reading")
+            else if (type.Equals(new ECGReading().name))
             {
                 return new ECGReading();
             }
-            else if (type == "MRI")
+            else if (type.Equals(new MRI().name))
             {
                 return new MRI();
             }
-            else if (type == "X-ray")
+            else if (type.Equals(new XRay().name))
             {
                 return new XRay();
             }
+            else if (type.Equals(new Gait().name))
+            {
+                return new Gait();
+            }
 
-            return new Gait();
+            return null;
         }
     }
-
     [Serializable]
     public class HeightMeasurement : RecordType
     {
@@ -125,7 +128,6 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "KG"; }
         }
-
     }
     [Serializable]
     public class TemperatureReading : RecordType

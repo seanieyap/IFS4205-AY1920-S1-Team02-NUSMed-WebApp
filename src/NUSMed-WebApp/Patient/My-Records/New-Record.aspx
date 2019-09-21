@@ -126,7 +126,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="inputDescription">Description <span class="text-muted small">(Maximum of 120 characters)</span></label>
-                        <input id="inputDescription" type="text" class="form-control" placeholder="Description" runat="server">
+                        <input id="inputDescription" type="text" value="nil" class="form-control" placeholder="Description" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Description is invalid.
                         </div>
@@ -173,7 +173,7 @@
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-secondary mr-auto" href="~/Patient/My-Records/View" role="button" runat="server">View your Records</a>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Adding Records</button>
                 </div>
             </div>
         </div>

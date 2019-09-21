@@ -231,6 +231,7 @@
     </None>
     <Content Include="Scripts\bs-custom-file-input.js.map" />
     <Content Include="Scripts\bs-custom-file-input.min.js.map" />
+    <Content Include="Patient\Download.ashx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Images\ajax-loader.gif" />
     <Content Include="Images\favicon.ico" />
@@ -452,6 +453,9 @@
     </Compile>
     <Compile Include="Patient\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Patient\Download.ashx.cs">
+      <DependentUpon>Download.ashx</DependentUpon>
     </Compile>
     <Compile Include="Patient\My-Records\New-Record.aspx.cs">
       <DependentUpon>New-Record.aspx</DependentUpon>

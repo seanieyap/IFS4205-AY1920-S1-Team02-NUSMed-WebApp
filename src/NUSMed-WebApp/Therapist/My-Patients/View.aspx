@@ -261,7 +261,6 @@
         </div>
     </div>
 
-
     <div id="modalInformation" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelInformation" class="modal-content" runat="server" UpdateMode="Conditional">
@@ -394,7 +393,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
     <script type="text/javascript">
-        function pageLoad(sender, args) {
+        function pageLoad() {
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip({ html: true });
             });
