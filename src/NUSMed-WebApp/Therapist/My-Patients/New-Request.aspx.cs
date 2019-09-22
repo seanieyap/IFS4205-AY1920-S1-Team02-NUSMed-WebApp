@@ -102,40 +102,39 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             try
             {
                 string nric = ViewState["GridViewPatientSelectedNRIC"].ToString();
-
                 short permission = 0;
 
                 if (CheckBoxTypeHeightMeasurement.Checked)
                 {
-                    permission += HeightMeasurement.permissionFlag;
+                    permission += new HeightMeasurement().permissionFlag;
                 }
                 if (CheckBoxTypeWeightMeasurement.Checked)
                 {
-                    permission += WeightMeasurement.permissionFlag;
+                    permission += new WeightMeasurement().permissionFlag;
                 }
                 if (CheckBoxTypeTemperatureReading.Checked)
                 {
-                    permission += TemperatureReading.permissionFlag;
+                    permission += new TemperatureReading().permissionFlag;
                 }
                 if (CheckBoxTypeBloodPressureReading.Checked)
                 {
-                    permission += BloodPressureReading.permissionFlag;
+                    permission += new BloodPressureReading().permissionFlag;
                 }
                 if (CheckBoxTypeECGReading.Checked)
                 {
-                    permission += ECGReading.permissionFlag;
+                    permission += new ECGReading().permissionFlag;
                 }
                 if (CheckBoxTypeMRI.Checked)
                 {
-                    permission += MRI.permissionFlag;
+                    permission += new MRI().permissionFlag;
                 }
                 if (CheckBoxTypeXRay.Checked)
                 {
-                    permission += XRay.permissionFlag;
+                    permission += new XRay().permissionFlag;
                 }
                 if (CheckBoxTypeGait.Checked)
                 {
-                    permission += Gait.permissionFlag;
+                    permission += new Gait().permissionFlag;
                 }
 
                 therapistBLL.SubmitRequest(nric, permission);

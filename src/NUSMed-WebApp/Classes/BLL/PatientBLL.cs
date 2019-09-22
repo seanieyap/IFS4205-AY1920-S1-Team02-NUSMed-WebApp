@@ -52,6 +52,26 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
+        public List<Entity.Therapist> GetCurrentTherapistsFineGrain(string term, int recordID)
+        {
+            if (AccountBLL.IsPatient())
+            {
+                return patientDAL.RetrieveCurrentTherapistsFineGrain(term, recordID, AccountBLL.GetNRIC());
+            }
+
+            return null;
+        }
+
+        public List<Entity.Therapist> GetDisallowedTherapists(int recordID, string term)
+        {
+            if (AccountBLL.IsPatient())
+            {
+                return patientDAL.RetrievePermissionsDisallow(recordID, term, AccountBLL.GetNRIC());
+            }
+
+            return null;
+        }
+
         public Entity.Therapist GetTherapistPermission(string therapistNRIC)
         {
             if (AccountBLL.IsPatient())

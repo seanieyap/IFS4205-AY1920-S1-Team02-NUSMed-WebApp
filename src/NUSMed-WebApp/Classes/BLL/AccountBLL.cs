@@ -74,11 +74,14 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             return accountDAL.RetrieveStatus(nric);
         }
-        public DateTime GetCreateTime()
+
+        public DateTime GetCreateTime(string nric)
         {
-            if (IsAuthenticated())
+            if ((IsPatient() && nric.Equals(GetNRIC())) || 
+                IsTherapist())
             {
-                return accountDAL.RetrieveCreateTime(GetNRIC());
+                // todo permission check
+                return accountDAL.RetrieveCreateTime(nric);
             }
 
             return DateTime.Now;

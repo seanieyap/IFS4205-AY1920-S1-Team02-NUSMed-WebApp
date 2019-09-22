@@ -112,6 +112,69 @@ namespace NUSMed_WebApp.Patient.My_Records {
         protected global::System.Web.UI.WebControls.Label modalFileViewLabelFileSize;
         
         /// <summary>
+        /// UpdatePanelFineGrain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelFineGrain;
+        
+        /// <summary>
+        /// modalLabelFineGrainRecordTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label modalLabelFineGrainRecordTitle;
+        
+        /// <summary>
+        /// LinkButtonStatusDisable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButtonStatusDisable;
+        
+        /// <summary>
+        /// LinkButtonStatusEnable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButtonStatusEnable;
+        
+        /// <summary>
+        /// TextboxSearchFineGrainAllow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextboxSearchFineGrainAllow;
+        
+        /// <summary>
+        /// LinkButtonFineGrainAllow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButtonFineGrainAllow;
+        
+        /// <summary>
+        /// GridViewFineGrain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewFineGrain;
+        
+        /// <summary>
         /// Master property.
         /// </summary>
         /// <remarks>

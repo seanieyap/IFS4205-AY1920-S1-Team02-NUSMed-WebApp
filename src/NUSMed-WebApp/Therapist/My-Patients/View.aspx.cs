@@ -2,9 +2,11 @@
 using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace NUSMed_WebApp.Therapist.My_Patients
@@ -56,8 +58,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             {
                 try
                 {
-
-                    // not correct method, change to different method with authorization control.
+                    // todo add additional permission checks.
                     Classes.Entity.Patient patient = therapistBLL.GetPatientInformation(nric);
 
                     // Personal Details
@@ -91,10 +92,20 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Information View.');", true);
                 }
             }
-            //else if (e.CommandName.Equals("ViewRecords"))
-            //{
+            else if (e.CommandName.Equals("ViewRecords"))
+            {
+                //try
+                //{
+                    Update_UpdatePanelRecords(nric);
 
-            //}
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Records Modal", "$('#modalRecords').modal('show');", true);
+                //}
+                //catch
+                //{
+                //    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Records Modal.');", true);
+                //}
+
+            }
 
             Bind_GridViewPatient();
         }
@@ -112,7 +123,8 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Int16 permissionApproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionApproved"));
+                //Int16 permissionApproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionApproved"));
+                DateTime? approvedTime = Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "approvedTime"));
                 Int16 permissionUnapproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionUnapproved"));
                 Label LabelName = (Label)e.Row.FindControl("LabelName");
                 Label LabelNameStatus = (Label)e.Row.FindControl("LabelNameStatus");
@@ -120,7 +132,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 LinkButton LinkButtonViewRecords = (LinkButton)e.Row.FindControl("LinkButtonViewRecords");
                 Label LabelPermissionStatus = (Label)e.Row.FindControl("LabelPermissionStatus");
 
-                if (permissionApproved == 0)
+                if (approvedTime == null)
                 {
                     LabelName.Text = "Redacted";
                     LabelNameStatus.Visible = true;
@@ -131,7 +143,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     LabelPermissionStatus.Attributes.Add("title", "Permissions Approved on " + Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "approvedTime")));
                     LabelPermissionStatus.CssClass = "text-success";
                 }
-                else if (permissionApproved != 0)
+                else
                 {
                     LabelName.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "lastName")) + " " + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "firstName"));
                     LabelNameStatus.Visible = false;
@@ -156,6 +168,8 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             }
         }
         #endregion
+
+        #region Permission Functions
         private void Update_UpdatePanelPermissions(string nric)
         {
             Classes.Entity.Patient patient = therapistBLL.GetPatientPermissions(nric);
@@ -201,35 +215,35 @@ namespace NUSMed_WebApp.Therapist.My_Patients
 
                 if (CheckBoxTypeHeightMeasurement.Checked)
                 {
-                    permission += HeightMeasurement.permissionFlag;
+                    permission += new HeightMeasurement().permissionFlag;
                 }
                 if (CheckBoxTypeWeightMeasurement.Checked)
                 {
-                    permission += WeightMeasurement.permissionFlag;
+                    permission += new WeightMeasurement().permissionFlag;
                 }
                 if (CheckBoxTypeTemperatureReading.Checked)
                 {
-                    permission += TemperatureReading.permissionFlag;
+                    permission += new TemperatureReading().permissionFlag;
                 }
                 if (CheckBoxTypeBloodPressureReading.Checked)
                 {
-                    permission += BloodPressureReading.permissionFlag;
+                    permission += new BloodPressureReading().permissionFlag;
                 }
                 if (CheckBoxTypeECGReading.Checked)
                 {
-                    permission += ECGReading.permissionFlag;
+                    permission += new ECGReading().permissionFlag;
                 }
                 if (CheckBoxTypeMRI.Checked)
                 {
-                    permission += MRI.permissionFlag;
+                    permission += new MRI().permissionFlag;
                 }
                 if (CheckBoxTypeXRay.Checked)
                 {
-                    permission += XRay.permissionFlag;
+                    permission += new XRay().permissionFlag;
                 }
                 if (CheckBoxTypeGait.Checked)
                 {
-                    permission += Gait.permissionFlag;
+                    permission += new Gait().permissionFlag;
                 }
 
                 therapistBLL.UpdateRequest(nric, permission);
@@ -243,6 +257,115 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             }
 
         }
+        #endregion
 
+        #region Record Functions
+        private void Update_UpdatePanelRecords(string nric)
+        {
+            List<Record> records = new RecordBLL().GetRecords(nric);
+            LabelRecordsNRIC.Text = nric;
+
+            ViewState["GridViewRecords"] = records;
+            GridViewRecords.DataSource = records;
+            GridViewRecords.DataBind();
+            UpdatePanelRecords.Update();
+        }
+        protected void GridViewRecords_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                short status = (short)DataBinder.Eval(e.Row.DataItem, "status");
+                short? recordPermissionStatus = (short?)DataBinder.Eval(e.Row.DataItem, "recordPermissionStatus");
+
+                // todo
+                //if (status == 1 && recordPermissionStatus == 1) {
+                    RecordType recordType = (RecordType)DataBinder.Eval(e.Row.DataItem, "type");
+
+                    if (recordType.isContent)
+                    {
+                        Label LabelContent = (Label)e.Row.FindControl("LabelContent");
+                        string content = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "content"));
+
+                        LabelContent.Text = content + " " + recordType.prefix;
+                        LabelContent.Visible = true;
+                    }
+                    else if (!recordType.isContent)
+                    {
+                        LinkButton LinkbuttonFileView = (LinkButton)e.Row.FindControl("LinkbuttonFileView");
+                        HtmlAnchor FileDownloadLink = (HtmlAnchor)e.Row.FindControl("FileDownloadLink");
+
+                        LinkbuttonFileView.CommandName = "FileView";
+                        LinkbuttonFileView.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
+                        LinkbuttonFileView.Visible = true;
+                        LinkbuttonFileView.Text = "<i class=\"fas fa-fw fa-eye\"></i></i><span class=\"d-none d-lg-inline-block\">View "
+                            + DataBinder.Eval(e.Row.DataItem, "fileType") +
+                            "</span>";
+
+                        FileDownloadLink.HRef = "~/Therapist/Download.ashx?record=" + DataBinder.Eval(e.Row.DataItem, "id").ToString();
+                        FileDownloadLink.Visible = true;
+                    }
+
+                //}
+            }
+        }
+        protected void GridViewRecords_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewRecords.PageIndex = e.NewPageIndex;
+            GridViewRecords.DataSource = ViewState["GridViewRecords"];
+            GridViewRecords.DataBind();
+        }
+        protected void GridViewRecords_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName.Equals("FileView"))
+            {
+                //try
+                //{
+                string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
+                    int id = Convert.ToInt32(e.CommandArgument);
+                    Record record = new RecordBLL().GetRecord(id);
+
+                    modalFileViewImage.Visible = false;
+                    modalFileViewVideo.Visible = false;
+                    modalFileViewLabelText.Visible = false;
+
+                    if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
+                    {
+                        modalFileViewImage.Visible = true;
+                        modalFileViewImage.ImageUrl = "~/Therapist/Download.ashx?record=" + record.id;
+                    }
+                    else if (record.fileExtension == ".txt")
+                    {
+                        // todo, create timeseries
+                        modalFileViewLabelText.Visible = true;
+                        if (record.IsFileSafe())
+                        {
+                            modalFileViewLabelText.Text = File.ReadAllText(record.fullpath);
+                        }
+                        else
+                        {
+                            modalFileViewLabelText.Text = "File Corrupted";
+                        }
+                    }
+                    else if (record.fileExtension == ".mp4")
+                    {
+                        modalFileViewVideo.Visible = true;
+                        so.Attributes.Add("src", "~/Therapist/Download.ashx?record=" + record.id);
+                    }
+
+                    labelRecordName.Text = record.title;
+                    modalFileViewLabelFileName.Text = record.fileName + record.fileExtension;
+                    modalFileViewLabelFileSize.Text = record.fileSizeMegabytes;
+                    FileDownloadLinkviaModal.HRef = "~/Therapist/Download.ashx?record=" + record.id.ToString();
+
+                    UpdatePanelFileView.Update();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').modal('show');", true);
+                //}
+                //catch
+                //{
+                //    ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
+                //}
+            }
+        }
+        #endregion
     }
 }

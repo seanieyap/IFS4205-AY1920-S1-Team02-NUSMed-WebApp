@@ -34,7 +34,7 @@ namespace NUSMed_WebApp.Patient
             GridViewTherapist.DataBind();
             UpdatePanelAccounts.Update();
         }
-        protected void GridViewPatient_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void GridViewTherapist_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             string nric = e.CommandArgument.ToString();
             ViewState["GridViewPatientSelectedNRIC"] = nric;
@@ -52,14 +52,10 @@ namespace NUSMed_WebApp.Patient
                 }
 
             }
-            else if (e.CommandName.Equals("ViewInformation"))
-            {
-
-            }
 
             Bind_GridViewTherapist();
         }
-        protected void GridViewPatient_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void GridViewTherapist_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             GridViewTherapist.PageIndex = e.NewPageIndex;
             GridViewTherapist.DataSource = ViewState["GridViewPatient"];
@@ -69,28 +65,28 @@ namespace NUSMed_WebApp.Patient
         {
             Bind_GridViewTherapist();
         }
-        protected void GridViewPatient_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void GridViewTherapist_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 Int16 permissionApproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionApproved"));
                 Int16 permissionUnapproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionUnapproved"));
-                LinkButton LinkButtonViewRecords = (LinkButton)e.Row.FindControl("LinkButtonViewRecords");
+                //LinkButton LinkButtonViewRecords = (LinkButton)e.Row.FindControl("LinkButtonViewRecords");
                 Label LabelPermissionStatus = (Label)e.Row.FindControl("LabelPermissionStatus");
 
                 if (permissionApproved == 0)
                 {
-                    LinkButtonViewRecords.CssClass = "btn btn-secondary btn-sm disabled";
-                    LinkButtonViewRecords.Enabled = false;
+                    //LinkButtonViewRecords.CssClass = "btn btn-secondary btn-sm disabled";
+                    //LinkButtonViewRecords.Enabled = false;
                     LabelPermissionStatus.Attributes.Add("title", "Permissions Approved on " + Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "approvedTime")));
                     LabelPermissionStatus.CssClass = "text-success";
                 }
-                else if (permissionApproved != 0)
-                {
-                    LinkButtonViewRecords.CssClass = "btn btn-success btn-sm";
-                    LinkButtonViewRecords.CommandName = "ViewRecords";
-                    LinkButtonViewRecords.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
-                }
+                //else if (permissionApproved != 0)
+                //{
+                    //LinkButtonViewRecords.CssClass = "btn btn-success btn-sm";
+                    //LinkButtonViewRecords.CommandName = "ViewRecords";
+                    //LinkButtonViewRecords.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
+                //}
 
                 if (permissionUnapproved > 0)
                 {
@@ -150,35 +146,35 @@ namespace NUSMed_WebApp.Patient
 
                 if (CheckBoxTypeHeightMeasurement.Checked)
                 {
-                    permission += HeightMeasurement.permissionFlag;
+                    permission += new HeightMeasurement().permissionFlag;
                 }
                 if (CheckBoxTypeWeightMeasurement.Checked)
                 {
-                    permission += WeightMeasurement.permissionFlag;
+                    permission += new WeightMeasurement().permissionFlag;
                 }
                 if (CheckBoxTypeTemperatureReading.Checked)
                 {
-                    permission += TemperatureReading.permissionFlag;
+                    permission += new TemperatureReading().permissionFlag;
                 }
                 if (CheckBoxTypeBloodPressureReading.Checked)
                 {
-                    permission += BloodPressureReading.permissionFlag;
+                    permission += new BloodPressureReading().permissionFlag;
                 }
                 if (CheckBoxTypeECGReading.Checked)
                 {
-                    permission += ECGReading.permissionFlag;
+                    permission += new ECGReading().permissionFlag;
                 }
                 if (CheckBoxTypeMRI.Checked)
                 {
-                    permission += MRI.permissionFlag;
+                    permission += new MRI().permissionFlag;
                 }
                 if (CheckBoxTypeXRay.Checked)
                 {
-                    permission += XRay.permissionFlag;
+                    permission += new XRay().permissionFlag;
                 }
                 if (CheckBoxTypeGait.Checked)
                 {
-                    permission += Gait.permissionFlag;
+                    permission += new Gait().permissionFlag;
                 }
 
                 patientBLL.ApproveRequest(nric, permission);

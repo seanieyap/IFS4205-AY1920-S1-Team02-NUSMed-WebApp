@@ -91,8 +91,8 @@
             <asp:UpdatePanel ID="UpdatePanelPermissions" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
-                        <h5 class="modal-title">
-                            <asp:Label ID="LabelPatientNRIC" runat="server">: Permissions</asp:Label></h5>
+                        <h5 class="modal-title">Patient 
+                            <asp:Label ID="LabelPatientNRIC" runat="server"></asp:Label>: View Permissions</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -100,7 +100,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12">
-                                <h4 class="text-center">Instructions</h4>
+                                <h4>Instructions</h4>
                                 <ul>
                                     <li>To Update your existing request, simply change your "pending request" and click "Submit".</li>
                                     <li>To Remove your existing request, simply update the "pending request" with no record types selected.</li>
@@ -112,10 +112,8 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <h4 class="text-center">Current Permissions</h4>
-
+                                <h4 class="mb-4">Current Permissions</h4>
                                 <div class="row">
-
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="col-12 col-sm-6 col-lg-4">
@@ -176,14 +174,13 @@
                         <hr />
                         <div class="row">
                             <div class="col-12">
-                                <h4 class="mb-3 text-center">Requested Permissions</h4>
-
-                                <div class="row">
-                                    <div class="col-12 text-center mb-3">
+                                <h4 class="mb-4">Requested Permissions
+                                    <div class="float-right">
                                         <button type="button" class="btn btn-sm btn-info" runat="server" onclick=" $('.checkboxes .form-check-input input:checkbox').prop('checked', true);">Select All</button>
                                         <button type="button" class="btn btn-sm btn-info mr-2" runat="server" onclick=" $('.checkboxes .form-check-input input:checkbox').prop('checked', false);">Deselect All</button>
                                     </div>
-
+                                </h4>
+                                <div class="row">
                                     <div class="col-12">
                                         <div class="row mb-2 checkboxes">
                                             <div class="col-12 col-sm-6 col-lg-4">
@@ -266,14 +263,14 @@
             <asp:UpdatePanel ID="UpdatePanelInformation" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
-                        <h5 class="modal-title">
+                        <h5 class="modal-title">Patient 
                             <asp:Label ID="LabelInformationNRIC" runat="server"></asp:Label>: View Information</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h4 class="mb-3 border-bottom">Personal Details</h2>
+                        <h4 class="mb-3 border-bottom">Personal Details</h4>
                         <div class="row text-left mb-3">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
@@ -390,6 +387,132 @@
         </div>
     </div>
 
+    <div id="modalRecords" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <asp:UpdatePanel ID="UpdatePanelRecords" class="modal-content" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Patient 
+                            <asp:Label ID="LabelRecordsNRIC" runat="server"></asp:Label>: View Records</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <asp:GridView ID="GridViewRecords" CssClass="table table-sm table-responsive-md small" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
+                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary"
+                                    OnRowDataBound="GridViewRecords_RowDataBound" OnRowCommand="GridViewRecords_RowCommand" ItemType="NUSMed_WebApp.Classes.Entity.Record"
+                                    OnPageIndexChanging="GridViewRecords_PageIndexChanging" DataKeyNames="id" EmptyDataRowStyle-CssClass="empty-table" runat="server">
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Title">
+                                            <ItemTemplate>
+                                                <%# Item.title %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="type">
+                                            <ItemTemplate>
+                                                <%# Item.type.name %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Description">
+                                            <ItemTemplate>
+                                                <%# Item.description %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Created By">
+                                            <ItemTemplate>
+                                                <%# Item.creatorLastName + " " + Item.creatorFirstName %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Creation Time">
+                                            <ItemTemplate>
+                                                <%# Item.createTime %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Content">
+                                            <ItemTemplate>
+                                                <asp:Label ID="LabelContent" runat="server" Visible="false"></asp:Label>
+                                                <asp:LinkButton ID="LinkbuttonFileView" CssClass="btn btn-info btn-sm" runat="server" Visible="false"></asp:LinkButton>
+
+                                                <a id="FileDownloadLink" class="btn btn-warning btn-sm" runat="server" visible="false">
+                                                    <i class="fas fa-fw fa-cloud-download-alt"></i>
+                                                </a>
+                                                <asp:Label ID="LabelFileType" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+
+                                    <EmptyDataTemplate>
+                                        <div class="alert alert-info text-center py-4" role="alert">
+                                            <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Patient has no Records.
+                                            </h4>
+                                            <p>Perhaps add a record for this patient.</p>
+                                            <hr>
+                                            <p class="mb-0">Use the button in the footer to visit the Submit New Records page.</p>
+                                        </div>
+                                    </EmptyDataTemplate>
+                                </asp:GridView>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <%--<button id="button1" type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonPermissionRequest_ServerClick"><i class="fas fa-fw fa-share"></i>Submit</button>--%>
+                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecords" DisplayAfter="0" DynamicLayout="false">
+                <ProgressTemplate>
+                    <div class="loading">Loading</div>
+                </ProgressTemplate>
+            </asp:UpdateProgress>
+        </div>
+    </div>
+
+    <div id="modalFileView" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <asp:UpdatePanel ID="UpdatePanelFileView" class="modal-content" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-header">
+                        <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-eye"></i>
+                            View Record File:
+                            <asp:Label ID="labelRecordName" runat="server"></asp:Label></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <asp:Image ID="modalFileViewImage" CssClass="img-fluid" runat="server" />
+                        <video id="modalFileViewVideo" style="width: 100%; height: auto;" controls runat="server">
+                            <source id="so" type="video/mp4" runat="server">
+                            Your browser does not support the video tag.
+                        </video>
+                        <asp:Label ID="modalFileViewLabelText" runat="server" Visible="false"></asp:Label>
+                    </div>
+                    <div class="modal-footer">
+                        <a id="FileDownloadLinkviaModal" class="btn btn-warning btn-sm" runat="server">
+                            <i class="fas fa-fw fa-cloud-download-alt"></i></i><span class="d-none d-lg-inline-block">Download</span>
+                        </a>
+                        <span class="text-info small" runat="server">
+                            <i class="fas fa-fw fa-info-circle"></i>File Name:
+                            <asp:Label ID="modalFileViewLabelFileName" runat="server"></asp:Label>. File Size: 
+                            <asp:Label ID="modalFileViewLabelFileSize" runat="server"></asp:Label>
+                        </span>
+
+                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFileView" DisplayAfter="0" DynamicLayout="false">
+                <ProgressTemplate>
+                    <div class="loading">Loading</div>
+                </ProgressTemplate>
+            </asp:UpdateProgress>
+        </div>
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
     <script type="text/javascript">

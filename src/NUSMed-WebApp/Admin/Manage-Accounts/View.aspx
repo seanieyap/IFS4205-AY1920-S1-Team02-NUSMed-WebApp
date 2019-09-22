@@ -350,7 +350,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Action">
                                                 <ItemTemplate>
-                                                    <asp:LinkButton ID="ButtonSearchTherapist" CssClass="btn btn-sm btn-danger" CommandName="RemoveEmergencyTherapist" CommandArgument='<%# Item.nric %>' runat="server">
+                                                    <asp:LinkButton CssClass="btn btn-sm btn-danger" CommandName="RemoveEmergencyTherapist" CommandArgument='<%# Item.nric %>' runat="server">
                                                         <i class="fas fa-fw fa-minus-square"></i> Remove
                                                     </asp:LinkButton>
                                                 </ItemTemplate>
@@ -408,17 +408,17 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Job Title">
                                                 <ItemTemplate>
-                                                    <%# Item.therapistJobTitle %>
+                                                    <%# Item.therapistJobTitle == string.Empty ?  "Nil" : Item.therapistJobTitle %>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Department">
                                                 <ItemTemplate>
-                                                    <%# Item.therapistDepartment %>
+                                                    <%# Item.therapistDepartment == string.Empty ?  "Nil" : Item.therapistDepartment %>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Action">
                                                 <ItemTemplate>
-                                                    <asp:LinkButton ID="ButtonSearchTherapist" CssClass="btn btn-sm btn-success" CommandName="AddEmergencyTherapist" CommandArgument='<%# Item.nric %>' runat="server">
+                                                    <asp:LinkButton CssClass="btn btn-sm btn-success" CommandName="AddEmergencyTherapist" CommandArgument='<%# Item.nric %>' runat="server">
                                                         <i class="fas fa-fw fa-plus-square"></i> Add
                                                     </asp:LinkButton>
                                                 </ItemTemplate>

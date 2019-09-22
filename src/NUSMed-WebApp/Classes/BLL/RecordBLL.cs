@@ -18,14 +18,39 @@ namespace NUSMed_WebApp.Classes.BLL
         public List<Record> GetRecords()
         {
             if (AccountBLL.IsPatient())
-                return recordDAL.Retrieve(AccountBLL.GetNRIC());
+            {
+                return recordDAL.RetrieveRecords(AccountBLL.GetNRIC());
+            }
 
             return null;
         }
-        public Record GetRecordFileInformation(int id)
+        public List<Record> GetRecords(string patientNRIC)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                // todo remove unauthorized content and etc.
+                return recordDAL.RetrieveRecords(patientNRIC, AccountBLL.GetNRIC());
+            }
+
+            return null;
+        }
+
+        public Record GetRecord(int id)
         {
             if (AccountBLL.IsPatient())
-                return recordDAL.RetrieveFileInformation(AccountBLL.GetNRIC(), id);
+            {
+                return recordDAL.RetrieveRecord(AccountBLL.GetNRIC(), id);
+            }
+            else if (AccountBLL.IsTherapist())
+            {
+                Record record = recordDAL.RetrieveRecord(id, AccountBLL.GetNRIC());
+                Entity.Patient patient = new TherapistBLL().GetPatient(record.patientNRIC);
+
+                if (patient.hasPermissionsApproved(record))
+                {
+                    return record;
+                }
+            }
 
             return null;
         }
@@ -42,6 +67,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 }
             }
         }
+
         public void SubmitRecordFile(Record record)
         {
             if (AccountBLL.IsPatient())
@@ -50,8 +76,54 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 if (!record.type.isContent)
                 {
-                    record.fileChecksum = GetMD5HashFromFile(record.fullpath);
+                    record.fileChecksum = record.GetMD5HashFromFile();
                     recordDAL.InsertFile(record, nric, nric);
+                }
+            }
+        }
+
+        public void UpdateRecordEnable(int recordID)
+        {
+            if (AccountBLL.IsPatient())
+            {
+                recordDAL.UpdateRecordEnable(recordID, AccountBLL.GetNRIC());
+            }
+        }
+        public void UpdateRecordDisable(int recordID)
+        {
+            if (AccountBLL.IsPatient())
+            {
+                recordDAL.UpdateRecordDisable(recordID, AccountBLL.GetNRIC());
+            }
+        }
+        public void UpdateRecordTherapistDefault(int recordID, string therapistNRIC)
+        {
+            if (AccountBLL.IsPatient())
+            {
+                if (recordDAL.RetrieveRecordOwner(AccountBLL.GetNRIC(), recordID))
+                {
+                    recordDAL.DeleteRecordPermission(recordID, therapistNRIC);
+                }
+            }
+        }
+
+        public void UpdateRecordTherapistAllow(int recordID, string therapistNRIC)
+        {
+            if (AccountBLL.IsPatient())
+            {
+                if (recordDAL.RetrieveRecordOwner(AccountBLL.GetNRIC(), recordID))
+                {
+                    recordDAL.InsertRecordPermissionAllow(recordID, therapistNRIC);
+                }
+            }
+        }
+        public void UpdateRecordTherapistDisallow(int recordID, string therapistNRIC)
+        {
+            if (AccountBLL.IsPatient())
+            {
+                if (recordDAL.RetrieveRecordOwner(AccountBLL.GetNRIC(), recordID))
+                {
+                    recordDAL.InsertRecordPermissionDisallow(recordID, therapistNRIC);
                 }
             }
         }
@@ -60,7 +132,7 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (AccountBLL.IsAdministrator())
             {
-                List<Record> records = recordDAL.RetrieveAssociated(nric);
+                List<Record> records = recordDAL.RetrieveAssociatedRecords(nric);
 
                 foreach (Record record in records)
                 {
@@ -72,46 +144,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
                     // delete record
                     recordDAL.DeleteRecord(record.id);
-                }
-            }
-        }
-
-        public static string GetFileDirectoryNameHash()
-        {
-            if (AccountBLL.IsPatient())
-            {
-                SHA256 Sha256 = SHA256.Create();
-                byte[] hashValue1 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(AccountBLL.GetNRIC()));
-                byte[] hashValue2 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(new AccountBLL().GetCreateTime().ToString()));
-                byte[] concat = new byte[hashValue1.Length + hashValue2.Length];
-                Buffer.BlockCopy(hashValue1, 0, concat, 0, hashValue1.Length);
-                Buffer.BlockCopy(hashValue2, 0, concat, hashValue1.Length, hashValue2.Length);
-                byte[] hash = Sha256.ComputeHash(concat);
-
-                string result = string.Empty;                                    
-                foreach (byte b in hash)
-                {
-                    result += string.Format("{0:x2}", b);
-                }
-                return result;
-            }
-
-            return null;
-        }
-
-        public static string GetFileServerPath()
-        {
-            return ConfigurationManager.AppSettings["fileServerPath"].ToString();
-        }
-
-        public static string GetMD5HashFromFile(string path)
-        {
-            using (MD5 md5 = MD5.Create())
-            {
-                using (FileStream stream = File.OpenRead(path))
-                {
-                    return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", string.Empty);
-                    //return BitConverter.ToString(md5.ComputeHash(stream));
                 }
             }
         }

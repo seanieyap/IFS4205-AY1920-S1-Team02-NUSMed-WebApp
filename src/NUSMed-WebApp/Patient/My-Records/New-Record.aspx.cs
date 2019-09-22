@@ -58,6 +58,7 @@ namespace NUSMed_WebApp.Patient.My_Records
         protected void buttonSubmit_ServerClick(object sender, EventArgs e)
         {
             Record record = new Record();
+            record.patientNRIC = AccountBLL.GetNRIC();
             record.title = inputTitle.Value.Trim();
             record.description = inputDescription.Value.Trim();
             record.content = string.Empty;
@@ -145,10 +146,8 @@ namespace NUSMed_WebApp.Patient.My_Records
                     else if (!record.type.isContent)
                     {
                         record.createTime = DateTime.Now;
-                        string fileServerPath = RecordBLL.GetFileServerPath();
-                        string fileDirectoryNameHash = RecordBLL.GetFileDirectoryNameHash();
 
-                        Directory.CreateDirectory(fileServerPath + "\\" + fileDirectoryNameHash);
+                        Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
 
                         // Not possible for file with same hashed file name to exist
                         inputFile.SaveAs(record.fullpath);

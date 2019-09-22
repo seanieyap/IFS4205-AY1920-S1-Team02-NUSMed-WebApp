@@ -3,6 +3,7 @@ using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -13,6 +14,7 @@ namespace NUSMed_WebApp.Patient.My_Records
     public partial class View : Page
     {
         private readonly RecordBLL recordBLL = new RecordBLL();
+        private readonly PatientBLL patientBLL = new PatientBLL();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -40,12 +42,14 @@ namespace NUSMed_WebApp.Patient.My_Records
             GridViewRecords.DataSource = ViewState["GridViewRecords"];
             GridViewRecords.DataBind();
         }
-
         protected void GridViewRecords_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 RecordType recordType = (RecordType)DataBinder.Eval(e.Row.DataItem, "type");
+                LinkButton LinkButtonViewFineGrain = (LinkButton)e.Row.FindControl("LinkButtonViewFineGrain");
+                LinkButtonViewFineGrain.CommandName = "FineGrainView";
+                LinkButtonViewFineGrain.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
 
                 if (recordType.isContent)
                 {
@@ -64,7 +68,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                     LinkbuttonFileView.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
                     LinkbuttonFileView.Visible = true;
                     LinkbuttonFileView.Text = "<i class=\"fas fa-fw fa-eye\"></i></i><span class=\"d-none d-lg-inline-block\">View "
-                        + DataBinder.Eval(e.Row.DataItem, "fileType")/*"test"*/ +
+                        + DataBinder.Eval(e.Row.DataItem, "fileType") +
                         "</span>";
 
                     FileDownloadLink.HRef = "~/Patient/Download.ashx?record=" + DataBinder.Eval(e.Row.DataItem, "id").ToString();
@@ -72,52 +76,213 @@ namespace NUSMed_WebApp.Patient.My_Records
                 }
             }
         }
-
         protected void GridViewRecords_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            int id = Convert.ToInt32(e.CommandArgument);
-            ViewState["GridViewRecordsSelectedID"] = id;
-
             if (e.CommandName.Equals("FileView"))
             {
-                Record record = recordBLL.GetRecordFileInformation(id);
-
-                modalFileViewImage.Visible = false;
-                modalFileViewVideo.Visible = false;
-                modalFileViewLabelText.Visible = false;
-
-                if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
+                try
                 {
-                    modalFileViewImage.Visible = true;
-                    modalFileViewImage.ImageUrl = "~/Patient/Download.ashx?record=" + record.id;
-                }
-                else if (record.fileExtension == ".txt")
-                {
-                    // todo, create timeseries
-                    modalFileViewLabelText.Visible = true;
-                    if (record.IsFileSafe())
+                    int id = Convert.ToInt32(e.CommandArgument);
+                    Record record = recordBLL.GetRecord(id);
+
+                    modalFileViewImage.Visible = false;
+                    modalFileViewVideo.Visible = false;
+                    modalFileViewLabelText.Visible = false;
+
+                    if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
                     {
-                        modalFileViewLabelText.Text = File.ReadAllText(record.fullpath);
+                        modalFileViewImage.Visible = true;
+                        modalFileViewImage.ImageUrl = "~/Patient/Download.ashx?record=" + record.id;
                     }
-                    else
+                    else if (record.fileExtension == ".txt")
                     {
-                        modalFileViewLabelText.Text = "File Corrupted";
+                        // todo, create timeseries
+                        modalFileViewLabelText.Visible = true;
+                        if (record.IsFileSafe())
+                        {
+                            modalFileViewLabelText.Text = File.ReadAllText(record.fullpath);
+                        }
+                        else
+                        {
+                            modalFileViewLabelText.Text = "File Corrupted";
+                        }
                     }
+                    else if (record.fileExtension == ".mp4")
+                    {
+                        modalFileViewVideo.Visible = true;
+                        so.Attributes.Add("src", "~/Patient/Download.ashx?record=" + record.id);
+                    }
+
+                    labelRecordName.Text = record.title;
+                    modalFileViewLabelFileName.Text = record.fileName + record.fileExtension;
+                    modalFileViewLabelFileSize.Text = record.fileSizeMegabytes;
+                    FileDownloadLinkviaModal.HRef = "~/Patient/Download.ashx?record=" + record.id.ToString();
+
+                    UpdatePanelFileView.Update();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').modal('show');", true);
                 }
-                else if (record.fileExtension == ".mp4")
+                catch
                 {
-                    modalFileViewVideo.Visible = true;
-                    so.Attributes.Add("src", "~/Patient/Download.ashx?record=" + record.id);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
                 }
+            }
+            else if (e.CommandName.Equals("FineGrainView"))
+            {
+                try
+                {
+                    int id = Convert.ToInt32(e.CommandArgument);
 
-                labelRecordName.Text = record.title;
-                modalFileViewLabelFileName.Text = record.fileName + record.fileExtension;
-                modalFileViewLabelFileSize.Text = record.fileSizeMegabytes;
-                FileDownloadLinkviaModal.HRef = "~/Patient/Download.ashx?record=" + record.id.ToString();
+                    ViewState["GridViewRecordsSelected"] = id;
+                    Update_FineGrainModal();
 
-                UpdatePanelFileView.Update();
-                ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').modal('show');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View Fine Grain Permissions Modal", "$('#modalFineGrain').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View Fine Grain Permissions Modal", "toastr['error']('Error Opening Fine Grain Permissions Modal.');", true);
+                }
             }
         }
+
+        #region FineGrainModal
+        protected void Update_FineGrainModal()
+        {
+            int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
+            Record record = recordBLL.GetRecord(recordID);
+            modalLabelFineGrainRecordTitle.Text = record.title;
+
+            if (record.status == 0)
+            {
+                LinkButtonStatusDisable.CssClass = ("btn disabled");
+                LinkButtonStatusEnable.CssClass = ("btn btn-success");
+            }
+            else if (record.status == 1)
+            {
+                LinkButtonStatusDisable.CssClass = ("btn btn-danger");
+                LinkButtonStatusEnable.CssClass = ("btn disabled");
+            }
+
+            string termAllowed = TextboxSearchFineGrainAllow.Text.Trim().ToLower();
+            List<Classes.Entity.Therapist> therapistCurrent = patientBLL.GetCurrentTherapistsFineGrain(termAllowed, recordID);
+            GridViewFineGrain.DataSource = therapistCurrent;
+            GridViewFineGrain.DataBind();
+
+            ViewState["UpdatePanelFineGrain"] = therapistCurrent;
+
+            UpdatePanelFineGrain.Update();
+        }
+        protected void GridViewFineGrain_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                short? recordPermissionStatus = (short?)DataBinder.Eval(e.Row.DataItem, "recordPermissionStatus");
+                LinkButton LinkButtonRecordStatusDefault = (LinkButton)e.Row.FindControl("LinkButtonRecordStatusDefault");
+                LinkButton LinkButtonRecordStatusEnable = (LinkButton)e.Row.FindControl("LinkButtonRecordStatusEnable");
+                LinkButton LinkButtonRecordStatusDisable = (LinkButton)e.Row.FindControl("LinkButtonRecordStatusDisable");
+
+                if (recordPermissionStatus == null)
+                {
+                    LinkButtonRecordStatusDisable.CssClass = ("btn btn-danger");
+                    LinkButtonRecordStatusEnable.CssClass = ("btn btn-success");
+                    LinkButtonRecordStatusDefault.CssClass = ("btn disabled");
+                }
+                else if (recordPermissionStatus == 0)
+                {
+                    LinkButtonRecordStatusDisable.CssClass = ("btn disabled");
+                    LinkButtonRecordStatusEnable.CssClass = ("btn btn-success");
+                    LinkButtonRecordStatusDefault.CssClass = ("btn btn-info");
+                }
+                else if (recordPermissionStatus == 1)
+                {
+                    LinkButtonRecordStatusDisable.CssClass = ("btn btn-danger");
+                    LinkButtonRecordStatusEnable.CssClass = ("btn disabled");
+                    LinkButtonRecordStatusDefault.CssClass = ("btn btn-info");
+                }
+            }
+        }
+
+        protected void GridViewFineGrain_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            string therapistNRIC = e.CommandArgument.ToString();
+            int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
+
+            if (e.CommandName.Equals("DefaultTherapist"))
+            {
+                try
+                {
+                    recordBLL.UpdateRecordTherapistDefault(recordID, therapistNRIC);
+                    Update_FineGrainModal();
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Therapist Fine Grain Permissions has been Set to \"Default\" to access record " + recordID + ".');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Seting Therapist Fine Grain Permissions to \"Default\" to access record.');", true);
+                }
+            }
+            else if (e.CommandName.Equals("AllowTherapist"))
+            {
+                try
+                {
+                    recordBLL.UpdateRecordTherapistAllow(recordID, therapistNRIC);
+                    Update_FineGrainModal();
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Therapist Fine Grain Permissions has been Set to \"Allow\" to access record " + recordID + ".');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Seting Therapist Fine Grain Permissions to \"Allow\" to access record.');", true);
+                }
+
+            }
+            else if (e.CommandName.Equals("DisallowTherapist"))
+            {
+                try
+                {
+                    recordBLL.UpdateRecordTherapistDisallow(recordID, therapistNRIC);
+                    Update_FineGrainModal();
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Therapist Fine Grain Permissions has been Set to \"Disallow\" to access record " + recordID + ".');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Seting Therapist Fine Grain Permissions to \"Disallow\" to access record.');", true);
+                }
+            }
+        }
+        protected void GridViewFineGrain_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewFineGrain.PageIndex = e.NewPageIndex;
+            GridViewFineGrain.DataSource = ViewState["UpdatePanelFineGrain"];
+            GridViewFineGrain.DataBind();
+            UpdatePanelFineGrain.Update();
+        }
+
+        protected void LinkButtonFineGrainAllow_Click(object sender, EventArgs e)
+        {
+            string termAllowed = TextboxSearchFineGrainAllow.Text.Trim().ToLower();
+            List<Classes.Entity.Therapist> therapistsAllowed = patientBLL.GetCurrentTherapists(termAllowed);
+            GridViewFineGrain.DataSource = therapistsAllowed;
+            GridViewFineGrain.DataBind();
+
+            UpdatePanelFineGrain.Update();
+        }
+
+        protected void LinkButtonStatusDisable_Click(object sender, EventArgs e)
+        {
+            int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
+            recordBLL.UpdateRecordDisable(recordID);
+
+            Update_FineGrainModal();
+        }
+        protected void LinkButtonStatusEnable_Click(object sender, EventArgs e)
+        {
+            int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
+            recordBLL.UpdateRecordEnable(recordID);
+
+            Update_FineGrainModal();
+        }
+        #endregion
+
     }
 }

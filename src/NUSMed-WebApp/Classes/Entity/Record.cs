@@ -1,6 +1,7 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -50,12 +51,10 @@ namespace NUSMed_WebApp.Classes.Entity
                 _creatorLastName = value;
             }
         }
-
         public string title { get; set; }
         public string description { get; set; }
         public DateTime createTime { get; set; }
         public string fileName { get; set; }
-
         public string fileNameHash
         {
             get
@@ -77,7 +76,6 @@ namespace NUSMed_WebApp.Classes.Entity
                 return result;
             }
         }
-
         public string fileChecksum { get; set; }
         public string fileExtension { get; set; }
         public int fileSize { get; set; }
@@ -118,27 +116,69 @@ namespace NUSMed_WebApp.Classes.Entity
 
         public string content { get; set; }
         public bool isEmergency { get; set; }
-
         public RecordType type { get; set; }
+        public short status { get; set; } = 0;
+        public short? recordPermissionStatus { get; set; }
 
         public string fullpath
         {
             get
             {
-                return RecordBLL.GetFileServerPath() + "\\" + RecordBLL.GetFileDirectoryNameHash() + "\\" + fileNameHash;
+                return GetFileServerPath() + "\\" + GetFileDirectoryNameHash() + "\\" + fileNameHash;
             }
         }
 
         public bool IsFileSafe()
         {
             if (fileNameHash.Contains("\\") || !File.Exists(fullpath)
-                || !RecordBLL.GetMD5HashFromFile(fullpath).Equals(fileChecksum)
+                || !GetMD5HashFromFile().Equals(fileChecksum)
                 || new FileInfo(fullpath).Length != fileSize)
                 return false;
 
             return true;
         }
 
+        public string GetFileDirectoryNameHash()
+        {
+            if ((AccountBLL.IsPatient() && AccountBLL.GetNRIC().Equals(patientNRIC))
+                || (AccountBLL.IsTherapist()))
+            {
+
+                // todo permission check for therapist
+                SHA256 Sha256 = SHA256.Create();
+                byte[] hashValue1 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(patientNRIC));
+                byte[] hashValue2 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(new AccountBLL().GetCreateTime(patientNRIC).ToString()));
+                byte[] concat = new byte[hashValue1.Length + hashValue2.Length];
+                Buffer.BlockCopy(hashValue1, 0, concat, 0, hashValue1.Length);
+                Buffer.BlockCopy(hashValue2, 0, concat, hashValue1.Length, hashValue2.Length);
+                byte[] hash = Sha256.ComputeHash(concat);
+
+                string result = string.Empty;
+                foreach (byte b in hash)
+                {
+                    result += string.Format("{0:x2}", b);
+                }
+                return result;
+            }
+
+            return null;
+        }
+
+        public string GetMD5HashFromFile()
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                using (FileStream stream = File.OpenRead(fullpath))
+                {
+                    return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", string.Empty);
+                }
+            }
+        }
+
+        public string GetFileServerPath()
+        {
+            return ConfigurationManager.AppSettings["fileServerPath"].ToString();
+        }
 
         #region Validation Helpers
         public bool IsTitleValid()

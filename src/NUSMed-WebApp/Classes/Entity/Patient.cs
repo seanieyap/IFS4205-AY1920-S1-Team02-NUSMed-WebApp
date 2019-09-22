@@ -17,11 +17,32 @@ namespace NUSMed_WebApp.Classes.Entity
         public DateTime PermissionCreateTime { get; set; }
 
         #region permission        
+        public bool hasPermissionsApproved(Record record)
+        {
+            bool result = false;
+            if (record.status == 1)
+            {
+                if (record.recordPermissionStatus == 1)
+                {
+                    result = true;
+                }
+                else if (record.recordPermissionStatus == null)
+                {
+                    if ((permissionApproved & record.type.permissionFlag) != 0)
+                    {
+                        result = true;
+                    }
+                }
+
+            }
+            return result;
+        }
+
         public bool hasHeightMeasurementPermissionsApproved
         {
             get
             {
-                if ((permissionApproved & HeightMeasurement.permissionFlag) != 0)
+                if ((permissionApproved & new HeightMeasurement().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -30,7 +51,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionApproved & WeightMeasurement.permissionFlag) != 0)
+                if ((permissionApproved & new WeightMeasurement().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -39,7 +60,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionApproved & TemperatureReading.permissionFlag) != 0)
+                if ((permissionApproved & new TemperatureReading().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -48,7 +69,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionApproved & BloodPressureReading.permissionFlag) != 0)
+                if ((permissionApproved & new BloodPressureReading().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -57,7 +78,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionApproved & ECGReading.permissionFlag) != 0)
+                if ((permissionApproved & new ECGReading().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -66,7 +87,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionApproved & MRI.permissionFlag) != 0)
+                if ((permissionApproved & new MRI().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -75,7 +96,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionApproved & XRay.permissionFlag) != 0)
+                if ((permissionApproved & new XRay().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -84,7 +105,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionApproved & Gait.permissionFlag) != 0)
+                if ((permissionApproved & new Gait().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -94,7 +115,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionUnapproved & HeightMeasurement.permissionFlag) != 0)
+                if ((permissionUnapproved & new HeightMeasurement().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -103,7 +124,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionUnapproved & WeightMeasurement.permissionFlag) != 0)
+                if ((permissionUnapproved & new WeightMeasurement().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -112,7 +133,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionUnapproved & TemperatureReading.permissionFlag) != 0)
+                if ((permissionUnapproved & new TemperatureReading().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -121,7 +142,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionUnapproved & BloodPressureReading.permissionFlag) != 0)
+                if ((permissionUnapproved & new BloodPressureReading().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -130,7 +151,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionUnapproved & ECGReading.permissionFlag) != 0)
+                if ((permissionUnapproved & new ECGReading().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -139,7 +160,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionUnapproved & MRI.permissionFlag) != 0)
+                if ((permissionUnapproved & new MRI().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -148,7 +169,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionUnapproved & XRay.permissionFlag) != 0)
+                if ((permissionUnapproved & new XRay().permissionFlag) != 0)
                     return true;
                 return false;
             }
@@ -157,7 +178,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if ((permissionUnapproved & Gait.permissionFlag) != 0)
+                if ((permissionUnapproved & new Gait().permissionFlag) != 0)
                     return true;
                 return false;
             }

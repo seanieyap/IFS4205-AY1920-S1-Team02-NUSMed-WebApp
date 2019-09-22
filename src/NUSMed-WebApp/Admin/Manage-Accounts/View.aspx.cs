@@ -663,6 +663,5 @@ namespace NUSMed_WebApp.Admin.Account
 
             UpdatePanelStatus.Update();
         }
-
     }
 }

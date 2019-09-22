@@ -122,7 +122,7 @@ namespace NUSMed_WebApp.Classes.DAL
                                 firstName = Convert.ToString(reader["name_first"]),
                                 lastName = Convert.ToString(reader["name_last"]),
                                 permissionUnapproved = Convert.ToInt16(reader["permission_unapproved"]),
-                                permissionApproved = Convert.ToInt16(reader["permission_approved"]),
+                                permissionApproved = Convert.ToInt16(reader["permission_approved"])
                             };
                             patient.requestTime = reader["request_time"] == DBNull.Value ? null :
                                (DateTime?)Convert.ToDateTime(reader["request_time"]);
@@ -130,6 +130,56 @@ namespace NUSMed_WebApp.Classes.DAL
                                (DateTime?)Convert.ToDateTime(reader["approved_time"]);
 
                             result.Add(patient);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve therapist's existing patient
+        /// </summary>
+        public Entity.Patient RetrievePatient(string patientNRIC, string therapistNRIC)
+        {
+            Entity.Patient result = new Entity.Patient();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT DISTINCT a.nric, a.name_first, a.name_last, 
+                    rtp.permission_unapproved, rtp.request_time, 
+                    rtp.permission_approved, rtp.approved_time
+                    FROM record_type_permission rtp
+                    INNER JOIN account a ON rtp.patient_nric = a.nric
+                    WHERE rtp.therapist_nric = @therapistNRIC AND rtp.patient_nric = @patientNRIC;";
+
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            Entity.Patient patient = new Entity.Patient
+                            {
+                                nric = Convert.ToString(reader["nric"]),
+                                firstName = Convert.ToString(reader["name_first"]),
+                                lastName = Convert.ToString(reader["name_last"]),
+                                permissionUnapproved = Convert.ToInt16(reader["permission_unapproved"]),
+                                permissionApproved = Convert.ToInt16(reader["permission_approved"])
+                            };
+                            patient.requestTime = reader["request_time"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["request_time"]);
+                            patient.approvedTime = reader["approved_time"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["approved_time"]);
+
+                            result = patient;
                         }
                     }
                 }
@@ -198,8 +248,8 @@ namespace NUSMed_WebApp.Classes.DAL
                     FROM record_type_permission rtp
                     INNER JOIN account a ON a.nric = rtp.patient_nric 
                     INNER JOIN account_patient ap ON ap.nric = rtp.patient_nric
-                    WHERE rtp.therapist_nric = @therapistNRIC AND rtp.patient_nric = @patientNRIC AND 
-                        rtp.permission_approved > 0 AND a.status > 0 AND ap.status = 1;";
+                    WHERE rtp.therapist_nric = @therapistNRIC AND rtp.patient_nric = @patientNRIC
+                    AND a.status > 0 AND ap.status = 1;";
 
                 cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);

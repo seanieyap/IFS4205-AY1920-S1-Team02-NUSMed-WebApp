@@ -521,6 +521,9 @@
     <Compile Include="Therapist\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Therapist\Download.ashx.cs">
+      <DependentUpon>Download.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Therapist\My-Medical-Notes\New-Medical-Note.aspx.cs">
       <DependentUpon>New-Medical-Note.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -557,6 +560,7 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="Therapist\Download.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

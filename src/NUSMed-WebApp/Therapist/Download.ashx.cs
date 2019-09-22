@@ -1,12 +1,10 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace NUSMed_WebApp.Patient
+namespace NUSMed_WebApp.Therapist
 {
     /// <summary>
     /// Handle download of files from file server

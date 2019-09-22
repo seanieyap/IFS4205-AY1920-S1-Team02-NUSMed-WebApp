@@ -16,17 +16,17 @@
         <ContentTemplate>
             <div class="row mb-4">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
-                    <div class="input-group">
+                    <asp:Panel CssClass="input-group" runat="server" DefaultButton="ButtonSearch">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Search</span>
                         </div>
-                        <asp:TextBox ID="TextboxSearch" CssClass="form-control" placeholder="NRIC" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="TextboxSearch" CssClass="form-control" placeholder="First Name / Last Name" runat="server"></asp:TextBox>
                         <div class="input-group-append">
                             <asp:LinkButton ID="ButtonSearch" CssClass="btn btn-outline-info" OnClick="ButtonSearch_Click" runat="server">
                                         <i class="fas fa-fw fa-search"></i> Go
                             </asp:LinkButton>
                         </div>
-                    </div>
+                    </asp:Panel>
                 </div>
             </div>
 
@@ -34,36 +34,38 @@
                 <div class="col-12">
                     <asp:GridView ID="GridViewTherapist" CssClass="table table-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
-                        ItemType="NUSMed_WebApp.Classes.Entity.Therapist" DataKeyNames="nric" OnRowCommand="GridViewPatient_RowCommand"
-                        OnPageIndexChanging="GridViewPatient_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowDataBound="GridViewPatient_RowDataBound">
+                        ItemType="NUSMed_WebApp.Classes.Entity.Therapist" DataKeyNames="nric" OnRowCommand="GridViewTherapist_RowCommand"
+                        OnPageIndexChanging="GridViewTherapist_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowDataBound="GridViewTherapist_RowDataBound">
                         <Columns>
-                            <asp:TemplateField HeaderText="Name" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                            <asp:TemplateField HeaderText="Therapist's Name" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <%# Item.lastName + " " + Item.firstName %>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Title" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <%# Item.therapistJobTitle %>
+                                    <%# Item.therapistJobTitle == string.Empty ?  "Nil" : Item.therapistJobTitle %>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Department" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <%# Item.therapistDepartment %>
+                                    <%# Item.therapistDepartment == string.Empty ?  "Nil" : Item.therapistDepartment %>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Permissions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LabelPermissionStatus" TabIndex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
-                                    <asp:LinkButton ID="LinkButtonViewPermission" CssClass="btn btn-info btn-sm" runat="server" CommandArgument='<%# Item.nric %>' CommandName="ViewPermission"><i class="fas fa-fw fa-eye"></i>View</asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButtonViewPermission" CssClass="btn btn-info btn-sm" runat="server" CommandArgument='<%# Item.nric %>' CommandName="ViewPermission">
+                                        <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
+                                    </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Fine-Grain Permissions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                            <%--<asp:TemplateField HeaderText="Fine-Grain Permissions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LabelRecordStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
                                     <asp:LinkButton ID="LinkButtonViewRecords" runat="server"><i class="fas fa-fw fa-eye"></i>View</asp:LinkButton>
                                 </ItemTemplate>
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
                         </Columns>
                         <EmptyDataTemplate>
                             <div class="alert alert-info text-center py-4" role="alert">
@@ -90,8 +92,8 @@
             <asp:UpdatePanel ID="UpdatePanelPermissions" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
-                        <h5 class="modal-title">
-                            <asp:Label ID="LabelTherapistName" runat="server"></asp:Label>: Permissions</h5>
+                        <h5 class="modal-title">Therapist 
+                            <asp:Label ID="LabelTherapistName" runat="server"></asp:Label>: View Permissions</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -99,7 +101,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12">
-                                <h4 class="text-center">Instructions</h4>
+                                <h4>Instructions</h4>
                                 <ul>
                                     <li>To Approve request sent by therapist, validate the existing permissions he/she has and assess the permissions requested for. When done, simply click "Approve".</li>
                                     <li>In event of unsatisfactory request, you are able to edit the request and approve a different set of permissions.</li>
@@ -111,7 +113,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <h4 class="text-center">Current Permissions</h4>
+                                <h4 class="mb-4">Current Permissions</h4>
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="row">
@@ -173,13 +175,13 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <h4 class="mb-3 text-center">Requested Permissions</h4>
-
-                                <div class="row">
-                                    <div class="col-12 text-center mb-3">
+                                <h4 class="mb-4">Requested Permissions
+                                    <div class="float-right">
                                         <button type="button" class="btn btn-sm btn-info" runat="server" onclick=" $('.checkboxes .form-check-input input:checkbox').prop('checked', true);">Select All</button>
                                         <button type="button" class="btn btn-sm btn-info mr-2" runat="server" onclick=" $('.checkboxes .form-check-input input:checkbox').prop('checked', false);">Deselect All</button>
                                     </div>
+                                </h4>
+                                <div class="row">
 
                                     <div class="col-12">
                                         <div class="row mb-2 checkboxes">

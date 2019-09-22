@@ -613,7 +613,6 @@ namespace NUSMed_WebApp.Classes.DAL
             return result;
         }
 
-
         /// <summary>
         /// Retrieve status of specific account registered in the database
         /// </summary>

@@ -14,7 +14,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve all of therapist's existing patients
         /// </summary>
-        public List<Entity.Therapist> RetrieveCurrentTherapists(string term, string nric)
+        public List<Entity.Therapist> RetrieveCurrentTherapists(string term, string patientNRIC)
         {
             List<Entity.Therapist> result = new List<Entity.Therapist>();
 
@@ -27,10 +27,10 @@ namespace NUSMed_WebApp.Classes.DAL
                     FROM record_type_permission rtp
                     INNER JOIN account a ON rtp.therapist_nric = a.nric
                     INNER JOIN account_therapist at ON rtp.therapist_nric = at.nric
-                    WHERE rtp.patient_nric = @nric AND a.nric LIKE @term
-                    ORDER BY rtp.create_time;";
+                    WHERE rtp.patient_nric = @patientNRIC AND (a.name_first LIKE @term OR a.name_last LIKE @term)
+                    ORDER BY rtp.create_time DESC;";
 
-                cmd.Parameters.AddWithValue("@nric", nric);
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
                 cmd.Parameters.AddWithValue("@term", "%" + term + "%");
 
                 using (cmd.Connection = connection)
@@ -65,6 +65,69 @@ namespace NUSMed_WebApp.Classes.DAL
 
             return result;
         }
+
+        /// <summary>
+        /// Retrieve all of therapist's existing patients
+        /// </summary>
+        public List<Entity.Therapist> RetrieveCurrentTherapistsFineGrain(string term, int recordID, string patientNRIC)
+        {
+            List<Entity.Therapist> result = new List<Entity.Therapist>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT a.nric, a.name_first, a.name_last, 
+                    at.department, at.job_title,
+                    rtp.permission_unapproved, rtp.request_time, 
+                    rtp.permission_approved, rtp.approved_time,
+                    rp.status as record_permission_status
+                    FROM record_type_permission rtp
+                    INNER JOIN account a ON rtp.therapist_nric = a.nric
+                    INNER JOIN account_therapist at ON rtp.therapist_nric = at.nric
+                    LEFT JOIN record_permission rp ON rp.therapist_nric = rtp.therapist_nric AND rp.record_id = @recordID
+                    WHERE rtp.patient_nric = @patientNRIC AND (a.name_first LIKE @term OR a.name_last LIKE @term)
+                    ORDER BY rtp.create_time DESC;";
+
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
+                cmd.Parameters.AddWithValue("@recordID", recordID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Entity.Therapist therapist = new Entity.Therapist
+                            {
+                                nric = Convert.ToString(reader["nric"]),
+                                firstName = Convert.ToString(reader["name_first"]),
+                                lastName = Convert.ToString(reader["name_last"]),
+                                therapistDepartment = Convert.ToString(reader["department"]),
+                                therapistJobTitle = Convert.ToString(reader["job_title"]),
+                                permissionUnapproved = Convert.ToInt16(reader["permission_unapproved"]),
+                                permissionApproved = Convert.ToInt16(reader["permission_approved"])
+                            };
+
+                            therapist.recordPermissionStatus = reader["record_permission_status"] == DBNull.Value ? null :
+                               (short?)Convert.ToInt16(reader["record_permission_status"]);
+
+                            therapist.requestTime = reader["request_time"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["request_time"]);
+                            therapist.approvedTime = reader["approved_time"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["approved_time"]);
+
+                            result.Add(therapist);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Retrieve a specific patient's permissions
         /// </summary>
@@ -107,6 +170,55 @@ namespace NUSMed_WebApp.Classes.DAL
                                (DateTime?)Convert.ToDateTime(reader["approved_time"]);
 
                             result = therapist;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Retrieve Therapists with access to specific record
+        /// </summary>
+        public List<Entity.Therapist> RetrievePermissionsDisallow(int recordID, string term, string patientNRIC)
+        {
+            List<Entity.Therapist> result = new List<Entity.Therapist>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT a.nric, a.name_first, a.name_last, at.job_title, at.department
+                    FROM record_permission rp
+                    INNER JOIN account_therapist at ON at.nric = rp.therapist_nric
+                    INNER JOIN account a ON a.nric = at.nric
+                    INNER JOIN record r ON r.id = rp.record_id
+                    WHERE rp.record_id = @recordID AND r.patient_nric = @patientNRIC AND
+                    a.status > 0 AND at.status > 0 AND (a.name_first LIKE @term OR a.name_last LIKE @term)
+                    ORDER BY rp.create_time DESC;";
+
+                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
+                cmd.Parameters.AddWithValue("@recordID", recordID);
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Entity.Therapist therapist = new Entity.Therapist
+                            {
+                                nric = Convert.ToString(reader["nric"]),
+                                firstName = Convert.ToString(reader["name_first"]),
+                                lastName = Convert.ToString(reader["name_last"]),
+                                therapistJobTitle = Convert.ToString(reader["job_title"]),
+                                therapistDepartment = Convert.ToString(reader["department"]),
+                            };
+                            result.Add(therapist);
                         }
                     }
                 }

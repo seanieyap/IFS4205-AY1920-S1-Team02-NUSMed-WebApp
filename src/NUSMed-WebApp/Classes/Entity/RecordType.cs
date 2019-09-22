@@ -17,6 +17,7 @@ namespace NUSMed_WebApp.Classes.Entity
         protected const int maxVideoSize = 52428800;
 
         public abstract string name { get; }
+        public abstract short permissionFlag { get; }
         public abstract bool isContent { get; }        // true = record contains content not file
         public virtual string prefix { get; }
         public virtual bool IsContentValid(string content)
@@ -72,7 +73,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "Height Measurement"; }
         }
-        public static short permissionFlag
+        public override short permissionFlag
         {
             get { return 1; }
         }
@@ -104,7 +105,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "Weight Measurement"; }
         }
-        public static short permissionFlag
+        public override short permissionFlag
         {
             get { return 2; }
         }
@@ -136,7 +137,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "Temperature Reading"; }
         }
-        public static short permissionFlag
+        public override short permissionFlag
         {
             get { return 4; }
         }
@@ -168,7 +169,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "Blood Pressure Reading"; }
         }
-        public static short permissionFlag
+        public override short permissionFlag
         {
             get { return 8; }
         }
@@ -203,7 +204,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "ECG Reading"; }
         }
-        public static short permissionFlag
+        public override short permissionFlag
         {
             get { return 16; }
         }
@@ -224,7 +225,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "MRI"; }
         }
-        public static short permissionFlag
+        public override short permissionFlag
         {
             get { return 32; }
         }
@@ -245,7 +246,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "X-ray"; }
         }
-        public static short permissionFlag
+        public override short permissionFlag
         {
             get { return 64; }
         }
@@ -266,7 +267,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get { return "Gait"; }
         }
-        public static short permissionFlag
+        public override short permissionFlag
         {
             get { return 128; }
         }
