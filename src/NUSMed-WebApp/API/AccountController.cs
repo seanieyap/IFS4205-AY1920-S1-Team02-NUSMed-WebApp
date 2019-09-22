@@ -11,8 +11,7 @@ namespace NUSMed_WebApp.API
     public class AccountController : ApiController
     {
         // POST api/account/authenticate/password
-        // Authenticate NRIC + password upon first login on mobile app
-        // how to prevent this call from being exploited to brute force password?
+        // Authenticate NRIC + password + device ID upon launching mobile app
         [Route("authenticate/password")]
         [HttpPost]
         public HttpResponseMessage AuthenticatePassword([FromBody]dynamic credentials)
@@ -20,20 +19,22 @@ namespace NUSMed_WebApp.API
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
             string nric = credentials.nric;
             string password = credentials.password;
+            string deviceID = credentials.deviceID;
 
             AccountBLL accountBLL = new AccountBLL();
 
-            if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password))
+            if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(deviceID))
             {
-                Account account = accountBLL.GetStatus(nric, password);
+                Account account = accountBLL.GetStatus(nric, password, deviceID);
 
                 switch (account.status)
                 {
                     // MFA is enabled
                     case 1:
-                        // return JWT token?? or return something which cannot be replayed?
+                        // return JWT token?? with no permissions to do anything
                         response = Request.CreateResponse(HttpStatusCode.OK);
                         return response;
+
                     // Account/MFA is disabled
                     default:
                         return response;
@@ -46,32 +47,38 @@ namespace NUSMed_WebApp.API
             }
         }
 
-        // POST api/account/authenticate/registerdevice
+        // POST api/account/authenticate/register
         // Registers device for a user
-        // How to prevent anyone from using this to register any device for a valid token?
-        [Route("authenticate/registerdevice")]
+        [Route("authenticate/register")]
         [HttpPost]
         public HttpResponseMessage RegisterDeviceID([FromBody]dynamic credentials)
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+            string nric = credentials.nric;
+            string password = credentials.password;
             string deviceID = credentials.deviceID;
             string tokenID = credentials.tokenID;
 
             AccountBLL accountBLL = new AccountBLL();
 
-            if (!string.IsNullOrEmpty(deviceID) && !string.IsNullOrEmpty(tokenID))
+            if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password) && 
+                !string.IsNullOrEmpty(deviceID) && !string.IsNullOrEmpty(tokenID))
             {
-                // If token is valid
-                if (true)
+                Account account = accountBLL.GetStatus(nric, password, deviceID, tokenID);
+
+                switch (account.status)
                 {
-                    accountBLL.MFADeviceIDUpdateFromPhone(tokenID, deviceID);
-                    // return JWT token to user
-                    response = Request.CreateResponse(HttpStatusCode.OK);
-                    return response;
-                }
-                else
-                {
-                    return response;
+                    // MFA is enabled
+                    case 1:
+                        accountBLL.MFADeviceIDUpdateFromPhone(tokenID, deviceID);
+
+                        // return JWT token?? with no permissions to do anything
+                        response = Request.CreateResponse(HttpStatusCode.OK);
+                        return response;
+
+                    // Account/MFA is disabled
+                    default:
+                        return response;
                 }
 
             }
@@ -81,32 +88,16 @@ namespace NUSMed_WebApp.API
             }
         }
 
-        // POST api/account/authenticate/requestchallenge
-        // Returns a challenge to a user who has launched the mobile app
-        [Route("authenticate/requestchallenge")]
+        // POST api/account/authenticate/weblogin
+        [Route("authenticate/weblogin")]
         [HttpPost]
-        public HttpResponseMessage RequestChallenge([FromBody]dynamic credentials)
+        public HttpResponseMessage WebLogin([FromBody]dynamic credentials)
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
-            string nric = credentials.nric;
 
-            AccountBLL accountBLL = new AccountBLL();
+            response = Request.CreateResponse(HttpStatusCode.OK);
 
-            if (!string.IsNullOrEmpty(nric))
-            {
-                // Retrieve hashed pass + device ID + token ID -> derive key from it
-                // Generate random challenge
-                // Encrypt challenge with key
-                // Respond with encrypted challenge 
-
-                // But how is the service going to know/wait for the user's challenge response? 
-                // Save encrypted challenge into new field in db and another api call would validate challenge response from user?
-                return response;
-            }
-            else
-            {
-                return response;
-            }
+            return response;
         }
 
         // POST api/account/selectrole

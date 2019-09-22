@@ -483,6 +483,103 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve status of specific account registered in the database
         /// </summary>
+        public Account RetrieveStatus(string nric, string hash, string deviceID, string tokenID)
+        {
+            Account result = new Account();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT a.status as status, 
+                    ap.status as patient_status, at.status as therapist_status, 
+                    ar.status as researcher_status, aa.status as admin_status
+                    FROM account a 
+                    INNER JOIN account_patient ap ON a.nric = ap.nric
+                    INNER JOIN account_therapist at ON a.nric = at.nric
+                    INNER JOIN account_researcher ar ON a.nric = ar.nric
+                    INNER JOIN account_admin aa ON a.nric = aa.nric
+                    WHERE a.nric = @nric AND hash = @hash AND associated_token_id = @tokenID 
+                    AND (associated_device_id IS NULL OR associated_device_id = '');";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+                cmd.Parameters.AddWithValue("@hash", hash);
+                cmd.Parameters.AddWithValue("@tokenID", tokenID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = new Account
+                            {
+                                status = Convert.ToInt32(reader["status"]),
+                                patientStatus = Convert.ToInt32(reader["patient_status"]),
+                                therapistStatus = Convert.ToInt32(reader["therapist_status"]),
+                                researcherStatus = Convert.ToInt32(reader["researcher_status"]),
+                                adminStatus = Convert.ToInt32(reader["admin_status"]),
+                            };
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve status of specific account registered in the database
+        /// </summary>
+        public Account RetrieveStatus(string nric, string hash, string deviceID)
+        {
+            Account result = new Account();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT a.status as status, 
+                    ap.status as patient_status, at.status as therapist_status, 
+                    ar.status as researcher_status, aa.status as admin_status
+                    FROM account a 
+                    INNER JOIN account_patient ap ON a.nric = ap.nric
+                    INNER JOIN account_therapist at ON a.nric = at.nric
+                    INNER JOIN account_researcher ar ON a.nric = ar.nric
+                    INNER JOIN account_admin aa ON a.nric = aa.nric
+                    WHERE a.nric = @nric AND hash = @hash AND associated_device_id = @deviceID;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+                cmd.Parameters.AddWithValue("@hash", hash);
+                cmd.Parameters.AddWithValue("@deviceID", deviceID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = new Account
+                            {
+                                status = Convert.ToInt32(reader["status"]),
+                                patientStatus = Convert.ToInt32(reader["patient_status"]),
+                                therapistStatus = Convert.ToInt32(reader["therapist_status"]),
+                                researcherStatus = Convert.ToInt32(reader["researcher_status"]),
+                                adminStatus = Convert.ToInt32(reader["admin_status"]),
+                            };
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve status of specific account registered in the database
+        /// </summary>
         public Account RetrieveStatus(string nric, string hash)
         {
             Account result = new Account();
