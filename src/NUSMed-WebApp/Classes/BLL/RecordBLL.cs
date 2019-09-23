@@ -26,10 +26,29 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public List<Record> GetRecords(string patientNRIC)
         {
+
             if (AccountBLL.IsTherapist())
             {
-                // todo remove unauthorized content and etc.
-                return recordDAL.RetrieveRecords(patientNRIC, AccountBLL.GetNRIC());
+                List<Record> records = recordDAL.RetrieveRecords(patientNRIC, AccountBLL.GetNRIC());
+                Entity.Patient patient = new TherapistBLL().GetPatient(patientNRIC);
+
+                foreach (Record record in records)
+                {
+                    if (patient.hasPermissionsApproved(record))
+                    {
+                        record.createTime = DateTime.Now;
+                        record.creatorFirstName = string.Empty;
+                        record.creatorLastName = string.Empty;
+                        record.fileName = string.Empty;
+                        record.fileChecksum = string.Empty;
+                        record.fileExtension = string.Empty;
+                        record.fileSize = 0;
+                        record.content = string.Empty;
+                        record.id = 0;
+                    }
+                }
+
+                return records;
             }
 
             return null;

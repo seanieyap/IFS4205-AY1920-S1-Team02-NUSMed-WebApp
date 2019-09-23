@@ -95,7 +95,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"SELECT a.`nric`, a.`name_first`, a.`birth_country`, a.`nationality`, a.`sex`, a.`gender`,
                     a.`marital_status`, a.`name_last`, a.`address`, a.`address_postal_code`, a.`email`, a.`contact_number`, a.`create_time`,
-                    a.`last_full_login`, a.`date_of_birth`, a.`status`, a.`associated_token_id`, a.`associated_device_id`, 
+                    a.`last_full_login`, a.`date_of_birth`, a.`status`, 
                     ap.nok_name, ap.nok_contact_number,
                     at.job_title as therapist_job_title, at.department as therapist_department,
                     ar.job_title as researcher_job_title, ar.department as researcher_department,
@@ -1115,7 +1115,15 @@ namespace NUSMed_WebApp.Classes.DAL
                             WHERE nric = @nric;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
-                cmd.Parameters.AddWithValue("@associatedTokenID", tokenID);
+
+                if (tokenID.Equals(string.Empty))
+                {
+                    cmd.Parameters.AddWithValue("@associatedTokenID", null);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@associatedTokenID", tokenID);
+                }
 
                 using (cmd.Connection = connection)
                 {
@@ -1133,7 +1141,15 @@ namespace NUSMed_WebApp.Classes.DAL
                             WHERE nric = @nric;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
-                cmd.Parameters.AddWithValue("@associatedDeviceID", deviceID);
+
+                if (deviceID.Equals(string.Empty))
+                {
+                    cmd.Parameters.AddWithValue("@associatedDeviceID", null);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@associatedDeviceID", deviceID);
+                }
 
                 using (cmd.Connection = connection)
                 {

@@ -84,7 +84,7 @@ namespace NUSMed_WebApp.Classes.Entity
             get
             {
                 int counter = 0;
-                decimal number = (decimal)fileSize;
+                decimal number = fileSize;
                 while (Math.Round(number / 1024) >= 1)
                 {
                     number = number / 1024;
@@ -130,10 +130,13 @@ namespace NUSMed_WebApp.Classes.Entity
 
         public bool IsFileSafe()
         {
+
             if (fileNameHash.Contains("\\") || !File.Exists(fullpath)
                 || !GetMD5HashFromFile().Equals(fileChecksum)
                 || new FileInfo(fullpath).Length != fileSize)
+            {
                 return false;
+            }
 
             return true;
         }

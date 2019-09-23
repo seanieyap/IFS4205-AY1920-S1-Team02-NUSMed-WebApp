@@ -14,10 +14,10 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (AccountBLL.IsTherapist())
             {
-                //if (therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
-                    //{
+                if (therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
+                {
                     return therapistDAL.RetrievePatientInformation(patientNRIC, AccountBLL.GetNRIC());
-                //}
+                }
             }
 
             return null;
@@ -49,6 +49,16 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (AccountBLL.IsTherapist())
             {
+                List<Entity.Patient> patients = therapistDAL.RetrieveCurrentPatients(term, AccountBLL.GetNRIC());
+
+                foreach (Entity.Patient patient in patients)
+                {
+                    if (patient.approvedTime == null)
+                    {
+                        patient.firstName = string.Empty;
+                        patient.lastName = string.Empty;
+                    }
+                }
                 return therapistDAL.RetrieveCurrentPatients(term, AccountBLL.GetNRIC());
             }
 

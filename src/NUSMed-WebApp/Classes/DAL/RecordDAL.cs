@@ -520,7 +520,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.Parameters.AddWithValue("@fileExtension", record.fileExtension);
                 cmd.Parameters.AddWithValue("@fileSize", record.fileSize);
                 cmd.Parameters.AddWithValue("@fileChecksum", record.fileChecksum);
-                cmd.Parameters.AddWithValue("@createTime", record.createTime);
+                cmd.Parameters.AddWithValue("@createTime", record.createTime.ToString("yyyy-MM-dd H:mm:ss"));
 
                 using (cmd.Connection = connection)
                 {

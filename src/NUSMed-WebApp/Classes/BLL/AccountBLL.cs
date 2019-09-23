@@ -77,7 +77,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
         public DateTime GetCreateTime(string nric)
         {
-            if ((IsPatient() && nric.Equals(GetNRIC())) || 
+            if ((IsPatient() && nric.Equals(GetNRIC())) ||
                 IsTherapist())
             {
                 // todo permission check
@@ -411,12 +411,16 @@ namespace NUSMed_WebApp.Classes.BLL
         public void MFATokenIDUpdate(string nric, string tokenID)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
                 accountDAL.UpdateMFATokenID(nric, tokenID);
+            }
         }
         public void MFADeviceIDUpdate(string nric, string deviceID)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
                 accountDAL.UpdateMFADeviceID(nric, deviceID);
+            }
         }
         public void MFADeviceIDUpdateFromPhone(string tokenID, string deviceID)
         {
