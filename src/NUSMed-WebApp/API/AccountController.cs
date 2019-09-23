@@ -13,49 +13,51 @@ namespace NUSMed_WebApp.API
     [RoutePrefix("api/account")]
     public class AccountController : ApiController
     {
-        // POST api/account/authenticate/password
+        // POST api/account/authenticate
         // Authenticate NRIC + password + device ID upon launching mobile app
-        [Route("authenticate/password")]
+        [Route("authenticate")]
         [HttpPost]
-        public HttpResponseMessage AuthenticatePassword([FromBody]dynamic credentials)
+        public HttpResponseMessage Authenticate([FromBody]dynamic credentials)
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
             string nric = credentials.nric;
             string password = credentials.password;
             string deviceID = credentials.deviceID;
+            string guid = credentials.guid;
 
             AccountBLL accountBLL = new AccountBLL();
+
+            if (!string.IsNullOrEmpty(guid))
+            {
+                if (HttpContext.Current.Cache[guid] != null)
+                {
+                    // update/refresh token in cache
+                    response = Request.CreateResponse(HttpStatusCode.OK);
+                    return response;
+                }
+            }
 
             if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(deviceID))
             {
                 Account account = accountBLL.GetStatus(nric, password, deviceID);
 
-                switch (account.status)
+                if (account.status == 1)
                 {
-                    // MFA is enabled
-                    case 1:
-                        // return JWT token?? with no permissions to do anything
-                        string guid = accountBLL.LoginDevice(nric, "Multiple");
-                        response = Request.CreateResponse(HttpStatusCode.OK, guid);
-                        return response;
-
-                    // Account/MFA is disabled
-                    default:
-                        return response;
+                    string newGuid = accountBLL.LoginDevice(nric, "Multiple");
+                    response = Request.CreateResponse(HttpStatusCode.OK, newGuid);
+                    return response;
                 }
 
             }
-            else
-            {
-                return response;
-            }
+
+            return response;
         }
 
-        // POST api/account/authenticate/register
+        // POST api/account/register
         // Registers device for a user
-        [Route("authenticate/register")]
+        [Route("register")]
         [HttpPost]
-        public HttpResponseMessage RegisterDeviceID([FromBody]dynamic credentials)
+        public HttpResponseMessage RegisterDevice([FromBody]dynamic credentials)
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
             string nric = credentials.nric;
@@ -70,36 +72,44 @@ namespace NUSMed_WebApp.API
             {
                 Account account = accountBLL.GetStatus(nric, password, deviceID, tokenID);
 
-                switch (account.status)
+                if (account.status == 1)
                 {
-                    // MFA is enabled
-                    case 1:
+                    try
+                    {
                         accountBLL.MFADeviceIDUpdateFromPhone(nric, tokenID, deviceID);
 
-                        // return JWT token?? with no permissions to do anything
-                        response = Request.CreateResponse(HttpStatusCode.OK);
-                        return response;
-
-                    // Account/MFA is disabled
-                    default:
-                        return response;
+                        string test = nric + "::" + tokenID + "::" + deviceID;
+                        // what should server return upon successful registration?
+                        response = Request.CreateResponse(HttpStatusCode.OK, test);
+                    }
+                    catch
+                    {
+                        response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                    }
                 }
 
             }
-            else
-            {
-                return response;
-            }
+
+            return response;
         }
 
-        // POST api/account/authenticate/weblogin
-        [Route("authenticate/weblogin")]
+        // POST api/account/weblogin
+        [Route("weblogin")]
         [HttpPost]
         public HttpResponseMessage WebLogin([FromBody]dynamic credentials)
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+            string deviceID = credentials.deviceID;
+            string tokenID = credentials.tokenID;
+            string guid = credentials.guid;
 
-            response = Request.CreateResponse(HttpStatusCode.OK);
+            if (HttpContext.Current.Cache[guid] != null)
+            {
+                string nric = HttpContext.Current.Cache[guid].ToString();
+                HttpContext.Current.Cache.Insert(nric + "_MFAAttempt", "Approved", null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
+                response = Request.CreateResponse(HttpStatusCode.OK);
+                // authenticate web login, set mfa last full login 
+            }
 
             return response;
         }
