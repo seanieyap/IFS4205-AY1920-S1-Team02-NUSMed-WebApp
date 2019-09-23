@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Record Search" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Record-Search.aspx.cs" Inherits="NUSMed_WebApp.Researcher.Record_Search" %>
+<%@ Page Title="Record Search" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Record-Search.aspx.cs" Inherits="NUSMed_WebApp.Researcher.Record_Search" %>
 
 <%@ MasterType VirtualPath="~/site.Master" %>
 
@@ -10,7 +10,10 @@
             <h1 class="display-4"><i class="fas fa-fw fa-search"></i>Record Search</h1>
             <p class="lead">!</p>
         </div>
-    </div>
+        </div>
+  <asp:GridView ID="GridViewAnonRecords" Cssclass="table table-hover" runat="server">
+
+</asp:GridView>
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">

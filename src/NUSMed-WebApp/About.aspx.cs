@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.Caching;
+using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 
 namespace NUSMed_WebApp
@@ -32,5 +33,12 @@ namespace NUSMed_WebApp
         {
             label1.Text = Session.SessionID;
         }
+
+    protected void LinkButtonGenerate_Click(object sender, EventArgs e)
+    {
+      DataBLL dataBLL = new DataBLL();
+
+      dataBLL.GetAnonymizedTable();
     }
+  }
 }

@@ -13,6 +13,15 @@ namespace NUSMed_WebApp.Researcher {
     public partial class Record_Search {
         
         /// <summary>
+        /// GridViewAnonRecords control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewAnonRecords;
+        
+        /// <summary>
         /// Master property.
         /// </summary>
         /// <remarks>

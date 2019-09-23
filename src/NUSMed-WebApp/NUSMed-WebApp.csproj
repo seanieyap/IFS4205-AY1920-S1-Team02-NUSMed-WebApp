@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Admin\Data-Anonymiser.aspx" />
     <Content Include="Admin\Manage-Accounts\Manage-Researcher-Data.aspx" />
     <Content Include="Admin\Manage-Accounts\Register.aspx" />
     <Content Include="Admin\Manage-Accounts\View.aspx" />
@@ -226,6 +227,12 @@
     <Content Include="Content\toastr.less" />
     <Content Include="Scripts\bootstrap-confirmation.js.map" />
     <Content Include="Scripts\bootstrap-confirmation.min.js.map" />
+    <Content Include="Data-Hierarchy\age_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\gender_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\marital_status_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\postal_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\record_date_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\sex_hierarchy.csv" />
     <None Include="NWebsecConfig\HttpHeaderSecurityModuleConfig.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -322,6 +329,13 @@
     <Content Include="webfonts\fa-brands-400.eot" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\Data-Anonymiser.aspx.cs">
+      <DependentUpon>Data-Anonymiser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Data-Anonymiser.aspx.designer.cs">
+      <DependentUpon>Data-Anonymiser.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Manage-Accounts\Manage-Researcher-Data.aspx.cs">
       <DependentUpon>Manage-Researcher-Data.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -377,6 +391,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\BLL\AccountBLL.cs" />
     <Compile Include="Classes\BLL\AccountLogBLL.cs" />
+    <Compile Include="Classes\BLL\DataBLL.cs" />
     <Compile Include="Classes\BLL\JWTBLL.cs" />
     <Compile Include="Classes\BLL\PatientBLL.cs" />
     <Compile Include="Classes\BLL\RecordBLL.cs" />
@@ -386,6 +401,7 @@
     <Compile Include="Classes\DAL\AccountDAL.cs" />
     <Compile Include="Classes\DAL\AccountLogDAL.cs" />
     <Compile Include="Classes\DAL\DAL.cs" />
+    <Compile Include="Classes\DAL\DataDAL.cs" />
     <Compile Include="Classes\DAL\LogDAL.cs" />
     <Compile Include="Classes\DAL\PatientDAL.cs" />
     <Compile Include="Classes\DAL\RecordDAL.cs" />
