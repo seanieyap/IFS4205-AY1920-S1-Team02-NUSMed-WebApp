@@ -51,6 +51,16 @@ namespace NUSMed_WebApp.Classes.BLL
 
             new LogAccountDAL().Insert(nric, nric, "Login", "Using role, " + role + ".");
         }
+        public string LoginDevice(string nric, string role)
+        {
+            Guid guid = Guid.NewGuid();
+
+            HttpContext.Current.Cache.Insert(guid.ToString(), nric, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
+
+            new LogAccountDAL().Insert(nric, nric, "Device Login", "Using role, " + role + ".");
+
+            return guid.ToString();
+        }
 
         public void Logout()
         {

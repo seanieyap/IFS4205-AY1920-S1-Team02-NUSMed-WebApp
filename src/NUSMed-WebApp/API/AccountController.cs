@@ -3,7 +3,10 @@ using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Web;
+using System.Web.Caching;
 using System.Web.Http;
+using System.Web.Security;
 
 namespace NUSMed_WebApp.API
 {
@@ -32,7 +35,8 @@ namespace NUSMed_WebApp.API
                     // MFA is enabled
                     case 1:
                         // return JWT token?? with no permissions to do anything
-                        response = Request.CreateResponse(HttpStatusCode.OK);
+                        string guid = accountBLL.LoginDevice(nric, "Multiple");
+                        response = Request.CreateResponse(HttpStatusCode.OK, guid);
                         return response;
 
                     // Account/MFA is disabled
