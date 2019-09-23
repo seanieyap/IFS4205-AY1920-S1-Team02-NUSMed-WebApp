@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUSMed-WebApp", "NUSMed-Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUSMed-WebApp.Tests", "NUSMed-WebApp.Tests\NUSMed-WebApp.Tests.csproj", "{D2EDD30A-91D6-4665-BBD1-DC03F6795672}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUSMed-WebAppTests", "NUSMed-WebAppTests\NUSMed-WebAppTests.csproj", "{DEA806BE-B9D4-4C1D-AD3F-16E0B5F7EB05}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{D2EDD30A-91D6-4665-BBD1-DC03F6795672}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2EDD30A-91D6-4665-BBD1-DC03F6795672}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2EDD30A-91D6-4665-BBD1-DC03F6795672}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DEA806BE-B9D4-4C1D-AD3F-16E0B5F7EB05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DEA806BE-B9D4-4C1D-AD3F-16E0B5F7EB05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DEA806BE-B9D4-4C1D-AD3F-16E0B5F7EB05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DEA806BE-B9D4-4C1D-AD3F-16E0B5F7EB05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
