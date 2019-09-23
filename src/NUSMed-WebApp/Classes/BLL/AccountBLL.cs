@@ -429,9 +429,9 @@ namespace NUSMed_WebApp.Classes.BLL
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
                 accountDAL.UpdateMFADeviceID(nric, deviceID);
         }
-        public void MFADeviceIDUpdateFromPhone(string tokenID, string deviceID)
+        public void MFADeviceIDUpdateFromPhone(string nric, string tokenID, string deviceID)
         {
-            accountDAL.UpdateMFADeviceIDFromPhone(tokenID, deviceID);
+            accountDAL.UpdateMFADeviceIDFromPhone(nric, tokenID, deviceID);
         }
         #endregion
         #endregion

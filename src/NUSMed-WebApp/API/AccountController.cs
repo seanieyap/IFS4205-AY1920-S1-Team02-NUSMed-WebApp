@@ -70,7 +70,7 @@ namespace NUSMed_WebApp.API
                 {
                     // MFA is enabled
                     case 1:
-                        accountBLL.MFADeviceIDUpdateFromPhone(tokenID, deviceID);
+                        accountBLL.MFADeviceIDUpdateFromPhone(nric, tokenID, deviceID);
 
                         // return JWT token?? with no permissions to do anything
                         response = Request.CreateResponse(HttpStatusCode.OK);
