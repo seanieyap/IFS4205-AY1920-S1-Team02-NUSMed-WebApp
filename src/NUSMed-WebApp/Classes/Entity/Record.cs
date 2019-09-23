@@ -61,7 +61,7 @@ namespace NUSMed_WebApp.Classes.Entity
             {
                 SHA256 Sha256 = SHA256.Create();
                 byte[] hashValue1 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(fileName));
-                byte[] hashValue2 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(createTime.ToString()));
+                byte[] hashValue2 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(createTime.ToString("yyyy-MM-dd HH:mm:ss")));
                 byte[] concat = new byte[hashValue1.Length + hashValue2.Length];
                 Buffer.BlockCopy(hashValue1, 0, concat, 0, hashValue1.Length);
                 Buffer.BlockCopy(hashValue2, 0, concat, hashValue1.Length, hashValue2.Length);
@@ -130,7 +130,7 @@ namespace NUSMed_WebApp.Classes.Entity
 
         public bool IsFileSafe()
         {
-
+            string test = GetMD5HashFromFile();
             if (fileNameHash.Contains("\\") || !File.Exists(fullpath)
                 || !GetMD5HashFromFile().Equals(fileChecksum)
                 || new FileInfo(fullpath).Length != fileSize)
@@ -150,7 +150,10 @@ namespace NUSMed_WebApp.Classes.Entity
                 // todo permission check for therapist
                 SHA256 Sha256 = SHA256.Create();
                 byte[] hashValue1 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(patientNRIC));
-                byte[] hashValue2 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(new AccountBLL().GetCreateTime(patientNRIC).ToString()));
+                byte[] hashValue2 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(new AccountBLL().GetCreateTime(patientNRIC).ToString("yyyy-MM-dd HH:mm:ss")));
+
+                DateTime test1 = new AccountBLL().GetCreateTime(patientNRIC);
+                string test2 = test1.ToString("yyyy-MM-dd HH:mm:ss");
                 byte[] concat = new byte[hashValue1.Length + hashValue2.Length];
                 Buffer.BlockCopy(hashValue1, 0, concat, 0, hashValue1.Length);
                 Buffer.BlockCopy(hashValue2, 0, concat, hashValue1.Length, hashValue2.Length);
@@ -173,7 +176,7 @@ namespace NUSMed_WebApp.Classes.Entity
             {
                 using (FileStream stream = File.OpenRead(fullpath))
                 {
-                    return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", string.Empty);
+                    return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", string.Empty).ToLower();
                 }
             }
         }

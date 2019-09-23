@@ -56,7 +56,7 @@ namespace NUSMed_WebApp.Patient
                 {
                     response.ContentType = "video/mp4";
                 }
-                response.AddHeader("Content-Disposition", "attachment; filename=" + record.fileName + record.fileExtension);
+                response.AddHeader("Content-Disposition", "attachment; filename=\"" + record.fileName + record.fileExtension + "\"");
                 response.WriteFile(record.fullpath);
             }
 

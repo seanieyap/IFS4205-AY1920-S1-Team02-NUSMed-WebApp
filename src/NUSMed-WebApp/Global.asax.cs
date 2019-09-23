@@ -115,7 +115,7 @@ namespace NUSMed_WebApp
                 catch
                 {
                     FormsAuthentication.SignOut();
-                    FormsAuthentication.RedirectToLoginPage();
+                    FormsAuthentication.RedirectToLoginPage("fail-auth=true");
                 }
             }
         }

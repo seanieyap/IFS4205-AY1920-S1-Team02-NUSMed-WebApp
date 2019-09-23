@@ -97,8 +97,8 @@ namespace NUSMed_WebApp
                     // If omitted from mfa
                     else if (account.status == 2)
                     {
-                        try
-                        {
+                        //try
+                        //{
                             // Check roles
                             int numberOfRoles = account.roles.Count();
                             if (numberOfRoles == 0)
@@ -118,11 +118,12 @@ namespace NUSMed_WebApp
                             }
 
                             Response.Redirect("~/");
-                        }
-                        catch
-                        {
-                            ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when attempting to Login');", true);
-                        }
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    string test = ex.ToString();
+                        //    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when attempting to Login');", true);
+                        //}
                     }
                 }
 

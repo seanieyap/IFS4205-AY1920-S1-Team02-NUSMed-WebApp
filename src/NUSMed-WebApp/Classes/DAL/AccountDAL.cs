@@ -700,7 +700,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     {
                         if (reader.Read())
                         {
-                            DateTime status = Convert.ToDateTime(reader["create_time"]);
+                            result = Convert.ToDateTime(reader["create_time"]);
 
                         }
                     }
