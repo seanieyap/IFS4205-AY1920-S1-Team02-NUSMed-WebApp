@@ -63,6 +63,20 @@ namespace NUSMed_WebApp.Classes.BLL
         }
 
         // Serves as authentication
+        public Account GetStatus(string nric, string password, string deviceID, string tokenID)
+        {
+            string salt = accountDAL.RetrieveSalt(nric);
+            HashSalt hashSalt = GenerateSaltedHash(salt, password);
+
+            return accountDAL.RetrieveStatus(nric, hashSalt.Hash, deviceID, tokenID);
+        }
+        public Account GetStatus(string nric, string password, string deviceID)
+        {
+            string salt = accountDAL.RetrieveSalt(nric);
+            HashSalt hashSalt = GenerateSaltedHash(salt, password);
+
+            return accountDAL.RetrieveStatus(nric, hashSalt.Hash, deviceID);
+        }
         public Account GetStatus(string nric, string password)
         {
             string salt = accountDAL.RetrieveSalt(nric);
@@ -422,9 +436,9 @@ namespace NUSMed_WebApp.Classes.BLL
                 accountDAL.UpdateMFADeviceID(nric, deviceID);
             }
         }
-        public void MFADeviceIDUpdateFromPhone(string tokenID, string deviceID)
+        public void MFADeviceIDUpdateFromPhone(string nric, string tokenID, string deviceID)
         {
-            accountDAL.UpdateMFADeviceIDFromPhone(tokenID, deviceID);
+            accountDAL.UpdateMFADeviceIDFromPhone(nric, tokenID, deviceID);
         }
         #endregion
         #endregion
