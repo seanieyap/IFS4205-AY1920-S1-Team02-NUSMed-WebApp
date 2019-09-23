@@ -99,6 +99,8 @@ namespace NUSMed_WebApp.API
         public HttpResponseMessage WebLogin([FromBody]dynamic credentials)
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+            string deviceID = credentials.deviceID;
+            string tokenID = credentials.tokenID;
             string guid = credentials.guid;
 
             if (HttpContext.Current.Cache[guid] != null)
