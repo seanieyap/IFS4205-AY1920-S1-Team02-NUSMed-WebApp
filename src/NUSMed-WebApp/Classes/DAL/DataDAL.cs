@@ -80,12 +80,14 @@ namespace NUSMed_WebApp.Classes.DAL
           string postal = row["Postal"].ToString();
           string createdDate = row["Created Date"].ToString();
           string recordId = row["Record ID"].ToString();
-          string diagnosisCode = row["Diagnosis Code"].ToString();
-          var content = row["Content"];
-          var fileName = row["File Name"];
-          var fileExt = row["File Extension"];
-          cmd.CommandText = String.Format(@"INSERT INTO records_anonymized(marital_status, gender, sex, age, postal, record_id, diagnosis_code, record_create_date, record_content, file_name, file_ext) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}');", marital_status, gender, sex, age, postal, recordId, diagnosisCode, createdDate, content, fileName, fileExt);
-
+          cmd.CommandText = "INSERT INTO records_anonymized(marital_status, gender, sex, age, postal, record_create_date, record_id) VALUES (@maritalStatus, @gender, @sex, @age, @postal, @recordCreateDate, @recordId);";
+          cmd.Parameters.AddWithValue("@maritalStatus", marital_status);
+          cmd.Parameters.AddWithValue("@gender", gender);
+          cmd.Parameters.AddWithValue("@sex", sex);
+          cmd.Parameters.AddWithValue("@age", age);
+          cmd.Parameters.AddWithValue("@postal", postal);
+          cmd.Parameters.AddWithValue("@recordCreateDate", createdDate);
+          cmd.Parameters.AddWithValue("@recordId", recordId);
           using (cmd.Connection = connection)
           {
             cmd.Connection.Open();
