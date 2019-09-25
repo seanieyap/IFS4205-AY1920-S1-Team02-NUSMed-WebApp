@@ -45,7 +45,9 @@ namespace NUSMed_WebApp.API
                 }
             }
 
-            if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(deviceID))
+            if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
+
+                //if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(deviceID))
             {
                 Account account = accountBLL.GetStatus(nric, password, deviceID);
 
@@ -75,8 +77,8 @@ namespace NUSMed_WebApp.API
 
             AccountBLL accountBLL = new AccountBLL();
 
-            if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password) && 
-                !string.IsNullOrEmpty(deviceID) && !string.IsNullOrEmpty(tokenID))
+            if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && 
+                AccountBLL.IsDeviceIDValid(deviceID) && AccountBLL.IsTokenIDValid(tokenID))
             {
                 Account account = accountBLL.GetStatus(nric, password, deviceID, tokenID);
 

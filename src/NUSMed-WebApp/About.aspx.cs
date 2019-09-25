@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.Caching;
+using NUSMed_WebApp.Classes.Entity;
 
 namespace NUSMed_WebApp
 {
@@ -16,7 +17,10 @@ namespace NUSMed_WebApp
 
         protected void Unnamed_Click(object sender, EventArgs e)
         {
-            HttpContext.Current.Cache.Insert("s90000004" + "_MFAAttempt", "Approved", null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
+            Account account = new Account();
+            account.associatedDeviceID = "8b5ceafc-efcc-4db3-b906-0b488ab1038b";
+            account.associatedTokenID = "K4dUkJlFROWAtGvt17E1fA==";
+            HttpContext.Current.Cache.Insert("F0040672P" + "_MFAAttempt", account, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
         }
 
         protected void Unnamed_Click1(object sender, EventArgs e)

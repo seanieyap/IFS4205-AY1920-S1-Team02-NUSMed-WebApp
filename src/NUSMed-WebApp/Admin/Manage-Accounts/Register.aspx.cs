@@ -129,7 +129,7 @@ namespace NUSMed_WebApp
             else
                 inputAddress.Attributes.Add("class", "form-control is-valid");
 
-            if (string.IsNullOrEmpty(email) || !AccountBLL.IsEmailAddress(email))
+            if (!AccountBLL.IsEmailAddress(email))
             {
                 validate[6] = false;
                 inputEmail.Attributes.Add("class", "form-control is-invalid");
@@ -137,7 +137,7 @@ namespace NUSMed_WebApp
             else
                 inputEmail.Attributes.Add("class", "form-control is-valid");
 
-            if (string.IsNullOrEmpty(contactNumber) || !AccountBLL.IsContactNumber(contactNumber))
+            if (!AccountBLL.IsContactNumber(contactNumber))
             {
                 validate[7] = false;
                 inputContactNumber.Attributes.Add("class", "form-control is-invalid");
@@ -145,7 +145,7 @@ namespace NUSMed_WebApp
             else
                 inputContactNumber.Attributes.Add("class", "form-control is-valid");
 
-            if (string.IsNullOrEmpty(doB) || !AccountBLL.IsDateOfBirthValid(doB, ref dateOfBirth))
+            if (!AccountBLL.IsDateOfBirthValid(doB, ref dateOfBirth))
             {
                 validate[8] = false;
                 inputDoB.Attributes.Add("class", "form-control is-invalid");
@@ -153,8 +153,7 @@ namespace NUSMed_WebApp
             else
                 inputDoB.Attributes.Add("class", "form-control is-valid");
 
-            if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(passwordConfirm) 
-                || !AccountBLL.IsPassword(password, passwordConfirm))
+            if (!AccountBLL.IsPasswordValid(password, passwordConfirm))
             {
                 validate[9] = false;
                 inputPassword.Attributes.Add("class", "form-control is-invalid");
@@ -166,7 +165,7 @@ namespace NUSMed_WebApp
                 inputPasswordConfirm.Attributes.Add("class", "form-control is-valid");
             }
 
-            if (!string.IsNullOrEmpty(associatedTokenID) && !AccountBLL.IsTokenValid(associatedTokenID))
+            if (!AccountBLL.IsTokenIDValid(associatedTokenID))
             {
                 validate[10] = false;
                 inputAssociatedTokenID.Attributes.Add("class", "form-control is-invalid");
@@ -175,7 +174,7 @@ namespace NUSMed_WebApp
                 inputAssociatedTokenID.Attributes.Add("class", "form-control is-valid");
 
 
-            if (string.IsNullOrEmpty(addressPostalCode) || !AccountBLL.IsAddressPostalCode(addressPostalCode))
+            if (!AccountBLL.IsAddressPostalCode(addressPostalCode))
             {
                 validate[11] = false;
                 inputPostalCode.Attributes.Add("class", "form-control is-invalid");

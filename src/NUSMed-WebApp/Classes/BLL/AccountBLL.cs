@@ -76,7 +76,6 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             return accountDAL.IsValid(nric, deviceID);
         }
-
         public bool IsValid(string nric, string tokenID, string deviceID)
         {
             return accountDAL.IsValid(nric, tokenID, deviceID);
@@ -498,6 +497,11 @@ namespace NUSMed_WebApp.Classes.BLL
         #region Validators
         public static bool IsNRICValid(string nric)
         {
+            if (string.IsNullOrEmpty(nric))
+            {
+                return false;
+            }
+
             return nric.Length == 9;
         }
         private static bool TryParseDoB(string doB, ref DateTime dateOfBirth)
@@ -506,6 +510,11 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public static bool IsDateOfBirthValid(string doB, ref DateTime dateOfBirth)
         {
+            if (string.IsNullOrEmpty(doB))
+            {
+                return false;
+            }
+
             if (!TryParseDoB(doB, ref dateOfBirth))
                 return false;
             else if (dateOfBirth > DateTime.Now)
@@ -515,6 +524,11 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public static bool IsEmailAddress(string email)
         {
+            if (string.IsNullOrEmpty(email))
+            {
+                return false;
+            }
+
             try
             {
                 new MailAddress(email);
@@ -527,6 +541,11 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public static bool IsAddressPostalCode(string code)
         {
+            if (string.IsNullOrEmpty(code))
+            {
+                return false;
+            }
+
             foreach (char c in code)
             {
                 if (c < '0' || c > '9')
@@ -537,6 +556,11 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public static bool IsContactNumber(string contactNumber)
         {
+            if (string.IsNullOrEmpty(contactNumber))
+            {
+                return false;
+            }
+
             foreach (char c in contactNumber)
             {
                 if (c < '0' || c > '9')
@@ -545,17 +569,57 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return contactNumber.Length == 8;
         }
-        public static bool IsPassword(string password, string passwordConfirm)
+        public static bool IsPasswordValid(string password, string passwordConfirm)
         {
-            if (!password.Equals(passwordConfirm))
+            if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(passwordConfirm))
+            {
                 return false;
+            }
+            if (!password.Equals(passwordConfirm))
+            {
+                return false;
+            }
 
             Regex regex = new Regex(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
             return regex.IsMatch(password);
         }
-        public static bool IsTokenValid(string tokenID)
+        public static bool IsPasswordValid(string password)
         {
-            // TODO
+            if (string.IsNullOrEmpty(password))
+            {
+                return false;
+            }
+
+            Regex regex = new Regex(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+            return regex.IsMatch(password);
+        }
+
+        public static bool IsTokenIDValid(string tokenID)
+        {
+            if (string.IsNullOrEmpty(tokenID))
+            {
+                return false;
+            }
+
+            if (tokenID.Length != 24)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        public static bool IsDeviceIDValid(string deviceID)
+        {
+            if (string.IsNullOrEmpty(deviceID))
+            {
+                return false;
+            }
+
+            if (deviceID.Length != 36)
+            {
+                return false;
+            }
+
             return true;
         }
         #endregion

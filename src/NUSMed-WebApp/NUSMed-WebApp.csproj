@@ -377,6 +377,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\BLL\AccountBLL.cs" />
     <Compile Include="Classes\BLL\AccountLogBLL.cs" />
+    <Compile Include="Classes\BLL\JWTBLL.cs" />
     <Compile Include="Classes\BLL\PatientBLL.cs" />
     <Compile Include="Classes\BLL\RecordBLL.cs" />
     <Compile Include="Classes\BLL\RecordLogBLL.cs" />
@@ -391,6 +392,7 @@
     <Compile Include="Classes\DAL\RecordLogDAL.cs" />
     <Compile Include="Classes\DAL\TherapistDAL.cs" />
     <Compile Include="Classes\Entity\Account.cs" />
+    <Compile Include="Classes\Entity\JWT.cs" />
     <Compile Include="Classes\Entity\Patient.cs" />
     <Compile Include="Classes\Entity\Record.cs" />
     <Compile Include="Classes\Entity\RecordType.cs" />

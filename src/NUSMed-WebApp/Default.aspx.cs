@@ -75,7 +75,6 @@ namespace NUSMed_WebApp
                 }
                 else
                 {
-
                     // Trigger MFA
                     if (account.status == 1)
                     {
@@ -134,27 +133,45 @@ namespace NUSMed_WebApp
         }
         protected void TimerMFA_Tick(object sender, EventArgs e)
         {
-            try
+            if (Session["nric_MFAAttempt"] == null)
             {
-                string nric = Session["nric_MFAAttempt"].ToString();
+                TimerMFA.Enabled = false;
+                Session.Abandon();
+                FormsAuthentication.RedirectToLoginPage("fail-mfa=true");
+                return;
+            }
 
-                if (!HttpContext.Current.Cache.Get(nric + "_MFAAttempt").ToString().Equals("Awaiting")
-                    && HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") != null)
-                //if (HttpContext.Current.Cache.Get(nric + "_MFAAttempt").ToString().Equals("Approved")
-                //    && HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") != null)
+            if (HttpContext.Current.Cache.Get(Session["nric_MFAAttempt"].ToString() + "_MFAAttempt") == null)
+            {
+                LabelTimer.Text = "<i class=\"fas fa-8x fa-times-circle\"></i>";
+                LabelTimer.CssClass = "nus-orange";
+                LabelSeconds.Visible = false;
+                pSubMessage.InnerText = "30 Seconds have passed. Please Try Again from the start.";
+                TimerMFA.Enabled = false;
+                return;
+            }
+
+            string nric = Session["nric_MFAAttempt"].ToString();
+
+            if (!HttpContext.Current.Cache.Get(nric + "_MFAAttempt").ToString().Equals("Awaiting")
+                && HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") != null)
+            //if (HttpContext.Current.Cache.Get(nric + "_MFAAttempt").ToString().Equals("Approved")
+            //    && HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") != null)
+            {
+
+
+                TimerMFA.Enabled = false;
+
+                //if (HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") == null)
+                //{
+                //    HttpContext.Current.Cache.Remove(nric + "_MFAAttempt");
+                //    HttpContext.Current.Cache.Remove(nric + "_MFAAttempt_Password");
+                //    Session.Abandon();
+                //    FormsAuthentication.RedirectToLoginPage("fail-mfa=true");
+                //    return;
+                //}
+                try
                 {
-
-
-                    TimerMFA.Enabled = false;
-
-                    //if (HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") == null)
-                    //{
-                    //    HttpContext.Current.Cache.Remove(nric + "_MFAAttempt");
-                    //    HttpContext.Current.Cache.Remove(nric + "_MFAAttempt_Password");
-                    //    Session.Abandon();
-                    //    FormsAuthentication.RedirectToLoginPage("fail-mfa=true");
-                    //    return;
-                    //}
 
                     string password = HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password").ToString();
                     AccountBLL accountBLL = new AccountBLL();
@@ -203,37 +220,19 @@ namespace NUSMed_WebApp
                         }
                     }
                 }
-                else
+                catch
                 {
-                    int count = Convert.ToInt32(Session["countdown"]) - 1;
-                    LabelTimer.Text = count.ToString();
-
-                    Session["countdown"] = count;
+                    TimerMFA.Enabled = false;
+                    Session.Abandon();
+                    FormsAuthentication.RedirectToLoginPage("fail-auth=true");
                 }
             }
-            catch
+            else
             {
-                TimerMFA.Enabled = false;
-                Session.Abandon();
-                FormsAuthentication.RedirectToLoginPage("fail-auth=true");
-            }
+                int count = Convert.ToInt32(Session["countdown"]) - 1;
+                LabelTimer.Text = count.ToString();
 
-            if (Session["nric_MFAAttempt"] == null)
-            {
-                TimerMFA.Enabled = false;
-                Session.Abandon();
-                FormsAuthentication.RedirectToLoginPage("fail-mfa=true");
-                return;
-            }
-
-            if (HttpContext.Current.Cache.Get(Session["nric_MFAAttempt"].ToString() + "_MFAAttempt") == null)
-            {
-                LabelTimer.Text = "<i class=\"fas fa-8x fa-times-circle\"></i>";
-                LabelTimer.CssClass = "nus-orange";
-                LabelSeconds.Visible = false;
-                pSubMessage.InnerText = "30 Seconds have passed. Please Try Again from the start.";
-                TimerMFA.Enabled = false;
-                return;
+                Session["countdown"] = count;
             }
         }
 

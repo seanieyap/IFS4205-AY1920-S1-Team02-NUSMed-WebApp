@@ -35,7 +35,7 @@ namespace NUSMed_WebApp.My_Account
                 inputPasswordCurrent.Attributes.Add("class", "form-control is-valid");
 
             if (string.IsNullOrEmpty(passwordNew) || string.IsNullOrEmpty(passwordNewRepeat)
-                || !AccountBLL.IsPassword(passwordNew, passwordNewRepeat) || passwordCurrent.Equals(passwordNew))
+                || !AccountBLL.IsPasswordValid(passwordNew, passwordNewRepeat) || passwordCurrent.Equals(passwordNew))
             {
                 validate[1] = false;
                 inputPasswordNew.Attributes.Add("class", "form-control is-invalid");
