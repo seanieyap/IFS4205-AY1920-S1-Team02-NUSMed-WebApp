@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
@@ -66,6 +67,63 @@ namespace NUSMed_WebApp.Classes.DAL
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
           }
+        }
+      }
+    }
+
+    public void InsertGeneralizationLevel(Dictionary<string, int> generlizationLevel)
+    {
+      using (MySqlCommand cmd = new MySqlCommand())
+      {
+        cmd.CommandText = @"UPDATE generalization_level SET marital_status = @maritalStatus, gender = @gender,
+                          sex = @sex, postal = @postal, age = @age, record_create_date = @recordCreateDate;";
+        int maritalStatusLevel = 0;
+        int genderLevel = 0;
+        int sexLevel = 0;
+        int postalLevel = 0;
+        int ageLevel = 0;
+        int recordCreationDateLevel = 0;
+
+        foreach (KeyValuePair<string, int> entry in generlizationLevel)
+        {
+          string quasiIdentifier = entry.Key;
+          int level = entry.Value;
+
+          if (string.Equals(quasiIdentifier, "Age"))
+          {
+            ageLevel = level;
+          }
+          else if (string.Equals(quasiIdentifier, "Sex"))
+          {
+            sexLevel = level;
+          }
+          else if (string.Equals(quasiIdentifier, "Gender"))
+          {
+            genderLevel = level;
+          }
+          else if (string.Equals(quasiIdentifier, "Marital Status"))
+          {
+            maritalStatusLevel = level;
+          }
+          else if (string.Equals(quasiIdentifier, "Postal"))
+          {
+            postalLevel = level;
+          }
+          else if (string.Equals(quasiIdentifier, "Record Creation Date"))
+          {
+            recordCreationDateLevel = level;
+          }
+        }
+        cmd.Parameters.AddWithValue("@maritalStatus", maritalStatusLevel);
+        cmd.Parameters.AddWithValue("@gender", genderLevel);
+        cmd.Parameters.AddWithValue("@sex", sexLevel);
+        cmd.Parameters.AddWithValue("@age", ageLevel);
+        cmd.Parameters.AddWithValue("@postal", postalLevel);
+        cmd.Parameters.AddWithValue("@recordCreateDate", recordCreationDateLevel);
+        using (cmd.Connection = connection)
+        {
+          cmd.Connection.Open();
+          cmd.ExecuteNonQuery();
         }
       }
     }

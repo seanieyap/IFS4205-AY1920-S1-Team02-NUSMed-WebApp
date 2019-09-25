@@ -56,7 +56,11 @@ namespace NUSMed_WebApp.Classes.BLL
         return createdDate;
       }
 
-      public DataTable anonymize(DataTable dt, int k, double suppressionThreshold)
+
+      /// <summary>
+      /// Anonymizes a data table and returns the anonymized data table and a dictionary of generalization level of every quasi-identifier
+      /// </summary>
+      public Tuple<DataTable, Dictionary<string, int>> anonymize(DataTable dt, int k, double suppressionThreshold)
       {
         for (int i = 0; i < quasiIdentifiers.Count; i++)
         {
@@ -149,6 +153,7 @@ namespace NUSMed_WebApp.Classes.BLL
               break;
             }
 
+            generalizationLevel[quasiToGeneralize] = generalizationLevel[quasiToGeneralize] + 1;
             valuesInTableForEachQuasi[quasiToGeneralize] = new HashSet<string>();
             Console.WriteLine("quasi to generalize: " + quasiToGeneralize);
             Console.WriteLine("max quasi count: " + maxQuasiCount);
@@ -239,7 +244,7 @@ namespace NUSMed_WebApp.Classes.BLL
             continue;
           }
         }
-        return anonymizedDataTable;
+        return new Tuple<DataTable, Dictionary<string, int>>(anonymizedDataTable, generalizationLevel);
       }
 
       public void PrintDictionary(Dictionary<List<string>, int> d)
@@ -325,8 +330,11 @@ namespace NUSMed_WebApp.Classes.BLL
     {
       DataTable dt = dataDAL.RetrieveColumns();
       Anonymizer anonymizer = new Anonymizer();
-      DataTable anonymizedDataTable = anonymizer.anonymize(dt, 3, 0.05);
-      dataDAL.InsertIntoAnonymizedTable(anonymizedDataTable);
+      Tuple<DataTable, Dictionary<string, int>> anonDtAndGenLevel = anonymizer.anonymize(dt, 3, 0.05);
+      DataTable anonymizedDataTable = anonDtAndGenLevel.Item1;
+      Dictionary<string, int> genLevel = anonDtAndGenLevel.Item2;
+      //dataDAL.InsertIntoAnonymizedTable(anonymizedDataTable);
+      dataDAL.InsertGeneralizationLevel(genLevel);
       return anonymizedDataTable;
     }
   }
