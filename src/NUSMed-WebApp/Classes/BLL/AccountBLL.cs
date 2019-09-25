@@ -72,6 +72,16 @@ namespace NUSMed_WebApp.Classes.BLL
             return HttpContext.Current.User.Identity.IsAuthenticated;
         }
 
+        public bool IsValid(string nric, string deviceID)
+        {
+            return accountDAL.IsValid(nric, deviceID);
+        }
+
+        public bool IsValid(string nric, string tokenID, string deviceID)
+        {
+            return accountDAL.IsValid(nric, tokenID, deviceID);
+        }
+
         // Serves as authentication
         public Account GetStatus(string nric, string password, string deviceID, string tokenID)
         {
