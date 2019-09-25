@@ -31,6 +31,7 @@ namespace NUSMed_WebApp.API
             {
                 if (HttpContext.Current.Cache[guid] != null)
                 {
+                    // check valid device id for a guid
                     // update/refresh token in cache
                     response = Request.CreateResponse(HttpStatusCode.OK);
                     return response;
@@ -105,6 +106,7 @@ namespace NUSMed_WebApp.API
 
             if (HttpContext.Current.Cache[guid] != null)
             {
+                // validate deviceID and tokenID for a guid
                 string nric = HttpContext.Current.Cache[guid].ToString();
                 HttpContext.Current.Cache.Insert(nric + "_MFAAttempt", "Approved", null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
                 response = Request.CreateResponse(HttpStatusCode.OK);

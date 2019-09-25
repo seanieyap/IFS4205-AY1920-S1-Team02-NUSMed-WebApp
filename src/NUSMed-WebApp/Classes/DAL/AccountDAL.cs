@@ -498,10 +498,11 @@ namespace NUSMed_WebApp.Classes.DAL
                     INNER JOIN account_researcher ar ON a.nric = ar.nric
                     INNER JOIN account_admin aa ON a.nric = aa.nric
                     WHERE a.nric = @nric AND hash = @hash AND associated_token_id = @tokenID 
-                    AND (associated_device_id IS NULL OR associated_device_id = '');";
+                    AND (associated_device_id IS NULL OR associated_device_id = '' OR associated_device_id = @deviceID);";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
                 cmd.Parameters.AddWithValue("@hash", hash);
+                cmd.Parameters.AddWithValue("@deviceID", deviceID);
                 cmd.Parameters.AddWithValue("@tokenID", tokenID);
 
                 using (cmd.Connection = connection)
