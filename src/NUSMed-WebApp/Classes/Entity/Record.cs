@@ -119,6 +119,7 @@ namespace NUSMed_WebApp.Classes.Entity
         public RecordType type { get; set; }
         public short status { get; set; } = 0;
         public short? recordPermissionStatus { get; set; }
+        public bool permited { get; set; } = false;
 
         public string fullpath
         {

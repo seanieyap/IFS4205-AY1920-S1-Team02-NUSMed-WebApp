@@ -59,7 +59,7 @@ namespace NUSMed_WebApp.Classes.BLL
                         patient.lastName = string.Empty;
                     }
                 }
-                return therapistDAL.RetrieveCurrentPatients(term, AccountBLL.GetNRIC());
+                return patients;
             }
 
             return null;

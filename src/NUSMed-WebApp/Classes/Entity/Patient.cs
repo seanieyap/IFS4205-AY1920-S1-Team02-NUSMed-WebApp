@@ -33,7 +33,6 @@ namespace NUSMed_WebApp.Classes.Entity
                         result = true;
                     }
                 }
-
             }
             return result;
         }

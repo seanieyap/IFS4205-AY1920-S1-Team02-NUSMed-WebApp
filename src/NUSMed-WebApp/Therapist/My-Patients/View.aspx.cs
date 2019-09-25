@@ -275,11 +275,10 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                short status = (short)DataBinder.Eval(e.Row.DataItem, "status");
-                short? recordPermissionStatus = (short?)DataBinder.Eval(e.Row.DataItem, "recordPermissionStatus");
+                bool permited = (bool)DataBinder.Eval(e.Row.DataItem, "permited");
 
                 // todo
-                if (status == 1 && recordPermissionStatus == 1)
+                if (permited)
                 {
                     RecordType recordType = (RecordType)DataBinder.Eval(e.Row.DataItem, "type");
 
@@ -305,6 +304,28 @@ namespace NUSMed_WebApp.Therapist.My_Patients
 
                         FileDownloadLink.HRef = "~/Therapist/Download.ashx?record=" + DataBinder.Eval(e.Row.DataItem, "id").ToString();
                         FileDownloadLink.Visible = true;
+                    }
+                }
+                else
+                {
+                    short status = (short)DataBinder.Eval(e.Row.DataItem, "status");
+                    short? recordPermissionStatus = (short?)DataBinder.Eval(e.Row.DataItem, "recordPermissionStatus");
+
+                    Label LabelRecordPermissionStatus = (Label)e.Row.FindControl("LabelRecordPermissionStatus");
+                    LabelRecordPermissionStatus.CssClass = "text-danger";
+                    LabelRecordPermissionStatus.Visible = true;
+
+                    if (status == 0)
+                    {
+                        LabelRecordPermissionStatus.Attributes.Add("title", "Patient has Disabled Record Access To all Therapists");
+                    }
+                    else if (recordPermissionStatus == 0)
+                    {
+                        LabelRecordPermissionStatus.Attributes.Add("title", "Patient has Disabled Record Access via Fine Grain Permissions");
+                    }
+                    else
+                    {
+                        LabelRecordPermissionStatus.Attributes.Add("title", "You do not have Access to this Record Type");
                     }
                 }
             }

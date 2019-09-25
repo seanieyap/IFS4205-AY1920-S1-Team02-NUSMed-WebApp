@@ -26,29 +26,31 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public List<Record> GetRecords(string patientNRIC)
         {
-
             if (AccountBLL.IsTherapist())
             {
                 List<Record> records = recordDAL.RetrieveRecords(patientNRIC, AccountBLL.GetNRIC());
                 Entity.Patient patient = new TherapistBLL().GetPatient(patientNRIC);
 
+                List<Record> result = new List<Record>();
                 foreach (Record record in records)
                 {
-                    if (patient.hasPermissionsApproved(record))
+                    if (!patient.hasPermissionsApproved(record))
                     {
-                        record.createTime = DateTime.Now;
-                        record.creatorFirstName = string.Empty;
-                        record.creatorLastName = string.Empty;
-                        record.fileName = string.Empty;
-                        record.fileChecksum = string.Empty;
-                        record.fileExtension = string.Empty;
-                        record.fileSize = 0;
-                        record.content = string.Empty;
-                        record.id = 0;
+                        Record newRecord = new Record();
+                        newRecord.title = record.title;
+                        newRecord.type = record.type;
+                        newRecord.status = record.status;
+                        newRecord.recordPermissionStatus = record.recordPermissionStatus;
+                        result.Add(newRecord);
+                    }
+                    else
+                    {
+                        record.permited = true;
+                        result.Add(record);
                     }
                 }
 
-                return records;
+                return result;
             }
 
             return null;
@@ -67,6 +69,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 if (patient.hasPermissionsApproved(record))
                 {
+                    record.permited = true;
                     return record;
                 }
             }

@@ -102,7 +102,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     FROM record_type_permission rtp
                     INNER JOIN account a ON rtp.patient_nric = a.nric
                     WHERE rtp.therapist_nric = @nric AND a.nric LIKE @term
-                    ORDER BY rtp.create_time;";
+                    ORDER BY rtp.create_time DESC;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
                 cmd.Parameters.AddWithValue("@term", "%" + term + "%");

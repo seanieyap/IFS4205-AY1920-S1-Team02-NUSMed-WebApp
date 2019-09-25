@@ -60,9 +60,55 @@ namespace NUSMed_WebApp.Classes.Entity
         public string countryOfBirth { get; set; }
         public string nationality { get; set; }
         public string maritalStatus { get; set; }
-        public string sex { get; set; }
-        public string gender { get; set; }
-        public string address { get; set; }
+        private string _sex;
+        public string sex
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_sex))
+                {
+                    return _sex;
+                }
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_sex.ToLower());
+            }
+            set
+            {
+                _sex = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+            }
+        }
+        private string _gender;
+        public string gender
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_gender))
+                {
+                    return _gender;
+                }
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_gender.ToLower());
+            }
+            set
+            {
+                _gender = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+            }
+        }
+        private string _address;
+        public string address
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_address))
+                {
+                    return _address;
+                }
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_address.ToLower());
+            }
+            set
+            {
+                _address = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+            }
+        }
+
         public string addressPostalCode { get; set; }
         public string email { get; set; }
         public string contactNumber { get; set; }
@@ -98,7 +144,22 @@ namespace NUSMed_WebApp.Classes.Entity
         }
 
         #region Patient
-        public string nokName { get; set; }
+        private string _nokName;
+        public string nokName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_nokName))
+                {
+                    return _nokName;
+                }
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_nokName.ToLower());
+            }
+            set
+            {
+                _nokName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+            }
+        }
         public string nokContact { get; set; }
         #endregion
         #region Therapist
@@ -141,7 +202,6 @@ namespace NUSMed_WebApp.Classes.Entity
 
         public string researcherDepartment { get; set; }
         #endregion
-
 
         // 0 = disabled / lock, 
         // 1 = active with MFA,

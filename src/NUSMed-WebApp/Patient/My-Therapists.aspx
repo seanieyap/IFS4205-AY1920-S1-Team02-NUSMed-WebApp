@@ -60,12 +60,6 @@
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <%--<asp:TemplateField HeaderText="Fine-Grain Permissions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
-                                <ItemTemplate>
-                                    <asp:Label ID="LabelRecordStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
-                                    <asp:LinkButton ID="LinkButtonViewRecords" runat="server"><i class="fas fa-fw fa-eye"></i>View</asp:LinkButton>
-                                </ItemTemplate>
-                            </asp:TemplateField>--%>
                         </Columns>
                         <EmptyDataTemplate>
                             <div class="alert alert-info text-center py-4" role="alert">

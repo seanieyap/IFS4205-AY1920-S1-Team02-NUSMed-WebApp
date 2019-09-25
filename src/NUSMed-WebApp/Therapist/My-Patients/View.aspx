@@ -411,7 +411,7 @@
                                                 <%# Item.title %>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="type">
+                                        <asp:TemplateField HeaderText="Type">
                                             <ItemTemplate>
                                                 <%# Item.type.name %>
                                             </ItemTemplate>
@@ -428,11 +428,11 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Creation Time">
                                             <ItemTemplate>
-                                                <%# Item.createTime %>
+                                                <%# Item.permited ? Item.createTime.ToString() : string.Empty%>
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderText="Content">
+                                        <asp:TemplateField HeaderText="Data" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                             <ItemTemplate>
                                                 <asp:Label ID="LabelContent" runat="server" Visible="false"></asp:Label>
                                                 <asp:LinkButton ID="LinkbuttonFileView" CssClass="btn btn-info btn-sm" runat="server" Visible="false"></asp:LinkButton>
@@ -441,6 +441,7 @@
                                                     <i class="fas fa-fw fa-cloud-download-alt"></i>
                                                 </a>
                                                 <asp:Label ID="LabelFileType" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
+                                                <asp:Label ID="LabelRecordPermissionStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
