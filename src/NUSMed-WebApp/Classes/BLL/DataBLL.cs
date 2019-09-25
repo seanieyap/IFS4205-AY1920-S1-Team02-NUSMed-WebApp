@@ -25,12 +25,12 @@ namespace NUSMed_WebApp.Classes.BLL
       public IList<string> quasiIdentifiers = new List<string>(new string[] { "Age", "Sex", "Gender", "Marital Status", "Postal", "Record Creation Date" });
       public IList<string> quasiIdentifiersFilePaths = new List<string>(new string[] { FILE_AGE_HIERARCHY, FILE_SEX_HIERARCHY, FILE_GENDER_HIERARCHY, FILE_MARITAL_STATUS_HIERARCHY, FILE_POSTAL_HIERARCHY, FILE_RECORD_DATE_HIERARCHY });
 
-      public const string FILE_AGE_HIERARCHY = "/Data-Hierarchy/age_hierarchy.csv";
-      public const string FILE_SEX_HIERARCHY = "/Data-Hierarchy/sex_hierarchy.csv";
-      public const string FILE_GENDER_HIERARCHY = "/Data-Hierarchy/gender_hierarchy.csv";
-      public const string FILE_MARITAL_STATUS_HIERARCHY = "/Data-Hierarchy/marital_status_hierarchy.csv";
-      public const string FILE_POSTAL_HIERARCHY = "/Data-Hierarchy/postal_hierarchy.csv";
-      public const string FILE_RECORD_DATE_HIERARCHY = "/Data-Hierarchy/record_date_hierarchy.csv";
+      public const string FILE_AGE_HIERARCHY = "C:/Users/Cheryl Toh/Desktop/IFS4205/project/IFS4205-AY1920-S1-Team02-NUSMed-WebApp/src/NUSMed-WebApp/Data-Hierarchy/age_hierarchy.csv";
+      public const string FILE_SEX_HIERARCHY = "C:/Users/Cheryl Toh/Desktop/IFS4205/project/IFS4205-AY1920-S1-Team02-NUSMed-WebApp/src/NUSMed-WebApp/Data-Hierarchy/sex_hierarchy.csv";
+      public const string FILE_GENDER_HIERARCHY = "C:/Users/Cheryl Toh/Desktop/IFS4205/project/IFS4205-AY1920-S1-Team02-NUSMed-WebApp/src/NUSMed-WebApp/Data-Hierarchy/gender_hierarchy.csv";
+      public const string FILE_MARITAL_STATUS_HIERARCHY = "C:/Users/Cheryl Toh/Desktop/IFS4205/project/IFS4205-AY1920-S1-Team02-NUSMed-WebApp/src/NUSMed-WebApp/Data-Hierarchy/marital_status_hierarchy.csv";
+      public const string FILE_POSTAL_HIERARCHY = "C:/Users/Cheryl Toh/Desktop/IFS4205/project/IFS4205-AY1920-S1-Team02-NUSMed-WebApp/src/NUSMed-WebApp/Data-Hierarchy/postal_hierarchy.csv";
+      public const string FILE_RECORD_DATE_HIERARCHY = "C:/Users/Cheryl Toh/Desktop/IFS4205/project/IFS4205-AY1920-S1-Team02-NUSMed-WebApp/src/NUSMed-WebApp/Data-Hierarchy/record_date_hierarchy.csv";
 
       public Anonymizer()
       {
@@ -90,8 +90,8 @@ namespace NUSMed_WebApp.Classes.BLL
           string fileName = row["file_name"].ToString();
           string fileExt = row["file_ext"].ToString();
 
-          string age = GetAge(Convert.ToDateTime(dob), Convert.ToDateTime(createdDateTime)).ToString();
-          string recordCreatedDate = GetDate(Convert.ToDateTime(createdDateTime)).ToString();
+          string recordCreatedDate = GetDate(DateTime.ParseExact(createdDateTime, "MM/dd/yyyy HH:mm:ss", null));
+          string age = GetAge(Convert.ToDateTime(DateTime.ParseExact(dob, "MM/dd/yyyy", null)), Convert.ToDateTime(recordCreatedDate)).ToString();
 
           List<string> quasiList = new List<string>(new string[] { age, sex, gender, maritalStatus, postal, recordCreatedDate });
 
@@ -337,6 +337,7 @@ namespace NUSMed_WebApp.Classes.BLL
       DataTable dt = dataDAL.RetrieveColumns();
       Anonymizer anonymizer = new Anonymizer();
       DataTable anonymizedDataTable = anonymizer.anonymize(dt, 3, 0.05);
+      dataDAL.InsertIntoAnonymizedTable(anonymizedDataTable);
       return anonymizedDataTable;
     }
   }
