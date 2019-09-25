@@ -20,7 +20,9 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT EXISTS(SELECT * FROM account a WHERE a.nric = @nric) as result;";
+                cmd.CommandText = @"SELECT EXISTS
+                    (SELECT * FROM account a WHERE a.nric = @nric) 
+                    as result;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
 
@@ -498,10 +500,11 @@ namespace NUSMed_WebApp.Classes.DAL
                     INNER JOIN account_researcher ar ON a.nric = ar.nric
                     INNER JOIN account_admin aa ON a.nric = aa.nric
                     WHERE a.nric = @nric AND hash = @hash AND associated_token_id = @tokenID 
-                    AND (associated_device_id IS NULL OR associated_device_id = '');";
+                    AND (associated_device_id IS NULL OR associated_device_id = '' OR associated_device_id = @deviceID);";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
                 cmd.Parameters.AddWithValue("@hash", hash);
+                cmd.Parameters.AddWithValue("@deviceID", deviceID);
                 cmd.Parameters.AddWithValue("@tokenID", tokenID);
 
                 using (cmd.Connection = connection)
@@ -616,6 +619,78 @@ namespace NUSMed_WebApp.Classes.DAL
                                 researcherStatus = Convert.ToInt32(reader["researcher_status"]),
                                 adminStatus = Convert.ToInt32(reader["admin_status"]),
                             };
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Check if nric and deviceID are associated with one another
+        /// </summary>
+        public bool IsValid(string nric, string deviceID)
+        {
+            bool result = false;
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT EXISTS 
+                    (SELECT nric FROM account 
+                    WHERE nric = @nric AND associated_device_id = @deviceID)
+                    as result;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+                cmd.Parameters.AddWithValue("@deviceID", deviceID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = Convert.ToBoolean(reader["status"]);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Check if nric, tokenID and deviceID are associated with one another
+        /// </summary>
+        public bool IsValid(string nric, string tokenID, string deviceID)
+        {
+            bool result = false;
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT EXISTS 
+                    (SELECT nric FROM account 
+                        WHERE nric = @nric AND associated_device_id = @deviceID 
+                            AND associated_token_id = @tokenID) 
+                    as result;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+                cmd.Parameters.AddWithValue("@tokenID", tokenID);
+                cmd.Parameters.AddWithValue("@deviceID", deviceID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = Convert.ToBoolean(reader["result"]);
                         }
                     }
                 }

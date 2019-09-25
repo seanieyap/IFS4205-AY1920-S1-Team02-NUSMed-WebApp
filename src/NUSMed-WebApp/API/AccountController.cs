@@ -31,6 +31,14 @@ namespace NUSMed_WebApp.API
             {
                 if (HttpContext.Current.Cache[guid] != null)
                 {
+                    string retrievedNRIC = HttpContext.Current.Cache[guid].ToString();
+                    
+                    // check valid device id for a guid
+                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
+                    {
+
+                    }
+
                     // update/refresh token in cache
                     response = Request.CreateResponse(HttpStatusCode.OK);
                     return response;
@@ -102,12 +110,31 @@ namespace NUSMed_WebApp.API
             string deviceID = credentials.deviceID;
             string tokenID = credentials.tokenID;
             string guid = credentials.guid;
-
+            
             if (HttpContext.Current.Cache[guid] != null)
             {
+                // validate deviceID and tokenID for a guid
                 string nric = HttpContext.Current.Cache[guid].ToString();
-                HttpContext.Current.Cache.Insert(nric + "_MFAAttempt", "Approved", null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
-                response = Request.CreateResponse(HttpStatusCode.OK);
+
+                if (new AccountBLL().IsValid(nric, tokenID, deviceID))
+                {
+                    if (HttpContext.Current.Cache[nric + "_MFAAttempt"] != null &&
+                        HttpContext.Current.Cache.Get(nric + "_MFAAttempt").ToString().Equals("Awaiting"))
+                    {
+                        // MFA login was triggered, cache inserted
+                        Account account = new Account();
+                        account.associatedDeviceID = deviceID;
+                        account.associatedTokenID = tokenID;
+                        HttpContext.Current.Cache.Insert(nric + "_MFAAttempt", account, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
+
+                        response = Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        // MFA login was not trigger before this request, cache not inserted
+                        response = Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
+                }
                 // authenticate web login, set mfa last full login 
             }
 
