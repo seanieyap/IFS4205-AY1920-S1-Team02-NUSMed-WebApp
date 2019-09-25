@@ -76,7 +76,7 @@ namespace NUSMed_WebApp.Classes.DAL
       using (MySqlCommand cmd = new MySqlCommand())
       {
         cmd.CommandText = @"UPDATE generalization_level SET marital_status = @maritalStatus, gender = @gender,
-                          sex = @sex, postal = @postal, age = @age, record_create_date = @recordCreateDate;";
+                          sex = @sex, postal = @postal, age = @age, record_create_date = @recordCreateDate LIMIT 1;";
         int maritalStatusLevel = 0;
         int genderLevel = 0;
         int sexLevel = 0;
