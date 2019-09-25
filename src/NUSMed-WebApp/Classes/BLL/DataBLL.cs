@@ -18,7 +18,7 @@ namespace NUSMed_WebApp.Classes.BLL
       public Dictionary<string, Tree> dgh;
 
       // Key: Quasi-Identifiers Sequence, Value: List of Tuple<Diagnosis, Content, File Name, File Extension>
-      public Dictionary<List<string>, List<Tuple<string, string, string, string, string>>> sequencesFrequency;
+      public Dictionary<List<string>, List<Tuple<string>>> sequencesFrequency;
       public Dictionary<string, HashSet<string>> valuesInTableForEachQuasi;
       public Dictionary<string, int> generalizationLevel;
 
@@ -36,7 +36,7 @@ namespace NUSMed_WebApp.Classes.BLL
       {
         dgh = new Dictionary<string, Tree>();
         SequenceListEqualityComparer seqListEqualityComparer = new SequenceListEqualityComparer();
-        sequencesFrequency = new Dictionary<List<string>, List<Tuple<string, string, string, string, string>>>(seqListEqualityComparer);
+        sequencesFrequency = new Dictionary<List<string>, List<Tuple<string>>>(seqListEqualityComparer);
         valuesInTableForEachQuasi = new Dictionary<string, HashSet<string>>();
         generalizationLevel = new Dictionary<string, int>();
       }
@@ -84,11 +84,7 @@ namespace NUSMed_WebApp.Classes.BLL
           string dob = row["dob"].ToString();
           string postal = row["postal"].ToString();
           string createdDateTime = row["record_created_time"].ToString();
-          string diagnosisCode = row["diagnosis_code"].ToString();
           string recordId = row["record_id"].ToString();
-          string content = row["content"].ToString();
-          string fileName = row["file_name"].ToString();
-          string fileExt = row["file_ext"].ToString();
 
           string recordCreatedDate = GetDate(DateTime.ParseExact(createdDateTime, "MM/dd/yyyy HH:mm:ss", null));
           string age = GetAge(Convert.ToDateTime(DateTime.ParseExact(dob, "MM/dd/yyyy", null)), Convert.ToDateTime(recordCreatedDate)).ToString();
@@ -97,12 +93,12 @@ namespace NUSMed_WebApp.Classes.BLL
 
           if (sequencesFrequency.ContainsKey(quasiList))
           {
-            sequencesFrequency[quasiList].Add(new Tuple<string, string, string, string, string>(diagnosisCode, recordId, content, fileName, fileExt));
+            sequencesFrequency[quasiList].Add(new Tuple<string>(recordId));
           }
           else
           {
-            sequencesFrequency[quasiList] = new List<Tuple<string, string, string, string, string>>();
-            sequencesFrequency[quasiList].Add(new Tuple<string, string, string, string, string>(diagnosisCode, recordId, content, fileName, fileExt));
+            sequencesFrequency[quasiList] = new List<Tuple<string>>();
+            sequencesFrequency[quasiList].Add(new Tuple<string>(recordId));
           }
 
           for (int i = 0; i < quasiIdentifiers.Count; i++)
@@ -119,7 +115,7 @@ namespace NUSMed_WebApp.Classes.BLL
         while (true)
         {
           int totalCountLessThanK = 0;
-          foreach (KeyValuePair<List<string>, List<Tuple<string, string, string, string, string>>> seqAndCountEntry in sequencesFrequency)
+          foreach (KeyValuePair<List<string>, List<Tuple<string>>> seqAndCountEntry in sequencesFrequency)
           {
             int seqCount = seqAndCountEntry.Value.Count;
             if (seqCount < k)
@@ -184,8 +180,8 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 if (sequencesFrequency.ContainsKey(newSequence))
                 {
-                  List<Tuple<string, string, string, string, string>> sequenceTuples = sequencesFrequency[sequence];
-                  List<Tuple<string, string, string, string, string>> newSequenceTuples = sequencesFrequency[newSequence];
+                  List<Tuple<string>> sequenceTuples = sequencesFrequency[sequence];
+                  List<Tuple<string>> newSequenceTuples = sequencesFrequency[newSequence];
                   // Append tuples of current ungeneralized sequence to the new generalized sequence
                   newSequenceTuples.AddRange(sequenceTuples);
                 }
@@ -217,13 +213,10 @@ namespace NUSMed_WebApp.Classes.BLL
         anonymizedDataTable.Columns.Add("Postal", typeof(string));
         anonymizedDataTable.Columns.Add("Created Date", typeof(string));
 
-        anonymizedDataTable.Columns.Add("Diagnosis Code", typeof(string));
         anonymizedDataTable.Columns.Add("Record ID", typeof(string));
-        anonymizedDataTable.Columns.Add("Content", typeof(string));
-        anonymizedDataTable.Columns.Add("File Name", typeof(string));
-        anonymizedDataTable.Columns.Add("File Extension", typeof(string));
 
-        foreach (KeyValuePair<List<string>, List<Tuple<string, string, string, string, string>>> entry in sequencesFrequency)
+
+        foreach (KeyValuePair<List<string>, List<Tuple<string>>> entry in sequencesFrequency)
         {
           if (entry.Value.Count >= k)
           {
@@ -236,11 +229,7 @@ namespace NUSMed_WebApp.Classes.BLL
               anonymisedRow["Marital Status"] = entry.Key[3];
               anonymisedRow["Postal"] = entry.Key[4];
               anonymisedRow["Created Date"] = entry.Key[5];
-              anonymisedRow["Diagnosis Code"] = entry.Value[i].Item1;
-              anonymisedRow["Record ID"] = entry.Value[i].Item2;
-              anonymisedRow["Content"] = entry.Value[i].Item3;
-              anonymisedRow["File Name"] = entry.Value[i].Item4;
-              anonymisedRow["File Extension"] = entry.Value[i].Item5;
+              anonymisedRow["Record ID"] = entry.Value[i].Item1;
 
               anonymizedDataTable.Rows.Add(anonymisedRow);
             }
