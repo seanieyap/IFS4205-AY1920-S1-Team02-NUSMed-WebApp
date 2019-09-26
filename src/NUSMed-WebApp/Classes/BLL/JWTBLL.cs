@@ -45,7 +45,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 if (span.Minutes >= 15)
                 {
-                    return validated;
+                    return "test";
                 }
 
                 // check if last password change time for an nric is after creationTime

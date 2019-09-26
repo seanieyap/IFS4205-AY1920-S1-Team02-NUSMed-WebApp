@@ -31,7 +31,7 @@ namespace NUSMed_WebApp.API
 
             if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
             {
-                response = Request.CreateResponse(HttpStatusCode.OK, "is this running...");
+                response = Request.CreateResponse(HttpStatusCode.OK, jwtBll.validateJWT(jwt));
                 return response;
                 /*if (jwtBll.validateJWT(jwt))
                 {
@@ -143,7 +143,8 @@ namespace NUSMed_WebApp.API
 
             if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID) && AccountBLL.IsTokenIDValid(tokenID))
             {
-                if (jwtBll.validateJWT(jwt))
+                if (true)
+                    //if (jwtBll.validateJWT(jwt))
                 {
                     string retrievedNRIC = jwtBll.getNRIC(jwt);
 
