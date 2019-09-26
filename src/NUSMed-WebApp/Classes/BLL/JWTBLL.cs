@@ -39,8 +39,8 @@ namespace NUSMed_WebApp.Classes.BLL
                 
                 try
                 {
-                    Object jwtEntity = JsonConvert.DeserializeObject(claims);
-                    JWT test = (JWT)jwtEntity;
+                    JWT jwtEntity = JsonConvert.DeserializeObject<JWT>(claims);
+                    return jwtEntity.creationTime.ToString();
                 }
                 catch (Exception e)
                 {
