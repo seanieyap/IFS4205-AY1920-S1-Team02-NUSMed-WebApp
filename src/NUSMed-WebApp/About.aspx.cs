@@ -38,7 +38,7 @@ namespace NUSMed_WebApp
     {
       DataBLL dataBLL = new DataBLL();
 
-      dataBLL.GetAnonymizedTable();
+      dataBLL.InsertAnonymizedTableToDb();
     }
   }
 }

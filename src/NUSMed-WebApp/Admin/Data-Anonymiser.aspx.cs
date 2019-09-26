@@ -19,7 +19,7 @@ namespace NUSMed_WebApp.Admin
     {
       DataBLL dataBLL = new DataBLL();
 
-      dataBLL.GetAnonymizedTable();
+      dataBLL.InsertAnonymizedTableToDb();
     }
   }
 }

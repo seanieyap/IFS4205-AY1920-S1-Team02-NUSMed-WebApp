@@ -326,7 +326,7 @@ namespace NUSMed_WebApp.Classes.BLL
       }
     }
 
-    public DataTable GetAnonymizedTable()
+    public void InsertAnonymizedTableToDb()
     {
       DataTable dt = dataDAL.RetrieveColumns();
       Anonymizer anonymizer = new Anonymizer();
@@ -334,8 +334,13 @@ namespace NUSMed_WebApp.Classes.BLL
       DataTable anonymizedDataTable = anonDtAndGenLevel.Item1;
       Dictionary<string, int> genLevel = anonDtAndGenLevel.Item2;
       //dataDAL.InsertIntoAnonymizedTable(anonymizedDataTable);
-      dataDAL.InsertGeneralizationLevel(genLevel);
-      return anonymizedDataTable;
+      dataDAL.UpdateGeneralizationLevel(genLevel);
+    }
+
+    public DataTable getAnonymizedTableFromDb()
+    {
+      DataTable dt = dataDAL.retrieveRecordsForDisplay();
+      return dt;
     }
   }
 }

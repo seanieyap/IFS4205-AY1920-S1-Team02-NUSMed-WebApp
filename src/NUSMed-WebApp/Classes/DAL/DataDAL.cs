@@ -71,7 +71,12 @@ namespace NUSMed_WebApp.Classes.DAL
       }
     }
 
-    public void InsertGeneralizationLevel(Dictionary<string, int> generlizationLevel)
+    /// <summary>
+    /// Update the generalization_table in db.
+    /// Pre-condition: A row should already exist in the table.
+    /// Post-condition: There should only be a row in the table.
+    /// </summary>
+    public void UpdateGeneralizationLevel(Dictionary<string, int> generlizationLevel)
     {
       using (MySqlCommand cmd = new MySqlCommand())
       {
@@ -126,6 +131,33 @@ namespace NUSMed_WebApp.Classes.DAL
           cmd.ExecuteNonQuery();
         }
       }
+    }
+
+    public DataTable retrieveRecordsForDisplay()
+    {
+      DataTable result = new DataTable();
+
+      using (MySqlCommand cmd = new MySqlCommand())
+      {
+        cmd.CommandText = @"SELECT records_anonymized.record_id AS id, records_anonymized.marital_status AS marital_status, records_anonymized.gender AS gender, 
+        records_anonymized.sex AS sex, records_anonymized.age AS age, records_anonymized.postal AS postal, records_anonymized.record_create_date AS record_creation_date,
+        record_diagnosis.diagnosis_code FROM records_anonymized INNER JOIN record_diagnosis ON records_anonymized.record_id = record_diagnosis.record_id INNER JOIN
+        record ON record.id = record_diagnosis.record_id;";
+
+        using (cmd.Connection = connection)
+        {
+          cmd.Connection.Open();
+          cmd.ExecuteNonQuery();
+
+          using (MySqlDataReader reader = cmd.ExecuteReader())
+          {
+            result.Load(reader);
+
+          }
+        }
+      }
+
+      return result;
     }
   }
 }
