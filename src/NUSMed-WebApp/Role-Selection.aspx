@@ -38,7 +38,7 @@
                 <div class="card">
                     <h5 class="card-header"><i class="fas fa-fw fa-user-graduate"></i>Login as a Researcher</h5>
                     <div class="card-body">
-                        <h5 class="card-title">Role: Patient</h5>
+                        <h5 class="card-title">Role: Researcher</h5>
                         <p class="card-text">
                             Select and Download Aggregated Data and Records.                       
                             <button type="submit" id="buttonLoginResearcher" class="btn btn-success float-right" runat="server" onserverclick="buttonLoginResearcher_ServerClick">Select</button>
