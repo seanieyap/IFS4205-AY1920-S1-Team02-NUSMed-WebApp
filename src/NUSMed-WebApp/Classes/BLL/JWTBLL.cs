@@ -35,6 +35,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
             if (validSig)
             {
+                return validSig;
                 String claims = Encoding.UTF8.GetString(claimsBytes);
                 JWT jwtEntity = (JWT) JsonConvert.DeserializeObject(claims);
 
