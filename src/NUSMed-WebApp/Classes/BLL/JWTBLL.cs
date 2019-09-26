@@ -19,7 +19,7 @@ namespace NUSMed_WebApp.Classes.BLL
         {
         }
 
-        public bool validateJWT(string jwt)
+        public string validateJWT(string jwt)
         {
             bool validated = false;
 
@@ -35,8 +35,8 @@ namespace NUSMed_WebApp.Classes.BLL
 
             if (validSig)
             {
-                return validSig;
                 String claims = Encoding.UTF8.GetString(claimsBytes);
+                return claims;
                 JWT jwtEntity = (JWT) JsonConvert.DeserializeObject(claims);
 
                 DateTime startTime = jwtEntity.creationTime;
@@ -53,7 +53,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 validated = true;
             }
             
-            return validated;
+            return "test";
         }
 
         public string getNRIC(string jwt)
