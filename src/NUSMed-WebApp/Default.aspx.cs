@@ -59,7 +59,7 @@ namespace NUSMed_WebApp
 
         protected void ButtonLogin_ServerClick(object sender, EventArgs e)
         {
-            string nric = inputNRIC.Value.Trim();
+            string nric = inputNRIC.Value.Trim().ToUpper();
             string password = inputPassword.Value;
 
             AccountBLL accountBLL = new AccountBLL();

@@ -23,11 +23,41 @@ namespace NUSMed_WebApp.API
             string nric = credentials.nric;
             string password = credentials.password;
             string deviceID = credentials.deviceID;
-            string guid = credentials.guid;
+            string jwt = credentials.jwt;
+            //string guid = credentials.guid;
 
             AccountBLL accountBLL = new AccountBLL();
+            JWTBLL jwtBll = new JWTBLL();
 
-            if (!string.IsNullOrEmpty(guid) && AccountBLL.IsDeviceIDValid(deviceID))
+            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                if (jwtBll.validateJWT(jwt))
+                {
+                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+
+                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
+                    {
+                        string newJwt = jwtBll.updateJWT(jwt);
+                        response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                        return response;
+                    }
+                }
+            }
+            else if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                Account account = accountBLL.GetStatus(nric, password, deviceID);
+
+                if (account.status == 1)
+                {
+                    string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
+                    string newJwt = accountBLL.LoginDevice(nric, role);
+                    response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                    return response;
+                }
+
+            }
+
+            /*if (!string.IsNullOrEmpty(guid) && AccountBLL.IsDeviceIDValid(deviceID))
             {
                 if (HttpContext.Current.Cache[guid] != null)
                 {
@@ -52,7 +82,7 @@ namespace NUSMed_WebApp.API
                     return response;
                 }
 
-            }
+            }*/
 
             return response;
         }
@@ -81,14 +111,13 @@ namespace NUSMed_WebApp.API
                     try
                     {
                         accountBLL.MFADeviceIDUpdateFromPhone(nric, tokenID, deviceID);
-
-                        string test = nric + "::" + tokenID + "::" + deviceID;
-                        // what should server return upon successful registration?
-                        response = Request.CreateResponse(HttpStatusCode.OK, test);
+                        string responseString = "Registration successful";
+                        response = Request.CreateResponse(HttpStatusCode.OK, responseString);
                     }
                     catch
                     {
-                        response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                        string responseString = "An error occured during registration.";
+                        response = Request.CreateResponse(HttpStatusCode.InternalServerError, responseString);
                     }
                 }
 
@@ -105,9 +134,42 @@ namespace NUSMed_WebApp.API
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
             string deviceID = credentials.deviceID;
             string tokenID = credentials.tokenID;
-            string guid = credentials.guid;
-            
-            if (HttpContext.Current.Cache[guid] != null)
+            string jwt = credentials.jwt;
+            //string guid = credentials.guid;
+
+            JWTBLL jwtBll = new JWTBLL();
+
+            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID) && AccountBLL.IsTokenIDValid(tokenID))
+            {
+                if (jwtBll.validateJWT(jwt))
+                {
+                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+
+                    // validate deviceID and tokenID for a nric
+                    if (new AccountBLL().IsValid(retrievedNRIC, tokenID, deviceID))
+                    {
+                        if (HttpContext.Current.Cache[retrievedNRIC + "_MFAAttempt"] != null &&
+                            HttpContext.Current.Cache.Get(retrievedNRIC + "_MFAAttempt").ToString().Equals("Awaiting"))
+                        {
+                            // MFA login was triggered, cache inserted
+                            Account account = new Account();
+                            account.associatedDeviceID = deviceID;
+                            account.associatedTokenID = tokenID;
+                            HttpContext.Current.Cache.Insert(retrievedNRIC + "_MFAAttempt", account, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
+
+                            string newJwt = jwtBll.updateJWT(jwt);
+                            response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                        }
+                        else
+                        {
+                            // MFA login was not trigger before this request, cache not inserted
+                            response = Request.CreateResponse(HttpStatusCode.NotFound);
+                        }
+                    }
+                }
+            }
+
+            /*if (HttpContext.Current.Cache[guid] != null)
             {             
                 string nric = HttpContext.Current.Cache[guid].ToString();
 
@@ -131,7 +193,7 @@ namespace NUSMed_WebApp.API
                         response = Request.CreateResponse(HttpStatusCode.NotFound);
                     }
                 }
-            }
+            }*/
 
             return response;
         }

@@ -53,13 +53,34 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public string LoginDevice(string nric, string role)
         {
-            Guid guid = Guid.NewGuid();
+            JWTBLL jwtBll = new JWTBLL();
+
+            String jwt = jwtBll.getJWT(nric, role);
+
+            if (role.Equals("11"))
+            {
+                role = "Multiple";
+            }
+            else if (role.Equals("10"))
+            {
+                role = "Patient";
+            }
+            else if (role.Equals("01"))
+            {
+                role = "Therapist";
+            }
+
+            new LogAccountDAL().Insert(nric, nric, "Device Login", "Using role, " + role + ".");
+
+            return jwt;
+
+            /*Guid guid = Guid.NewGuid();
 
             HttpContext.Current.Cache.Insert(guid.ToString(), nric, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
 
             new LogAccountDAL().Insert(nric, nric, "Device Login", "Using role, " + role + ".");
 
-            return guid.ToString();
+            return guid.ToString();*/
         }
 
         public void Logout()
