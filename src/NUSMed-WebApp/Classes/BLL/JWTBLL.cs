@@ -12,7 +12,8 @@ namespace NUSMed_WebApp.Classes.BLL
 {
     public class JWTBLL
     {
-        private readonly string RSAFullKey = ConfigurationManager.AppSettings["JWTRsaFullKey"].ToString();
+        private readonly string RSAFullKey = ConfigurationManager.AppSettings["JWTRsaFullKey"].ToString()
+            .Replace("< ?", "<").Replace("> ?", ">");
 
         public JWTBLL()
         {
