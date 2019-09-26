@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <asp:UpdatePanel ID="UpdatePanelAccounts" class="container" runat="server" UpdateMode="Conditional">
+    <asp:UpdatePanel ID="UpdatePanelAccounts" class="container-fluid" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <div class="row mb-4">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
@@ -50,19 +50,20 @@
                             <asp:TemplateField HeaderText="Information" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LabelInformationStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
-                                    <asp:LinkButton ID="LinkButtonViewInformation" runat="server"><i class="fas fa-fw fa-eye"></i>View</asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButtonViewInformation" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Records" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LabelRecordStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
-                                    <asp:LinkButton ID="LinkButtonViewRecords" runat="server"><i class="fas fa-fw fa-eye"></i>View</asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButtonViewRecords" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
+                                    <asp:HyperLink ID="LinkButtonNewRecords" Target="_blank" runat="server"><i class="fas fa-fw fa-file-medical"></i><span class="d-none d-lg-inline-block">New Record</span></asp:HyperLink>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Permissions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LabelPermissionStatus" TabIndex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
-                                    <asp:LinkButton ID="LinkButtonViewPermission" CssClass="btn btn-info btn-sm" runat="server" CommandArgument='<%# Item.nric %>' CommandName="ViewPermission"><i class="fas fa-fw fa-eye"></i>View</asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButtonViewPermission" CssClass="btn btn-info btn-sm" runat="server" CommandArgument='<%# Item.nric %>' CommandName="ViewPermission"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -460,7 +461,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="modalRecordsbuttonNewRecord" type="button" class="btn btn-sm btn-info" runat="server" onserverclick="modalRecordsbuttonNewRecord_ServerClick"><i class="fas fa-fw fa-file-medical"></i>Submit New Record</button>
+                        <asp:HyperLink ID="modalRecordsHyperlinkNewRecord" CssClass="btn btn-sm btn-info" Target="_blank" runat="server"><i class="fas fa-fw fa-file-medical"></i>New Record</asp:HyperLink>
                         <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
                     </div>
                 </ContentTemplate>

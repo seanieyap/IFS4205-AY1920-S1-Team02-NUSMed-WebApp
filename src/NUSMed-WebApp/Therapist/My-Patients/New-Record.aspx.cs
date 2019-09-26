@@ -35,6 +35,8 @@ namespace NUSMed_WebApp.Therapist.My_Records
 
             Master.LiActivePatientMyRecords();
             Master.LiActivePatientMyRecordNew();
+            LabelPatientNRIC.Text = patient.nric + ", " + patient.lastName + " "+ patient.firstName;
+
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
 
             // Show success modal 
@@ -66,18 +68,35 @@ namespace NUSMed_WebApp.Therapist.My_Records
                 Session["inputFile"] = inputFile;
             }
 
-            //if (!IsPostBack)
-            //{
-            ResetPanel(patient);
-            //}
+            if (!IsPostBack)
+            {
+                ResetPanel(patient);
+            }
         }
 
 
         protected void buttonSubmit_ServerClick(object sender, EventArgs e)
         {
+            #region Page Validation
+            if (HttpContext.Current.Request.QueryString["Patient-NRIC"] == null)
+            {
+                Server.TransferRequest("~/Errors/401.aspx");
+                return;
+            }
+
+            // todo check if patient is in rtp table
+            Classes.Entity.Patient patient = new TherapistBLL().GetPatientPermissions(Convert.ToString(HttpContext.Current.Request.QueryString["Patient-NRIC"]));
+
+            if (!AccountBLL.IsNRICValid(patient.nric) || patient.permissionApproved == 0)
+            {
+                Server.TransferRequest("~/Errors/401.aspx");
+                return;
+            }
+            #endregion
+
             Record record = new Record();
             record.creatorNRIC = AccountBLL.GetNRIC();
-            record.patientNRIC = Convert.ToString(HttpContext.Current.Request.QueryString["patientNRIC"]);
+            record.patientNRIC = patient.nric;
             record.title = inputTitle.Value.Trim();
             record.description = inputDescription.Value.Trim();
             record.content = string.Empty;
@@ -103,15 +122,6 @@ namespace NUSMed_WebApp.Therapist.My_Records
             }
             else
                 inputDescription.Attributes.Add("class", "form-control is-valid");
-
-            //// if type not selected
-            //if (record.type == null)
-            //{
-            //    validate[4] = false;
-            //    inputTitle.Attributes.Add("class", "form-control is-invalid");
-            //}
-            //else
-            //    inputTitle.Attributes.Add("class", "form-control is-valid");
 
             if (record.type.isContent)
             {
@@ -167,22 +177,16 @@ namespace NUSMed_WebApp.Therapist.My_Records
 
                 try
                 {
-                    if (record.type.isContent)
-                    {
-                        recordBLL.SubmitRecordContent(record);
-
-                    }
-                    else if (!record.type.isContent)
+                    if (!record.type.isContent)
                     {
                         record.createTime = DateTime.Now;
 
                         Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
 
-                        // Not possible for file with same hashed file name to exist
                         inputFile.SaveAs(record.fullpath);
-
-                        recordBLL.SubmitRecordFile(record);
                     }
+
+                    recordBLL.SubmitRecordContent(record);
 
                     Session["NewRecordSuccess"] = "success";
                 }

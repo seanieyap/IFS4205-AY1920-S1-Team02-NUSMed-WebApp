@@ -473,7 +473,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Insert new record
         /// </summary>
-        public void InsertContent(Record record, string patientNRIC, string creatorNRIC)
+        public void InsertContent(Record record, string creatorNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
@@ -482,7 +482,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     VALUES
                     (@patientNRIC, @creatorNRIC, @title, @description, @type, @content, @isEmergency);";
 
-                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@patientNRIC", record.patientNRIC);
                 cmd.Parameters.AddWithValue("@creatorNRIC", creatorNRIC);
                 cmd.Parameters.AddWithValue("@title", record.title);
                 cmd.Parameters.AddWithValue("@description", record.description);
@@ -500,7 +500,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Insert new record
         /// </summary>
-        public void InsertFile(Record record, string patientNRIC, string creatorNRIC)
+        public void InsertFile(Record record, string creatorNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
@@ -511,7 +511,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     (@patientNRIC, @creatorNRIC, @title, @description, @type,
                     @fileName, @fileExtension, @fileSize, @fileChecksum, @createTime, @isEmergency);";
 
-                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@patientNRIC", record.patientNRIC);
                 cmd.Parameters.AddWithValue("@creatorNRIC", creatorNRIC);
                 cmd.Parameters.AddWithValue("@title", record.title);
                 cmd.Parameters.AddWithValue("@description", record.description);

@@ -79,36 +79,41 @@ namespace NUSMed_WebApp.Classes.BLL
 
         public void SubmitRecordContent(Record record)
         {
-            if (AccountBLL.IsPatient())
+            if (AccountBLL.IsPatient() && record.patientNRIC.Equals(AccountBLL.GetNRIC()))
             {
-                string nric = AccountBLL.GetNRIC();
-
                 if (record.type.isContent)
                 {
-                    //if ()
-                    //{
-
-                    //}
-                    recordDAL.InsertContent(record, nric, nric);
+                    recordDAL.InsertContent(record, AccountBLL.GetNRIC());
                 }
-            }
-        }
-
-        public void SubmitRecordFile(Record record)
-        {
-            if (AccountBLL.IsPatient())
-            {
-                string nric = AccountBLL.GetNRIC();
-
-                if (!record.type.isContent)
+                else if (!record.type.isContent)
                 {
                     record.fileChecksum = record.GetMD5HashFromFile();
 
-                    //if ()
-                    //{
+                    recordDAL.InsertFile(record, AccountBLL.GetNRIC());
+                }
+            }
+            else if (AccountBLL.IsTherapist())
+            {
+                Entity.Patient patient = new TherapistBLL().GetPatientPermissions(record.patientNRIC);
 
-                    //}
-                    recordDAL.InsertFile(record, nric, nric);
+                if (patient.permissionApproved == 0 || ((patient.permissionApproved & record.type.permissionFlag) == 0))
+                {
+                    return;
+                }
+                if (AccountBLL.GetNRIC().Equals(record.patientNRIC))
+                {
+                    return;
+                }
+
+                if (record.type.isContent)
+                {
+                    recordDAL.InsertContent(record, AccountBLL.GetNRIC());
+                }
+                else if (!record.type.isContent)
+                {
+                    record.fileChecksum = record.GetMD5HashFromFile();
+
+                    recordDAL.InsertFile(record, AccountBLL.GetNRIC());
                 }
             }
         }
