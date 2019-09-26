@@ -27,7 +27,7 @@ namespace NUSMed_WebApp.API
 
             AccountBLL accountBLL = new AccountBLL();
 
-            if (!string.IsNullOrEmpty(guid))
+            if (!string.IsNullOrEmpty(guid) && AccountBLL.IsDeviceIDValid(deviceID))
             {
                 if (HttpContext.Current.Cache[guid] != null)
                 {
@@ -41,13 +41,7 @@ namespace NUSMed_WebApp.API
                     }
                 }
             }
-            else
-            {
-                response = Request.CreateResponse(HttpStatusCode.Ambiguous);
-                return response;
-            }
-
-            if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
+            else if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
             {
                 Account account = accountBLL.GetStatus(nric, password, deviceID);
 
