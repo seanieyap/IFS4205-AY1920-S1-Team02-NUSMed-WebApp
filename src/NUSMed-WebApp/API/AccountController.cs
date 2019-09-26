@@ -31,7 +31,8 @@ namespace NUSMed_WebApp.API
 
             if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
             {
-                response = Request.CreateResponse(HttpStatusCode.OK, jwtBll.validateJWT(jwt).ToString());
+                String[] jwtParts = jwt.Split('.');
+                response = Request.CreateResponse(HttpStatusCode.OK, jwtParts[0]);
                 return response;
                 /*if (jwtBll.validateJWT(jwt))
                 {
