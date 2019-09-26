@@ -40,6 +40,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 try
                 {
                     Object jwtEntity = JsonConvert.DeserializeObject(claims);
+                    JWT test = (JWT)jwtEntity;
                 }
                 catch (Exception e)
                 {
