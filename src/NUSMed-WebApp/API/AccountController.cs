@@ -41,6 +41,11 @@ namespace NUSMed_WebApp.API
                     }
                 }
             }
+            else
+            {
+                response = Request.CreateResponse(HttpStatusCode.Ambiguous);
+                return response;
+            }
 
             if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
             {
