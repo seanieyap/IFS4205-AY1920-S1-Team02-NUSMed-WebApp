@@ -174,7 +174,7 @@
                     <p class="display-3">success</p>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-secondary mr-auto" href="~/Patient/My-Records/View" role="button" runat="server">View your Records</a>
+                    <a class="btn btn-secondary mr-auto" href="~/Therapist/My-Patients/View" role="button" runat="server">View your Patients</a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Adding Records</button>
                 </div>
             </div>

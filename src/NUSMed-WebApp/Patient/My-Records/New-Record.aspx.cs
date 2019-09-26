@@ -138,25 +138,19 @@ namespace NUSMed_WebApp.Patient.My_Records
 
                 try
                 {
-                    if (record.type.isContent)
-                    {
-                        recordBLL.SubmitRecordContent(record);
-
-                    }
-                    else if (!record.type.isContent)
+                    if (!record.type.isContent)
                     {
                         record.createTime = DateTime.Now;
 
                         Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
 
-                        // Not possible for file with same hashed file name to exist
                         inputFile.SaveAs(record.fullpath);
-                        
-                        recordBLL.SubmitRecordFile(record);
                     }
 
+                    recordBLL.SubmitRecordContent(record);
+
                     Session["NewRecordSuccess"] = "success";
-            }
+                }
                 catch
             {
                 Session["NewRecordSuccess"] = "error";

@@ -100,7 +100,16 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             {
                 try
                 {
-                    Update_UpdatePanelRecords(nric);
+                    //Update_UpdatePanelRecords(nric);
+                    List<Record> records = new RecordBLL().GetRecords(nric);
+                    LabelRecordsNRIC.Text = nric;
+                    modalRecordsHyperlinkNewRecord.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + nric;
+
+                    ViewState["GridViewRecords"] = records;
+                    GridViewRecords.DataSource = records;
+                    GridViewRecords.DataBind();
+                    UpdatePanelRecords.Update();
+
 
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Records Modal", "$('#modalRecords').modal('show');", true);
                 }
@@ -129,6 +138,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 Label LabelNameStatus = (Label)e.Row.FindControl("LabelNameStatus");
                 LinkButton LinkButtonViewInformation = (LinkButton)e.Row.FindControl("LinkButtonViewInformation");
                 LinkButton LinkButtonViewRecords = (LinkButton)e.Row.FindControl("LinkButtonViewRecords");
+                HyperLink LinkButtonNewRecords = (HyperLink)e.Row.FindControl("LinkButtonNewRecords");
                 Label LabelPermissionStatus = (Label)e.Row.FindControl("LabelPermissionStatus");
 
                 // todo testing
@@ -140,6 +150,8 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     LinkButtonViewInformation.Enabled = false;
                     LinkButtonViewRecords.CssClass = "btn btn-secondary btn-sm disabled";
                     LinkButtonViewRecords.Enabled = false;
+                    LinkButtonNewRecords.CssClass = "btn btn-secondary btn-sm disabled";
+                    LinkButtonNewRecords.Enabled = false;
                 }
                 else
                 {
@@ -150,6 +162,8 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     LinkButtonViewRecords.CssClass = "btn btn-success btn-sm";
                     LinkButtonViewRecords.CommandName = "ViewRecords";
                     LinkButtonViewRecords.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
+                    LinkButtonNewRecords.CssClass = "btn btn-info btn-sm";
+                    LinkButtonNewRecords.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "nric"));
                 }
 
                 if (permissionUnapproved > 0)
@@ -264,23 +278,24 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         #endregion
 
         #region Record Functions
-        private void Update_UpdatePanelRecords(string nric)
-        {
-            List<Record> records = new RecordBLL().GetRecords(nric);
-            LabelRecordsNRIC.Text = nric;
+        //private void Update_UpdatePanelRecords(string nric)
+        //{
+        //    List<Record> records = new RecordBLL().GetRecords(nric);
+        //    LabelRecordsNRIC.Text = nric;
+        //    modalRecordsHyperlinkNewRecord.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + nric;
 
-            ViewState["GridViewRecords"] = records;
-            GridViewRecords.DataSource = records;
-            GridViewRecords.DataBind();
-            UpdatePanelRecords.Update();
-        }
+
+        //    ViewState["GridViewRecords"] = records;
+        //    GridViewRecords.DataSource = records;
+        //    GridViewRecords.DataBind();
+        //    UpdatePanelRecords.Update();
+        //}
         protected void GridViewRecords_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 bool permited = (bool)DataBinder.Eval(e.Row.DataItem, "permited");
 
-                // todo
                 if (permited)
                 {
                     RecordType recordType = (RecordType)DataBinder.Eval(e.Row.DataItem, "type");
@@ -390,11 +405,6 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
                 }
             }
-        }
-        protected void modalRecordsbuttonNewRecord_ServerClick(object sender, EventArgs e)
-        {
-            string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
-            Response.Redirect("~/Therapist/My-Patients/New-Record?Patient-NRIC=" + patientNRIC);
         }
         #endregion
     }
