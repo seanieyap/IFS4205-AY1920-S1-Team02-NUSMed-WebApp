@@ -32,7 +32,7 @@ namespace NUSMed_WebApp.API
                 if (HttpContext.Current.Cache[guid] != null)
                 {
                     string retrievedNRIC = HttpContext.Current.Cache[guid].ToString();
-                    response = Request.CreateResponse(HttpStatusCode.OK, retrievedNRIC);
+                    response = Request.CreateResponse(HttpStatusCode.OK, deviceID);
                     return response;
                     /*string retrievedNRIC = HttpContext.Current.Cache[guid].ToString();
 
