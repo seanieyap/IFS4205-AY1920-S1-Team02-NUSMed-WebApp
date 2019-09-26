@@ -36,16 +36,23 @@ namespace NUSMed_WebApp.Classes.BLL
             if (validSig)
             {
                 String claims = Encoding.UTF8.GetString(claimsBytes);
-                JWT jwtEntity = (JWT) JsonConvert.DeserializeObject(claims);
-                return jwtEntity.creationTime.ToString();
-                DateTime startTime = jwtEntity.creationTime;
+                try
+                {
+                    JWT jwtEntity = (JWT)JsonConvert.DeserializeObject(claims);
+                }
+                catch (Exception e)
+                {
+                    return e.StackTrace;
+                }
+                
+                /*DateTime startTime = jwtEntity.creationTime;
                 DateTime endTime = DateTime.Now;
                 TimeSpan span = endTime.Subtract(startTime);
 
                 if (span.Minutes >= 15)
                 {
-                    return "test";
-                }
+                    return validated;
+                }*/
 
                 // check if last password change time for an nric is after creationTime
 
