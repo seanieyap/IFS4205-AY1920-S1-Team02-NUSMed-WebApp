@@ -97,8 +97,8 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT a.nric, a.name_first, a.name_last, 
-                    rtp.permission_unapproved, rtp.request_time, 
-                    rtp.permission_approved, rtp.approved_time
+                    rtp.permission_unapproved, rtp.request_time, rtp.permission_approved, 
+                    rtp.approved_time, rtp.is_emergency
                     FROM record_type_permission rtp
                     INNER JOIN account a ON rtp.patient_nric = a.nric
                     WHERE rtp.therapist_nric = @nric AND a.nric LIKE @term
@@ -122,7 +122,8 @@ namespace NUSMed_WebApp.Classes.DAL
                                 firstName = Convert.ToString(reader["name_first"]),
                                 lastName = Convert.ToString(reader["name_last"]),
                                 permissionUnapproved = Convert.ToInt16(reader["permission_unapproved"]),
-                                permissionApproved = Convert.ToInt16(reader["permission_approved"])
+                                permissionApproved = Convert.ToInt16(reader["permission_approved"]),
+                                isEmergency = Convert.ToBoolean(reader["is_emergency"])
                             };
                             patient.requestTime = reader["request_time"] == DBNull.Value ? null :
                                (DateTime?)Convert.ToDateTime(reader["request_time"]);
@@ -148,7 +149,7 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT DISTINCT a.nric, a.name_first, a.name_last, 
-                    rtp.permission_unapproved, rtp.request_time, 
+                    rtp.permission_unapproved, rtp.request_time, rtp.is_emergency,
                     rtp.permission_approved, rtp.approved_time
                     FROM record_type_permission rtp
                     INNER JOIN account a ON rtp.patient_nric = a.nric
@@ -172,7 +173,8 @@ namespace NUSMed_WebApp.Classes.DAL
                                 firstName = Convert.ToString(reader["name_first"]),
                                 lastName = Convert.ToString(reader["name_last"]),
                                 permissionUnapproved = Convert.ToInt16(reader["permission_unapproved"]),
-                                permissionApproved = Convert.ToInt16(reader["permission_approved"])
+                                permissionApproved = Convert.ToInt16(reader["permission_approved"]),
+                                isEmergency = Convert.ToBoolean(reader["is_emergency"])
                             };
                             patient.requestTime = reader["request_time"] == DBNull.Value ? null :
                                (DateTime?)Convert.ToDateTime(reader["request_time"]);

@@ -8,13 +8,11 @@ namespace NUSMed_WebApp.Classes.BLL
 {
     public class JWTBLL
     {
-        private readonly string privateKey;
-        private readonly string publicKey;
+        private readonly string RSAFullKey;
 
         public JWTBLL()
         {
-            privateKey = ConfigurationManager.AppSettings["JWTSignaturePrivateKey"].ToString();
-            publicKey = ConfigurationManager.AppSettings["JWTSignaturePublicKey"].ToString();
+            RSAFullKey = ConfigurationManager.AppSettings["JWTRsaFullKey"].ToString();
         }
     }
 }

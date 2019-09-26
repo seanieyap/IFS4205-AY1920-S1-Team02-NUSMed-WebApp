@@ -123,7 +123,6 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                //Int16 permissionApproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionApproved"));
                 DateTime? approvedTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "approvedTime");
                 Int16 permissionUnapproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionUnapproved"));
                 Label LabelName = (Label)e.Row.FindControl("LabelName");
@@ -141,13 +140,10 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     LinkButtonViewInformation.Enabled = false;
                     LinkButtonViewRecords.CssClass = "btn btn-secondary btn-sm disabled";
                     LinkButtonViewRecords.Enabled = false;
-                    LabelPermissionStatus.Attributes.Add("title", "Permissions Approved on " + Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "approvedTime")));
-                    LabelPermissionStatus.CssClass = "text-success";
                 }
                 else
                 {
                     LabelName.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "lastName")) + " " + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "firstName"));
-                    LabelNameStatus.Visible = false;
                     LinkButtonViewInformation.CssClass = "btn btn-success btn-sm";
                     LinkButtonViewInformation.CommandName = "ViewInformation";
                     LinkButtonViewInformation.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
@@ -165,6 +161,13 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 {
                     LabelPermissionStatus.Attributes.Add("title", "Not Pending Approval for Permissions");
                     LabelPermissionStatus.CssClass = "text-info";
+                }
+
+                bool isEmergency = Convert.ToBoolean(DataBinder.Eval(e.Row.DataItem, "isEmergency"));
+                if (isEmergency)
+                {
+                    LabelPermissionStatus.Attributes.Add("title", "You have been Granted Permissions to this patient via the Emergency system.");
+                    LabelPermissionStatus.CssClass = "text-danger";
                 }
             }
         }
@@ -381,12 +384,17 @@ namespace NUSMed_WebApp.Therapist.My_Patients
 
                     UpdatePanelFileView.Update();
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').modal('show');", true);
-            }
+                }
                 catch
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
+                }
             }
         }
+        protected void modalRecordsbuttonNewRecord_ServerClick(object sender, EventArgs e)
+        {
+            string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
+            Response.Redirect("~/Therapist/My-Patients/New-Record?Patient-NRIC=" + patientNRIC);
         }
         #endregion
     }

@@ -65,7 +65,7 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
-        /// Retrieve Records information owned by specific patient whre therapist has permissions
+        /// Retrieve Records information owned by specific patient where therapist has permissions
         /// </summary>
         public List<Record> RetrieveRecords(string patientNRIC, string therapistNRIC)
         {
@@ -478,9 +478,9 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"INSERT INTO record
-                    (patient_nric, creator_nric, title, description, type, content)
+                    (patient_nric, creator_nric, title, description, type, content, is_emergency)
                     VALUES
-                    (@patientNRIC, @creatorNRIC, @title, @description, @type, @content);";
+                    (@patientNRIC, @creatorNRIC, @title, @description, @type, @content, @isEmergency);";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
                 cmd.Parameters.AddWithValue("@creatorNRIC", creatorNRIC);
@@ -488,6 +488,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.Parameters.AddWithValue("@description", record.description);
                 cmd.Parameters.AddWithValue("@content", record.content);
                 cmd.Parameters.AddWithValue("@type", record.type.name);
+                cmd.Parameters.AddWithValue("@isEmergency", record.isEmergency);
 
                 using (cmd.Connection = connection)
                 {
@@ -505,10 +506,10 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"INSERT INTO record
                     (patient_nric, creator_nric, title, description, type,
-                    file_name, file_extension, file_size, file_checksum, create_time)
+                    file_name, file_extension, file_size, file_checksum, create_time, is_emergency)
                     VALUES
                     (@patientNRIC, @creatorNRIC, @title, @description, @type,
-                    @fileName, @fileExtension, @fileSize, @fileChecksum, @createTime);";
+                    @fileName, @fileExtension, @fileSize, @fileChecksum, @createTime, @isEmergency);";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
                 cmd.Parameters.AddWithValue("@creatorNRIC", creatorNRIC);
@@ -521,6 +522,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.Parameters.AddWithValue("@fileSize", record.fileSize);
                 cmd.Parameters.AddWithValue("@fileChecksum", record.fileChecksum);
                 cmd.Parameters.AddWithValue("@createTime", record.createTime.ToString("yyyy-MM-dd H:mm:ss"));
+                cmd.Parameters.AddWithValue("@isEmergency", record.isEmergency);
 
                 using (cmd.Connection = connection)
                 {

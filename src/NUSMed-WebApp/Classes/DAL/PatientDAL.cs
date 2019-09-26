@@ -22,7 +22,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"SELECT a.nric, a.name_first, a.name_last, 
                     at.department, at.job_title,
-                    rtp.permission_unapproved, rtp.request_time, 
+                    rtp.permission_unapproved, rtp.request_time, rtp.is_emergency,
                     rtp.permission_approved, rtp.approved_time
                     FROM record_type_permission rtp
                     INNER JOIN account a ON rtp.therapist_nric = a.nric
@@ -51,6 +51,7 @@ namespace NUSMed_WebApp.Classes.DAL
                                 therapistJobTitle = Convert.ToString(reader["job_title"]),
                                 permissionUnapproved = Convert.ToInt16(reader["permission_unapproved"]),
                                 permissionApproved = Convert.ToInt16(reader["permission_approved"]),
+                                isEmergency = Convert.ToBoolean(reader["is_emergency"])
                             };
                             therapist.requestTime = reader["request_time"] == DBNull.Value ? null :
                                (DateTime?)Convert.ToDateTime(reader["request_time"]);
@@ -77,8 +78,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"SELECT a.nric, a.name_first, a.name_last, 
                     at.department, at.job_title,
-                    rtp.permission_unapproved, rtp.request_time, 
-                    rtp.permission_approved, rtp.approved_time,
+                    rtp.permission_unapproved, rtp.request_time, rtp.permission_approved, rtp.approved_time, rtp.is_emergency,
                     rp.status as record_permission_status
                     FROM record_type_permission rtp
                     INNER JOIN account a ON rtp.therapist_nric = a.nric
@@ -108,7 +108,8 @@ namespace NUSMed_WebApp.Classes.DAL
                                 therapistDepartment = Convert.ToString(reader["department"]),
                                 therapistJobTitle = Convert.ToString(reader["job_title"]),
                                 permissionUnapproved = Convert.ToInt16(reader["permission_unapproved"]),
-                                permissionApproved = Convert.ToInt16(reader["permission_approved"])
+                                permissionApproved = Convert.ToInt16(reader["permission_approved"]),
+                                isEmergency = Convert.ToBoolean(reader["is_emergency"])
                             };
 
                             therapist.recordPermissionStatus = reader["record_permission_status"] == DBNull.Value ? null :
@@ -265,7 +266,9 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"UPDATE record_type_permission
                     SET permission_approved = @permissionApproved, 
-                    permission_unapproved = 0, approved_time = NOW() 
+                    permission_unapproved = 0,
+                    approved_time = NOW(),
+                    is_emergency = false
                     WHERE patient_nric = @patientNRIC AND therapist_nric = @therapistNRIC;";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);

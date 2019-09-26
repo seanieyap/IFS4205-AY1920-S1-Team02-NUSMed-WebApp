@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <asp:UpdatePanel ID="UpdatePanelRecords" class="container" runat="server" UpdateMode="Conditional">
+    <asp:UpdatePanel ID="UpdatePanelRecords" class="container-fluid" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <div class="row">
                 <div class="col-12">
@@ -39,6 +39,9 @@
                             <asp:TemplateField HeaderText="Created By">
                                 <ItemTemplate>
                                     <%# Item.creatorLastName + " " + Item.creatorFirstName %>
+                                    <asp:Label ID="LabelIsEmergency" runat="server" Visible="false" class="text-danger" data-toggle="tooltip">
+                                        <i class="fas fa-fw fa-info-circle"></i>
+                                    </asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Creation Time">
@@ -53,7 +56,7 @@
                                     <asp:LinkButton ID="LinkbuttonFileView" CssClass="btn btn-info btn-sm" runat="server" Visible="false"></asp:LinkButton>
 
                                     <a id="FileDownloadLink" class="btn btn-warning btn-sm" runat="server" visible="false">
-                                        <i class="fas fa-fw fa-cloud-download-alt"></i></i>
+                                        <i class="fas fa-fw fa-cloud-download-alt"></i>
                                     </a>
                                     <asp:Label ID="LabelFileType" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
                                 </ItemTemplate>
@@ -168,7 +171,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <p class="lead mb-2">Your Therapists.</p>
+                                    <p class="lead mb-2">Your Therapist.</p>
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8 mx-auto">
                                     <asp:Panel CssClass="input-group" runat="server" DefaultButton="LinkButtonFineGrainAllow">

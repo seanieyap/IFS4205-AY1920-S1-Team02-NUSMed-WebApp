@@ -23,7 +23,7 @@
                         <asp:TextBox ID="TextboxSearch" CssClass="form-control" placeholder="First Name / Last Name" runat="server"></asp:TextBox>
                         <div class="input-group-append">
                             <asp:LinkButton ID="ButtonSearch" CssClass="btn btn-outline-info" OnClick="ButtonSearch_Click" runat="server">
-                                        <i class="fas fa-fw fa-search"></i> Go
+                                <i class="fas fa-fw fa-search"></i> Go
                             </asp:LinkButton>
                         </div>
                     </asp:Panel>

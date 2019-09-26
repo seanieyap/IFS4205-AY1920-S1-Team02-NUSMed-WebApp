@@ -85,6 +85,10 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 if (record.type.isContent)
                 {
+                    //if ()
+                    //{
+
+                    //}
                     recordDAL.InsertContent(record, nric, nric);
                 }
             }
@@ -99,6 +103,11 @@ namespace NUSMed_WebApp.Classes.BLL
                 if (!record.type.isContent)
                 {
                     record.fileChecksum = record.GetMD5HashFromFile();
+
+                    //if ()
+                    //{
+
+                    //}
                     recordDAL.InsertFile(record, nric, nric);
                 }
             }

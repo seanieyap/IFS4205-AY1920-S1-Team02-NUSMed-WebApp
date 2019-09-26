@@ -31,7 +31,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <asp:GridView ID="GridViewPatient" CssClass="table table-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
+                    <asp:GridView ID="GridViewPatient" CssClass="table table-sm" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
                         ItemType="NUSMed_WebApp.Classes.Entity.Patient" DataKeyNames="nric" OnRowCommand="GridViewPatient_RowCommand"
                         OnPageIndexChanging="GridViewPatient_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowDataBound="GridViewPatient_RowDataBound">
@@ -460,7 +460,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <%--<button id="button1" type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonPermissionRequest_ServerClick"><i class="fas fa-fw fa-share"></i>Submit</button>--%>
+                        <button id="modalRecordsbuttonNewRecord" type="button" class="btn btn-sm btn-info" runat="server" onserverclick="modalRecordsbuttonNewRecord_ServerClick"><i class="fas fa-fw fa-file-medical"></i>Submit New Record</button>
                         <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
                     </div>
                 </ContentTemplate>

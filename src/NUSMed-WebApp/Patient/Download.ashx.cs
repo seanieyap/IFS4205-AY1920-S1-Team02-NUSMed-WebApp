@@ -24,6 +24,7 @@ namespace NUSMed_WebApp.Patient
             if (HttpContext.Current.Request.QueryString.GetValues(null)?.Contains("record") ?? false)
             {
                 response.StatusCode = 404;
+                return;
             }
 
             int recordID = Convert.ToInt32(HttpContext.Current.Request.QueryString["record"]);

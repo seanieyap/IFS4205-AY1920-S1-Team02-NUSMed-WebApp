@@ -67,12 +67,21 @@ namespace NUSMed_WebApp.Patient.My_Records
                     LinkbuttonFileView.CommandName = "FileView";
                     LinkbuttonFileView.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
                     LinkbuttonFileView.Visible = true;
-                    LinkbuttonFileView.Text = "<i class=\"fas fa-fw fa-eye\"></i></i><span class=\"d-none d-lg-inline-block\">View "
+                    LinkbuttonFileView.Text = "<i class=\"fas fa-fw fa-eye\"></i><span class=\"d-none d-lg-inline-block\">View "
                         + DataBinder.Eval(e.Row.DataItem, "fileType") +
                         "</span>";
 
                     FileDownloadLink.HRef = "~/Patient/Download.ashx?record=" + DataBinder.Eval(e.Row.DataItem, "id").ToString();
                     FileDownloadLink.Visible = true;
+                }
+
+                // emergency
+                bool isEmergency = Convert.ToBoolean(DataBinder.Eval(e.Row.DataItem, "isEmergency"));
+                if (isEmergency)
+                {
+                    Label LabelIsEmergency = (Label)e.Row.FindControl("LabelIsEmergency");
+                    LabelIsEmergency.Visible = true;
+                    LabelIsEmergency.Attributes.Add("title", "This Record was added by a therapist whom you did not approve permissions.");
                 }
             }
         }

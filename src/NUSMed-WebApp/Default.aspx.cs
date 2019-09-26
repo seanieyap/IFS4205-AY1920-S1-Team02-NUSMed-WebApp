@@ -155,21 +155,9 @@ namespace NUSMed_WebApp
 
             if (!HttpContext.Current.Cache.Get(nric + "_MFAAttempt").ToString().Equals("Awaiting")
                 && HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") != null)
-            //if (HttpContext.Current.Cache.Get(nric + "_MFAAttempt").ToString().Equals("Approved")
-            //    && HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") != null)
             {
-
-
                 TimerMFA.Enabled = false;
 
-                //if (HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password") == null)
-                //{
-                //    HttpContext.Current.Cache.Remove(nric + "_MFAAttempt");
-                //    HttpContext.Current.Cache.Remove(nric + "_MFAAttempt_Password");
-                //    Session.Abandon();
-                //    FormsAuthentication.RedirectToLoginPage("fail-mfa=true");
-                //    return;
-                //}
                 try
                 {
 
@@ -188,7 +176,6 @@ namespace NUSMed_WebApp
                     }
                     else
                     {
-                        // If omitted from mfa
                         try
                         {
                             // Check roles

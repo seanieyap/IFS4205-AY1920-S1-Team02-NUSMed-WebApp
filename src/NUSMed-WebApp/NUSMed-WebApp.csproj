@@ -292,6 +292,7 @@
     <Content Include="Therapist\Dashboard.aspx" />
     <Content Include="Therapist\My-Medical-Notes\New-Medical-Note.aspx" />
     <Content Include="Therapist\My-Medical-Notes\View.aspx" />
+    <Content Include="Therapist\My-Patients\New-Record.aspx" />
     <Content Include="Therapist\My-Patients\New-Request.aspx" />
     <Content Include="Therapist\My-Patients\View.aspx" />
     <Content Include="Web.config" />
@@ -539,6 +540,13 @@
     </Compile>
     <Compile Include="Therapist\My-Medical-Notes\View.aspx.designer.cs">
       <DependentUpon>View.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Therapist\My-Patients\New-Record.aspx.cs">
+      <DependentUpon>New-Record.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Therapist\My-Patients\New-Record.aspx.designer.cs">
+      <DependentUpon>New-Record.aspx</DependentUpon>
     </Compile>
     <Compile Include="Therapist\My-Patients\New-Request.aspx.cs">
       <DependentUpon>New-Request.aspx</DependentUpon>
