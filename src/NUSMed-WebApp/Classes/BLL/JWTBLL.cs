@@ -36,14 +36,14 @@ namespace NUSMed_WebApp.Classes.BLL
             if (validSig)
             {
                 String claims = Encoding.UTF8.GetString(claimsBytes);
-                return claims;
+                
                 try
                 {
-                    JWT jwtEntity = (JWT)JsonConvert.DeserializeObject(claims);
+                    Object jwtEntity = JsonConvert.DeserializeObject(claims);
                 }
                 catch (Exception e)
                 {
-                    return e.StackTrace;
+                    return e.Message + "\n" + e.ToString() + "\n" + e.StackTrace;
                 }
                 
                 /*DateTime startTime = jwtEntity.creationTime;
