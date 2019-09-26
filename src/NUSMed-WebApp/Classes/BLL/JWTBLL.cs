@@ -75,9 +75,9 @@ namespace NUSMed_WebApp.Classes.BLL
             };
             String jwtSerialized = JsonConvert.SerializeObject(jwtEntity);
 
-            RSA rsa = RSA.Create();
-            rsa.FromXmlString(RSAFullKey);
-            return rsa.ToXmlString(true);
+            //RSA rsa = RSA.Create();
+            //rsa.FromXmlString(RSAFullKey);
+            return RSAFullKey;
             /*byte[] jwtBytes = Encoding.UTF8.GetBytes(jwtSerialized);
             byte[] signedJwtBytes = rsa.SignData(jwtBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
