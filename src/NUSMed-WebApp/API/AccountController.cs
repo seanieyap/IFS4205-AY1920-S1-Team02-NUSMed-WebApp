@@ -31,9 +31,7 @@ namespace NUSMed_WebApp.API
 
             if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
             {
-                response = Request.CreateResponse(HttpStatusCode.OK, jwtBll.validateJWT(jwt));
-                return response;
-                /*if (jwtBll.validateJWT(jwt))
+                if (jwtBll.validateJWT(jwt))
                 {
                     string retrievedNRIC = jwtBll.getNRIC(jwt);
 
@@ -43,7 +41,7 @@ namespace NUSMed_WebApp.API
                         response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                         return response;
                     }
-                }*/
+                }
             }
             else if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
             {
@@ -143,8 +141,7 @@ namespace NUSMed_WebApp.API
 
             if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID) && AccountBLL.IsTokenIDValid(tokenID))
             {
-                if (true)
-                    //if (jwtBll.validateJWT(jwt))
+                if (jwtBll.validateJWT(jwt))
                 {
                     string retrievedNRIC = jwtBll.getNRIC(jwt);
 
