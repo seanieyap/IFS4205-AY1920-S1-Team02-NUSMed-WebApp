@@ -32,22 +32,17 @@ namespace NUSMed_WebApp.API
                 if (HttpContext.Current.Cache[guid] != null)
                 {
                     string retrievedNRIC = HttpContext.Current.Cache[guid].ToString();
-                    
+
                     // check valid device id for a guid
                     if (accountBLL.IsValid(retrievedNRIC, deviceID))
                     {
-
+                        response = Request.CreateResponse(HttpStatusCode.OK);
+                        return response;
                     }
-
-                    // update/refresh token in cache
-                    response = Request.CreateResponse(HttpStatusCode.OK);
-                    return response;
                 }
             }
 
             if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
-
-                //if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(deviceID))
             {
                 Account account = accountBLL.GetStatus(nric, password, deviceID);
 
@@ -114,10 +109,10 @@ namespace NUSMed_WebApp.API
             string guid = credentials.guid;
             
             if (HttpContext.Current.Cache[guid] != null)
-            {
-                // validate deviceID and tokenID for a guid
+            {             
                 string nric = HttpContext.Current.Cache[guid].ToString();
 
+                // validate deviceID and tokenID for a guid
                 if (new AccountBLL().IsValid(nric, tokenID, deviceID))
                 {
                     if (HttpContext.Current.Cache[nric + "_MFAAttempt"] != null &&
@@ -137,7 +132,6 @@ namespace NUSMed_WebApp.API
                         response = Request.CreateResponse(HttpStatusCode.NotFound);
                     }
                 }
-                // authenticate web login, set mfa last full login 
             }
 
             return response;
