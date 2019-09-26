@@ -14,23 +14,6 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-12 mb-3">
-
-                <div class="card">
-                    <h5 class="card-header">My Diagnosis History</h5>
-                    <div class="card-body">
-                        <%--<h5 class="card-title">Special title treatment</h5>--%>
-                        <div class="card-text">
-
-                        </div>
-                        <%--<a href="#" class="btn btn-primary">Go somewhere</a>--%>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row">
             <div class="col-12 col-md-6">
                 <div class="card border-0">
                     <div class="card-body text-center text-md-left">

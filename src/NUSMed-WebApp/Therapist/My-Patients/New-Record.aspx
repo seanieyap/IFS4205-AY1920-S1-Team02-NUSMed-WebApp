@@ -1,7 +1,5 @@
 ﻿<%@ Page Title="New Record" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="New-Record.aspx.cs" Inherits="NUSMed_WebApp.Therapist.My_Records.New_Record" %>
 
-<%--<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>--%>
-
 <%@ MasterType VirtualPath="~/site.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
