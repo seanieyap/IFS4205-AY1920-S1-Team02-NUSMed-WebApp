@@ -32,13 +32,16 @@ namespace NUSMed_WebApp.API
                 if (HttpContext.Current.Cache[guid] != null)
                 {
                     string retrievedNRIC = HttpContext.Current.Cache[guid].ToString();
+                    response = Request.CreateResponse(HttpStatusCode.OK, retrievedNRIC);
+                    return response;
+                    /*string retrievedNRIC = HttpContext.Current.Cache[guid].ToString();
 
                     // check valid device id for a guid
                     if (accountBLL.IsValid(retrievedNRIC, deviceID))
                     {
                         response = Request.CreateResponse(HttpStatusCode.OK);
                         return response;
-                    }
+                    }*/
                 }
             }
             else if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
