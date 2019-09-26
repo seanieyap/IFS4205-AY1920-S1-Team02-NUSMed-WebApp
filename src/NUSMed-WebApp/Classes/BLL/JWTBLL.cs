@@ -76,17 +76,17 @@ namespace NUSMed_WebApp.Classes.BLL
             };
             String jwtSerialized = JsonConvert.SerializeObject(jwtEntity);
 
-            //RSA rsa = RSA.Create();
-            //rsa.FromXmlString(RSAFullKey);
-            return RSAFullKey;
-            /*byte[] jwtBytes = Encoding.UTF8.GetBytes(jwtSerialized);
+            RSA rsa = RSA.Create();
+            rsa.FromXmlString(RSAFullKey);
+            
+            byte[] jwtBytes = Encoding.UTF8.GetBytes(jwtSerialized);
             byte[] signedJwtBytes = rsa.SignData(jwtBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
             String claims = Convert.ToBase64String(jwtBytes);
             String signature = Convert.ToBase64String(signedJwtBytes);
 
             String jwt = claims + "." + signature;
-            return jwt;*/
+            return jwt;
         }
 
         public string updateJWT(string jwt)

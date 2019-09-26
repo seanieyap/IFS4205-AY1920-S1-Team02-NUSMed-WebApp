@@ -51,7 +51,7 @@ namespace NUSMed_WebApp.API
                 {
                     string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
                     string newJwt = accountBLL.LoginDevice(nric, role);
-                    response = Request.CreateResponse(HttpStatusCode.OK, newJwt + role);
+                    response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                     return response;
                 }
 
