@@ -74,8 +74,8 @@ namespace NUSMed_WebApp.Classes.BLL
                 creationTime = DateTime.Now
             };
             String jwtSerialized = JsonConvert.SerializeObject(jwtEntity);
-
-            RSA rsa = RSA.Create();
+            return jwtSerialized;
+            /*RSA rsa = RSA.Create();
             rsa.FromXmlString(RSAFullKey);
             
             byte[] jwtBytes = Encoding.UTF8.GetBytes(jwtSerialized);
@@ -85,7 +85,7 @@ namespace NUSMed_WebApp.Classes.BLL
             String signature = Convert.ToBase64String(signedJwtBytes);
 
             String jwt = claims + "." + signature;
-            return jwt;
+            return jwt;*/
         }
 
         public string updateJWT(string jwt)
