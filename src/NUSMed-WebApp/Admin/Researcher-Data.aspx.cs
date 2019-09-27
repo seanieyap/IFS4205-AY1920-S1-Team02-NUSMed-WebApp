@@ -26,7 +26,7 @@ namespace NUSMed_WebApp.Admin
             }
             catch (Exception ex)
             {
-                ScriptManager.RegisterStartupScript(this, GetType(), "Anonymising Records Error", "toastr['error']('Error occured when Anonymising Records. " + ex + "');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Anonymising Records Error", "toastr['error']('Error occured when Anonymising Records. " + ex.ToString() + ".');", true);
             }
         }
     }
