@@ -11,11 +11,15 @@
             <p class="lead">Records here have been anonymized and may not fit your search criteria exactly</p>
         </div>
     </div>
-    <asp:GridView ID="GridViewAnonRecords" CssClass="table table-sm table-responsive-md" runat="server" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
+    <asp:GridView ID="GridViewAnonRecords" CssClass="table table-sm table-responsive-md" runat="server" AllowPaging="true" PageSize="20" PagerStyle-CssClass="pagination-gridview"
         OnPageIndexChanging="GridViewAnonRecords_PageIndexChanging" AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary"
-        EmptyDataRowStyle-CssClass="empty-table" OnRowDataBound="GridViewRecords_RowDataBound">
+        EmptyDataRowStyle-CssClass="empty-table" OnRowDataBound="GridViewRecords_RowDataBound" ItemType="NUSMed_WebApp.Classes.Entity.RecordAnonymised">
         <Columns>
-            <asp:BoundField DataField="age" HeaderText="Age" />
+            <asp:TemplateField HeaderText="Age">
+                <ItemTemplate>
+                    <%# Item.age %>
+                </ItemTemplate>
+            </asp:TemplateField>
             <asp:BoundField DataField="sex" HeaderText="Sex" />
             <asp:BoundField DataField="gender" HeaderText="Gender" />
             <asp:BoundField DataField="marital_status" HeaderText="Marital Status" />

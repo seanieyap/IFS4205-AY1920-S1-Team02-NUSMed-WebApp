@@ -167,7 +167,7 @@ namespace NUSMed_WebApp
         }
         public void LiActiveResearcherRecordSearch()
         {
-            navLinksResearcherDashboard.Attributes.Add("class", "nav-link active");
+            navLinksResearcherRecordSearch.Attributes.Add("class", "nav-link active");
         }
         #endregion
         #region Admin

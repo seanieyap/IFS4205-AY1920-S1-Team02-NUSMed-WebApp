@@ -95,7 +95,7 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         public override string prefix
         {
-            get { return "m"; }
+            get { return "cm"; }
         }
     }
     [Serializable]

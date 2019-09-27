@@ -9,7 +9,7 @@ namespace NUSMed_WebApp.Classes.BLL
 {
     public class DiagnosisBLL
     {
-        DiagnosisDAL diagnosisDAL = new DiagnosisDAL();
+        private readonly DiagnosisDAL diagnosisDAL = new DiagnosisDAL();
 
         public List<PatientDiagnosis> GetDiagnosis()
         {

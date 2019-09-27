@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.Caching;
 using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
+using System.IO;
 
 namespace NUSMed_WebApp
 {
@@ -34,11 +35,12 @@ namespace NUSMed_WebApp
             label1.Text = Session.SessionID;
         }
 
-    protected void LinkButtonGenerate_Click(object sender, EventArgs e)
-    {
-      DataBLL dataBLL = new DataBLL();
+        protected void LinkButtonGenerate_Click(object sender, EventArgs e)
+        {
+            //DataBLL dataBLL = new DataBLL();
 
-      dataBLL.InsertAnonymizedTableToDb();
+            //dataBLL.InsertAnonymizedTableToDb();
+            label1.Text = File.ReadAllText(Server.MapPath("~/Data-Hierarchy/sex_hierarchy.csv"));
+        }
     }
-  }
 }

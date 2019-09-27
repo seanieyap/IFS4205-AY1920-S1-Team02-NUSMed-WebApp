@@ -228,6 +228,12 @@
     <Content Include="Content\toastr.less" />
     <Content Include="Scripts\bootstrap-confirmation.js.map" />
     <Content Include="Scripts\bootstrap-confirmation.min.js.map" />
+    <Content Include="Data-Hierarchy\age_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\gender_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\marital_status_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\postal_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\record_date_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\sex_hierarchy.csv" />
     <None Include="NWebsecConfig\HttpHeaderSecurityModuleConfig.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -411,6 +417,7 @@
     <Compile Include="Classes\Entity\PatientDiagnosis.cs" />
     <Compile Include="Classes\Entity\Patient.cs" />
     <Compile Include="Classes\Entity\Record.cs" />
+    <Compile Include="Classes\Entity\RecordAnonymised.cs" />
     <Compile Include="Classes\Entity\RecordType.cs" />
     <Compile Include="Classes\Entity\Therapist.cs" />
     <Compile Include="Contact.aspx.cs">
