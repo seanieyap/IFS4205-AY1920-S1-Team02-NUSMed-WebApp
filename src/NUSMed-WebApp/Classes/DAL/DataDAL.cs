@@ -46,7 +46,10 @@ namespace NUSMed_WebApp.Classes.DAL
     {
       using (MySqlCommand cmd = new MySqlCommand())
       {
-        cmd.CommandText = "DELETE FROM records_anonymized;";
+        cmd.CommandText = @"SET SQL_SAFE_UPDATES = 0;
+                            DELETE FROM records_anonymized;
+                            SET SQL_SAFE_UPDATES = 1;";
+
         using (cmd.Connection = connection)
         {
           cmd.Connection.Open();

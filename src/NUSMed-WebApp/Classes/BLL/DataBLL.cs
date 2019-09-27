@@ -22,8 +22,8 @@ namespace NUSMed_WebApp.Classes.BLL
                 Tuple<DataTable, Dictionary<string, int>> anonDtAndGenLevel = anonymizer.anonymize(dt, 3, 0.05);
                 DataTable anonymizedDataTable = anonDtAndGenLevel.Item1;
                 Dictionary<string, int> genLevel = anonDtAndGenLevel.Item2;
-                dataDAL.InsertIntoAnonymizedTable(anonymizedDataTable);
                 dataDAL.ClearAnonymizedTable();
+                dataDAL.InsertIntoAnonymizedTable(anonymizedDataTable);
                 dataDAL.UpdateGeneralizationLevel(genLevel);
             }
         }
