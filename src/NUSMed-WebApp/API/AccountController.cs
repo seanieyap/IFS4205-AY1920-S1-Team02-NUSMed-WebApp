@@ -204,10 +204,77 @@ namespace NUSMed_WebApp.API
         public HttpResponseMessage SelectRole([FromBody]dynamic credentials)
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+            string newJwtRole = credentials.newJwtRole;
+            string deviceID = credentials.deviceID;
+            string jwt = credentials.jwt;
 
-            // Validate token
-            // Validate requested role exists for user
-            // Reissue token with new role
+            AccountBLL accountBLL = new AccountBLL();
+            JWTBLL jwtBll = new JWTBLL();
+
+            if (!string.IsNullOrEmpty(newJwtRole) && !string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                if (jwtBll.validateJWT(jwt))
+                {
+                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+
+                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
+                    {
+                        Account account = accountBLL.GetStatus(retrievedNRIC);
+
+                        if (account.status == 1)
+                        {
+                            if (newJwtRole.Equals("10") && account.patientStatus == 1)
+                            {
+                                string newJwt = jwtBll.getJWT(retrievedNRIC, newJwtRole);
+                                response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                                return response;
+                            }
+                            else if (newJwtRole.Equals("01") && account.therapistStatus == 1)
+                            {
+                                string newJwt = jwtBll.getJWT(retrievedNRIC, newJwtRole);
+                                response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                                return response;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return response;
+        }
+
+        // POST api/account/getallroles
+        [Route("getallroles")]
+        [HttpPost]
+        public HttpResponseMessage GetAllRoles([FromBody]dynamic credentials)
+        {
+            var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+            string deviceID = credentials.deviceID;
+            string jwt = credentials.jwt;
+
+            AccountBLL accountBLL = new AccountBLL();
+            JWTBLL jwtBll = new JWTBLL();
+
+            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                if (jwtBll.validateJWT(jwt))
+                {
+                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+
+                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
+                    {
+                        Account account = accountBLL.GetStatus(retrievedNRIC);
+
+                        if (account.status == 1)
+                        {
+                            string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
+                            string newJwt = jwtBll.getJWT(retrievedNRIC, role);
+                            response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                            return response;
+                        }
+                    }
+                }
+            }
 
             return response;
         }

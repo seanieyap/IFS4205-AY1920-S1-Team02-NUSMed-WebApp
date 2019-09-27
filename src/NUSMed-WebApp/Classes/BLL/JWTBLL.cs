@@ -26,7 +26,7 @@ namespace NUSMed_WebApp.Classes.BLL
             RSA rsa = RSA.Create();
             rsa.FromXmlString(RSAFullKey);
 
-            String[] jwtParts = jwt.Split('.');
+            string[] jwtParts = jwt.Split('.');
 
             byte[] claimsBytes = Convert.FromBase64String(jwtParts[0]);
             byte[] signedJwtBytes = Convert.FromBase64String(jwtParts[1]);
@@ -35,7 +35,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
             if (validSig)
             {
-                String claims = Encoding.UTF8.GetString(claimsBytes);
+                string claims = Encoding.UTF8.GetString(claimsBytes);
                 JWT jwtEntity = JsonConvert.DeserializeObject<JWT>(claims);
 
                 DateTime startTime = jwtEntity.creationTime;
@@ -57,10 +57,10 @@ namespace NUSMed_WebApp.Classes.BLL
 
         public string getNRIC(string jwt)
         {
-            String[] jwtParts = jwt.Split('.');
+            string[] jwtParts = jwt.Split('.');
 
             byte[] claimsBytes = Convert.FromBase64String(jwtParts[0]);
-            String claims = Encoding.UTF8.GetString(claimsBytes);
+            string claims = Encoding.UTF8.GetString(claimsBytes);
             JWT jwtEntity = JsonConvert.DeserializeObject<JWT>(claims);
 
             return jwtEntity.nric;
@@ -74,7 +74,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 Roles = role,
                 creationTime = DateTime.Now
             };
-            String jwtSerialized = JsonConvert.SerializeObject(jwtEntity);
+            string jwtSerialized = JsonConvert.SerializeObject(jwtEntity);
 
             RSA rsa = RSA.Create();
             rsa.FromXmlString(RSAFullKey);
@@ -82,19 +82,19 @@ namespace NUSMed_WebApp.Classes.BLL
             byte[] jwtBytes = Encoding.UTF8.GetBytes(jwtSerialized);
             byte[] signedJwtBytes = rsa.SignData(jwtBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
-            String claims = Convert.ToBase64String(jwtBytes);
-            String signature = Convert.ToBase64String(signedJwtBytes);
+            string claims = Convert.ToBase64String(jwtBytes);
+            string signature = Convert.ToBase64String(signedJwtBytes);
 
-            String jwt = claims + "." + signature;
+            string jwt = claims + "." + signature;
             return jwt;
         }
 
         public string updateJWT(string jwt)
         {
-            String[] jwtParts = jwt.Split('.');
+            string[] jwtParts = jwt.Split('.');
 
             byte[] claimsBytes = Convert.FromBase64String(jwtParts[0]);
-            String claims = Encoding.UTF8.GetString(claimsBytes);
+            string claims = Encoding.UTF8.GetString(claimsBytes);
             JWT jwtEntity = JsonConvert.DeserializeObject<JWT>(claims);
 
             DateTime startTime = jwtEntity.creationTime;
@@ -105,7 +105,7 @@ namespace NUSMed_WebApp.Classes.BLL
             {
                 jwtEntity.creationTime = DateTime.Now;
 
-                String jwtSerialized = JsonConvert.SerializeObject(jwtEntity);
+                string jwtSerialized = JsonConvert.SerializeObject(jwtEntity);
 
                 RSA rsa = RSA.Create();
                 rsa.FromXmlString(RSAFullKey);
@@ -114,7 +114,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 byte[] signedJwtBytes = rsa.SignData(jwtBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
                 claims = Convert.ToBase64String(jwtBytes);
-                String signature = Convert.ToBase64String(signedJwtBytes);
+                string signature = Convert.ToBase64String(signedJwtBytes);
 
                 jwt = claims + "." + signature;
             }
