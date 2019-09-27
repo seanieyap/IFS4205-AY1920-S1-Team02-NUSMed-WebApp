@@ -100,7 +100,16 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             {
                 try
                 {
-                    Update_UpdatePanelRecords(nric);
+                    //Update_UpdatePanelRecords(nric);
+                    List<Record> records = new RecordBLL().GetRecords(nric);
+                    LabelRecordsNRIC.Text = nric;
+                    modalRecordsHyperlinkNewRecord.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + nric;
+
+                    ViewState["GridViewRecords"] = records;
+                    GridViewRecords.DataSource = records;
+                    GridViewRecords.DataBind();
+                    UpdatePanelRecords.Update();
+
 
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Records Modal", "$('#modalRecords').modal('show');", true);
                 }
@@ -123,13 +132,13 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                //Int16 permissionApproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionApproved"));
                 DateTime? approvedTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "approvedTime");
                 Int16 permissionUnapproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionUnapproved"));
                 Label LabelName = (Label)e.Row.FindControl("LabelName");
                 Label LabelNameStatus = (Label)e.Row.FindControl("LabelNameStatus");
                 LinkButton LinkButtonViewInformation = (LinkButton)e.Row.FindControl("LinkButtonViewInformation");
                 LinkButton LinkButtonViewRecords = (LinkButton)e.Row.FindControl("LinkButtonViewRecords");
+                HyperLink LinkButtonNewRecords = (HyperLink)e.Row.FindControl("LinkButtonNewRecords");
                 Label LabelPermissionStatus = (Label)e.Row.FindControl("LabelPermissionStatus");
 
                 // todo testing
@@ -141,19 +150,20 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     LinkButtonViewInformation.Enabled = false;
                     LinkButtonViewRecords.CssClass = "btn btn-secondary btn-sm disabled";
                     LinkButtonViewRecords.Enabled = false;
-                    LabelPermissionStatus.Attributes.Add("title", "Permissions Approved on " + Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "approvedTime")));
-                    LabelPermissionStatus.CssClass = "text-success";
+                    LinkButtonNewRecords.CssClass = "btn btn-secondary btn-sm disabled";
+                    LinkButtonNewRecords.Enabled = false;
                 }
                 else
                 {
                     LabelName.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "lastName")) + " " + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "firstName"));
-                    LabelNameStatus.Visible = false;
                     LinkButtonViewInformation.CssClass = "btn btn-success btn-sm";
                     LinkButtonViewInformation.CommandName = "ViewInformation";
                     LinkButtonViewInformation.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
                     LinkButtonViewRecords.CssClass = "btn btn-success btn-sm";
                     LinkButtonViewRecords.CommandName = "ViewRecords";
                     LinkButtonViewRecords.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
+                    LinkButtonNewRecords.CssClass = "btn btn-info btn-sm";
+                    LinkButtonNewRecords.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "nric"));
                 }
 
                 if (permissionUnapproved > 0)
@@ -165,6 +175,13 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 {
                     LabelPermissionStatus.Attributes.Add("title", "Not Pending Approval for Permissions");
                     LabelPermissionStatus.CssClass = "text-info";
+                }
+
+                bool isEmergency = Convert.ToBoolean(DataBinder.Eval(e.Row.DataItem, "isEmergency"));
+                if (isEmergency)
+                {
+                    LabelPermissionStatus.Attributes.Add("title", "You have been Granted Permissions to this patient via the Emergency system.");
+                    LabelPermissionStatus.CssClass = "text-danger";
                 }
             }
         }
@@ -261,23 +278,24 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         #endregion
 
         #region Record Functions
-        private void Update_UpdatePanelRecords(string nric)
-        {
-            List<Record> records = new RecordBLL().GetRecords(nric);
-            LabelRecordsNRIC.Text = nric;
+        //private void Update_UpdatePanelRecords(string nric)
+        //{
+        //    List<Record> records = new RecordBLL().GetRecords(nric);
+        //    LabelRecordsNRIC.Text = nric;
+        //    modalRecordsHyperlinkNewRecord.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + nric;
 
-            ViewState["GridViewRecords"] = records;
-            GridViewRecords.DataSource = records;
-            GridViewRecords.DataBind();
-            UpdatePanelRecords.Update();
-        }
+
+        //    ViewState["GridViewRecords"] = records;
+        //    GridViewRecords.DataSource = records;
+        //    GridViewRecords.DataBind();
+        //    UpdatePanelRecords.Update();
+        //}
         protected void GridViewRecords_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 bool permited = (bool)DataBinder.Eval(e.Row.DataItem, "permited");
 
-                // todo
                 if (permited)
                 {
                     RecordType recordType = (RecordType)DataBinder.Eval(e.Row.DataItem, "type");
@@ -381,12 +399,12 @@ namespace NUSMed_WebApp.Therapist.My_Patients
 
                     UpdatePanelFileView.Update();
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').modal('show');", true);
-            }
+                }
                 catch
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
+                }
             }
-        }
         }
         #endregion
     }

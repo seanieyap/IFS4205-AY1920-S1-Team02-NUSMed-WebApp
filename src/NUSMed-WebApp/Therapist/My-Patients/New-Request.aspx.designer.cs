@@ -49,15 +49,6 @@ namespace NUSMed_WebApp.Therapist.My_Patients {
         protected global::System.Web.UI.WebControls.GridView GridViewPatient;
         
         /// <summary>
-        /// UpdateProgressAccounts control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdateProgress UpdateProgressAccounts;
-        
-        /// <summary>
         /// UpdatePanelSelectPermissions control.
         /// </summary>
         /// <remarks>

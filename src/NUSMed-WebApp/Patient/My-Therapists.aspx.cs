@@ -69,34 +69,27 @@ namespace NUSMed_WebApp.Patient
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
+                DateTime? approvedTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "approvedTime");
                 Int16 permissionApproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionApproved"));
                 Int16 permissionUnapproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionUnapproved"));
-                //LinkButton LinkButtonViewRecords = (LinkButton)e.Row.FindControl("LinkButtonViewRecords");
                 Label LabelPermissionStatus = (Label)e.Row.FindControl("LabelPermissionStatus");
-
-                if (permissionApproved == 0)
-                {
-                    //LinkButtonViewRecords.CssClass = "btn btn-secondary btn-sm disabled";
-                    //LinkButtonViewRecords.Enabled = false;
-                    LabelPermissionStatus.Attributes.Add("title", "Permissions Approved on " + Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "approvedTime")));
-                    LabelPermissionStatus.CssClass = "text-success";
-                }
-                //else if (permissionApproved != 0)
-                //{
-                    //LinkButtonViewRecords.CssClass = "btn btn-success btn-sm";
-                    //LinkButtonViewRecords.CommandName = "ViewRecords";
-                    //LinkButtonViewRecords.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
-                //}
 
                 if (permissionUnapproved > 0)
                 {
                     LabelPermissionStatus.Attributes.Add("title", "Pending Approval requested on " + Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "requestTime")));
                     LabelPermissionStatus.CssClass = "text-warning";
                 }
-                else
+                else if (permissionUnapproved == 0)
                 {
                     LabelPermissionStatus.Attributes.Add("title", "Not Pending Approval for Permissions");
                     LabelPermissionStatus.CssClass = "text-info";
+                }
+
+                bool isEmergency = Convert.ToBoolean(DataBinder.Eval(e.Row.DataItem, "isEmergency"));
+                if (isEmergency)
+                {
+                    LabelPermissionStatus.Attributes.Add("title", "This therapist has permissions whom you did not approve.<br />To remove this warning, please approve his/her permissions.");
+                    LabelPermissionStatus.CssClass = "text-danger";
                 }
             }
         }

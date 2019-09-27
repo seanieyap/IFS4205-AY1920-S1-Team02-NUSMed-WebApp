@@ -59,7 +59,23 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         public string countryOfBirth { get; set; }
         public string nationality { get; set; }
-        public string maritalStatus { get; set; }
+        private string _maritalStatus;
+        public string maritalStatus
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_maritalStatus))
+                {
+                    return _maritalStatus;
+                }
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_maritalStatus.ToLower());
+            }
+            set
+            {
+                _maritalStatus = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+            }
+        }
+
         private string _sex;
         public string sex
         {

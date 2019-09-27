@@ -24,7 +24,6 @@ namespace NUSMed_WebApp.Classes.Entity
             }
         }
         public string Roles { get; set; } = null;
-        public DateTime expiredTime { get; set; }
-        public int authenticatedState { get; set; }
+        public DateTime creationTime { get; set; }
     }
 }

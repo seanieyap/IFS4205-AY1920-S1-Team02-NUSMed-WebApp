@@ -115,7 +115,7 @@ namespace NUSMed_WebApp.Classes.Entity
         }
 
         public string content { get; set; }
-        public bool isEmergency { get; set; }
+        public bool isEmergency { get; set; } = false;
         public RecordType type { get; set; }
         public short status { get; set; } = 0;
         public short? recordPermissionStatus { get; set; }

@@ -15,6 +15,7 @@ namespace NUSMed_WebApp.Classes.Entity
         public short permissionApproved { get; set; } = 0;
         public DateTime? approvedTime { get; set; }
         public DateTime PermissionCreateTime { get; set; }
+        public bool isEmergency { get; set; } = false;
 
         #region permission   
         public short? recordPermissionStatus { get; set; }

@@ -7,190 +7,217 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NUSMed_WebApp.Patient.My_Records {
+namespace NUSMed_WebApp.Therapist.My_Records {
     
     
-    public partial class View {
+    public partial class New_Record {
         
         /// <summary>
-        /// UpdatePanelRecords control.
+        /// LabelPatientNRIC control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanelRecords;
+        protected global::System.Web.UI.WebControls.Label LabelPatientNRIC;
         
         /// <summary>
-        /// GridViewRecords control.
+        /// UpdatePanelNewRecord control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridViewRecords;
+        protected global::System.Web.UI.UpdatePanel UpdatePanelNewRecord;
         
         /// <summary>
-        /// UpdatePanelFileView control.
+        /// RadioButtonTypeHeightMeasurement control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanelFileView;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeHeightMeasurement;
         
         /// <summary>
-        /// labelRecordName control.
+        /// RadioButtonTypeWeightMeasurement control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelRecordName;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeWeightMeasurement;
         
         /// <summary>
-        /// modalFileViewImage control.
+        /// RadioButtonTypeTemperatureReading control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image modalFileViewImage;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeTemperatureReading;
         
         /// <summary>
-        /// modalFileViewVideo control.
+        /// RadioButtonTypeBloodPressureReading control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlVideo modalFileViewVideo;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeBloodPressureReading;
         
         /// <summary>
-        /// so control.
+        /// RadioButtonTypeECGReading control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSource so;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeECGReading;
         
         /// <summary>
-        /// modalFileViewLabelText control.
+        /// RadioButtonTypeMRI control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label modalFileViewLabelText;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeMRI;
         
         /// <summary>
-        /// FileDownloadLinkviaModal control.
+        /// RadioButtonTypeXRay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor FileDownloadLinkviaModal;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeXRay;
         
         /// <summary>
-        /// modalFileViewLabelFileName control.
+        /// RadioButtonTypeGait control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label modalFileViewLabelFileName;
+        protected global::System.Web.UI.WebControls.RadioButton RadioButtonTypeGait;
         
         /// <summary>
-        /// modalFileViewLabelFileSize control.
+        /// PanelContent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label modalFileViewLabelFileSize;
+        protected global::System.Web.UI.WebControls.Panel PanelContent;
         
         /// <summary>
-        /// UpdatePanelFineGrain control.
+        /// LabelContent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanelFineGrain;
+        protected global::System.Web.UI.WebControls.Label LabelContent;
         
         /// <summary>
-        /// modalLabelFineGrainRecordTitle control.
+        /// LabelContentHelper control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label modalLabelFineGrainRecordTitle;
+        protected global::System.Web.UI.WebControls.Label LabelContentHelper;
         
         /// <summary>
-        /// LinkButtonStatusDisable control.
+        /// inputContent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButtonStatusDisable;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputContent;
         
         /// <summary>
-        /// LinkButtonStatusEnable control.
+        /// PanelFile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButtonStatusEnable;
+        protected global::System.Web.UI.WebControls.Panel PanelFile;
         
         /// <summary>
-        /// TextboxSearchFineGrainAllow control.
+        /// LabelFile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextboxSearchFineGrainAllow;
+        protected global::System.Web.UI.WebControls.Label LabelFile;
         
         /// <summary>
-        /// LinkButtonFineGrainAllow control.
+        /// LabelFileHelper control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButtonFineGrainAllow;
+        protected global::System.Web.UI.WebControls.Label LabelFileHelper;
         
         /// <summary>
-        /// GridViewFineGrain control.
+        /// inputFile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridViewFineGrain;
+        protected global::System.Web.UI.WebControls.FileUpload inputFile;
         
         /// <summary>
-        /// UpdatePanel1 control.
+        /// LabelFileError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.WebControls.Label LabelFileError;
         
         /// <summary>
-        /// modalLabelDiagnosisTitle control.
+        /// inputTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label modalLabelDiagnosisTitle;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputTitle;
+        
+        /// <summary>
+        /// inputDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputDescription;
+        
+        /// <summary>
+        /// buttonSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonSubmit;
+        
+        /// <summary>
+        /// spanMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanMessage;
         
         /// <summary>
         /// Master property.

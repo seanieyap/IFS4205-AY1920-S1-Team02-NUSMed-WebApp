@@ -639,7 +639,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.CommandText = @"SELECT EXISTS 
                     (SELECT nric FROM account 
                     WHERE nric = @nric AND associated_device_id = @deviceID)
-                    as result;";
+                    as status;";
 
                 cmd.Parameters.AddWithValue("@nric", nric);
                 cmd.Parameters.AddWithValue("@deviceID", deviceID);

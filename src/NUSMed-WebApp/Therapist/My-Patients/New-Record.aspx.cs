@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace NUSMed_WebApp.Patient.My_Records
+namespace NUSMed_WebApp.Therapist.My_Records
 {
     public partial class New_Record : Page
     {
@@ -16,8 +16,27 @@ namespace NUSMed_WebApp.Patient.My_Records
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            #region Page Validation
+            if (HttpContext.Current.Request.QueryString["Patient-NRIC"] == null)
+            {
+                Server.TransferRequest("~/Errors/401.aspx");
+                return;
+            }
+
+            // todo check if patient is in rtp table
+            Classes.Entity.Patient patient = new TherapistBLL().GetPatientPermissions(Convert.ToString(HttpContext.Current.Request.QueryString["Patient-NRIC"]));
+
+            if (!AccountBLL.IsNRICValid(patient.nric) || patient.permissionApproved == 0)
+            {
+                Server.TransferRequest("~/Errors/401.aspx");
+                return;
+            }
+            #endregion
+
             Master.LiActivePatientMyRecords();
             Master.LiActivePatientMyRecordNew();
+            LabelPatientNRIC.Text = patient.nric + ", " + patient.lastName + " "+ patient.firstName;
+
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
 
             // Show success modal 
@@ -51,14 +70,33 @@ namespace NUSMed_WebApp.Patient.My_Records
 
             if (!IsPostBack)
             {
-                ResetPanel();
+                ResetPanel(patient);
             }
         }
 
+
         protected void buttonSubmit_ServerClick(object sender, EventArgs e)
         {
+            #region Page Validation
+            if (HttpContext.Current.Request.QueryString["Patient-NRIC"] == null)
+            {
+                Server.TransferRequest("~/Errors/401.aspx");
+                return;
+            }
+
+            // todo check if patient is in rtp table
+            Classes.Entity.Patient patient = new TherapistBLL().GetPatientPermissions(Convert.ToString(HttpContext.Current.Request.QueryString["Patient-NRIC"]));
+
+            if (!AccountBLL.IsNRICValid(patient.nric) || patient.permissionApproved == 0)
+            {
+                Server.TransferRequest("~/Errors/401.aspx");
+                return;
+            }
+            #endregion
+
             Record record = new Record();
-            record.patientNRIC = AccountBLL.GetNRIC();
+            record.creatorNRIC = AccountBLL.GetNRIC();
+            record.patientNRIC = patient.nric;
             record.title = inputTitle.Value.Trim();
             record.description = inputDescription.Value.Trim();
             record.content = string.Empty;
@@ -66,6 +104,7 @@ namespace NUSMed_WebApp.Patient.My_Records
 
             #region Validation
             bool[] validate = Enumerable.Repeat(true, 3).ToArray();
+
 
             // If any fields are empty
             if (record.IsTitleValid())
@@ -152,10 +191,10 @@ namespace NUSMed_WebApp.Patient.My_Records
                     Session["NewRecordSuccess"] = "success";
                 }
                 catch
-            {
-                Session["NewRecordSuccess"] = "error";
-            }
-            Response.Redirect(Request.RawUrl);
+                {
+                    Session["NewRecordSuccess"] = "error";
+                }
+                Response.Redirect(Request.RawUrl);
             }
         }
 
@@ -233,16 +272,73 @@ namespace NUSMed_WebApp.Patient.My_Records
             UpdatePanelNewRecord.Update();
         }
 
-        private void ResetPanel()
+        private void ResetPanel(Classes.Entity.Patient patient)
         {
-            RadioButtonTypeHeightMeasurement.Checked = true;
-            RadioButtonTypeWeightMeasurement.Checked = false;
-            RadioButtonTypeTemperatureReading.Checked = false;
-            RadioButtonTypeBloodPressureReading.Checked = false;
-            RadioButtonTypeECGReading.Checked = false;
-            RadioButtonTypeMRI.Checked = false;
-            RadioButtonTypeXRay.Checked = false;
-            RadioButtonTypeGait.Checked = false;
+            if (patient.hasHeightMeasurementPermissionsApproved)
+            {
+                RadioButtonTypeHeightMeasurement.Enabled = true;
+            }
+            if (patient.hasWeightMeasurementPermissionsApproved)
+            {
+                RadioButtonTypeWeightMeasurement.Enabled = true;
+            }
+            if (patient.hasTemperatureReadingPermissionsApproved)
+            {
+                RadioButtonTypeTemperatureReading.Enabled = true;
+            }
+            if (patient.hasBloodPressureReadingPermissionsApproved)
+            {
+                RadioButtonTypeBloodPressureReading.Enabled = true;
+            }
+            if (patient.hasECGReadingPermissionsApproved)
+            {
+                RadioButtonTypeECGReading.Enabled = true;
+            }
+            if (patient.hasMRIPermissionsApproved)
+            {
+                RadioButtonTypeMRI.Enabled = true;
+            }
+            if (patient.hasXRayPermissionsApproved)
+            {
+                RadioButtonTypeXRay.Enabled = true;
+            }
+            if (patient.hasGaitPermissionsApproved)
+            {
+                RadioButtonTypeGait.Enabled = true;
+            }
+
+            if (patient.hasHeightMeasurementPermissionsApproved)
+            {
+                RadioButtonTypeHeightMeasurement.Checked = true;
+            }
+            else if (patient.hasWeightMeasurementPermissionsApproved)
+            {
+                RadioButtonTypeWeightMeasurement.Checked = true;
+            }
+            else if (patient.hasTemperatureReadingPermissionsApproved)
+            {
+                RadioButtonTypeTemperatureReading.Checked = true;
+            }
+            else if (patient.hasBloodPressureReadingPermissionsApproved)
+            {
+                RadioButtonTypeBloodPressureReading.Checked = true;
+            }
+            else if (patient.hasECGReadingPermissionsApproved)
+            {
+                RadioButtonTypeECGReading.Checked = true;
+            }
+            else if (patient.hasMRIPermissionsApproved)
+            {
+                RadioButtonTypeMRI.Checked = true;
+            }
+            else if (patient.hasXRayPermissionsApproved)
+            {
+                RadioButtonTypeXRay.Checked = true;
+            }
+            else if (patient.hasGaitPermissionsApproved)
+            {
+                RadioButtonTypeGait.Checked = true;
+            }
 
             ScriptManager.RegisterStartupScript(this, GetType(), "Reset Panels", "document.forms[0].reset();", true);
         }

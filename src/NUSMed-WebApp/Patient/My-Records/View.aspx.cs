@@ -50,6 +50,11 @@ namespace NUSMed_WebApp.Patient.My_Records
                 LinkButton LinkButtonViewFineGrain = (LinkButton)e.Row.FindControl("LinkButtonViewFineGrain");
                 LinkButtonViewFineGrain.CommandName = "FineGrainView";
                 LinkButtonViewFineGrain.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
+                
+                LinkButton LinkbuttonDiagnosisView = (LinkButton)e.Row.FindControl("LinkbuttonDiagnosisView");
+                LinkbuttonDiagnosisView.CommandName = "DiagnosisView";
+                LinkbuttonDiagnosisView.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
+
 
                 if (recordType.isContent)
                 {
@@ -67,12 +72,21 @@ namespace NUSMed_WebApp.Patient.My_Records
                     LinkbuttonFileView.CommandName = "FileView";
                     LinkbuttonFileView.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
                     LinkbuttonFileView.Visible = true;
-                    LinkbuttonFileView.Text = "<i class=\"fas fa-fw fa-eye\"></i></i><span class=\"d-none d-lg-inline-block\">View "
+                    LinkbuttonFileView.Text = "<i class=\"fas fa-fw fa-eye\"></i><span class=\"d-none d-lg-inline-block\">View "
                         + DataBinder.Eval(e.Row.DataItem, "fileType") +
                         "</span>";
 
                     FileDownloadLink.HRef = "~/Patient/Download.ashx?record=" + DataBinder.Eval(e.Row.DataItem, "id").ToString();
                     FileDownloadLink.Visible = true;
+                }
+
+                // emergency
+                bool isEmergency = Convert.ToBoolean(DataBinder.Eval(e.Row.DataItem, "isEmergency"));
+                if (isEmergency)
+                {
+                    Label LabelIsEmergency = (Label)e.Row.FindControl("LabelIsEmergency");
+                    LabelIsEmergency.Visible = true;
+                    LabelIsEmergency.Attributes.Add("title", "This Record was added by a therapist whom you did not approve permissions.");
                 }
             }
         }
@@ -142,6 +156,22 @@ namespace NUSMed_WebApp.Patient.My_Records
                     ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View Fine Grain Permissions Modal", "toastr['error']('Error Opening Fine Grain Permissions Modal.');", true);
                 }
             }
+            else if (e.CommandName.Equals("DiagnosisView"))
+            {
+                try
+                {
+                    int id = Convert.ToInt32(e.CommandArgument);
+
+                    ViewState["GridViewRecordsSelected"] = id;
+                    Update_DiagnosisModal();
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View Diagnosis Modal", "$('#modalDiagnosisView').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View Diagnosis Modal", "toastr['error']('Error Opening View Diagnosis Modal.');", true);
+                }
+            }
         }
 
         #region FineGrainModal
@@ -170,6 +200,32 @@ namespace NUSMed_WebApp.Patient.My_Records
             ViewState["UpdatePanelFineGrain"] = therapistCurrent;
 
             UpdatePanelFineGrain.Update();
+        }
+        protected void Update_DiagnosisModal()
+        {
+            //int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
+            //Record record = recordBLL.GetRecord(recordID);
+            //modalLabelFineGrainRecordTitle.Text = record.title;
+
+            //if (record.status == 0)
+            //{
+            //    LinkButtonStatusDisable.CssClass = ("btn disabled");
+            //    LinkButtonStatusEnable.CssClass = ("btn btn-success");
+            //}
+            //else if (record.status == 1)
+            //{
+            //    LinkButtonStatusDisable.CssClass = ("btn btn-danger");
+            //    LinkButtonStatusEnable.CssClass = ("btn disabled");
+            //}
+
+            //string termAllowed = TextboxSearchFineGrainAllow.Text.Trim().ToLower();
+            //List<Classes.Entity.Therapist> therapistCurrent = patientBLL.GetCurrentTherapistsFineGrain(termAllowed, recordID);
+            //GridViewFineGrain.DataSource = therapistCurrent;
+            //GridViewFineGrain.DataBind();
+
+            //ViewState["UpdatePanelFineGrain"] = therapistCurrent;
+
+            //UpdatePanelFineGrain.Update();
         }
         protected void GridViewFineGrain_RowDataBound(object sender, GridViewRowEventArgs e)
         {
