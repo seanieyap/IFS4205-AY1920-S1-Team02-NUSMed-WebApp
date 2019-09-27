@@ -33,6 +33,15 @@
                     </div>
                 </div>
             </div>
+            <div class="col-12 col-md-6">
+                <div class="card border-0">
+                    <div class="card-body text-center text-md-left">
+                        <h5 class="card-title"><i class="fas fa-fw fa-table"></i>Manage Researcher Data</h5>
+                        <p class="card-text">Re-Generate Anonymised Data meant for researcher usage.</p>
+                        <a href="~/Admin/Researcher-Data" class="btn btn-nus-orange mb-2" runat="server">Researcher Data <i class="fa fa-angle-double-right"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -220,6 +220,24 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return false;
         }
+        public static bool HasMultipleRole()
+        {
+            if (IsAuthenticated())
+            {
+                Account account = new AccountDAL().RetrieveAccountRoles(GetNRIC());
+
+                if (account.roles.Count == 1)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public Account GetAccount(string nric)
         {

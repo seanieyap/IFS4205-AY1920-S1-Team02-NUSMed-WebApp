@@ -163,7 +163,7 @@
     <Content Include="Patient\My-Records\New-Record.aspx" />
     <Content Include="Patient\My-Records\View.aspx" />
     <Content Include="Patient\My-Therapists.aspx" />
-    <Content Include="Researcher\Aggregated-Search.aspx" />
+    <Content Include="Aggregated-Search.aspx" />
     <Content Include="Researcher\Dashboard.aspx" />
     <Content Include="Researcher\Record-Search.aspx" />
     <Content Include="Role-Selection.aspx" />
@@ -512,11 +512,11 @@
       <DependentUpon>My-Therapists.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Researcher\Aggregated-Search.aspx.cs">
+    <Compile Include="Aggregated-Search.aspx.cs">
       <DependentUpon>Aggregated-Search.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Researcher\Aggregated-Search.aspx.designer.cs">
+    <Compile Include="Aggregated-Search.aspx.designer.cs">
       <DependentUpon>Aggregated-Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="Researcher\Dashboard.aspx.cs">

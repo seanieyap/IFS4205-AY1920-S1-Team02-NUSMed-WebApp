@@ -14,7 +14,7 @@ namespace NUSMed_WebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Master.LiActiveAbout();
         }
 
         protected void Unnamed_Click(object sender, EventArgs e)

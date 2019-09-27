@@ -627,6 +627,52 @@ namespace NUSMed_WebApp.Classes.DAL
             return result;
         }
 
+
+        /// <summary>
+        /// Retrieve Account Roles
+        /// </summary>
+        public Account RetrieveAccountRoles(string nric)
+        {
+            Account result = new Account();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT 
+                    ap.status as patient_status, at.status as therapist_status, 
+                    ar.status as researcher_status, aa.status as admin_status
+                    FROM account a 
+                    INNER JOIN account_patient ap ON a.nric = ap.nric
+                    INNER JOIN account_therapist at ON a.nric = at.nric
+                    INNER JOIN account_researcher ar ON a.nric = ar.nric
+                    INNER JOIN account_admin aa ON a.nric = aa.nric
+                    WHERE a.nric = @nric;";
+
+                cmd.Parameters.AddWithValue("@nric", nric);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = new Account
+                            {
+                                patientStatus = Convert.ToInt32(reader["patient_status"]),
+                                therapistStatus = Convert.ToInt32(reader["therapist_status"]),
+                                researcherStatus = Convert.ToInt32(reader["researcher_status"]),
+                                adminStatus = Convert.ToInt32(reader["admin_status"]),
+                            };
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Check if nric and deviceID are associated with one another
         /// </summary>

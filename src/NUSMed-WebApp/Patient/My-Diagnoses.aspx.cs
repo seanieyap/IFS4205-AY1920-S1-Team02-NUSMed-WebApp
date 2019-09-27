@@ -23,7 +23,7 @@ namespace NUSMed_WebApp.Patient
             }
         }
 
-        #region GridViewPatient Functions
+        #region GridViewDiagnosis Functions
         protected void Bind_GridViewPatientDiagnoses()
         {
             List<PatientDiagnosis> patientDiagnosis = diagnosisBLL.GetDiagnosis();

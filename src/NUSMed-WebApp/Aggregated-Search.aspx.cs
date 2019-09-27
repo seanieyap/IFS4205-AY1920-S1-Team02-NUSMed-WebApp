@@ -12,7 +12,7 @@ namespace NUSMed_WebApp.Researcher
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Master.LiActiveResearcherAggregatedSearch();
+            Master.LiActiveAggregatedSearch();
         }
     }
 }

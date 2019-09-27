@@ -29,5 +29,17 @@ namespace NUSMed_WebApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton LinkButtonGenerate;
+        
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new NUSMed_WebApp.SiteMaster Master {
+            get {
+                return ((NUSMed_WebApp.SiteMaster)(base.Master));
+            }
+        }
     }
 }

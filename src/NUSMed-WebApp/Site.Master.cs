@@ -27,31 +27,38 @@ namespace NUSMed_WebApp
                     navLinksAccountProfile.Visible = false;
                     navLinksAccountChangePassword.Visible = false;
                 }
-                else if (AccountBLL.IsPatient())
+                else
                 {
-                    navLinksPatientDashboard.Visible = true;
-                    navLinksPatientMyDiagnoses.Visible = true;
-                    navLinksPatientTherapist.Visible = true;
-                    navLinksPatientsMyRecords.Visible = true;
-                }
-                else if (AccountBLL.IsTherapist())
-                {
-                    navLinksTherapistDashboard.Visible = true;
-                    navLinksTherapistMyPatients.Visible = true;
-                    navLinksTherapistMyMedicalNotes.Visible = true;
-                }
-                else if (AccountBLL.IsResearcher())
-                {
-                    navLinksResearcherDashboard.Visible = true;
-                    navLinksResearcherAggregatedSearch.Visible = true;
-                    navLinksResearcherRecordSearch.Visible = true;
-                }
-                else if (AccountBLL.IsAdministrator())
-                {
-                    navLinksAdminDashboard.Visible = true;
-                    navLinksAdminManageAccounts.Visible = true;
-                    navLinksAdminResearcherData.Visible = true;
-                    navLinksAdminManageLogs.Visible = true;
+                    if (AccountBLL.IsPatient())
+                    {
+                        navLinksPatientDashboard.Visible = true;
+                        navLinksPatientMyDiagnoses.Visible = true;
+                        navLinksPatientTherapist.Visible = true;
+                        navLinksPatientsMyRecords.Visible = true;
+                    }
+                    else if (AccountBLL.IsTherapist())
+                    {
+                        navLinksTherapistDashboard.Visible = true;
+                        navLinksTherapistMyPatients.Visible = true;
+                        navLinksTherapistMyMedicalNotes.Visible = true;
+                    }
+                    else if (AccountBLL.IsResearcher())
+                    {
+                        navLinksResearcherDashboard.Visible = true;
+                        navLinksResearcherRecordSearch.Visible = true;
+                    }
+                    else if (AccountBLL.IsAdministrator())
+                    {
+                        navLinksAdminDashboard.Visible = true;
+                        navLinksAdminManageAccounts.Visible = true;
+                        navLinksAdminResearcherData.Visible = true;
+                        navLinksAdminManageLogs.Visible = true;
+                    }
+
+                    if (!AccountBLL.HasMultipleRole())
+                    {
+                        navLinksSwitchRole.Visible = false;
+                    }
                 }
 
                 navLinksAccount.Visible = true;
@@ -69,8 +76,8 @@ namespace NUSMed_WebApp
             else
             {
                 navLinksHome.Visible = true;
-                //navLinksData.Visible = true;
                 navLinksAbout.Visible = true;
+                navLinksAggregatedSearch.Visible = true;
             }
 
             // Toastr Notifications 
@@ -161,10 +168,6 @@ namespace NUSMed_WebApp
         {
             navLinksResearcherDashboard.Attributes.Add("class", "nav-link active");
         }
-        public void LiActiveResearcherAggregatedSearch()
-        {
-            navLinksResearcherDashboard.Attributes.Add("class", "nav-link active");
-        }
         public void LiActiveResearcherRecordSearch()
         {
             navLinksResearcherRecordSearch.Attributes.Add("class", "nav-link active");
@@ -203,6 +206,22 @@ namespace NUSMed_WebApp
         {
             navLinksAdminAccountRegistration.Attributes.Add("class", "dropdown-item active");
         }
+        #endregion
+        #region Unauthenticated
+        public void LiActiveHome()
+        {
+            navLinksHome.Attributes.Add("class", "nav-link active");
+        }
+        public void LiActiveAbout()
+        {
+            navLinksAbout.Attributes.Add("class", "nav-link active");
+        }
+
+        public void LiActiveAggregatedSearch()
+        {
+            navLinksAggregatedSearch.Attributes.Add("class", "nav-link active");
+        }
+
         #endregion
         #endregion
 

@@ -1,9 +1,7 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security;
 using System.Web;
 using System.Web.UI;
 using System.Web.Caching;
@@ -15,6 +13,8 @@ namespace NUSMed_WebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.LiActiveHome();
+
             AccountBLL accountBLL = new AccountBLL();
             if (AccountBLL.IsAuthenticated())
             {

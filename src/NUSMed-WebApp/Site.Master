@@ -46,10 +46,10 @@
             <div class="container px-0 align-items-end">
                 <div class="navbar-brand py-2 my-1 mx-auto mx-md-0">
                     <a href="http://www.nus.edu.sg" target="_blank">
-                        <img src="/Images/logo.png" alt="NUS" class="border-nus-blue pr-3" style="border-right: 1.5pt solid;">
+                        <img src="~/Images/logo.png" alt="NUS" class="border-nus-blue pr-3" style="border-right: 1.5pt solid;" runat="server">
                     </a>
-                    <a href="/">
-                        <img src="/Images/sublogo.png" alt="NUSMed - A NHC Paroddy" class="pl-1 pl-md-2">
+                    <a href="~/" runat="server">
+                        <img src="~/Images/sublogo.png" alt="NUSMed - A NHC Paroddy" class="pl-1 pl-md-2" runat="server">
                     </a>
                 </div>
             </div>
@@ -57,21 +57,21 @@
 
         <nav id="defaultNav" class="mainNav navbar navbar-expand-md navbar-light bg-nus-white shadow-sm py-0" runat="server">
             <div class="container px-0">
-                <a class="nus-orange d-md-none" href="/">NUSMed <span class="text-muted small">| A NHC Parady</span></a>
+                <a class="nus-orange d-md-none" href="~/" runat="server">NUSMed <span class="text-muted small">| A NHC Parady</span></a>
 
                 <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target=".mainNavLinks" aria-controls=".mainNavLinks" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <nav id="NavLinks" class="mainNavLinks collapse navbar-collapse" runat="server">
-                    <a id="navLinksHome" class="nav-link" href="/" runat="server" visible="false">Home</a>
-                    <%--                    <a id="navLinksData" class="nav-link" href="/data" runat="server" visible="false">Data</a>--%>
-                    <a id="navLinksAbout" class="nav-link" href="/about" runat="server" visible="false">About</a>
+                    <a id="navLinksHome" class="nav-link" href="~/" runat="server" visible="false"><i class="fas fa-fw fa-home"></i>Home</a>
+                    <a id="navLinksAbout" class="nav-link" href="~/about" runat="server" visible="false"><i class="fas fa-fw fa-question-circle"></i>About</a>
+                    <a id="navLinksAggregatedSearch" class="nav-link" href="~/Aggregated-Search" runat="server" visible="false"><i class="fab fa-fw fa-searchengin"></i>Aggregated Search</a>
 
                     <%-- Patient Links--%>
                     <a id="navLinksPatientDashboard" class="nav-link" href="~/Patient/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
                     <a id="navLinksPatientMyDiagnoses" class="nav-link" href="~/Patient/My-Diagnoses" runat="server" visible="false"><i class="fas fa-fw fa-poll-h"></i>My Diagnoses</a>
-                    <a id="navLinksPatientTherapist" class="nav-link" href="/Patient/My-Therapists" runat="server" visible="false"><i class="fas fa-fw fa-user-md"></i>My Therapists</a>
+                    <a id="navLinksPatientTherapist" class="nav-link" href="~/Patient/My-Therapists" runat="server" visible="false"><i class="fas fa-fw fa-user-md"></i>My Therapists</a>
                     <div id="navLinksPatientsMyRecords" class="nav-item dropdown" runat="server" visible="false">
                         <a id="navLinksPatientMyRecordsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
                             <i class="fas fa-fw fa-file-medical"></i>My Records<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
@@ -105,8 +105,7 @@
 
                     <%-- Researcher Links--%>
                     <a id="navLinksResearcherDashboard" class="nav-link" href="~/Researcher/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
-                    <a id="navLinksResearcherAggregatedSearch" class="nav-link" href="/Researcher/Aggregated-Search" runat="server" visible="false"><i class="fab fa-fw fa-searchengin"></i>Aggregated Search</a>
-                    <a id="navLinksResearcherRecordSearch" class="nav-link" href="/Researcher/Record-Search" runat="server" visible="false"><i class="fas fa-fw fa-search"></i>Record Search</a>
+                    <a id="navLinksResearcherRecordSearch" class="nav-link" href="~/Researcher/Record-Search" runat="server" visible="false"><i class="fas fa-fw fa-search"></i>Record Search</a>
 
                     <%-- Admin Links --%>
                     <a id="navLinksAdminDashboard" class="nav-link" href="~/Admin/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
