@@ -146,7 +146,8 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.CommandText = @"SELECT r.patient_nric, r.type, r.content, r.file_extension,
                     ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
                     FROM records_anonymized ra
-                    INNER JOIN record r ON r.id = ra.record_id;";
+                    INNER JOIN record r ON r.id = ra.record_id 
+                    LIMIT 100;";
 
                 using (cmd.Connection = connection)
                 {

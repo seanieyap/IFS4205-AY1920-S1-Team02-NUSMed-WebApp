@@ -27,9 +27,9 @@ namespace NUSMed_WebApp.Researcher
 
         protected void Bind_GridViewAnonRecords()
         {
-            DataTable anonymizedDt = dataBLL.getAnonymizedTableFromDb();
-            ViewState["GridViewAnonRecords"] = anonymizedDt;
-            GridViewAnonRecords.DataSource = anonymizedDt;
+            List<RecordAnonymised> recordAnonymised = dataBLL.getAnonymizedTableFromDb();
+            ViewState["GridViewAnonRecords"] = recordAnonymised;
+            GridViewAnonRecords.DataSource = recordAnonymised;
             GridViewAnonRecords.DataBind();
         }
 
