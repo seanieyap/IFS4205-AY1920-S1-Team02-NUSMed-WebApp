@@ -152,12 +152,14 @@
     <Content Include="Admin\Dashboard.aspx" />
     <Content Include="Admin\Manage-Logs\Account-Logs.aspx" />
     <Content Include="Admin\Manage-Logs\Record_Logs.aspx" />
+    <Content Include="Admin\Researcher-Data.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\loading.css" />
     <Content Include="Images\logo-white.png" />
     <Content Include="My-Account\Change-Password.aspx" />
     <Content Include="My-Account\My-Profile.aspx" />
     <Content Include="Patient\Dashboard.aspx" />
+    <Content Include="Patient\My-Diagnoses.aspx" />
     <Content Include="Patient\My-Records\New-Record.aspx" />
     <Content Include="Patient\My-Records\View.aspx" />
     <Content Include="Patient\My-Therapists.aspx" />
@@ -365,6 +367,13 @@
     <Compile Include="Admin\Manage-Logs\Record_Logs.aspx.designer.cs">
       <DependentUpon>Record_Logs.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Researcher-Data.aspx.cs">
+      <DependentUpon>Researcher-Data.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Researcher-Data.aspx.designer.cs">
+      <DependentUpon>Researcher-Data.aspx</DependentUpon>
+    </Compile>
     <Compile Include="API\AccountController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
@@ -378,6 +387,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\BLL\AccountBLL.cs" />
     <Compile Include="Classes\BLL\AccountLogBLL.cs" />
+    <Compile Include="Classes\BLL\DiagnosisBLL.cs" />
     <Compile Include="Classes\BLL\JWTBLL.cs" />
     <Compile Include="Classes\BLL\PatientBLL.cs" />
     <Compile Include="Classes\BLL\RecordBLL.cs" />
@@ -387,13 +397,16 @@
     <Compile Include="Classes\DAL\AccountDAL.cs" />
     <Compile Include="Classes\DAL\AccountLogDAL.cs" />
     <Compile Include="Classes\DAL\DAL.cs" />
+    <Compile Include="Classes\DAL\DiagnosisDAL.cs" />
     <Compile Include="Classes\DAL\LogDAL.cs" />
     <Compile Include="Classes\DAL\PatientDAL.cs" />
     <Compile Include="Classes\DAL\RecordDAL.cs" />
     <Compile Include="Classes\DAL\RecordLogDAL.cs" />
     <Compile Include="Classes\DAL\TherapistDAL.cs" />
     <Compile Include="Classes\Entity\Account.cs" />
+    <Compile Include="Classes\Entity\Diagnosis.cs" />
     <Compile Include="Classes\Entity\JWT.cs" />
+    <Compile Include="Classes\Entity\PatientDiagnosis.cs" />
     <Compile Include="Classes\Entity\Patient.cs" />
     <Compile Include="Classes\Entity\Record.cs" />
     <Compile Include="Classes\Entity\RecordType.cs" />
@@ -459,6 +472,13 @@
     </Compile>
     <Compile Include="Patient\Download.ashx.cs">
       <DependentUpon>Download.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Patient\My-Diagnoses.aspx.cs">
+      <DependentUpon>My-Diagnoses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Patient\My-Diagnoses.aspx.designer.cs">
+      <DependentUpon>My-Diagnoses.aspx</DependentUpon>
     </Compile>
     <Compile Include="Patient\My-Records\New-Record.aspx.cs">
       <DependentUpon>New-Record.aspx</DependentUpon>

@@ -20,29 +20,7 @@ namespace NUSMed_WebApp.Classes.BLL
         private readonly PatientDAL patientDAL = new PatientDAL();
 
         #region Requires Patient Account
-        //public List<Entity.Patient> GetUnrequestedPatients(string term)
-        //{
-        //    if (AccountBLL.IsPatient())
-        //    {
-        //        List<Entity.Patient> accountsAllPatients = patientDAL.RetrieveAllPatients(term);
-        //        List<Entity.Patient> accountsCurrentPatients = patientDAL.RetrieveCurrentPatientsDelimited(AccountBLL.GetNRIC());
-
-        //        // remove current user
-        //        accountsAllPatients.RemoveAll(x => x.nric == AccountBLL.GetNRIC());
-
-        //        foreach (Entity.Patient patients in accountsAllPatients)
-        //        {
-        //            if (!accountsCurrentPatients.Any(x => x.nric.Equals(patients.nric)))
-        //            {
-        //                patients.acceptNewRequest = true;
-        //            }
-        //        }
-
-        //        return accountsAllPatients;
-        //    }
-
-        //    return null;
-        //}
+        
         public List<Entity.Therapist> GetCurrentTherapists(string term)
         {
             if (AccountBLL.IsPatient())

@@ -50,6 +50,20 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
 
+                            <asp:TemplateField HeaderText="Diagnosis" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                <ItemTemplate>
+                                    <%--<asp:Label ID="LabelContent" runat="server" Visible="false"></asp:Label>--%>
+                                    <asp:LinkButton ID="LinkbuttonDiagnosisView" CssClass="btn btn-info btn-sm" runat="server">
+                                        <i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span>
+                                    </asp:LinkButton>
+
+                                    <%--                                    <a id="FileDownloadLink" class="btn btn-warning btn-sm" runat="server" visible="false">
+                                        <i class="fas fa-fw fa-cloud-download-alt"></i>
+                                    </a>
+                                    <asp:Label ID="LabelFileType" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>--%>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
                             <asp:TemplateField HeaderText="Data" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LabelContent" runat="server" Visible="false"></asp:Label>
@@ -246,6 +260,48 @@
                 </ContentTemplate>
             </asp:UpdatePanel>
             <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFineGrain" DisplayAfter="0" DynamicLayout="false">
+                <ProgressTemplate>
+                    <div class="loading">Loading</div>
+                </ProgressTemplate>
+            </asp:UpdateProgress>
+        </div>
+    </div>
+
+    <div id="modalDiagnosisView" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <asp:UpdatePanel ID="UpdatePanel1" class="modal-content" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-header">
+                        <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-eye"></i>
+                            View Diagnosis:
+                            <asp:Label ID="modalLabelDiagnosisTitle" runat="server"></asp:Label></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <%--                        <asp:Image ID="Image1" CssClass="img-fluid" runat="server" />
+                        <video id="Video1" style="width: 100%; height: auto;" controls runat="server">
+                            <source id="Source1" type="video/mp4" runat="server">
+                            Your browser does not support the video tag.
+                        </video>
+                        <asp:Label ID="Label2" runat="server" Visible="false"></asp:Label>--%>
+                    </div>
+                    <div class="modal-footer">
+                        <%--                        <a id="A1" class="btn btn-warning btn-sm" runat="server">
+                            <i class="fas fa-fw fa-cloud-download-alt"></i></i><span class="d-none d-lg-inline-block">Download</span>
+                        </a>
+                        <span class="text-info small" runat="server">
+                            <i class="fas fa-fw fa-info-circle"></i>File Name:
+                            <asp:Label ID="Label3" runat="server"></asp:Label>. File Size: 
+                            <asp:Label ID="Label4" runat="server"></asp:Label>
+                        </span>--%>
+
+                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFileView" DisplayAfter="0" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>

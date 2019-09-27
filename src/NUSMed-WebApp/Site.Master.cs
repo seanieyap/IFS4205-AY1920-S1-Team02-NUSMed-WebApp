@@ -30,6 +30,7 @@ namespace NUSMed_WebApp
                 else if (AccountBLL.IsPatient())
                 {
                     navLinksPatientDashboard.Visible = true;
+                    navLinksPatientMyDiagnoses.Visible = true;
                     navLinksPatientTherapist.Visible = true;
                     navLinksPatientsMyRecords.Visible = true;
                 }
@@ -49,6 +50,7 @@ namespace NUSMed_WebApp
                 {
                     navLinksAdminDashboard.Visible = true;
                     navLinksAdminManageAccounts.Visible = true;
+                    navLinksAdminResearcherData.Visible = true;
                     navLinksAdminManageLogs.Visible = true;
                 }
 
@@ -106,6 +108,10 @@ namespace NUSMed_WebApp
         public void LiActivePatientMyTherapists()
         {
             navLinksPatientTherapist.Attributes.Add("class", "nav-link active");
+        }
+        public void LiActivePatientMyDiagnoses()
+        {
+            navLinksPatientMyDiagnoses.Attributes.Add("class", "nav-link active");
         }
         public void LiActivePatientMyRecords()
         {
@@ -184,6 +190,10 @@ namespace NUSMed_WebApp
         public void LiActiveAdminManageAccounts()
         {
             navLinksAdminManageAccountsDropdown.Attributes.Add("class", "nav-link active");
+        }
+        public void LiActiveAdminResearcherData()
+        {
+            navLinksAdminResearcherData.Attributes.Add("class", "nav-link active");
         }
         public void LiActiveAdminViewAccounts()
         {
