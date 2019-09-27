@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
+using NUSMed_WebApp.Classes.Entity;
 
 namespace NUSMed_WebApp.Classes.DAL
 {
@@ -47,6 +48,7 @@ namespace NUSMed_WebApp.Classes.DAL
         // to change to record type
         using (MySqlCommand cmd = new MySqlCommand())
         {
+          cmd.CommandText = "INSERT INTO records_anonymized(marital_status, gender, sex, age, postal, record_create_date, record_id) VALUES (@maritalStatus, @gender, @sex, @age, @postal, @recordCreateDate, @recordId);";
           string marital_status = row["Marital Status"].ToString();
           string gender = row["Gender"].ToString();
           string sex = row["Sex"].ToString();
@@ -54,7 +56,6 @@ namespace NUSMed_WebApp.Classes.DAL
           string postal = row["Postal"].ToString();
           string createdDate = row["Created Date"].ToString();
           string recordId = row["Record ID"].ToString();
-          cmd.CommandText = "INSERT INTO records_anonymized(marital_status, gender, sex, age, postal, record_create_date, record_id) VALUES (@maritalStatus, @gender, @sex, @age, @postal, @recordCreateDate, @recordId);";
           cmd.Parameters.AddWithValue("@maritalStatus", marital_status);
           cmd.Parameters.AddWithValue("@gender", gender);
           cmd.Parameters.AddWithValue("@sex", sex);
@@ -141,8 +142,8 @@ namespace NUSMed_WebApp.Classes.DAL
       {
         cmd.CommandText = @"SELECT records_anonymized.record_id AS id, records_anonymized.marital_status AS marital_status, records_anonymized.gender AS gender, 
         records_anonymized.sex AS sex, records_anonymized.age AS age, records_anonymized.postal AS postal, records_anonymized.record_create_date AS record_creation_date,
-        record_diagnosis.diagnosis_code FROM records_anonymized INNER JOIN record_diagnosis ON records_anonymized.record_id = record_diagnosis.record_id INNER JOIN
-        record ON record.id = record_diagnosis.record_id;";
+        record_diagnosis.diagnosis_code AS diagnosis_code, record.type AS record_type, record.content FROM records_anonymized INNER JOIN record_diagnosis ON records_anonymized.record_id =
+        record_diagnosis.record_id INNER JOIN record ON record.id = record_diagnosis.record_id;";
 
         using (cmd.Connection = connection)
         {
@@ -159,5 +160,6 @@ namespace NUSMed_WebApp.Classes.DAL
 
       return result;
     }
+
   }
 }

@@ -80,6 +80,7 @@
     <Reference Include="NWebsec.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=3613da5f958908a1, processorArchitecture=MSIL">
       <HintPath>..\packages\NWebsec.Core.2.1.0\lib\net45\NWebsec.Core.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
@@ -143,10 +144,10 @@
     <Reference Include="Microsoft.AspNet.FriendlyUrls">
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
-    <Content Include="Admin\Data-Anonymiser.aspx" />
     <Content Include="Admin\Manage-Accounts\Manage-Researcher-Data.aspx" />
     <Content Include="Admin\Manage-Accounts\Register.aspx" />
     <Content Include="Admin\Manage-Accounts\View.aspx" />
@@ -329,13 +330,6 @@
     <Content Include="webfonts\fa-brands-400.eot" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Admin\Data-Anonymiser.aspx.cs">
-      <DependentUpon>Data-Anonymiser.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\Data-Anonymiser.aspx.designer.cs">
-      <DependentUpon>Data-Anonymiser.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\Manage-Accounts\Manage-Researcher-Data.aspx.cs">
       <DependentUpon>Manage-Researcher-Data.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -407,7 +401,6 @@
     <Compile Include="Classes\DAL\RecordDAL.cs" />
     <Compile Include="Classes\DAL\RecordLogDAL.cs" />
     <Compile Include="Classes\DAL\TherapistDAL.cs" />
-    <Compile Include="Classes\Entity\AnonRecord.cs" />
     <Compile Include="Classes\Entity\Account.cs" />
     <Compile Include="Classes\Entity\JWT.cs" />
     <Compile Include="Classes\Entity\Patient.cs" />

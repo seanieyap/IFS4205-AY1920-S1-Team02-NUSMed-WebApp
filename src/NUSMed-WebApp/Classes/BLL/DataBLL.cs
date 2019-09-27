@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using NUSMed_WebApp.Classes.DAL;
+using NUSMed_WebApp.Classes.Entity;
 
 namespace NUSMed_WebApp.Classes.BLL
 {
@@ -57,10 +58,7 @@ namespace NUSMed_WebApp.Classes.BLL
       }
 
 
-      /// <summary>
-      /// Anonymizes a data table and returns the anonymized data table and a dictionary of generalization level of every quasi-identifier
-      /// </summary>
-      public Tuple<DataTable, Dictionary<string, int>> anonymize(DataTable dt, int k, double suppressionThreshold)
+      public void InitializeAnonymizer()
       {
         for (int i = 0; i < quasiIdentifiers.Count; i++)
         {
@@ -77,6 +75,29 @@ namespace NUSMed_WebApp.Classes.BLL
           // Initialize the dictionary with a value of 0 for all quasi-identifiers
           generalizationLevel[quasiIdentifier] = 0;
         }
+      }
+
+      /// <summary>
+      /// Anonymizes a data table and returns the anonymized data table and a dictionary of generalization level of every quasi-identifier
+      /// </summary>
+      public Tuple<DataTable, Dictionary<string, int>> anonymize(DataTable dt, int k, double suppressionThreshold)
+      {
+        //for (int i = 0; i < quasiIdentifiers.Count; i++)
+        //{
+        //  // Fill up DGH with quasi-identifier and its respective tree
+        //  string quasiIdentifier = quasiIdentifiers[i];
+        //  string quasiIdentifierHierarchyFilePath = quasiIdentifiersFilePaths[i];
+        //  Tree quasiHierarchyTree = new Tree();
+        //  quasiHierarchyTree.BuildTree(quasiIdentifierHierarchyFilePath);
+        //  dgh[quasiIdentifier] = quasiHierarchyTree;
+
+        //  // Initialize the dictionary with an empty hashset
+        //  valuesInTableForEachQuasi[quasiIdentifier] = new HashSet<string>();
+
+        //  // Initialize the dictionary with a value of 0 for all quasi-identifiers
+        //  generalizationLevel[quasiIdentifier] = 0;
+        //}
+        InitializeAnonymizer();
 
         int numberOfRows = 0;
         foreach (DataRow row in dt.Rows)
@@ -333,7 +354,7 @@ namespace NUSMed_WebApp.Classes.BLL
       Tuple<DataTable, Dictionary<string, int>> anonDtAndGenLevel = anonymizer.anonymize(dt, 3, 0.05);
       DataTable anonymizedDataTable = anonDtAndGenLevel.Item1;
       Dictionary<string, int> genLevel = anonDtAndGenLevel.Item2;
-      //dataDAL.InsertIntoAnonymizedTable(anonymizedDataTable);
+      dataDAL.InsertIntoAnonymizedTable(anonymizedDataTable);
       dataDAL.UpdateGeneralizationLevel(genLevel);
     }
 
