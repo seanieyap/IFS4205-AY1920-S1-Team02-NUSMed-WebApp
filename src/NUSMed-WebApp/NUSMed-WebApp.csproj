@@ -80,6 +80,7 @@
     <Reference Include="NWebsec.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=3613da5f958908a1, processorArchitecture=MSIL">
       <HintPath>..\packages\NWebsec.Core.2.1.0\lib\net45\NWebsec.Core.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
@@ -143,6 +144,7 @@
     <Reference Include="Microsoft.AspNet.FriendlyUrls">
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
@@ -226,6 +228,12 @@
     <Content Include="Content\toastr.less" />
     <Content Include="Scripts\bootstrap-confirmation.js.map" />
     <Content Include="Scripts\bootstrap-confirmation.min.js.map" />
+    <Content Include="Data-Hierarchy\age_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\gender_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\marital_status_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\postal_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\record_date_hierarchy.csv" />
+    <Content Include="Data-Hierarchy\sex_hierarchy.csv" />
     <None Include="NWebsecConfig\HttpHeaderSecurityModuleConfig.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -377,6 +385,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\BLL\AccountBLL.cs" />
     <Compile Include="Classes\BLL\AccountLogBLL.cs" />
+    <Compile Include="Classes\BLL\DataBLL.cs" />
     <Compile Include="Classes\BLL\JWTBLL.cs" />
     <Compile Include="Classes\BLL\PatientBLL.cs" />
     <Compile Include="Classes\BLL\RecordBLL.cs" />
@@ -386,6 +395,7 @@
     <Compile Include="Classes\DAL\AccountDAL.cs" />
     <Compile Include="Classes\DAL\AccountLogDAL.cs" />
     <Compile Include="Classes\DAL\DAL.cs" />
+    <Compile Include="Classes\DAL\DataDAL.cs" />
     <Compile Include="Classes\DAL\LogDAL.cs" />
     <Compile Include="Classes\DAL\PatientDAL.cs" />
     <Compile Include="Classes\DAL\RecordDAL.cs" />
