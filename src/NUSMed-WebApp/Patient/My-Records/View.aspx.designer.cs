@@ -175,13 +175,13 @@ namespace NUSMed_WebApp.Patient.My_Records {
         protected global::System.Web.UI.WebControls.GridView GridViewFineGrain;
         
         /// <summary>
-        /// UpdatePanel1 control.
+        /// UpdatePanelRecordDiagnosis control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.UpdatePanel UpdatePanelRecordDiagnosis;
         
         /// <summary>
         /// modalLabelDiagnosisTitle control.
@@ -191,6 +191,15 @@ namespace NUSMed_WebApp.Patient.My_Records {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label modalLabelDiagnosisTitle;
+        
+        /// <summary>
+        /// GridViewRecordDiagnoses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewRecordDiagnoses;
         
         /// <summary>
         /// Master property.

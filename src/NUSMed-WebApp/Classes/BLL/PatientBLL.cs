@@ -66,6 +66,15 @@ namespace NUSMed_WebApp.Classes.BLL
                 patientDAL.UpdateRequestApprove(AccountBLL.GetNRIC(), therapistNRIC, permission);
             }
         }
+        public List<RecordDiagnosis> GetRecordDiagnosis(int recordID)
+        {
+            if (AccountBLL.IsPatient())
+            {
+                return patientDAL.RetrieveRecordDiagnosis(AccountBLL.GetNRIC(), recordID);
+            }
+
+            return null;
+        }
 
         #endregion
     }

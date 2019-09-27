@@ -418,6 +418,7 @@
     <Compile Include="Classes\Entity\Patient.cs" />
     <Compile Include="Classes\Entity\Record.cs" />
     <Compile Include="Classes\Entity\RecordAnonymised.cs" />
+    <Compile Include="Classes\Entity\RecordDiagnosis.cs" />
     <Compile Include="Classes\Entity\RecordType.cs" />
     <Compile Include="Classes\Entity\Therapist.cs" />
     <Compile Include="Contact.aspx.cs">

@@ -50,7 +50,7 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="Diagnosis" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                            <asp:TemplateField HeaderText="Attributed Diagnosis" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <%--<asp:Label ID="LabelContent" runat="server" Visible="false"></asp:Label>--%>
                                     <asp:LinkButton ID="LinkbuttonDiagnosisView" CssClass="btn btn-info btn-sm" runat="server">
@@ -269,7 +269,7 @@
 
     <div id="modalDiagnosisView" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <asp:UpdatePanel ID="UpdatePanel1" class="modal-content" runat="server" UpdateMode="Conditional">
+            <asp:UpdatePanel ID="UpdatePanelRecordDiagnosis" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
                         <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-eye"></i>
@@ -280,12 +280,45 @@
                         </button>
                     </div>
                     <div class="modal-body text-center">
-                        <%--                        <asp:Image ID="Image1" CssClass="img-fluid" runat="server" />
-                        <video id="Video1" style="width: 100%; height: auto;" controls runat="server">
-                            <source id="Source1" type="video/mp4" runat="server">
-                            Your browser does not support the video tag.
-                        </video>
-                        <asp:Label ID="Label2" runat="server" Visible="false"></asp:Label>--%>
+                        <asp:GridView ID="GridViewRecordDiagnoses" CssClass="table table-sm" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
+                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                            ItemType="NUSMed_WebApp.Classes.Entity.RecordDiagnosis" OnPageIndexChanging="GridViewRecordDiagnoses_PageIndexChanging"
+                            EmptyDataRowStyle-CssClass="empty-table" runat="server">
+                            <Columns>
+                                <asp:TemplateField HeaderText="Diagnosis Code">
+                                    <ItemTemplate>
+                                        <%# Item.diagnosis.code %>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Diagnosis Description">
+                                    <ItemTemplate>
+                                        <%# Item.diagnosis.descriptionShort %>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Diagnosis Category">
+                                    <ItemTemplate>
+                                        <%# Item.diagnosis.categoryTitle %>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Assigned By">
+                                    <ItemTemplate>
+                                        <%# Item.therapist.lastName + " " + Item.therapist.firstName %>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                            <EmptyDataTemplate>
+                                <div class="alert alert-info text-center py-4" role="alert">
+                                    <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>There are no Diagnosis attached to this Record.
+                                    </h4>
+                                    <p>Your therapists probably had not attributed any diagnoses to this Record.</p>
+                                    <hr>
+                                    <p class="mb-0">If this is a mistake, please contact the help-desk for assistance.</p>
+                                </div>
+                            </EmptyDataTemplate>
+                        </asp:GridView>
                     </div>
                     <div class="modal-footer">
                         <%--                        <a id="A1" class="btn btn-warning btn-sm" runat="server">
@@ -301,7 +334,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFileView" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecordDiagnosis" DisplayAfter="0" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>

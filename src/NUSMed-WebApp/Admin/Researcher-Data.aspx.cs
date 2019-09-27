@@ -24,11 +24,9 @@ namespace NUSMed_WebApp.Admin
                 dataBLL.InsertAnonymizedTableToDb();
                 ScriptManager.RegisterStartupScript(this, GetType(), "Anonymising Records Success", "toastr['success']('The database have been re-populated with Anonymised Records.');", true);
             }
-            catch (Exception ex)
+            catch
             {
-                tempLabel.Text = ex.ToString();
-
-                //ScriptManager.RegisterStartupScript(this, GetType(), "Anonymising Records Error", "toastr['error']('Error occured when Anonymising Records.');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "Anonymising Records Error", "toastr['error']('Error occured when Anonymising Records.');", true);
             }
         }
     }

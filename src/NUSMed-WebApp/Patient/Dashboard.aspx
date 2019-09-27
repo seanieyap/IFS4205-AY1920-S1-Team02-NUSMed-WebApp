@@ -26,7 +26,7 @@
             <div class="col-12 col-md-6">
                 <div class="card border-0">
                     <div class="card-body text-center text-md-left">
-                        <h5 class="card-title"><i class="fas fa-fw fa-database"></i>My Records</h5>
+                        <h5 class="card-title"><i class="fas fa-fw fa-file-medical"></i>My Records</h5>
                         <p class="card-text">Create and view your Medical Records. Viewing of Medical Records can be done via the "view" page and creation of new records can be done via the "New Records" page.</p>
                         <a href="~/Patient/My-Records/View" class="btn btn-nus-orange mb-2" runat="server">View <i class="fa fa-angle-double-right"></i></a>
                         <a href="~/Patient/My-Records/New-Record" class="btn btn-nus-orange mb-2" runat="server">New Record <i class="fa fa-angle-double-right"></i></a>

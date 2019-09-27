@@ -38,7 +38,7 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="Therapist">
+                            <asp:TemplateField HeaderText="Assigned By">
                                 <ItemTemplate>
                                     <%# Item.therapist.lastName + " " + Item.therapist.firstName %>
                                 </ItemTemplate>

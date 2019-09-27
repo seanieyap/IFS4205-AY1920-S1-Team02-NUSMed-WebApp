@@ -163,7 +163,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                     int id = Convert.ToInt32(e.CommandArgument);
 
                     ViewState["GridViewRecordsSelected"] = id;
-                    Update_DiagnosisModal();
+                    Update_DiagnosisModal(id);
 
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open View Diagnosis Modal", "$('#modalDiagnosisView').modal('show');", true);
                 }
@@ -201,32 +201,6 @@ namespace NUSMed_WebApp.Patient.My_Records
 
             UpdatePanelFineGrain.Update();
         }
-        protected void Update_DiagnosisModal()
-        {
-            //int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
-            //Record record = recordBLL.GetRecord(recordID);
-            //modalLabelFineGrainRecordTitle.Text = record.title;
-
-            //if (record.status == 0)
-            //{
-            //    LinkButtonStatusDisable.CssClass = ("btn disabled");
-            //    LinkButtonStatusEnable.CssClass = ("btn btn-success");
-            //}
-            //else if (record.status == 1)
-            //{
-            //    LinkButtonStatusDisable.CssClass = ("btn btn-danger");
-            //    LinkButtonStatusEnable.CssClass = ("btn disabled");
-            //}
-
-            //string termAllowed = TextboxSearchFineGrainAllow.Text.Trim().ToLower();
-            //List<Classes.Entity.Therapist> therapistCurrent = patientBLL.GetCurrentTherapistsFineGrain(termAllowed, recordID);
-            //GridViewFineGrain.DataSource = therapistCurrent;
-            //GridViewFineGrain.DataBind();
-
-            //ViewState["UpdatePanelFineGrain"] = therapistCurrent;
-
-            //UpdatePanelFineGrain.Update();
-        }
         protected void GridViewFineGrain_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -256,7 +230,6 @@ namespace NUSMed_WebApp.Patient.My_Records
                 }
             }
         }
-
         protected void GridViewFineGrain_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             string therapistNRIC = e.CommandArgument.ToString();
@@ -313,7 +286,6 @@ namespace NUSMed_WebApp.Patient.My_Records
             GridViewFineGrain.DataBind();
             UpdatePanelFineGrain.Update();
         }
-
         protected void LinkButtonFineGrainAllow_Click(object sender, EventArgs e)
         {
             string termAllowed = TextboxSearchFineGrainAllow.Text.Trim().ToLower();
@@ -323,7 +295,6 @@ namespace NUSMed_WebApp.Patient.My_Records
 
             UpdatePanelFineGrain.Update();
         }
-
         protected void LinkButtonStatusDisable_Click(object sender, EventArgs e)
         {
             int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
@@ -338,6 +309,24 @@ namespace NUSMed_WebApp.Patient.My_Records
 
             Update_FineGrainModal();
         }
+        #endregion
+
+        #region Diagnosis Modal
+        protected void Update_DiagnosisModal(int recordID)
+        {
+            List<RecordDiagnosis> recordDiagnosis = patientBLL.GetRecordDiagnosis(recordID);
+            ViewState["GridViewRecordDiagnoses"] = recordDiagnosis;
+            GridViewRecordDiagnoses.DataSource = recordDiagnosis;
+            GridViewRecordDiagnoses.DataBind();
+            UpdatePanelRecordDiagnosis.Update();
+        }
+        protected void GridViewRecordDiagnoses_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewRecordDiagnoses.PageIndex = e.NewPageIndex;
+            GridViewRecordDiagnoses.DataSource = ViewState["GridViewRecordDiagnoses"];
+            GridViewRecordDiagnoses.DataBind();
+        }
+
         #endregion
 
     }
