@@ -8,200 +8,201 @@ using NUSMed_WebApp.Classes.Entity;
 
 namespace NUSMed_WebApp.Classes.DAL
 {
-  public class DataDAL : DAL
-  {
-
-    public DataDAL() : base() { }
-
-    /// <summary>
-    /// Create a Data Table for storing the required data for anonymization
-    /// </summary>
-    public DataTable RetrieveColumns()
+    public class DataDAL : DAL
     {
-      DataTable result = new DataTable();
 
-      using (MySqlCommand cmd = new MySqlCommand())
-      {
-        cmd.CommandText = @"SELECT account.marital_status AS marital_status, account.gender AS gender, account.date_of_birth AS dob, 
+        public DataDAL() : base() { }
+
+        /// <summary>
+        /// Create a Data Table for storing the required data for anonymization
+        /// </summary>
+        public DataTable RetrieveColumns()
+        {
+            DataTable result = new DataTable();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT account.marital_status AS marital_status, account.gender AS gender, account.date_of_birth AS dob, 
         account.address_postal_code AS postal, account.sex AS sex, record.id AS record_id, record.create_time AS record_created_time
         FROM account RIGHT JOIN record ON account.nric = record.patient_nric WHERE EXISTS (SELECT 1 FROM account_patient WHERE account_patient.nric = account.nric);";
 
-        using (cmd.Connection = connection)
-        {
-          cmd.Connection.Open();
-          cmd.ExecuteNonQuery();
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
 
-          using (MySqlDataReader reader = cmd.ExecuteReader())
-          {
-            result.Load(reader);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        result.Load(reader);
 
-          }
+                    }
+                }
+            }
+
+            return result;
         }
-      }
 
-      return result;
-    }
-
-    public void ClearAnonymizedTable()
-    {
-      using (MySqlCommand cmd = new MySqlCommand())
-      {
-        cmd.CommandText = @"SET SQL_SAFE_UPDATES = 0;
+        public void ClearAnonymizedTable()
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SET SQL_SAFE_UPDATES = 0;
                             DELETE FROM records_anonymized;
                             SET SQL_SAFE_UPDATES = 1;";
 
-        using (cmd.Connection = connection)
-        {
-          cmd.Connection.Open();
-          cmd.ExecuteNonQuery();
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
-      }
-    }
 
-    public void InsertIntoAnonymizedTable(DataTable dt)
-    {
-      StringBuilder entireStringBuilder = new StringBuilder();
-      using (MySqlCommand cmd = new MySqlCommand())
-      {
-        // to change to record type
-        foreach (DataRow row in dt.Rows)
+        public void InsertIntoAnonymizedTable(DataTable dt)
         {
-          StringBuilder sb = new StringBuilder("INSERT INTO records_anonymized(marital_status, gender, sex, age, postal, record_create_date, record_id) VALUES (");
-          string formatString = "'{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6});";
-          string marital_status = row["Marital Status"].ToString();
-          string gender = row["Gender"].ToString();
-          string sex = row["Sex"].ToString();
-          string age = row["Age"].ToString();
-          string postal = row["Postal"].ToString();
-          string createdDate = row["Created Date"].ToString();
-          string recordId = row["Record ID"].ToString();
-          sb.AppendFormat(formatString, marital_status, gender, sex, age, postal, createdDate, recordId);
-          entireStringBuilder.Append(sb.ToString());
+            StringBuilder entireStringBuilder = new StringBuilder();
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                // to change to record type
+                foreach (DataRow row in dt.Rows)
+                {
+                    StringBuilder sb = new StringBuilder("INSERT INTO records_anonymized(marital_status, gender, sex, age, postal, record_create_date, record_id) VALUES (");
+                    string formatString = "'{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6});";
+                    string marital_status = row["Marital Status"].ToString();
+                    string gender = row["Gender"].ToString();
+                    string sex = row["Sex"].ToString();
+                    string age = row["Age"].ToString();
+                    string postal = row["Postal"].ToString();
+                    string createdDate = row["Created Date"].ToString();
+                    string recordId = row["Record ID"].ToString();
+                    sb.AppendFormat(formatString, marital_status, gender, sex, age, postal, createdDate, recordId);
+                    entireStringBuilder.Append(sb.ToString());
+                }
+                cmd.CommandText = entireStringBuilder.ToString();
+                using (cmd.Connection = connection)
+                {
+                    cmd.CommandTimeout = 180;
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
-        cmd.CommandText = entireStringBuilder.ToString();
-        using (cmd.Connection = connection)
-        {
-          cmd.Connection.Open();
-          cmd.ExecuteNonQuery();
-        }
-      }
-    }
 
-    /// <summary>
-    /// Update the generalization_table in db.
-    /// Pre-condition: A row should already exist in the table.
-    /// Post-condition: There should only be a row in the table.
-    /// </summary>
-    public void UpdateGeneralizationLevel(Dictionary<string, int> generlizationLevel)
-    {
-      using (MySqlCommand cmd = new MySqlCommand())
-      {
-        cmd.CommandText = @"UPDATE generalization_level 
+        /// <summary>
+        /// Update the generalization_table in db.
+        /// Pre-condition: A row should already exist in the table.
+        /// Post-condition: There should only be a row in the table.
+        /// </summary>
+        public void UpdateGeneralizationLevel(Dictionary<string, int> generlizationLevel)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"UPDATE generalization_level 
                             SET marital_status = @maritalStatus, gender = @gender,
                             sex = @sex, postal = @postal, age = @age, record_create_date = @recordCreateDate
                             WHERE id = 1;";
-        int maritalStatusLevel = 0;
-        int genderLevel = 0;
-        int sexLevel = 0;
-        int postalLevel = 0;
-        int ageLevel = 0;
-        int recordCreationDateLevel = 0;
+                int maritalStatusLevel = 0;
+                int genderLevel = 0;
+                int sexLevel = 0;
+                int postalLevel = 0;
+                int ageLevel = 0;
+                int recordCreationDateLevel = 0;
 
-        foreach (KeyValuePair<string, int> entry in generlizationLevel)
-        {
-          string quasiIdentifier = entry.Key;
-          int level = entry.Value;
+                foreach (KeyValuePair<string, int> entry in generlizationLevel)
+                {
+                    string quasiIdentifier = entry.Key;
+                    int level = entry.Value;
 
-          if (string.Equals(quasiIdentifier, "Age"))
-          {
-            ageLevel = level;
-          }
-          else if (string.Equals(quasiIdentifier, "Sex"))
-          {
-            sexLevel = level;
-          }
-          else if (string.Equals(quasiIdentifier, "Gender"))
-          {
-            genderLevel = level;
-          }
-          else if (string.Equals(quasiIdentifier, "Marital Status"))
-          {
-            maritalStatusLevel = level;
-          }
-          else if (string.Equals(quasiIdentifier, "Postal"))
-          {
-            postalLevel = level;
-          }
-          else if (string.Equals(quasiIdentifier, "Record Creation Date"))
-          {
-            recordCreationDateLevel = level;
-          }
+                    if (string.Equals(quasiIdentifier, "Age"))
+                    {
+                        ageLevel = level;
+                    }
+                    else if (string.Equals(quasiIdentifier, "Sex"))
+                    {
+                        sexLevel = level;
+                    }
+                    else if (string.Equals(quasiIdentifier, "Gender"))
+                    {
+                        genderLevel = level;
+                    }
+                    else if (string.Equals(quasiIdentifier, "Marital Status"))
+                    {
+                        maritalStatusLevel = level;
+                    }
+                    else if (string.Equals(quasiIdentifier, "Postal"))
+                    {
+                        postalLevel = level;
+                    }
+                    else if (string.Equals(quasiIdentifier, "Record Creation Date"))
+                    {
+                        recordCreationDateLevel = level;
+                    }
+                }
+                cmd.Parameters.AddWithValue("@maritalStatus", maritalStatusLevel);
+                cmd.Parameters.AddWithValue("@gender", genderLevel);
+                cmd.Parameters.AddWithValue("@sex", sexLevel);
+                cmd.Parameters.AddWithValue("@age", ageLevel);
+                cmd.Parameters.AddWithValue("@postal", postalLevel);
+                cmd.Parameters.AddWithValue("@recordCreateDate", recordCreationDateLevel);
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
-        cmd.Parameters.AddWithValue("@maritalStatus", maritalStatusLevel);
-        cmd.Parameters.AddWithValue("@gender", genderLevel);
-        cmd.Parameters.AddWithValue("@sex", sexLevel);
-        cmd.Parameters.AddWithValue("@age", ageLevel);
-        cmd.Parameters.AddWithValue("@postal", postalLevel);
-        cmd.Parameters.AddWithValue("@recordCreateDate", recordCreationDateLevel);
-        using (cmd.Connection = connection)
+
+        /// <summary>
+        /// Retrieve all the anonymised records
+        /// </summary>
+        public List<RecordAnonymised> RetrieveRecords()
         {
-          cmd.Connection.Open();
-          cmd.ExecuteNonQuery();
-        }
-      }
-    }
+            List<RecordAnonymised> result = new List<RecordAnonymised>();
 
-    /// <summary>
-    /// Retrieve all the anonymised records
-    /// </summary>
-    public List<RecordAnonymised> RetrieveRecords()
-    {
-      List<RecordAnonymised> result = new List<RecordAnonymised>();
-
-      using (MySqlCommand cmd = new MySqlCommand())
-      {
-        cmd.CommandText = @"SELECT r.patient_nric, r.type, r.content, r.file_extension,
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT r.patient_nric, r.type, r.content, r.file_extension,
                     ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
                     FROM records_anonymized ra
                     INNER JOIN record r ON r.id = ra.record_id 
                     LIMIT 100;";
 
-        using (cmd.Connection = connection)
-        {
-          cmd.Connection.Open();
-          cmd.ExecuteNonQuery();
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
 
-          using (MySqlDataReader reader = cmd.ExecuteReader())
-          {
-            while (reader.Read())
-            {
-              Record record = new Record
-              {
-                patientNRIC = Convert.ToString(reader["patient_nric"]),
-                content = Convert.ToString(reader["content"]),
-                fileExtension = Convert.ToString(reader["file_extension"]),
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Record record = new Record
+                            {
+                                patientNRIC = Convert.ToString(reader["patient_nric"]),
+                                content = Convert.ToString(reader["content"]),
+                                fileExtension = Convert.ToString(reader["file_extension"]),
 
-              };
-              record.type = RecordType.Get(Convert.ToString(reader["type"]));
+                            };
+                            record.type = RecordType.Get(Convert.ToString(reader["type"]));
 
-              RecordAnonymised recordAnonymised = new RecordAnonymised
-              {
-                maritalStatus = Convert.ToString(reader["marital_status"]),
-                gender = Convert.ToString(reader["gender"]),
-                sex = Convert.ToString(reader["sex"]),
-                age = Convert.ToString(reader["age"]),
-                postal = Convert.ToString(reader["postal"]),
-                createDate = Convert.ToString(reader["record_create_date"])
-              };
+                            RecordAnonymised recordAnonymised = new RecordAnonymised
+                            {
+                                maritalStatus = Convert.ToString(reader["marital_status"]),
+                                gender = Convert.ToString(reader["gender"]),
+                                sex = Convert.ToString(reader["sex"]),
+                                age = Convert.ToString(reader["age"]),
+                                postal = Convert.ToString(reader["postal"]),
+                                createDate = Convert.ToString(reader["record_create_date"])
+                            };
 
-              result.Add(recordAnonymised);
+                            result.Add(recordAnonymised);
+                        }
+
+                    }
+                }
             }
 
-          }
+            return result;
         }
-      }
-
-      return result;
     }
-  }
 }
