@@ -165,7 +165,7 @@
                                 <div class="col-12">
                                     <h4>Record Status</h4>
                                     <p class="text-muted">Setting this allows/disallows all therapists and any other parties from accessing this record.</p>
-                                    <div class="form-group">
+                                    <div class="form-group mb-0">
                                         <div class="btn-group btn-group-sm border" role="group" aria-label="Record Status">
                                             <asp:LinkButton ID="LinkButtonStatusDisable" runat="server" CommandName="StatusDisable" OnClick="LinkButtonStatusDisable_Click">
                                                 <i class="fas fa-fw fa-lock"></i> Disable Record
@@ -185,7 +185,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <p class="lead mb-2">Your Therapist.</p>
+                                    <p class="lead mb-2">Current Therapists</p>
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8 mx-auto">
                                     <asp:Panel CssClass="input-group" runat="server" DefaultButton="LinkButtonFineGrainAllow">
@@ -202,7 +202,7 @@
                                 </div>
 
                                 <div class="col-12 mt-3">
-                                    <asp:GridView ID="GridViewFineGrain" CssClass="table table-sm table-responsive-md" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
+                                    <asp:GridView ID="GridViewFineGrain" CssClass="table table-sm table-responsive-md small" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
                                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
                                         ItemType="NUSMed_WebApp.Classes.Entity.Therapist" DataKeyNames="nric" OnRowCommand="GridViewFineGrain_RowCommand" OnRowDataBound="GridViewFineGrain_RowDataBound"
                                         OnPageIndexChanging="GridViewFineGrain_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
@@ -223,9 +223,9 @@
                                                     <%# Item.therapistDepartment == string.Empty ?  "Nil" : Item.therapistDepartment %>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Actions">
+                                            <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                                 <ItemTemplate>
-                                                    <div class="form-group">
+                                                    <div class="form-group mb-0">
                                                         <div class="btn-group btn-group-sm border" role="group" aria-label="Record Status">
                                                             <asp:LinkButton ID="LinkButtonRecordStatusDefault" runat="server" CommandName="DefaultTherapist" CommandArgument='<%# Item.nric %>'>
                                                                 Default
@@ -306,7 +306,7 @@
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
 
-                                                <asp:TemplateField HeaderText="Assigned By">
+                                                <asp:TemplateField HeaderText="Attributed By">
                                                     <ItemTemplate>
                                                         <%# Item.therapist.lastName + " " + Item.therapist.firstName %>
                                                     </ItemTemplate>

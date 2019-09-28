@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <asp:UpdatePanel ID="UpdatePanelAccounts" class="container-fluid" runat="server" UpdateMode="Conditional">
+    <asp:UpdatePanel ID="UpdatePanelAccounts" class="container" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <div class="row mb-4">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
@@ -69,6 +69,7 @@
                             <asp:TemplateField HeaderText="Permissions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LabelPermissionStatus" TabIndex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
+                                    <asp:Label ID="LabelPermissionEmergencyStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
                                     <asp:LinkButton ID="LinkButtonViewPermission" CssClass="btn btn-info btn-sm" runat="server" CommandArgument='<%# Item.nric %>' CommandName="ViewPermission"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -108,9 +109,10 @@
                         <div class="row">
                             <div class="col-12">
                                 <h4>Instructions</h4>
-                                <ul>
+                                <ul class="small">
                                     <li>To Update your existing request, simply change your "pending request" and click "Submit".</li>
                                     <li>To Remove your existing request, simply update the "pending request" with no record types selected.</li>
+                                    <li>When treatment of a patient has ended, use the "rescind" button below. You will no longer be able to view patient information, diagnosis and etc.</li>
                                 </ul>
                             </div>
                         </div>
@@ -177,7 +179,6 @@
                             </div>
                         </div>
 
-
                         <hr />
                         <div class="row">
                             <div class="col-12">
@@ -243,7 +244,7 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="alert alert-info my-2 text-center" role="alert">
+                                <div id="DivModalPermissionStatus" role="alert" runat="server">
                                     <i class="fas fa-fw fa-info-circle"></i>
                                     <asp:Label ID="modalPermissionStatus" runat="server"></asp:Label>
                                 </div>
@@ -253,6 +254,7 @@
                     </div>
                     <div class="modal-footer">
                         <button id="buttonPermissionRequest" type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonPermissionRequest_ServerClick"><i class="fas fa-fw fa-share"></i>Submit</button>
+                        <asp:LinkButton ID="buttonPermissionRescind" CssClass="btn btn-sm btn-danger" runat="server" OnClick="buttonPermissionRescind_ServerClick" data-toggle="confirmation" data-title="You will not be able to view patient nformation, diagnosis and records. Confirm?"><i class="fas fa-fw fa-user-times"></i>Rescind</asp:LinkButton>
                         <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
                     </div>
                 </ContentTemplate>
@@ -439,16 +441,25 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
+                                        <asp:TemplateField HeaderText="Diagnosis" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                            <ItemTemplate>
+                                                <asp:Label ID="LabelRecordPermissionStatusDiagnosis" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
+                                                <asp:LinkButton ID="LinkButtonRecordDiagnosisView" CssClass="btn btn-success btn-sm" runat="server" Visible="false">
+                                                    <i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span>
+                                                </asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
                                         <asp:TemplateField HeaderText="Data" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                             <ItemTemplate>
                                                 <asp:Label ID="LabelContent" runat="server" Visible="false"></asp:Label>
-                                                <asp:LinkButton ID="LinkbuttonFileView" CssClass="btn btn-info btn-sm" runat="server" Visible="false"></asp:LinkButton>
+                                                <asp:LinkButton ID="LinkbuttonFileView" CssClass="btn btn-success btn-sm" runat="server" Visible="false"></asp:LinkButton>
 
                                                 <a id="FileDownloadLink" class="btn btn-warning btn-sm" runat="server" visible="false">
                                                     <i class="fas fa-fw fa-cloud-download-alt"></i>
                                                 </a>
                                                 <asp:Label ID="LabelFileType" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
-                                                <asp:Label ID="LabelRecordPermissionStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
+                                                <asp:Label ID="LabelRecordPermissionStatusContent" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -480,7 +491,7 @@
         </div>
     </div>
 
-    <div id="modalFileView" class="modal" tabindex="-1" role="dialog">
+    <div id="modalFileView" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelFileView" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -488,7 +499,7 @@
                         <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-eye"></i>
                             View Record File:
                             <asp:Label ID="labelRecordName" runat="server"></asp:Label></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button id="buttonCloseModalFileViewTop" type="button" class="close" runat="server" onserverclick="CloseModalFileView_ServerClick">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -510,9 +521,13 @@
                             <asp:Label ID="modalFileViewLabelFileSize" runat="server"></asp:Label>
                         </span>
 
-                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+                        <button id="buttonCloseModalFileViewBottom" type="button" class="btn btn-secondary ml-auto" runat="server" onserverclick="CloseModalFileView_ServerClick">Close</button>
                     </div>
                 </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="buttonCloseModalFileViewTop" />
+                    <asp:AsyncPostBackTrigger ControlID="buttonCloseModalFileViewBottom" />
+                </Triggers>
             </asp:UpdatePanel>
             <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFileView" DisplayAfter="0" DynamicLayout="false">
                 <ProgressTemplate>
@@ -548,7 +563,7 @@
                         <hr />
                         <div class="row">
                             <div class="col-12">
-                                <h4>Add Diagnosis</h4>
+                                <h4>Attributed Diagnosis</h4>
                                 <div class="row">
                                     <div class="col-12">
                                         <asp:GridView ID="GridViewPatientDiagnoses" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
@@ -589,7 +604,7 @@
                                                 <asp:TemplateField HeaderText="End">
                                                     <ItemTemplate>
                                                         <asp:Label ID="LabelPatientDiagnosesEnd" runat="server" Visible="false"></asp:Label>
-                                                        <asp:LinkButton ID="LinkButtonPatientDiagnosesEnd" CssClass="btn btn-sm btn-success" data-toggle="confirmation" data-title="This is Irreversible. Confirm?"
+                                                        <asp:LinkButton ID="LinkButtonPatientDiagnosesEnd" CssClass="btn btn-sm btn-success" data-toggle="confirmation" data-title="This is Permanent. Confirm?"
                                                             CommandName="UpdateEndPatientDiagnosis" CommandArgument='<%# Item.diagnosis.code %>' runat="server" Visible="false">
                                                         <i class="fas fa-fw fa-check-circle"></i> Declare End 
                                                         </asp:LinkButton>
@@ -656,7 +671,7 @@
 
                                         <asp:TemplateField HeaderText="Action">
                                             <ItemTemplate>
-                                                <asp:LinkButton CssClass="btn btn-sm btn-success" CommandName="AddPatientDiagnosis" CommandArgument='<%# Item.code %>' runat="server">
+                                                <asp:LinkButton CssClass="btn btn-sm btn-success" CommandName="AddPatientDiagnosis" CommandArgument='<%# Item.code %>' runat="server" data-toggle="confirmation" data-title="This is Permanent. Confirm?">
                                                         <i class="fas fa-fw fa-plus-square"></i> Add 
                                                 </asp:LinkButton>
                                             </ItemTemplate>
@@ -664,11 +679,11 @@
                                     </Columns>
                                     <EmptyDataTemplate>
                                         <div class="alert alert-info text-center py-4" role="alert">
-                                <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search returned no results.
-                                </h4>
-                                <p>Do try widening your search parameter.</p>
-                                <hr>
-                                <p class="mb-0">New here? Try entering a search term and hit "Go"!</p>
+                                            <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search returned no results.
+                                            </h4>
+                                            <p>Do try widening your search parameter.</p>
+                                            <hr>
+                                            <p class="mb-0">New here? Try entering a search term and hit "Go"!</p>
                                         </div>
                                     </EmptyDataTemplate>
                                 </asp:GridView>
@@ -677,15 +692,6 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <%--                        <a id="A1" class="btn btn-warning btn-sm" runat="server">
-                            <i class="fas fa-fw fa-cloud-download-alt"></i></i><span class="d-none d-lg-inline-block">Download</span>
-                        </a>
-                        <span class="text-info small" runat="server">
-                            <i class="fas fa-fw fa-info-circle"></i>File Name:
-                            <asp:Label ID="Label3" runat="server"></asp:Label>. File Size: 
-                            <asp:Label ID="Label4" runat="server"></asp:Label>
-                        </span>--%>
-
                         <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
                     </div>
                 </ContentTemplate>
@@ -697,12 +703,171 @@
             </asp:UpdateProgress>
         </div>
     </div>
+
+    <div id="modalRecordDiagnosisView" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <asp:UpdatePanel ID="UpdatePanelRecordDiagnosisView" class="modal-content" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-header">
+                        <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-eye"></i>
+                            View Record Diagnosis:
+                            <asp:Label ID="labelRecordNameDiagnosis" runat="server"></asp:Label></h5>
+                        <button id="buttonCloseModalRecordDiagnosisViewTop" type="button" class="close" runat="server" onserverclick="CloseModalRecordDiagnosisView_ServerClick">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Instructions</h4>
+                                <ul>
+                                    <li>Records can be attributed a diagnosis for both research and informational purposes.</li>
+                                    <li>Diagnoses cannot be edited nor deleted once added.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Attributed Diagnosis</h4>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <asp:GridView ID="GridViewRecordDiagnoses" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
+                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                            ItemType="NUSMed_WebApp.Classes.Entity.RecordDiagnosis" OnPageIndexChanging="GridViewRecordDiagnoses_PageIndexChanging"
+                                            EmptyDataRowStyle-CssClass="empty-table" runat="server">
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="Code">
+                                                    <ItemTemplate>
+                                                        <%# Item.diagnosis.code %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Description">
+                                                    <ItemTemplate>
+                                                        <%# Item.diagnosis.descriptionShort %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Category">
+                                                    <ItemTemplate>
+                                                        <%# Item.diagnosis.categoryTitle %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Attributed By">
+                                                    <ItemTemplate>
+                                                        <%# Item.therapist.lastName + " " + Item.therapist.firstName %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                            </Columns>
+                                            <EmptyDataTemplate>
+                                                <div class="alert alert-info text-center py-4" role="alert">
+                                                    <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Record does not have any Diagnosis attributed to it.
+                                                    </h4>
+                                                    <p>No therapists had probably attributed any diagnoses to the record.</p>
+                                                    <hr>
+                                                    <p class="mb-0">If this is a mistake, please contact the help-desk for assistance.</p>
+                                                </div>
+                                            </EmptyDataTemplate>
+                                        </asp:GridView>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Attribute a Diagnosis</h4>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 mx-auto">
+                                <asp:Panel CssClass="input-group" runat="server" DefaultButton="ButtonSearchDiagnosis">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Search</span>
+                                    </div>
+                                    <asp:TextBox ID="TextboxSearchDiagnosisForRecord" CssClass="form-control" placeholder="Code/Description/Category" runat="server"></asp:TextBox>
+                                    <div class="input-group-append">
+                                        <asp:LinkButton ID="ButtonSearchDiagnosisForRecord" CssClass="btn btn-outline-info" OnClick="ButtonSearchDiagnosisForRecord_Click" runat="server">
+                                                <i class="fas fa-fw fa-search"></i> Go
+                                        </asp:LinkButton>
+                                    </div>
+                                </asp:Panel>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <asp:GridView ID="GridViewRecordDiagnosesAdd" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
+                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                    ItemType="NUSMed_WebApp.Classes.Entity.Diagnosis" OnPageIndexChanging="GridViewRecordDiagnosesAdd_PageIndexChanging"
+                                    EmptyDataRowStyle-CssClass="empty-table" OnRowCommand="GridViewRecordDiagnosesAdd_RowCommand" runat="server">
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Code">
+                                            <ItemTemplate>
+                                                <%# Item.code %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Description">
+                                            <ItemTemplate>
+                                                <%# Item.descriptionShort %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Category">
+                                            <ItemTemplate>
+                                                <%# Item.categoryTitle %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Action">
+                                            <ItemTemplate>
+                                                <asp:LinkButton CssClass="btn btn-sm btn-success" CommandName="AddRecordDiagnosis" CommandArgument='<%# Item.code %>' runat="server" data-toggle="confirmation" data-title="This is Permanent. Confirm?">
+                                                        <i class="fas fa-fw fa-plus-square"></i> Add 
+                                                </asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                    <EmptyDataTemplate>
+                                        <div class="alert alert-info text-center py-4" role="alert">
+                                            <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search returned no results.
+                                            </h4>
+                                            <p>Do try widening your search parameter.</p>
+                                            <hr>
+                                            <p class="mb-0">New here? Try entering a search term and hit "Go"!</p>
+                                        </div>
+                                    </EmptyDataTemplate>
+                                </asp:GridView>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="buttonCloseModalRecordDiagnosisViewBottom" type="button" class="btn btn-secondary ml-auto" runat="server" onserverclick="CloseModalRecordDiagnosisView_ServerClick">Close</button>
+                    </div>
+                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="buttonCloseModalRecordDiagnosisViewTop" />
+                    <asp:AsyncPostBackTrigger ControlID="buttonCloseModalRecordDiagnosisViewBottom" />
+                </Triggers>
+            </asp:UpdatePanel>
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecordDiagnosisView" DisplayAfter="0" DynamicLayout="false">
+                <ProgressTemplate>
+                    <div class="loading">Loading</div>
+                </ProgressTemplate>
+            </asp:UpdateProgress>
+        </div>
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
     <script type="text/javascript">
         function pageLoad() {
             $(function () {
+                // Enable Tooltips
                 $('[data-toggle="tooltip"]').tooltip({ html: true });
+
+                // Enable confirmations
+                $('[data-toggle=confirmation]').confirmation({
+                    rootSelector: '[data-toggle=confirmation]'
+                });
             });
         }
     </script>

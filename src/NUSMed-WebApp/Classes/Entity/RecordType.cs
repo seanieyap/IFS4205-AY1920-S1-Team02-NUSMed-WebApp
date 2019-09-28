@@ -24,7 +24,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             return false;
         }
-        public virtual bool IsFileValid(string fileExtension, int fileSize)
+        public virtual bool IsFileValid(string fileExtension, int? fileSize)
         {
             return false;
         }
@@ -209,7 +209,7 @@ namespace NUSMed_WebApp.Classes.Entity
             get { return 16; }
         }
         public override bool isContent { get { return false; } }
-        public override bool IsFileValid(string extension, int size)
+        public override bool IsFileValid(string extension, int? size)
         {
             if (extension.Equals(".txt") && size < maxTextSize)
             {
@@ -230,7 +230,7 @@ namespace NUSMed_WebApp.Classes.Entity
             get { return 32; }
         }
         public override bool isContent { get { return false; } }
-        public override bool IsFileValid(string extension, int size)
+        public override bool IsFileValid(string extension, int? size)
         {
             if ((extension.Equals(".jpg") || extension.Equals(".jpeg") || extension.Equals(".png")) && size < maxImageSize)
             {
@@ -251,7 +251,7 @@ namespace NUSMed_WebApp.Classes.Entity
             get { return 64; }
         }
         public override bool isContent { get { return false; } }
-        public override bool IsFileValid(string extension, int size)
+        public override bool IsFileValid(string extension, int? size)
         {
             if ((extension.Equals(".jpg") || extension.Equals(".jpeg") || extension.Equals(".png")) && size < maxImageSize)
             {
@@ -272,7 +272,7 @@ namespace NUSMed_WebApp.Classes.Entity
             get { return 128; }
         }
         public override bool isContent { get { return false; } }
-        public override bool IsFileValid(string extension, int size)
+        public override bool IsFileValid(string extension, int? size)
         {
             if (((extension.Equals(".mp4")) && size < maxVideoSize) ||
                 ((extension.Equals(".txt")) && size < maxTextSize))

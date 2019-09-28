@@ -77,6 +77,40 @@ namespace NUSMed_WebApp.Classes.BLL
             return null;
         }
 
+        public List<RecordDiagnosis> GetRecordDiagnoses(int id)
+        {
+            if (AccountBLL.IsPatient())
+            {
+                return recordDAL.RetrieveRecordDiagnoses(id, AccountBLL.GetNRIC());
+            }
+            else if (AccountBLL.IsTherapist())
+            {
+                Record record = recordDAL.RetrieveRecord(id, AccountBLL.GetNRIC());
+                Entity.Patient patient = new TherapistBLL().GetPatient(record.patientNRIC);
+
+                if (patient.hasPermissionsApproved(record))
+                {
+                    return recordDAL.RetrieveRecordDiagnoses(id, record.patientNRIC, AccountBLL.GetNRIC());
+                }
+            }
+
+            return null;
+        }
+
+        public void AddRecordDiagnosis(string patientNRIC, int id, string code)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                Record record = recordDAL.RetrieveRecord(id, AccountBLL.GetNRIC());
+                Entity.Patient patient = new TherapistBLL().GetPatient(record.patientNRIC);
+
+                if (record.patientNRIC.Equals(patientNRIC) && patient.hasPermissionsApproved(record))
+                {
+                    recordDAL.InsertRecordDiagnosis(AccountBLL.GetNRIC(), id, code);
+                }
+            }
+        }
+
         public void SubmitRecordContent(Record record)
         {
             if (AccountBLL.IsPatient() && record.patientNRIC.Equals(AccountBLL.GetNRIC()))
@@ -96,11 +130,8 @@ namespace NUSMed_WebApp.Classes.BLL
             {
                 Entity.Patient patient = new TherapistBLL().GetPatientPermissions(record.patientNRIC);
 
-                if (patient.permissionApproved == 0 || ((patient.permissionApproved & record.type.permissionFlag) == 0))
-                {
-                    return;
-                }
-                if (AccountBLL.GetNRIC().Equals(record.patientNRIC))
+                if (patient.permissionApproved == 0 || ((patient.permissionApproved & record.type.permissionFlag) == 0) ||
+                    AccountBLL.GetNRIC().Equals(record.patientNRIC))
                 {
                     return;
                 }

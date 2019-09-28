@@ -65,8 +65,8 @@
 
                 <nav id="NavLinks" class="mainNavLinks collapse navbar-collapse" runat="server">
                     <a id="navLinksHome" class="nav-link" href="~/" runat="server" visible="false"><i class="fas fa-fw fa-home"></i>Home</a>
-                    <a id="navLinksAbout" class="nav-link" href="~/about" runat="server" visible="false"><i class="fas fa-fw fa-question-circle"></i>About</a>
                     <a id="navLinksAggregatedSearch" class="nav-link" href="~/Aggregated-Search" runat="server" visible="false"><i class="fab fa-fw fa-searchengin"></i>Aggregated Search</a>
+                    <a id="navLinksAbout" class="nav-link" href="~/about" runat="server" visible="false"><i class="fas fa-fw fa-question-circle"></i>About</a>
 
                     <%-- Patient Links--%>
                     <a id="navLinksPatientDashboard" class="nav-link" href="~/Patient/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
@@ -216,7 +216,7 @@
                         <p class="my-1">This Web Session has been terminated due to inactivity.</p>
                     </div>
                     <div class="modal-footer">
-                        <a type="button" class="btn btn-secondary mr-auto" href="~/" runat="server">Return Home</a>
+                        <a type="button" class="btn btn-secondary mr-auto" href="~/" runat="server">Return to Login</a>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>

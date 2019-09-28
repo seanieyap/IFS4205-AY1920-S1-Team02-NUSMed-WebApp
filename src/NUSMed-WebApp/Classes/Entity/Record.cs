@@ -78,13 +78,13 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         public string fileChecksum { get; set; }
         public string fileExtension { get; set; }
-        public int fileSize { get; set; }
+        public int? fileSize { get; set; }
         public string fileSizeMegabytes
         {
             get
             {
                 int counter = 0;
-                decimal number = fileSize;
+                decimal number = (decimal)fileSize;
                 while (Math.Round(number / 1024) >= 1)
                 {
                     number = number / 1024;
@@ -134,7 +134,7 @@ namespace NUSMed_WebApp.Classes.Entity
             string test = GetMD5HashFromFile();
             if (fileNameHash.Contains("\\") || !File.Exists(fullpath)
                 || !GetMD5HashFromFile().Equals(fileChecksum)
-                || new FileInfo(fullpath).Length != fileSize)
+                || new FileInfo(fullpath).Length != (int)fileSize)
             {
                 return false;
             }

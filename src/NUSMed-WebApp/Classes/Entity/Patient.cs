@@ -21,7 +21,7 @@ namespace NUSMed_WebApp.Classes.Entity
         public bool hasPermissionsApproved(Record record)
         {
             bool result = false;
-            if (record.status == 1)
+            if (record.status == 1 && approvedTime != null)
             {
                 if (record.recordPermissionStatus == 1)
                 {

@@ -220,6 +220,15 @@ namespace NUSMed_WebApp.Patient {
         protected global::System.Web.UI.WebControls.CheckBox CheckBoxTypeGait;
         
         /// <summary>
+        /// DivModalPermissionStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivModalPermissionStatus;
+        
+        /// <summary>
         /// modalPermissionStatus control.
         /// </summary>
         /// <remarks>
@@ -236,6 +245,15 @@ namespace NUSMed_WebApp.Patient {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton buttonPermissionApprove;
+        
+        /// <summary>
+        /// buttonPermissionRevoke control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton buttonPermissionRevoke;
         
         /// <summary>
         /// Master property.

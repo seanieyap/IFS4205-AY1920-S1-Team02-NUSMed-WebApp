@@ -55,6 +55,7 @@
                             <asp:TemplateField HeaderText="Permissions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LabelPermissionStatus" TabIndex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
+                                    <asp:Label ID="LabelPermissionEmergencyStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
                                     <asp:LinkButton ID="LinkButtonViewPermission" CssClass="btn btn-info btn-sm" runat="server" CommandArgument='<%# Item.nric %>' CommandName="ViewPermission">
                                         <i class="fas fa-fw fa-eye"></i></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
@@ -96,9 +97,10 @@
                         <div class="row">
                             <div class="col-12">
                                 <h4>Instructions</h4>
-                                <ul>
+                                <ul class="small">
                                     <li>To Approve request sent by therapist, validate the existing permissions he/she has and assess the permissions requested for. When done, simply click "Approve".</li>
                                     <li>In event of unsatisfactory request, you are able to edit the request and approve a different set of permissions.</li>
+                                    <li>In event of end of treatment and to prevent therapists from viewing your information and diagnosis; reset permissions to an "Unapproved" status by using the "Revoke" button.</li>
                                 </ul>
                             </div>
                         </div>
@@ -176,7 +178,6 @@
                                     </div>
                                 </h4>
                                 <div class="row">
-
                                     <div class="col-12">
                                         <div class="row mb-2 checkboxes">
                                             <div class="col-12 col-sm-6 col-lg-4">
@@ -232,7 +233,7 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="alert alert-info my-2 text-center" role="alert">
+                                <div id="DivModalPermissionStatus" role="alert" runat="server">
                                     <i class="fas fa-fw fa-info-circle"></i>
                                     <asp:Label ID="modalPermissionStatus" runat="server"></asp:Label>
                                 </div>
@@ -242,6 +243,7 @@
                     </div>
                     <div class="modal-footer">
                         <button id="buttonPermissionApprove" type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonPermissionApprove_ServerClick"><i class="fas fa-fw fa-clipboard-check"></i>Approve</button>
+                        <asp:LinkButton ID="buttonPermissionRevoke" CssClass="btn btn-sm btn-danger" runat="server" data-toggle="confirmation" data-title="Therapist will not be able to view your information, diagnosis and records. Confirm?" OnClick="buttonPermissionRevoke_ServerClick"><i class="fas fa-fw fa-ban"></i>Revoke</asp:LinkButton>
                         <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
                     </div>
                 </ContentTemplate>
@@ -257,9 +259,15 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
     <script type="text/javascript">
-        function pageLoad(sender, args) {
+        function pageLoad() {
             $(function () {
+                // Enable Tooltips
                 $('[data-toggle="tooltip"]').tooltip({ html: true });
+
+                // Enable confirmations
+                $('[data-toggle=confirmation]').confirmation({
+                    rootSelector: '[data-toggle=confirmation]'
+                });
             });
         }
     </script>

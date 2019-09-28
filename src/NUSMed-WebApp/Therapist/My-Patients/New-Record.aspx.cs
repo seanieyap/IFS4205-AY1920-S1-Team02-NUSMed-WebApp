@@ -101,6 +101,7 @@ namespace NUSMed_WebApp.Therapist.My_Records
             record.description = inputDescription.Value.Trim();
             record.content = string.Empty;
             record.type = GetSelectedType();
+            record.isEmergency = patient.isEmergency;
 
             #region Validation
             bool[] validate = Enumerable.Repeat(true, 3).ToArray();

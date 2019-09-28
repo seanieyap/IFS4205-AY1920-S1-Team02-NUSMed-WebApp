@@ -70,27 +70,45 @@ namespace NUSMed_WebApp.Patient
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 DateTime? approvedTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "approvedTime");
-                Int16 permissionApproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionApproved"));
-                Int16 permissionUnapproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionUnapproved"));
+                DateTime? requestTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "requestTime");
                 Label LabelPermissionStatus = (Label)e.Row.FindControl("LabelPermissionStatus");
 
-                if (permissionUnapproved > 0)
+                if (requestTime == null)
                 {
-                    LabelPermissionStatus.Attributes.Add("title", "Pending Approval requested on " + Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "requestTime")));
-                    LabelPermissionStatus.CssClass = "text-warning";
+                    if (approvedTime == null)
+                    {
+                        LabelPermissionStatus.CssClass = "text-secondary";
+                        LabelPermissionStatus.Attributes.Add("title", "Therapist has no permissions");
+                    }
+                    else
+                    {
+                        LabelPermissionStatus.CssClass = "text-info";
+                        LabelPermissionStatus.Attributes.Add("title", "Therapist has permissions and is not requesting for new permissions.");
+                    }
                 }
-                else if (permissionUnapproved == 0)
+                else
                 {
-                    LabelPermissionStatus.Attributes.Add("title", "Not Pending Approval for Permissions");
-                    LabelPermissionStatus.CssClass = "text-info";
+                    if (approvedTime == null)
+                    {
+                        LabelPermissionStatus.CssClass = "text-danger";
+                        LabelPermissionStatus.Attributes.Add("title", "Therapist has no permissions and is requesting for new permissions.");
+                    }
+                    else
+                    {
+                        LabelPermissionStatus.CssClass = "text-warning";
+                        LabelPermissionStatus.Attributes.Add("title", "Therapist is requesting for new permissions.");
+                    }
                 }
 
                 bool isEmergency = Convert.ToBoolean(DataBinder.Eval(e.Row.DataItem, "isEmergency"));
                 if (isEmergency)
                 {
-                    LabelPermissionStatus.Attributes.Add("title", "This therapist has permissions whom you did not approve.<br />To remove this warning, please approve his/her permissions.");
-                    LabelPermissionStatus.CssClass = "text-danger";
+                    Label LabelPermissionEmergencyStatus = (Label)e.Row.FindControl("LabelPermissionEmergencyStatus");
+                    LabelPermissionEmergencyStatus.Attributes.Add("title", "This therapist got permissions via the emergency system whom you did not approve.<br />To remove this warning, approve his/her permissions.");
+                    LabelPermissionEmergencyStatus.CssClass = "text-danger";
+                    LabelPermissionEmergencyStatus.Visible = true;
                 }
+
             }
         }
         #endregion
@@ -118,13 +136,31 @@ namespace NUSMed_WebApp.Patient
             CheckBoxTypeXRay.Checked = therapist.hasXRayPermissions;
             CheckBoxTypeGait.Checked = therapist.hasGaitPermissions;
 
-            if (therapist.permissionUnapproved > 0 && therapist.requestTime != null)
+            if (therapist.requestTime == null)
             {
-                modalPermissionStatus.Text = therapist.lastName + " " + therapist.firstName + " sent request on " + therapist.requestTime;
+                if (therapist.approvedTime == null)
+                {
+                    DivModalPermissionStatus.Attributes.Add("class", "alert alert-secondary my-2 text-center small");
+                    modalPermissionStatus.Text = therapist.lastName + " " + therapist.firstName + " has no permissions.";
+                }
+                else
+                {
+                    DivModalPermissionStatus.Attributes.Add("class", "alert alert-info my-2 text-center small");
+                    modalPermissionStatus.Text = therapist.lastName + " " + therapist.firstName +  " has permissions and has not submitted any new request.";
+                }
             }
             else
             {
-                modalPermissionStatus.Text = "No Request received by " + therapist.lastName + " " + therapist.firstName + ".";
+                if (therapist.approvedTime == null)
+                {
+                    DivModalPermissionStatus.Attributes.Add("class", "alert alert-danger my-2 text-center small");
+                    modalPermissionStatus.Text = therapist.lastName + " " + therapist.firstName + " has no permissions and has requested for permissions sent on " + therapist.requestTime;
+                }
+                else
+                {
+                    DivModalPermissionStatus.Attributes.Add("class", "alert alert-warning my-2 text-center small");
+                    modalPermissionStatus.Text = therapist.lastName + " " + therapist.firstName + " has permissions and has requested for new permissions sent on " + therapist.requestTime;
+                }
             }
 
             UpdatePanelPermissions.Update();
@@ -178,6 +214,23 @@ namespace NUSMed_WebApp.Patient
             catch
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Updating Permissions.');", true);
+            }
+
+        }
+        protected void buttonPermissionRevoke_ServerClick(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewPatientSelectedNRIC"].ToString();
+
+                patientBLL.RevokePermissions(nric);
+                Bind_GridViewTherapist();
+                Update_UpdatePanelPermissions(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Permissions of " + nric + " has been Rescinded.');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Rescinded Permissions of a therapist.');", true);
             }
 
         }

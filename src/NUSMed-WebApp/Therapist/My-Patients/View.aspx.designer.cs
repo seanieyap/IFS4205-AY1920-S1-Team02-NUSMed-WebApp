@@ -220,6 +220,15 @@ namespace NUSMed_WebApp.Therapist.My_Patients {
         protected global::System.Web.UI.WebControls.CheckBox CheckBoxTypeGait;
         
         /// <summary>
+        /// DivModalPermissionStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivModalPermissionStatus;
+        
+        /// <summary>
         /// modalPermissionStatus control.
         /// </summary>
         /// <remarks>
@@ -236,6 +245,15 @@ namespace NUSMed_WebApp.Therapist.My_Patients {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton buttonPermissionRequest;
+        
+        /// <summary>
+        /// buttonPermissionRescind control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton buttonPermissionRescind;
         
         /// <summary>
         /// UpdatePanelInformation control.
@@ -445,6 +463,15 @@ namespace NUSMed_WebApp.Therapist.My_Patients {
         protected global::System.Web.UI.WebControls.Label labelRecordName;
         
         /// <summary>
+        /// buttonCloseModalFileViewTop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonCloseModalFileViewTop;
+        
+        /// <summary>
         /// modalFileViewImage control.
         /// </summary>
         /// <remarks>
@@ -508,6 +535,15 @@ namespace NUSMed_WebApp.Therapist.My_Patients {
         protected global::System.Web.UI.WebControls.Label modalFileViewLabelFileSize;
         
         /// <summary>
+        /// buttonCloseModalFileViewBottom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonCloseModalFileViewBottom;
+        
+        /// <summary>
         /// UpdatePanelDiagnosisView control.
         /// </summary>
         /// <remarks>
@@ -560,6 +596,78 @@ namespace NUSMed_WebApp.Therapist.My_Patients {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridViewPatientDiagnosisAdd;
+        
+        /// <summary>
+        /// UpdatePanelRecordDiagnosisView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelRecordDiagnosisView;
+        
+        /// <summary>
+        /// labelRecordNameDiagnosis control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelRecordNameDiagnosis;
+        
+        /// <summary>
+        /// buttonCloseModalRecordDiagnosisViewTop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonCloseModalRecordDiagnosisViewTop;
+        
+        /// <summary>
+        /// GridViewRecordDiagnoses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewRecordDiagnoses;
+        
+        /// <summary>
+        /// TextboxSearchDiagnosisForRecord control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextboxSearchDiagnosisForRecord;
+        
+        /// <summary>
+        /// ButtonSearchDiagnosisForRecord control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ButtonSearchDiagnosisForRecord;
+        
+        /// <summary>
+        /// GridViewRecordDiagnosesAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewRecordDiagnosesAdd;
+        
+        /// <summary>
+        /// buttonCloseModalRecordDiagnosisViewBottom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonCloseModalRecordDiagnosisViewBottom;
         
         /// <summary>
         /// Master property.

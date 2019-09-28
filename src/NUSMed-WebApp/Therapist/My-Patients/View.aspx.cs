@@ -13,6 +13,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
 {
     public partial class View : Page
     {
+        private readonly RecordBLL recordBLL = new RecordBLL();
         private readonly TherapistBLL therapistBLL = new TherapistBLL();
 
         protected void Page_Load(object sender, EventArgs e)
@@ -143,7 +144,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 DateTime? approvedTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "approvedTime");
-                Int16 permissionUnapproved = Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "permissionUnapproved"));
+                DateTime? requestTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "requestTime");
                 Label LabelName = (Label)e.Row.FindControl("LabelName");
                 Label LabelNameStatus = (Label)e.Row.FindControl("LabelNameStatus");
                 LinkButton LinkButtonViewInformation = (LinkButton)e.Row.FindControl("LinkButtonViewInformation");
@@ -182,22 +183,40 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     LinkButtonNewRecords.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "nric"));
                 }
 
-                if (permissionUnapproved > 0)
+                if (requestTime == null)
                 {
-                    LabelPermissionStatus.Attributes.Add("title", "Pending Approval requested on " + Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "requestTime")));
-                    LabelPermissionStatus.CssClass = "text-warning";
+                    if (approvedTime == null)
+                    {
+                        LabelPermissionStatus.CssClass = "text-secondary";
+                        LabelPermissionStatus.Attributes.Add("title", "You have no permissions to this patient.");
+                    }
+                    else
+                    {
+                        LabelPermissionStatus.CssClass = "text-info";
+                        LabelPermissionStatus.Attributes.Add("title", "You have permissions to this patient and have not requested for any new permissions.");
+                    }
                 }
                 else
                 {
-                    LabelPermissionStatus.Attributes.Add("title", "Not Pending Approval for Permissions");
-                    LabelPermissionStatus.CssClass = "text-info";
+                    if (approvedTime == null)
+                    {
+                        LabelPermissionStatus.CssClass = "text-danger";
+                        LabelPermissionStatus.Attributes.Add("title", "You have no permissions to this patient and have requested for new permissions.");
+                    }
+                    else
+                    {
+                        LabelPermissionStatus.CssClass = "text-warning";
+                        LabelPermissionStatus.Attributes.Add("title", "You have requested for new permissions.");
+                    }
                 }
 
                 bool isEmergency = Convert.ToBoolean(DataBinder.Eval(e.Row.DataItem, "isEmergency"));
                 if (isEmergency)
                 {
-                    LabelPermissionStatus.Attributes.Add("title", "You have been Granted Permissions to this patient via the Emergency system.");
-                    LabelPermissionStatus.CssClass = "text-danger";
+                    Label LabelPermissionEmergencyStatus = (Label)e.Row.FindControl("LabelPermissionEmergencyStatus");
+                    LabelPermissionEmergencyStatus.Attributes.Add("title", "This patient is an emergency patient whom did not approve of any permissions.");
+                    LabelPermissionEmergencyStatus.CssClass = "text-danger";
+                    LabelPermissionEmergencyStatus.Visible = true;
                 }
             }
         }
@@ -235,6 +254,33 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             else
             {
                 modalPermissionStatus.Text = "No Request sent to " + patient.nric;
+            }
+
+            if (patient.requestTime == null)
+            {
+                if (patient.approvedTime == null)
+                {
+                    DivModalPermissionStatus.Attributes.Add("class", "alert alert-secondary my-2 text-center small");
+                    modalPermissionStatus.Text = "You have no approved permissions.";
+                }
+                else
+                {
+                    DivModalPermissionStatus.Attributes.Add("class", "alert alert-info my-2 text-center small");
+                    modalPermissionStatus.Text = "You have been granted permissions and have not submitted any new requests for permissions.";
+                }
+            }
+            else
+            {
+                if (patient.approvedTime == null)
+                {
+                    DivModalPermissionStatus.Attributes.Add("class", "alert alert-danger my-2 text-center small");
+                    modalPermissionStatus.Text = "You have not been granted permissions and have requested for permissions sent on " + patient.requestTime + ".";
+                }
+                else
+                {
+                    DivModalPermissionStatus.Attributes.Add("class", "alert alert-warning my-2 text-center small");
+                    modalPermissionStatus.Text = "You have been granted permissions and have requested for permissions sent on " + patient.requestTime + ".";
+                }
             }
 
             UpdatePanelPermissions.Update();
@@ -291,6 +337,23 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             }
 
         }
+        protected void buttonPermissionRescind_ServerClick(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewPatientSelectedNRIC"].ToString();
+
+                therapistBLL.RescindPermissions(nric);
+                Bind_GridViewPatient();
+                Update_UpdatePanelPermissions(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Request Submitted to " + nric + " for Permissions.');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Submitting Request for Permissions.');", true);
+            }
+
+        }
         #endregion
 
         #region Record Functions
@@ -327,27 +390,39 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                         FileDownloadLink.HRef = "~/Therapist/Download.ashx?record=" + DataBinder.Eval(e.Row.DataItem, "id").ToString();
                         FileDownloadLink.Visible = true;
                     }
+
+                    LinkButton LinkButtonRecordDiagnosisView = (LinkButton)e.Row.FindControl("LinkButtonRecordDiagnosisView");
+                    LinkButtonRecordDiagnosisView.CommandName = "RecordDiagnosisView";
+                    LinkButtonRecordDiagnosisView.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
+                    LinkButtonRecordDiagnosisView.Visible = true;
+                    LinkButtonRecordDiagnosisView.Text = "<i class=\"fas fa-fw fa-eye\"></i></i><span class=\"d-none d-lg-inline-block\">View</span>";
                 }
                 else
                 {
                     short status = (short)DataBinder.Eval(e.Row.DataItem, "status");
                     short? recordPermissionStatus = (short?)DataBinder.Eval(e.Row.DataItem, "recordPermissionStatus");
 
-                    Label LabelRecordPermissionStatus = (Label)e.Row.FindControl("LabelRecordPermissionStatus");
-                    LabelRecordPermissionStatus.CssClass = "text-danger";
-                    LabelRecordPermissionStatus.Visible = true;
+                    Label LabelRecordPermissionStatusContent = (Label)e.Row.FindControl("LabelRecordPermissionStatusContent");
+                    LabelRecordPermissionStatusContent.CssClass = "text-danger";
+                    LabelRecordPermissionStatusContent.Visible = true;
+                    Label LabelRecordPermissionStatusDiagnosis = (Label)e.Row.FindControl("LabelRecordPermissionStatusDiagnosis");
+                    LabelRecordPermissionStatusDiagnosis.CssClass = "text-danger";
+                    LabelRecordPermissionStatusDiagnosis.Visible = true;
 
                     if (status == 0)
                     {
-                        LabelRecordPermissionStatus.Attributes.Add("title", "Patient has Disabled Record Access To all Therapists");
+                        LabelRecordPermissionStatusDiagnosis.Attributes.Add("title", "Patient has Disabled Record Access To all Therapists");
+                        LabelRecordPermissionStatusContent.Attributes.Add("title", "Patient has Disabled Record Access To all Therapists");
                     }
                     else if (recordPermissionStatus == 0)
                     {
-                        LabelRecordPermissionStatus.Attributes.Add("title", "Patient has Disabled Record Access via Fine Grain Permissions");
+                        LabelRecordPermissionStatusDiagnosis.Attributes.Add("title", "Patient has Disabled Record Access via Fine Grain Permissions");
+                        LabelRecordPermissionStatusContent.Attributes.Add("title", "Patient has Disabled Record Access via Fine Grain Permissions");
                     }
                     else
                     {
-                        LabelRecordPermissionStatus.Attributes.Add("title", "You do not have Access to this Record Type");
+                        LabelRecordPermissionStatusDiagnosis.Attributes.Add("title", "You do not have Access to this Record Type");
+                        LabelRecordPermissionStatusContent.Attributes.Add("title", "You do not have Access to this Record Type");
                     }
                 }
             }
@@ -364,9 +439,8 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             {
                 try
                 {
-                    string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
                     int id = Convert.ToInt32(e.CommandArgument);
-                    Record record = new RecordBLL().GetRecord(id);
+                    Record record = recordBLL.GetRecord(id);
 
                     modalFileViewImage.Visible = false;
                     modalFileViewVideo.Visible = false;
@@ -402,17 +476,39 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     FileDownloadLinkviaModal.HRef = "~/Therapist/Download.ashx?record=" + record.id.ToString();
 
                     UpdatePanelFileView.Update();
-                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').modal('show');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').modal('show');", true);
                 }
                 catch
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
                 }
             }
+            if (e.CommandName.Equals("RecordDiagnosisView"))
+            {
+                try
+                {
+                    int id = Convert.ToInt32(e.CommandArgument);
+
+                    ViewState["GridViewRecordsSelectedRecord"] = id;
+                    Bind_GridViewRecordDiagnoses();
+
+                    UpdatePanelRecordDiagnosisView.Update();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View Record Diagnosis Modal", "$('#modalRecords').modal('hide'); $('#modalRecordDiagnosisView').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View Record Diagnosis Modal", "toastr['error']('Error Opening Record Diagnosis Modal.');", true);
+                }
+            }
+        }
+
+        protected void CloseModalFileView_ServerClick(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "Close View File Modal", " $('#modalFileView').modal('hide'); $('#modalRecords').modal('show');", true);
         }
         #endregion
 
-        #region Diagnosis Functions
+        #region Patient Diagnosis Functions
         protected void Bind_GridViewPatientDiagnoses(string nric)
         {
             List<PatientDiagnosis> patientDiagnoses = therapistBLL.GetPatientDiagnoses(nric);
@@ -423,7 +519,8 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             GridViewPatientDiagnoses.DataBind();
 
             string term = TextboxSearchDiagnosis.Text.Trim().ToLower();
-            List<Diagnosis> diagnoses = therapistBLL.GetDiagnoses(term, patientDiagnoses);
+            string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
+            List<Diagnosis> diagnoses = therapistBLL.GetDiagnoses(term, patientNRIC, patientDiagnoses);
             ViewState["GridViewPatientDiagnosisAdd"] = diagnoses;
             GridViewPatientDiagnosisAdd.DataSource = diagnoses;
             GridViewPatientDiagnosisAdd.DataBind();
@@ -461,10 +558,10 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         {
             if (e.CommandName.Equals("UpdateEndPatientDiagnosis"))
             {
-                string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
 
                 try
                 {
+                    string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
                     string code = e.CommandArgument.ToString();
 
                     therapistBLL.UpdatePatientDiagnosis(patientNRIC, code);
@@ -490,10 +587,9 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         {
             if (e.CommandName.Equals("AddPatientDiagnosis"))
             {
-                string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
-
                 try
                 {
+                    string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
                     string code = e.CommandArgument.ToString();
 
                     therapistBLL.AddPatientDiagnosis(patientNRIC, code);
@@ -515,5 +611,73 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         }
         #endregion
 
+        #region Record Diagnosis Functions
+        protected void Bind_GridViewRecordDiagnoses()
+        {
+            int recordID = Convert.ToInt32( ViewState["GridViewRecordsSelectedRecord"]);
+            Record record = recordBLL.GetRecord(recordID);
+            labelRecordNameDiagnosis.Text = record.title;
+
+            List<RecordDiagnosis> recordDiagnoses = recordBLL.GetRecordDiagnoses(recordID);
+            ViewState["GridViewRecordDiagnoses"] = recordDiagnoses;
+            GridViewRecordDiagnoses.DataSource = recordDiagnoses;
+            GridViewRecordDiagnoses.DataBind();
+
+            string term = TextboxSearchDiagnosisForRecord.Text.Trim().ToLower();
+            string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
+            List<Diagnosis> diagnoses = therapistBLL.GetDiagnoses(term, patientNRIC, recordDiagnoses);
+            ViewState["GridViewRecordDiagnosesAdd"] = diagnoses;
+            GridViewRecordDiagnosesAdd.DataSource = diagnoses;
+            GridViewRecordDiagnosesAdd.DataBind();
+
+            UpdatePanelRecordDiagnosisView.Update();
+        }
+
+        protected void GridViewRecordDiagnoses_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewRecordDiagnoses.PageIndex = e.NewPageIndex;
+            GridViewRecordDiagnoses.DataSource = ViewState["GridViewRecordDiagnoses"];
+            GridViewRecordDiagnoses.DataBind();
+        }
+
+        protected void GridViewRecordDiagnosesAdd_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewPatientDiagnosisAdd.PageIndex = e.NewPageIndex;
+            GridViewPatientDiagnosisAdd.DataSource = ViewState["GridViewRecordDiagnosesAdd"];
+            GridViewPatientDiagnosisAdd.DataBind();
+        }
+
+        protected void GridViewRecordDiagnosesAdd_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName.Equals("AddRecordDiagnosis"))
+            {
+                try
+                {
+                    string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
+                    string code = e.CommandArgument.ToString();
+                    int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelectedRecord"]);
+
+                    recordBLL.AddRecordDiagnosis(patientNRIC, recordID, code);
+
+                    Bind_GridViewRecordDiagnoses();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Diagnosis has been Successfully Rttributed to Record.');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Attributing Diagnosis to Record.');", true);
+                }
+            }
+        }
+
+        protected void ButtonSearchDiagnosisForRecord_Click(object sender, EventArgs e)
+        {
+            Bind_GridViewRecordDiagnoses();
+        }
+
+        protected void CloseModalRecordDiagnosisView_ServerClick(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "Close View Record Diagnosis Modal", " $('#modalRecordDiagnosisView').modal('hide'); $('#modalRecords').modal('show');", true);
+        }
+        #endregion
     }
 }

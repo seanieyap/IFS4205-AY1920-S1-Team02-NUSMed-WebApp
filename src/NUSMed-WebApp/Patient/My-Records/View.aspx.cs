@@ -162,7 +162,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                     int id = Convert.ToInt32(e.CommandArgument);
 
                     ViewState["GridViewRecordsSelected"] = id;
-                    List<RecordDiagnosis> recordDiagnosis = patientBLL.GetRecordDiagnoses(id);
+                    List<RecordDiagnosis> recordDiagnosis = recordBLL.GetRecordDiagnoses(id);
                     ViewState["GridViewRecordDiagnoses"] = recordDiagnosis;
                     GridViewRecordDiagnoses.DataSource = recordDiagnosis;
                     GridViewRecordDiagnoses.DataBind();
@@ -321,8 +321,6 @@ namespace NUSMed_WebApp.Patient.My_Records
             GridViewRecordDiagnoses.DataSource = ViewState["GridViewRecordDiagnoses"];
             GridViewRecordDiagnoses.DataBind();
         }
-
         #endregion
-
     }
 }

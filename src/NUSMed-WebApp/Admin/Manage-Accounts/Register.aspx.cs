@@ -79,7 +79,6 @@ namespace NUSMed_WebApp
             #region Validation
             bool[] validate = Enumerable.Repeat(true, 12).ToArray();
 
-            // If any fields are empty
             if (string.IsNullOrEmpty(nric) || accountBLL.IsRegistered(nric) 
                 || !AccountBLL.IsNRICValid(nric))
             {
@@ -165,14 +164,15 @@ namespace NUSMed_WebApp
                 inputPasswordConfirm.Attributes.Add("class", "form-control is-valid");
             }
 
-            if (!AccountBLL.IsTokenIDValid(associatedTokenID))
+            // reversed validation for token id
+            validate[10] = false;
+            if (string.IsNullOrEmpty(associatedTokenID) || AccountBLL.IsTokenIDValid(associatedTokenID))
             {
-                validate[10] = false;
-                inputAssociatedTokenID.Attributes.Add("class", "form-control is-invalid");
+                validate[10] = true;
+                inputAssociatedTokenID.Attributes.Add("class", "form-control is-valid");
             }
             else
-                inputAssociatedTokenID.Attributes.Add("class", "form-control is-valid");
-
+                inputAssociatedTokenID.Attributes.Add("class", "form-control is-invalid");
 
             if (!AccountBLL.IsAddressPostalCode(addressPostalCode))
             {
@@ -186,9 +186,15 @@ namespace NUSMed_WebApp
 
             if (validate.Contains(false))
             {
-                inputPassword.Attributes.Add("class", "form-control is-invalid");
                 if (!validate[9])
-                    inputPasswordConfirm.Attributes.Add("class", "form-control");
+                {
+                    inputPassword.Attributes.Add("class", "form-control is-invalid");
+                    inputPasswordConfirm.Attributes.Add("class", "form-control is-invalid");
+                }
+                else
+                {
+
+                }
                 spanMessage.Visible = true;
             }
             else

@@ -20,17 +20,17 @@ namespace NUSMed_WebApp.Classes.Entity
         #region permission   
         public short? recordPermissionStatus { get; set; }
 
-        public bool hasPermissionsApproved(Record record)
-        {
-            if ((permissionApproved & record.type.permissionFlag) != 0)
-            {
-                //if ()
-                //{
-                return true;
-                //}
-            }
-            return false;
-        }
+        //public bool hasPermissionsApproved(Record record)
+        //{
+        //    if ((permissionApproved & record.type.permissionFlag) != 0)
+        //    {
+        //        //if ()
+        //        //{
+        //        return true;
+        //        //}
+        //    }
+        //    return false;
+        //}
 
         public bool hasHeightMeasurementPermissionsApproved
         {

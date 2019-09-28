@@ -8,7 +8,6 @@ namespace NUSMed_WebApp.Classes.Entity
     [Serializable]
     public class PatientDiagnosis
     {
-        public string patientNRIC { get; set; }
         public Therapist therapist { get; set; }
         public Diagnosis diagnosis { get; set; }
         public DateTime start { get; set; }

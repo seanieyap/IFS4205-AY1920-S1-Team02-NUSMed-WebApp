@@ -203,7 +203,7 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT patient_nric, permission_unapproved,
-                    request_time, permission_approved, approved_time
+                    request_time, permission_approved, approved_time, is_emergency
                     FROM record_type_permission
                     WHERE therapist_nric = @therapistNRIC AND patient_nric = @patientNRIC;";
 
@@ -223,7 +223,8 @@ namespace NUSMed_WebApp.Classes.DAL
                             {
                                 nric = Convert.ToString(reader["patient_nric"]),
                                 permissionUnapproved = Convert.ToInt16(reader["permission_unapproved"]),
-                                permissionApproved = Convert.ToInt16(reader["permission_approved"])
+                                permissionApproved = Convert.ToInt16(reader["permission_approved"]),
+                                isEmergency = Convert.ToBoolean(reader["is_emergency"])
                             };
                             patient.requestTime = reader["request_time"] == DBNull.Value ? null :
                                (DateTime?)Convert.ToDateTime(reader["request_time"]);
@@ -327,13 +328,10 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
-        /// Insert a Diagnosis to a Patient
+        /// Insert a Diagnosis (Attribute to a patient)
         /// </summary>
         public void InsertPatientDiagnosis(string patientNRIC, string therapistNRIC, string code)
         {
-            if (patientNRIC == therapistNRIC)
-                return;
-
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"INSERT INTO patient_diagnosis (patient_nric, diagnosis_code, therapist_nric)
@@ -389,7 +387,8 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"UPDATE record_type_permission
-                    SET permission_unapproved = @permissionUnapproved
+                    SET permission_unapproved = @permissionUnapproved, 
+                    request_time = NOW() 
                     WHERE patient_nric = @patientNRIC AND therapist_nric = @therapistNRIC;";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
@@ -405,60 +404,32 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
-        /// Retrieve all the diagnoses information of a specific record
+        /// Update a Request for Permissions relationship between Therapist and Patient
         /// </summary>
-        public List<RecordDiagnosis> RetrieveRecordDiagnoses(string patientNRIC, int recordID)
+        public void UpdateRecordTypeRescind(string patientNRIC, string therapistNRIC)
         {
-            List<RecordDiagnosis> result = new List<RecordDiagnosis>();
+            if (patientNRIC == therapistNRIC)
+                return;
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short, d.category_title, 
-                    a.name_first, a.name_last
-                    FROM record_diagnosis rd 
-                    INNER JOIN record r ON r.id = rd.record_id AND r.id = @recordID
-                    INNER JOIN account_patient ap ON ap.nric = r.patient_nric AND r.patient_nric = @patientNRIC
-                    INNER JOIN diagnosis d ON rd.diagnosis_code = d.diagnosis_Code
-                    INNER JOIN account a ON a.nric = rd.creator_nric;";
+                cmd.CommandText = @"UPDATE record_type_permission
+                    SET permission_approved = 0, 
+                    permission_unapproved = 0,
+                    approved_time = NULL,
+                    request_time = NULL,
+                    is_emergency = false
+                    WHERE patient_nric = @patientNRIC AND therapist_nric = @therapistNRIC;";
 
-                cmd.Parameters.AddWithValue("@recordID", recordID);
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
 
                 using (cmd.Connection = connection)
                 {
                     cmd.Connection.Open();
                     cmd.ExecuteNonQuery();
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Entity.Therapist therapist = new Entity.Therapist
-                            {
-                                firstName = Convert.ToString(reader["name_first"]),
-                                lastName = Convert.ToString(reader["name_last"])
-                            };
-
-                            Diagnosis diagnosis = new Diagnosis
-                            {
-                                code = Convert.ToString(reader["diagnosis_code"]),
-                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
-                                categoryTitle = Convert.ToString(reader["category_title"])
-                            };
-
-                            RecordDiagnosis recordDiagnosis = new RecordDiagnosis
-                            {
-                                therapist = therapist,
-                                diagnosis = diagnosis,
-                            };
-
-                            result.Add(recordDiagnosis);
-                        }
-                    }
                 }
             }
-
-            return result;
         }
 
         /// <summary>
@@ -507,7 +478,6 @@ namespace NUSMed_WebApp.Classes.DAL
 
                             PatientDiagnosis patientDiagnosis = new PatientDiagnosis
                             {
-                                patientNRIC = patientNRIC,
                                 therapist = therapist,
                                 diagnosis = diagnosis,
                                 start = Convert.ToDateTime(reader["start"]),
@@ -549,7 +519,6 @@ namespace NUSMed_WebApp.Classes.DAL
                     {
                         while (reader.Read())
                         {
-
                             Diagnosis diagnosis = new Diagnosis
                             {
                                 code = Convert.ToString(reader["diagnosis_code"]),

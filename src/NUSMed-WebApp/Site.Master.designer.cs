@@ -49,15 +49,6 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksHome;
         
         /// <summary>
-        /// navLinksAbout control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAbout;
-        
-        /// <summary>
         /// navLinksAggregatedSearch control.
         /// </summary>
         /// <remarks>
@@ -65,6 +56,15 @@ namespace NUSMed_WebApp {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAggregatedSearch;
+        
+        /// <summary>
+        /// navLinksAbout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navLinksAbout;
         
         /// <summary>
         /// navLinksPatientDashboard control.
