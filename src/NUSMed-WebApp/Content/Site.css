@@ -301,23 +301,6 @@ a.aspNetDisabled.btn.btn-secondary.disabled {
     }
 }
 
-/*@media all and (max-width: 410.98px) {
-    #topNav .navbar-brand img {
-        height: 40px;
-    }
-}
-
-@media all and (max-width: 364.98px) {
-    #topNav .navbar-brand img {
-        height: 35px;
-    }
-
-    #mainNav a {
-        font-size: 0.8rem;
-    }
-}*/
-
-
 @media (min-width: 992px) {
     .ml-md-neg {
         margin-left: -15px !important;

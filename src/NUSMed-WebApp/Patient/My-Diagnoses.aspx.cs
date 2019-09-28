@@ -11,7 +11,7 @@ namespace NUSMed_WebApp.Patient
 {
     public partial class My_Diagnoses : Page
     {
-        private readonly DiagnosisBLL diagnosisBLL = new DiagnosisBLL();
+        private readonly PatientBLL patientBLL = new PatientBLL();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,9 +26,9 @@ namespace NUSMed_WebApp.Patient
         #region GridViewDiagnosis Functions
         protected void Bind_GridViewPatientDiagnoses()
         {
-            List<PatientDiagnosis> patientDiagnosis = diagnosisBLL.GetDiagnosis();
-            ViewState["GridViewPatientDiagnoses"] = patientDiagnosis;
-            GridViewPatientDiagnoses.DataSource = patientDiagnosis;
+            List<PatientDiagnosis> patientDiagnoses = patientBLL.GetDiagnoses();
+            ViewState["GridViewPatientDiagnoses"] = patientDiagnoses;
+            GridViewPatientDiagnoses.DataSource = patientDiagnoses;
             GridViewPatientDiagnoses.DataBind();
             UpdatePanelDiagnoses.Update();
         }

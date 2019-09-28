@@ -463,13 +463,13 @@ namespace NUSMed_WebApp.Therapist.My_Patients {
         protected global::System.Web.UI.HtmlControls.HtmlVideo modalFileViewVideo;
         
         /// <summary>
-        /// so control.
+        /// modalFileViewVideoSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSource so;
+        protected global::System.Web.UI.HtmlControls.HtmlSource modalFileViewVideoSource;
         
         /// <summary>
         /// modalFileViewLabelText control.
@@ -506,6 +506,60 @@ namespace NUSMed_WebApp.Therapist.My_Patients {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label modalFileViewLabelFileSize;
+        
+        /// <summary>
+        /// UpdatePanelDiagnosisView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelDiagnosisView;
+        
+        /// <summary>
+        /// labelDiagnosisName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelDiagnosisName;
+        
+        /// <summary>
+        /// GridViewPatientDiagnoses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewPatientDiagnoses;
+        
+        /// <summary>
+        /// TextboxSearchDiagnosis control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextboxSearchDiagnosis;
+        
+        /// <summary>
+        /// ButtonSearchDiagnosis control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ButtonSearchDiagnosis;
+        
+        /// <summary>
+        /// GridViewPatientDiagnosisAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewPatientDiagnosisAdd;
         
         /// <summary>
         /// Master property.

@@ -21,7 +21,6 @@ namespace NUSMed_WebApp.Patient.My_Records
             Master.LiActivePatientMyRecords();
             Master.LiActivePatientMyRecordView();
 
-
             if (!IsPostBack)
             {
                 Bind_GridViewRecords();
@@ -124,7 +123,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                     else if (record.fileExtension == ".mp4")
                     {
                         modalFileViewVideo.Visible = true;
-                        so.Attributes.Add("src", "~/Patient/Download.ashx?record=" + record.id);
+                        modalFileViewVideoSource.Attributes.Add("src", "~/Patient/Download.ashx?record=" + record.id);
                     }
 
                     labelRecordName.Text = record.title;
@@ -163,7 +162,11 @@ namespace NUSMed_WebApp.Patient.My_Records
                     int id = Convert.ToInt32(e.CommandArgument);
 
                     ViewState["GridViewRecordsSelected"] = id;
-                    Update_DiagnosisModal(id);
+                    List<RecordDiagnosis> recordDiagnosis = patientBLL.GetRecordDiagnoses(id);
+                    ViewState["GridViewRecordDiagnoses"] = recordDiagnosis;
+                    GridViewRecordDiagnoses.DataSource = recordDiagnosis;
+                    GridViewRecordDiagnoses.DataBind();
+                    UpdatePanelRecordDiagnosis.Update();
 
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open View Diagnosis Modal", "$('#modalDiagnosisView').modal('show');", true);
                 }
@@ -312,14 +315,6 @@ namespace NUSMed_WebApp.Patient.My_Records
         #endregion
 
         #region Diagnosis Modal
-        protected void Update_DiagnosisModal(int recordID)
-        {
-            List<RecordDiagnosis> recordDiagnosis = patientBLL.GetRecordDiagnosis(recordID);
-            ViewState["GridViewRecordDiagnoses"] = recordDiagnosis;
-            GridViewRecordDiagnoses.DataSource = recordDiagnosis;
-            GridViewRecordDiagnoses.DataBind();
-            UpdatePanelRecordDiagnosis.Update();
-        }
         protected void GridViewRecordDiagnoses_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             GridViewRecordDiagnoses.PageIndex = e.NewPageIndex;

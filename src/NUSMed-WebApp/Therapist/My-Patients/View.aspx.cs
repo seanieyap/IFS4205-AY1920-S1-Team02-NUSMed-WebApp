@@ -100,7 +100,6 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             {
                 try
                 {
-                    //Update_UpdatePanelRecords(nric);
                     List<Record> records = new RecordBLL().GetRecords(nric);
                     LabelRecordsNRIC.Text = nric;
                     modalRecordsHyperlinkNewRecord.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + nric;
@@ -110,14 +109,25 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     GridViewRecords.DataBind();
                     UpdatePanelRecords.Update();
 
-
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Records Modal", "$('#modalRecords').modal('show');", true);
                 }
                 catch
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Records Modal.');", true);
                 }
-
+            }
+            else if (e.CommandName.Equals("ViewDiagnosis"))
+            {
+                try
+                {
+                    TextboxSearchDiagnosis.Text = string.Empty;
+                    Bind_GridViewPatientDiagnoses(nric);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Diagnosis Modal", "$('#modalDiagnosisView').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Diagnosis Modal.');", true);
+                }
             }
 
             Bind_GridViewPatient();
@@ -137,6 +147,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 Label LabelName = (Label)e.Row.FindControl("LabelName");
                 Label LabelNameStatus = (Label)e.Row.FindControl("LabelNameStatus");
                 LinkButton LinkButtonViewInformation = (LinkButton)e.Row.FindControl("LinkButtonViewInformation");
+                LinkButton LinkButtonViewDiagnosis = (LinkButton)e.Row.FindControl("LinkButtonViewDiagnosis");
                 LinkButton LinkButtonViewRecords = (LinkButton)e.Row.FindControl("LinkButtonViewRecords");
                 HyperLink LinkButtonNewRecords = (HyperLink)e.Row.FindControl("LinkButtonNewRecords");
                 Label LabelPermissionStatus = (Label)e.Row.FindControl("LabelPermissionStatus");
@@ -148,6 +159,8 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     LabelNameStatus.Visible = true;
                     LinkButtonViewInformation.CssClass = "btn btn-secondary btn-sm disabled";
                     LinkButtonViewInformation.Enabled = false;
+                    LinkButtonViewDiagnosis.CssClass = "btn btn-secondary btn-sm disabled";
+                    LinkButtonViewDiagnosis.Enabled = false;
                     LinkButtonViewRecords.CssClass = "btn btn-secondary btn-sm disabled";
                     LinkButtonViewRecords.Enabled = false;
                     LinkButtonNewRecords.CssClass = "btn btn-secondary btn-sm disabled";
@@ -159,6 +172,9 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     LinkButtonViewInformation.CssClass = "btn btn-success btn-sm";
                     LinkButtonViewInformation.CommandName = "ViewInformation";
                     LinkButtonViewInformation.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
+                    LinkButtonViewDiagnosis.CssClass = "btn btn-success btn-sm";
+                    LinkButtonViewDiagnosis.CommandName = "ViewDiagnosis";
+                    LinkButtonViewDiagnosis.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
                     LinkButtonViewRecords.CssClass = "btn btn-success btn-sm";
                     LinkButtonViewRecords.CommandName = "ViewRecords";
                     LinkButtonViewRecords.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
@@ -278,18 +294,6 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         #endregion
 
         #region Record Functions
-        //private void Update_UpdatePanelRecords(string nric)
-        //{
-        //    List<Record> records = new RecordBLL().GetRecords(nric);
-        //    LabelRecordsNRIC.Text = nric;
-        //    modalRecordsHyperlinkNewRecord.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + nric;
-
-
-        //    ViewState["GridViewRecords"] = records;
-        //    GridViewRecords.DataSource = records;
-        //    GridViewRecords.DataBind();
-        //    UpdatePanelRecords.Update();
-        //}
         protected void GridViewRecords_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -389,7 +393,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     else if (record.fileExtension == ".mp4")
                     {
                         modalFileViewVideo.Visible = true;
-                        so.Attributes.Add("src", "~/Therapist/Download.ashx?record=" + record.id);
+                        modalFileViewVideoSource.Attributes.Add("src", "~/Therapist/Download.ashx?record=" + record.id);
                     }
 
                     labelRecordName.Text = record.title;
@@ -407,5 +411,109 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             }
         }
         #endregion
+
+        #region Diagnosis Functions
+        protected void Bind_GridViewPatientDiagnoses(string nric)
+        {
+            List<PatientDiagnosis> patientDiagnoses = therapistBLL.GetPatientDiagnoses(nric);
+            labelDiagnosisName.Text = nric;
+
+            ViewState["GridViewPatientDiagnoses"] = patientDiagnoses;
+            GridViewPatientDiagnoses.DataSource = patientDiagnoses;
+            GridViewPatientDiagnoses.DataBind();
+
+            string term = TextboxSearchDiagnosis.Text.Trim().ToLower();
+            List<Diagnosis> diagnoses = therapistBLL.GetDiagnoses(term, patientDiagnoses);
+            ViewState["GridViewPatientDiagnosisAdd"] = diagnoses;
+            GridViewPatientDiagnosisAdd.DataSource = diagnoses;
+            GridViewPatientDiagnosisAdd.DataBind();
+
+            UpdatePanelDiagnosisView.Update();
+        }
+
+        protected void GridViewPatientDiagnoses_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewPatientDiagnoses.PageIndex = e.NewPageIndex;
+            GridViewPatientDiagnoses.DataSource = ViewState["GridViewPatientDiagnoses"];
+            GridViewPatientDiagnoses.DataBind();
+        }
+
+        protected void GridViewPatientDiagnoses_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Label LabelPatientDiagnosesEnd = (Label)e.Row.FindControl("LabelPatientDiagnosesEnd");
+                DateTime? endDateTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "end");
+
+                if (endDateTime == null)
+                {
+                    LinkButton LinkButtonPatientDiagnosesEnd = (LinkButton)e.Row.FindControl("LinkButtonPatientDiagnosesEnd");
+                    LinkButtonPatientDiagnosesEnd.Visible = true;
+                }
+                else
+                {
+                    LabelPatientDiagnosesEnd.Text = endDateTime.ToString();
+                    LabelPatientDiagnosesEnd.Visible = true;
+                }
+            }
+        }
+        protected void GridViewPatientDiagnoses_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName.Equals("UpdateEndPatientDiagnosis"))
+            {
+                string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
+
+                try
+                {
+                    string code = e.CommandArgument.ToString();
+
+                    therapistBLL.UpdatePatientDiagnosis(patientNRIC, code);
+
+                    Bind_GridViewPatientDiagnoses(patientNRIC);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Diagnosis attributed to " + patientNRIC + " has been Sucessfully Declared to have ended.');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Declaring end of Diagnosis.');", true);
+                }
+            }
+
+        }
+        protected void GridViewPatientDiagnosesAdd_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewPatientDiagnosisAdd.PageIndex = e.NewPageIndex;
+            GridViewPatientDiagnosisAdd.DataSource = ViewState["GridViewPatientDiagnosisAdd"];
+            GridViewPatientDiagnosisAdd.DataBind();
+        }
+
+        protected void GridViewPatientDiagnosisAdd_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName.Equals("AddPatientDiagnosis"))
+            {
+                string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
+
+                try
+                {
+                    string code = e.CommandArgument.ToString();
+
+                    therapistBLL.AddPatientDiagnosis(patientNRIC, code);
+
+                    Bind_GridViewPatientDiagnoses(patientNRIC);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Diagnosis has been Successfully Attributed to " + patientNRIC + ".');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Attributing Diagnosis to Patient.');", true);
+                }
+            }
+        }
+
+        protected void ButtonSearchDiagnosis_Click(object sender, EventArgs e)
+        {
+            string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
+            Bind_GridViewPatientDiagnoses(patientNRIC);
+        }
+        #endregion
+
     }
 }

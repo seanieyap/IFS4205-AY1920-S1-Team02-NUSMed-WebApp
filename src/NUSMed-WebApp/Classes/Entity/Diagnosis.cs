@@ -12,5 +12,6 @@ namespace NUSMed_WebApp.Classes.Entity
         public string descriptionShort { get; set; }
         public string descriptionLong { get; set; }
         public string categoryTitle { get; set; }
+        public bool patientHas { get; set; } = false;
     }
 }

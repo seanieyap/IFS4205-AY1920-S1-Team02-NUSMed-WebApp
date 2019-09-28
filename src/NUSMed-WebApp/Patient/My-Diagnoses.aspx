@@ -20,19 +20,19 @@
                         ItemType="NUSMed_WebApp.Classes.Entity.PatientDiagnosis" OnPageIndexChanging="GridViewPatientDiagnoses_PageIndexChanging" 
                         EmptyDataRowStyle-CssClass="empty-table" runat="server">
                         <Columns>
-                            <asp:TemplateField HeaderText="Diagnosis Code">
+                            <asp:TemplateField HeaderText="Code">
                                 <ItemTemplate>
                                     <%# Item.diagnosis.code %>
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="Diagnosis Description">
+                            <asp:TemplateField HeaderText="Description">
                                 <ItemTemplate>
                                     <%# Item.diagnosis.descriptionShort %>
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="Diagnosis Category">
+                            <asp:TemplateField HeaderText="Category">
                                 <ItemTemplate>
                                     <%# Item.diagnosis.categoryTitle %>
                                 </ItemTemplate>

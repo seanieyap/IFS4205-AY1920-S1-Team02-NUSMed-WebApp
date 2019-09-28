@@ -1,4 +1,5 @@
 ﻿using NUSMed_WebApp.Classes.DAL;
+using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,5 +99,71 @@ namespace NUSMed_WebApp.Classes.BLL
                 therapistDAL.UpdateRecordTypeRequest(patientNRIC, AccountBLL.GetNRIC(), permission);
             }
         }
+        public List<RecordDiagnosis> GetRecordDiagnoses(int recordID)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                return therapistDAL.RetrieveRecordDiagnoses(AccountBLL.GetNRIC(), recordID);
+            }
+
+            return null;
+        }
+        public List<PatientDiagnosis> GetPatientDiagnoses(string patientNRIC)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                if (therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
+                {
+                    return therapistDAL.RetrievePatientDiagnoses(patientNRIC, AccountBLL.GetNRIC());
+                }
+            }
+
+            return null;
+        }
+
+        public List<Diagnosis> GetDiagnoses(string term, List<PatientDiagnosis> patientDiagnoses)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                List<Diagnosis> diagnoses = therapistDAL.RetrieveDiagnoses(term);
+                List<Diagnosis> result = new List<Diagnosis>();
+
+                foreach (Diagnosis diagnosis in diagnoses)
+                {
+                    if (!patientDiagnoses.Any(x => x.diagnosis.code.Equals(diagnosis.code) && x.end == null))
+                    {
+                        result.Add(diagnosis);
+                    }
+                }
+                return result;
+            }
+
+            return null;
+        }
+
+        public void AddPatientDiagnosis(string patientNRIC, string code)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                if (!patientNRIC.Equals(AccountBLL.GetNRIC()) && 
+                    therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
+                {
+                    therapistDAL.InsertPatientDiagnosis(patientNRIC, AccountBLL.GetNRIC(), code);
+                }
+            }
+        }
+
+        public void UpdatePatientDiagnosis(string patientNRIC, string code)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                if (!patientNRIC.Equals(AccountBLL.GetNRIC()) && 
+                    therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
+                {
+                    therapistDAL.UpdatePatientDiagnosis(patientNRIC, AccountBLL.GetNRIC(), code);
+                }
+            }
+        }
+
     }
 }

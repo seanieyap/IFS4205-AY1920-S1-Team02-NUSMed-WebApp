@@ -229,64 +229,6 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
-        /// Retrieve all the diagnoses information of a specific record
-        /// </summary>
-        public List<RecordDiagnosis> RetrieveRecordDiagnosis(string patientNRIC, int recordID)
-        {
-            List<RecordDiagnosis> result = new List<RecordDiagnosis>();
-
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short, d.category_title, 
-                    a.name_first, a.name_last
-                    FROM record_diagnosis rd 
-                    INNER JOIN record r ON r.id = rd.record_id AND r.id = @recordID
-                    INNER JOIN account_patient ap ON ap.nric = r.patient_nric AND r.patient_nric = @patientNRIC
-                    INNER JOIN diagnosis d ON rd.diagnosis_code = d.diagnosis_Code
-                    INNER JOIN account a ON a.nric = rd.creator_nric;";
-
-                cmd.Parameters.AddWithValue("@recordID", recordID);
-                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
-
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Entity.Therapist therapist = new Entity.Therapist
-                            {
-                                firstName = Convert.ToString(reader["name_first"]),
-                                lastName = Convert.ToString(reader["name_last"])
-                            };
-
-                            Diagnosis diagnosis = new Diagnosis
-                            {
-                                code = Convert.ToString(reader["diagnosis_code"]),
-                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
-                                categoryTitle = Convert.ToString(reader["category_title"])
-                            };
-
-                            RecordDiagnosis recordDiagnosis = new RecordDiagnosis
-                            {
-                                therapist = therapist,
-                                diagnosis = diagnosis,
-                            };
-
-                            result.Add(recordDiagnosis);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-
-        /// <summary>
         /// Update a Request for Permissions relationship between Therapist and Patient
         /// </summary>
         public void UpdateRecordTypeRequest(string patientNRIC, string therapistNRIC, short permission)
@@ -341,5 +283,121 @@ namespace NUSMed_WebApp.Classes.DAL
             }
         }
 
+        /// <summary>
+        /// Retrieve all the diagnoses information of a specific record
+        /// </summary>
+        public List<RecordDiagnosis> RetrieveRecordDiagnoses(int recordID, string patientNRIC)
+        {
+            List<RecordDiagnosis> result = new List<RecordDiagnosis>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short, d.category_title, 
+                    a.name_first, a.name_last
+                    FROM record_diagnosis rd 
+                    INNER JOIN record r ON r.id = rd.record_id AND r.id = @recordID
+                    INNER JOIN account_patient ap ON ap.nric = r.patient_nric AND r.patient_nric = @patientNRIC
+                    INNER JOIN diagnosis d ON rd.diagnosis_code = d.diagnosis_Code
+                    INNER JOIN account a ON a.nric = rd.creator_nric;";
+
+                cmd.Parameters.AddWithValue("@recordID", recordID);
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Entity.Therapist therapist = new Entity.Therapist
+                            {
+                                firstName = Convert.ToString(reader["name_first"]),
+                                lastName = Convert.ToString(reader["name_last"])
+                            };
+
+                            Diagnosis diagnosis = new Diagnosis
+                            {
+                                code = Convert.ToString(reader["diagnosis_code"]),
+                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
+                                categoryTitle = Convert.ToString(reader["category_title"])
+                            };
+
+                            RecordDiagnosis recordDiagnosis = new RecordDiagnosis
+                            {
+                                therapist = therapist,
+                                diagnosis = diagnosis,
+                            };
+
+                            result.Add(recordDiagnosis);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve all the diagnoses information of a specific patient
+        /// </summary>
+        public List<PatientDiagnosis> RetrievePatientDiagnoses(string patientNRIC)
+        {
+            List<PatientDiagnosis> result = new List<PatientDiagnosis>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT a.name_first, a.name_last, 
+                    pd.diagnosis_code, pd.start, pd.end, 
+                    d.diagnosis_description_short, d.category_title 
+                    FROM patient_diagnosis pd 
+                    INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
+                    INNER JOIN account a ON a.nric = pd.therapist_nric
+                    WHERE pd.patient_nric = @patientNRIC;";
+
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Entity.Therapist therapist = new Entity.Therapist
+                            {
+                                firstName = Convert.ToString(reader["name_first"]),
+                                lastName = Convert.ToString(reader["name_last"])
+                            };
+
+                            Diagnosis diagnosis = new Diagnosis
+                            {
+                                code = Convert.ToString(reader["diagnosis_code"]),
+                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
+                                categoryTitle = Convert.ToString(reader["category_title"])
+                            };
+
+                            PatientDiagnosis patientDiagnosis = new PatientDiagnosis
+                            {
+                                patientNRIC = patientNRIC,
+                                therapist = therapist,
+                                diagnosis = diagnosis,
+                                start = Convert.ToDateTime(reader["start"]),
+                            };
+                            patientDiagnosis.end = reader["end"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["end"]);
+
+                            result.Add(patientDiagnosis);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }

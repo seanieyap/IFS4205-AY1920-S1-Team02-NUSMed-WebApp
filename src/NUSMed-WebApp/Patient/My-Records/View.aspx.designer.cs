@@ -67,13 +67,13 @@ namespace NUSMed_WebApp.Patient.My_Records {
         protected global::System.Web.UI.HtmlControls.HtmlVideo modalFileViewVideo;
         
         /// <summary>
-        /// so control.
+        /// modalFileViewVideoSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSource so;
+        protected global::System.Web.UI.HtmlControls.HtmlSource modalFileViewVideoSource;
         
         /// <summary>
         /// modalFileViewLabelText control.
@@ -182,15 +182,6 @@ namespace NUSMed_WebApp.Patient.My_Records {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanelRecordDiagnosis;
-        
-        /// <summary>
-        /// modalLabelDiagnosisTitle control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label modalLabelDiagnosisTitle;
         
         /// <summary>
         /// GridViewRecordDiagnoses control.

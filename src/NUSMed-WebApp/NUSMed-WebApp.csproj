@@ -394,7 +394,6 @@
     <Compile Include="Classes\BLL\AccountBLL.cs" />
     <Compile Include="Classes\BLL\AccountLogBLL.cs" />
     <Compile Include="Classes\BLL\DataBLL.cs" />
-    <Compile Include="Classes\BLL\DiagnosisBLL.cs" />
     <Compile Include="Classes\BLL\JWTBLL.cs" />
     <Compile Include="Classes\BLL\PatientBLL.cs" />
     <Compile Include="Classes\BLL\RecordBLL.cs" />
@@ -405,7 +404,6 @@
     <Compile Include="Classes\DAL\AccountLogDAL.cs" />
     <Compile Include="Classes\DAL\DAL.cs" />
     <Compile Include="Classes\DAL\DataDAL.cs" />
-    <Compile Include="Classes\DAL\DiagnosisDAL.cs" />
     <Compile Include="Classes\DAL\LogDAL.cs" />
     <Compile Include="Classes\DAL\PatientDAL.cs" />
     <Compile Include="Classes\DAL\RecordDAL.cs" />

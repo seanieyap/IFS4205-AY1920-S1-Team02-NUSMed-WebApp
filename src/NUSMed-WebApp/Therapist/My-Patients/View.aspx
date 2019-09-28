@@ -49,8 +49,14 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Information" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <asp:Label ID="LabelInformationStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
+                                    <%--<asp:Label ID="LabelInformationStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>--%>
                                     <asp:LinkButton ID="LinkButtonViewInformation" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Diagnoses" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                <ItemTemplate>
+                                    <%--<asp:Label ID="LabelInformationStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>--%>
+                                    <asp:LinkButton ID="LinkButtonViewDiagnosis" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Records" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
@@ -69,11 +75,11 @@
                         </Columns>
                         <EmptyDataTemplate>
                             <div class="alert alert-info text-center py-4" role="alert">
-                                <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search has no results.
+                                <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search returned no results.
                                 </h4>
                                 <p>Do try widening your search parameter.</p>
                                 <hr>
-                                <p class="mb-0">First visit? Try entering a search term and hit "Go"!</p>
+                                <p class="mb-0">New here? Try entering a search term and hit "Go"!</p>
                             </div>
                         </EmptyDataTemplate>
                     </asp:GridView>
@@ -487,9 +493,9 @@
                         </button>
                     </div>
                     <div class="modal-body text-center">
-                        <asp:Image ID="modalFileViewImage" CssClass="img-fluid" runat="server" />
-                        <video id="modalFileViewVideo" style="width: 100%; height: auto;" controls runat="server">
-                            <source id="so" type="video/mp4" runat="server">
+                        <asp:Image ID="modalFileViewImage" CssClass="img-fluid" runat="server" Visible="false" />
+                        <video id="modalFileViewVideo" style="width: 100%; height: auto;" controls runat="server" visible="false">
+                            <source id="modalFileViewVideoSource" src="/" type="video/mp4" runat="server">
                             Your browser does not support the video tag.
                         </video>
                         <asp:Label ID="modalFileViewLabelText" runat="server" Visible="false"></asp:Label>
@@ -509,6 +515,182 @@
                 </ContentTemplate>
             </asp:UpdatePanel>
             <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFileView" DisplayAfter="0" DynamicLayout="false">
+                <ProgressTemplate>
+                    <div class="loading">Loading</div>
+                </ProgressTemplate>
+            </asp:UpdateProgress>
+        </div>
+    </div>
+
+    <div id="modalDiagnosisView" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <asp:UpdatePanel ID="UpdatePanelDiagnosisView" class="modal-content" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-header">
+                        <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-eye"></i>
+                            View Diagnoses:
+                            <asp:Label ID="labelDiagnosisName" runat="server"></asp:Label></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Instructions</h4>
+                                <ul>
+                                    <li>Patients can be attributed a diagnosis that has a start and end date.</li>
+                                    <li>Diagnoses cannot be edited nor deleted once added.</li>
+                                    <li>However, Diagnoses without a specified end date can be edited in the future (by any other therapist).</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Add Diagnosis</h4>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <asp:GridView ID="GridViewPatientDiagnoses" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
+                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                            ItemType="NUSMed_WebApp.Classes.Entity.PatientDiagnosis" OnPageIndexChanging="GridViewPatientDiagnoses_PageIndexChanging" OnRowDataBound="GridViewPatientDiagnoses_RowDataBound"
+                                            EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowCommand="GridViewPatientDiagnoses_RowCommand">
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="Code">
+                                                    <ItemTemplate>
+                                                        <%# Item.diagnosis.code %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Description">
+                                                    <ItemTemplate>
+                                                        <%# Item.diagnosis.descriptionShort %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Category">
+                                                    <ItemTemplate>
+                                                        <%# Item.diagnosis.categoryTitle %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Assigned By">
+                                                    <ItemTemplate>
+                                                        <%# Item.therapist.lastName + " " + Item.therapist.firstName %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="Start">
+                                                    <ItemTemplate>
+                                                        <%# Item.start %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:TemplateField HeaderText="End">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="LabelPatientDiagnosesEnd" runat="server" Visible="false"></asp:Label>
+                                                        <asp:LinkButton ID="LinkButtonPatientDiagnosesEnd" CssClass="btn btn-sm btn-success" data-toggle="confirmation" data-title="This is Irreversible. Confirm?"
+                                                            CommandName="UpdateEndPatientDiagnosis" CommandArgument='<%# Item.diagnosis.code %>' runat="server" Visible="false">
+                                                        <i class="fas fa-fw fa-check-circle"></i> Declare End 
+                                                        </asp:LinkButton>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                            </Columns>
+                                            <EmptyDataTemplate>
+                                                <div class="alert alert-info text-center py-4" role="alert">
+                                                    <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Patient does not have any Diagnosis attributed to him/her.
+                                                    </h4>
+                                                    <p>No therapists had probably attributed any diagnoses to the patient.</p>
+                                                    <hr>
+                                                    <p class="mb-0">If this is a mistake, please contact the help-desk for assistance.</p>
+                                                </div>
+                                            </EmptyDataTemplate>
+                                        </asp:GridView>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Attribute a Diagnosis</h4>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 mx-auto">
+                                <asp:Panel CssClass="input-group" runat="server" DefaultButton="ButtonSearchDiagnosis">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Search</span>
+                                    </div>
+                                    <asp:TextBox ID="TextboxSearchDiagnosis" CssClass="form-control" placeholder="Code/Description/Category" runat="server"></asp:TextBox>
+                                    <div class="input-group-append">
+                                        <asp:LinkButton ID="ButtonSearchDiagnosis" CssClass="btn btn-outline-info" OnClick="ButtonSearchDiagnosis_Click" runat="server">
+                                                <i class="fas fa-fw fa-search"></i> Go
+                                        </asp:LinkButton>
+                                    </div>
+                                </asp:Panel>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <asp:GridView ID="GridViewPatientDiagnosisAdd" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
+                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                    ItemType="NUSMed_WebApp.Classes.Entity.Diagnosis" OnPageIndexChanging="GridViewPatientDiagnosesAdd_PageIndexChanging"
+                                    EmptyDataRowStyle-CssClass="empty-table" OnRowCommand="GridViewPatientDiagnosisAdd_RowCommand" runat="server">
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Code">
+                                            <ItemTemplate>
+                                                <%# Item.code %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Description">
+                                            <ItemTemplate>
+                                                <%# Item.descriptionShort %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Category">
+                                            <ItemTemplate>
+                                                <%# Item.categoryTitle %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Action">
+                                            <ItemTemplate>
+                                                <asp:LinkButton CssClass="btn btn-sm btn-success" CommandName="AddPatientDiagnosis" CommandArgument='<%# Item.code %>' runat="server">
+                                                        <i class="fas fa-fw fa-plus-square"></i> Add 
+                                                </asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                    <EmptyDataTemplate>
+                                        <div class="alert alert-info text-center py-4" role="alert">
+                                <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search returned no results.
+                                </h4>
+                                <p>Do try widening your search parameter.</p>
+                                <hr>
+                                <p class="mb-0">New here? Try entering a search term and hit "Go"!</p>
+                                        </div>
+                                    </EmptyDataTemplate>
+                                </asp:GridView>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <%--                        <a id="A1" class="btn btn-warning btn-sm" runat="server">
+                            <i class="fas fa-fw fa-cloud-download-alt"></i></i><span class="d-none d-lg-inline-block">Download</span>
+                        </a>
+                        <span class="text-info small" runat="server">
+                            <i class="fas fa-fw fa-info-circle"></i>File Name:
+                            <asp:Label ID="Label3" runat="server"></asp:Label>. File Size: 
+                            <asp:Label ID="Label4" runat="server"></asp:Label>
+                        </span>--%>
+
+                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelDiagnosisView" DisplayAfter="0" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>

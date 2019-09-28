@@ -121,11 +121,11 @@
 
                         <EmptyDataTemplate>
                             <div class="alert alert-info text-center py-4" role="alert">
-                                <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search has no results.
+                                <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search returned no results.
                                 </h4>
                                 <p>Do try widening your search parameter.</p>
                                 <hr>
-                                <p class="mb-0">First visit? Try entering a search term and hit "Go"!</p>
+                                <p class="mb-0">New here? Try entering a search term and hit "Go"!</p>
                             </div>
                         </EmptyDataTemplate>
                     </asp:GridView>
@@ -281,7 +281,7 @@
     </div>
 
     <div id="modalPatient" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelPatient" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
@@ -307,6 +307,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <hr />
 
                             <div class="row mt-3">
                                 <div class="col-12">
