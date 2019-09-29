@@ -15,7 +15,7 @@
         <ContentTemplate>
             <div class="row mb-4">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
-                    <div class="input-group">
+                    <asp:Panel CssClass="input-group" runat="server" DefaultButton="ButtonSearch">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Search</span>
                         </div>
@@ -25,14 +25,14 @@
                                         <i class="fas fa-fw fa-search"></i> Go
                             </asp:LinkButton>
                         </div>
-                    </div>
+                    </asp:panel>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12">
                     <asp:GridView ID="GridViewPatient" CssClass="table table-sm" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
-                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                         ItemType="NUSMed_WebApp.Classes.Entity.Patient" DataKeyNames="nric" OnRowCommand="GridViewPatient_RowCommand"
                         OnPageIndexChanging="GridViewPatient_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowDataBound="GridViewPatient_RowDataBound">
                         <Columns>
@@ -43,19 +43,16 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Name" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <asp:Label ID="LabelNameStatus" title="No Permission" CssClass="text-danger" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
                                     <asp:Label ID="LabelName" runat="server"></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Information" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <%--<asp:Label ID="LabelInformationStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>--%>
                                     <asp:LinkButton ID="LinkButtonViewInformation" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Diagnoses" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <%--<asp:Label ID="LabelInformationStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>--%>
                                     <asp:LinkButton ID="LinkButtonViewDiagnosis" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -63,7 +60,7 @@
                                 <ItemTemplate>
                                     <asp:Label ID="LabelRecordStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
                                     <asp:LinkButton ID="LinkButtonViewRecords" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
-                                    <asp:HyperLink ID="LinkButtonNewRecords" runat="server"><i class="fas fa-fw fa-file-medical"></i><span class="d-none d-lg-inline-block">New Record</span></asp:HyperLink>
+                                    <asp:HyperLink ID="LinkButtonNewRecord" runat="server"><i class="fas fa-fw fa-file-medical"></i><span class="d-none d-lg-inline-block">New Record</span></asp:HyperLink>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Permissions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
@@ -88,7 +85,7 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <asp:UpdateProgress ID="UpdateProgressAccounts" runat="server" AssociatedUpdatePanelID="UpdatePanelAccounts" DisplayAfter="0" DynamicLayout="false">
+    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelAccounts" DisplayAfter="200" DynamicLayout="false">
         <ProgressTemplate>
             <div class="loading">Loading</div>
         </ProgressTemplate>
@@ -259,7 +256,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPermissions" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPermissions" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -388,7 +385,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelInformation" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelInformation" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -411,7 +408,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <asp:GridView ID="GridViewRecords" CssClass="table table-sm table-responsive-md small" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
-                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary"
+                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" 
                                     OnRowDataBound="GridViewRecords_RowDataBound" OnRowCommand="GridViewRecords_RowCommand" ItemType="NUSMed_WebApp.Classes.Entity.Record"
                                     OnPageIndexChanging="GridViewRecords_PageIndexChanging" DataKeyNames="id" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                                     <Columns>
@@ -458,7 +455,6 @@
                                                 <a id="FileDownloadLink" class="btn btn-warning btn-sm" runat="server" visible="false">
                                                     <i class="fas fa-fw fa-cloud-download-alt"></i>
                                                 </a>
-                                                <asp:Label ID="LabelFileType" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
                                                 <asp:Label ID="LabelRecordPermissionStatusContent" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -470,7 +466,7 @@
                                             </h4>
                                             <p>Perhaps add a record for this patient.</p>
                                             <hr>
-                                            <p class="mb-0">Use the button in the footer to visit the Submit New Records page.</p>
+                                            <p class="mb-0">Use the button at the bottom to visit the Submit New Records page.</p>
                                         </div>
                                     </EmptyDataTemplate>
                                 </asp:GridView>
@@ -483,7 +479,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecords" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecords" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -529,7 +525,7 @@
                     <asp:AsyncPostBackTrigger ControlID="buttonCloseModalFileViewBottom" />
                 </Triggers>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFileView" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFileView" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -556,18 +552,18 @@
                                 <ul>
                                     <li>Patients can be attributed a diagnosis that has a start and end date.</li>
                                     <li>Diagnoses cannot be edited nor deleted once added.</li>
-                                    <li>However, Diagnoses without a specified end date can be edited in the future (by any other therapist).</li>
+                                    <li>However, diagnoses without a specified end date can be edited in the future (by any other therapist).</li>
                                 </ul>
                             </div>
                         </div>
                         <hr />
                         <div class="row">
                             <div class="col-12">
-                                <h4>Attributed Diagnosis</h4>
+                                <h4>Attributed Diagnoses</h4>
                                 <div class="row">
                                     <div class="col-12">
                                         <asp:GridView ID="GridViewPatientDiagnoses" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" 
                                             ItemType="NUSMed_WebApp.Classes.Entity.PatientDiagnosis" OnPageIndexChanging="GridViewPatientDiagnoses_PageIndexChanging" OnRowDataBound="GridViewPatientDiagnoses_RowDataBound"
                                             EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowCommand="GridViewPatientDiagnoses_RowCommand">
                                             <Columns>
@@ -647,7 +643,7 @@
 
                             <div class="col-12 mt-3">
                                 <asp:GridView ID="GridViewPatientDiagnosisAdd" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                                     ItemType="NUSMed_WebApp.Classes.Entity.Diagnosis" OnPageIndexChanging="GridViewPatientDiagnosesAdd_PageIndexChanging"
                                     EmptyDataRowStyle-CssClass="empty-table" OnRowCommand="GridViewPatientDiagnosisAdd_RowCommand" runat="server">
                                     <Columns>
@@ -696,7 +692,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelDiagnosisView" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelDiagnosisView" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -733,7 +729,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <asp:GridView ID="GridViewRecordDiagnoses" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                                             ItemType="NUSMed_WebApp.Classes.Entity.RecordDiagnosis" OnPageIndexChanging="GridViewRecordDiagnoses_PageIndexChanging"
                                             EmptyDataRowStyle-CssClass="empty-table" runat="server">
                                             <Columns>
@@ -797,7 +793,7 @@
 
                             <div class="col-12 mt-3">
                                 <asp:GridView ID="GridViewRecordDiagnosesAdd" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                                     ItemType="NUSMed_WebApp.Classes.Entity.Diagnosis" OnPageIndexChanging="GridViewRecordDiagnosesAdd_PageIndexChanging"
                                     EmptyDataRowStyle-CssClass="empty-table" OnRowCommand="GridViewRecordDiagnosesAdd_RowCommand" runat="server">
                                     <Columns>
@@ -849,7 +845,7 @@
                     <asp:AsyncPostBackTrigger ControlID="buttonCloseModalRecordDiagnosisViewBottom" />
                 </Triggers>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecordDiagnosisView" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecordDiagnosisView" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>

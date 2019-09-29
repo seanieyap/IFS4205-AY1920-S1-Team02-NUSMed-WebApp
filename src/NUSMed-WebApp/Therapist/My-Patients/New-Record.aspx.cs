@@ -74,7 +74,6 @@ namespace NUSMed_WebApp.Therapist.My_Records
             }
         }
 
-
         protected void buttonSubmit_ServerClick(object sender, EventArgs e)
         {
             #region Page Validation
@@ -146,8 +145,6 @@ namespace NUSMed_WebApp.Therapist.My_Records
                 record.fileExtension = Path.GetExtension(inputFile.FileName);
                 record.fileSize = inputFile.PostedFile.ContentLength;
 
-                //record.fileMimeType = inputFile.PostedFile.ContentType;
-
                 if (!inputFile.HasFile)
                 {
                     validate[2] = false;
@@ -187,7 +184,7 @@ namespace NUSMed_WebApp.Therapist.My_Records
                         inputFile.SaveAs(record.fullpath);
                     }
 
-                    recordBLL.SubmitRecordContent(record);
+                    recordBLL.AddRecordContent(record);
 
                     Session["NewRecordSuccess"] = "success";
                 }

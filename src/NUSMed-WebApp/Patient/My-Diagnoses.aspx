@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-12">
                     <asp:GridView ID="GridViewPatientDiagnoses" CssClass="table table-sm" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
-                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                         ItemType="NUSMed_WebApp.Classes.Entity.PatientDiagnosis" OnPageIndexChanging="GridViewPatientDiagnoses_PageIndexChanging" 
                         EmptyDataRowStyle-CssClass="empty-table" runat="server">
                         <Columns>
@@ -71,7 +71,7 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelDiagnoses" DisplayAfter="0" DynamicLayout="false">
+    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelDiagnoses" DisplayAfter="200" DynamicLayout="false">
         <ProgressTemplate>
             <div class="loading">Loading</div>
         </ProgressTemplate>

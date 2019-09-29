@@ -12,7 +12,7 @@
         </div>
     </div>
     <asp:GridView ID="GridViewAnonRecords" CssClass="table table-sm table-responsive-md" runat="server" AllowPaging="true" PageSize="20" PagerStyle-CssClass="pagination-gridview"
-        OnPageIndexChanging="GridViewAnonRecords_PageIndexChanging" AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary"
+        OnPageIndexChanging="GridViewAnonRecords_PageIndexChanging" AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" 
         EmptyDataRowStyle-CssClass="empty-table" OnRowDataBound="GridViewRecords_RowDataBound" ItemType="NUSMed_WebApp.Classes.Entity.RecordAnonymised">
         <Columns>
             <asp:TemplateField HeaderText="Age">

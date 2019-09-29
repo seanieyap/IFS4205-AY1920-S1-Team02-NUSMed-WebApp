@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Researcher" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="NUSMed_WebApp.Researcher.Dashboard" %>
+
 <%@ MasterType VirtualPath="~/site.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -10,6 +11,19 @@
         </div>
     </div>
 
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="card border-0">
+                    <div class="card-body text-center text-md-left">
+                        <h5 class="card-title"><i class="fas fa-fw fa-search"></i>Record Search</h5>
+                        <p class="card-text">Search for anonymised Records for your research purposes.</p>
+                        <a href="~/Researcher/Record-Search" class="btn btn-nus-orange mb-2" runat="server">Go to Record Search <i class="fa fa-angle-double-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">

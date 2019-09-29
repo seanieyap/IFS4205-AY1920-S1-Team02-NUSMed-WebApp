@@ -88,7 +88,7 @@
                         <a id="navLinksTherapistMyPatientsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
                             <i class="fas fa-fw fa-user-injured"></i>My Patients<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
                         </a>
-                        <div class="dropdown-menu py-0" aria-labelledby="navLinksPatientsMyRecords">
+                        <div class="dropdown-menu py-0" aria-labelledby="navLinksTherapistMyPatients">
                             <a id="navLinksTherapistMyPatientsView" class="dropdown-item" href="~/Therapist/My-Patients/View" runat="server">View</a>
                             <a id="navLinksTherapistMyPatientsNewRequest" class="dropdown-item" href="~/Therapist/My-Patients/New-Request" runat="server">New Request</a>
                         </div>
@@ -97,9 +97,9 @@
                         <a id="navLinksTherapistMyMedicalNotesDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
                             <i class="fas fa-fw fa-notes-medical"></i>My Medical Notes<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
                         </a>
-                        <div class="dropdown-menu py-0" aria-labelledby="navLinksPatientsMyRecords">
-                            <a id="navLinksTherapistMyMedicalNotesView" class="dropdown-item" href="~/Therapist/My-Patients/View" runat="server">View</a>
-                            <a id="navLinksTherapistMyMedicalNotesNew" class="dropdown-item" href="~/Therapist/My-Patients/New-Request" runat="server">New Request</a>
+                        <div class="dropdown-menu py-0" aria-labelledby="navLinksTherapistMyMedicalNotes">
+                            <a id="navLinksTherapistMyMedicalNotesView" class="dropdown-item" href="~/Therapist/My-Medical-Notes/View" runat="server">View</a>
+                            <a id="navLinksTherapistMyMedicalNotesNew" class="dropdown-item" href="~/Therapist/My-Medical-Notes/New-Medical-Note" runat="server">New Medical Note</a>
                         </div>
                     </div>
 
@@ -122,7 +122,7 @@
                         <a id="navLinksAdminManageLogsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
                             <i class="fas fa-fw fa-database"></i>Manage Logs<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
                         </a>
-                        <div class="dropdown-menu py-0" aria-labelledby="navLinksHome">
+                        <div class="dropdown-menu py-0" aria-labelledby="navLinksAdminManageLogs">
                             <a id="navLinksAdminViewAccountLogs" class="dropdown-item" href="~/Admin/Manage-Logs/Account-Logs" runat="server">Account Logs</a>
                             <a id="navLinksAdminViewRecordLogs" class="dropdown-item" href="~/Admin/Manage-Logs/Record_Logs" runat="server">Record Logs</a>
                         </div>

@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-12">
                     <asp:GridView ID="GridViewRecords" CssClass="table table-sm table-responsive-md" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
-                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary"
+                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" 
                         OnRowDataBound="GridViewRecords_RowDataBound" OnRowCommand="GridViewRecords_RowCommand" ItemType="NUSMed_WebApp.Classes.Entity.Record"
                         OnPageIndexChanging="GridViewRecords_PageIndexChanging" DataKeyNames="id" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                         <Columns>
@@ -52,15 +52,9 @@
 
                             <asp:TemplateField HeaderText="Attributed Diagnosis" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <%--<asp:Label ID="LabelContent" runat="server" Visible="false"></asp:Label>--%>
                                     <asp:LinkButton ID="LinkbuttonDiagnosisView" CssClass="btn btn-info btn-sm" runat="server">
                                         <i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
-
-                                    <%--                                    <a id="FileDownloadLink" class="btn btn-warning btn-sm" runat="server" visible="false">
-                                        <i class="fas fa-fw fa-cloud-download-alt"></i>
-                                    </a>
-                                    <asp:Label ID="LabelFileType" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>--%>
                                 </ItemTemplate>
                             </asp:TemplateField>
 
@@ -100,7 +94,7 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecords" DisplayAfter="0" DynamicLayout="false">
+    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecords" DisplayAfter="200" DynamicLayout="false">
         <ProgressTemplate>
             <div class="loading">Loading</div>
         </ProgressTemplate>
@@ -140,7 +134,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFileView" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFileView" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -203,7 +197,7 @@
 
                                 <div class="col-12 mt-3">
                                     <asp:GridView ID="GridViewFineGrain" CssClass="table table-sm table-responsive-md small" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
-                                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                                         ItemType="NUSMed_WebApp.Classes.Entity.Therapist" DataKeyNames="nric" OnRowCommand="GridViewFineGrain_RowCommand" OnRowDataBound="GridViewFineGrain_RowDataBound"
                                         OnPageIndexChanging="GridViewFineGrain_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                                         <Columns>
@@ -259,7 +253,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFineGrain" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelFineGrain" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -284,7 +278,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <asp:GridView ID="GridViewRecordDiagnoses" CssClass="table table-sm small" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
-                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                                             ItemType="NUSMed_WebApp.Classes.Entity.RecordDiagnosis" OnPageIndexChanging="GridViewRecordDiagnoses_PageIndexChanging"
                                             EmptyDataRowStyle-CssClass="empty-table" runat="server">
                                             <Columns>
@@ -329,20 +323,11 @@
                     </div>
 
                     <div class="modal-footer">
-                        <%--                        <a id="A1" class="btn btn-warning btn-sm" runat="server">
-                            <i class="fas fa-fw fa-cloud-download-alt"></i></i><span class="d-none d-lg-inline-block">Download</span>
-                        </a>
-                        <span class="text-info small" runat="server">
-                            <i class="fas fa-fw fa-info-circle"></i>File Name:
-                            <asp:Label ID="Label3" runat="server"></asp:Label>. File Size: 
-                            <asp:Label ID="Label4" runat="server"></asp:Label>
-                        </span>--%>
-
                         <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecordDiagnosis" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelRecordDiagnosis" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>

@@ -147,7 +147,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                         inputFile.SaveAs(record.fullpath);
                     }
 
-                    recordBLL.SubmitRecordContent(record);
+                    recordBLL.AddRecordContent(record);
 
                     Session["NewRecordSuccess"] = "success";
                 }

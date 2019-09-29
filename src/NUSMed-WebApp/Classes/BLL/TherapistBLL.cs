@@ -190,5 +190,55 @@ namespace NUSMed_WebApp.Classes.BLL
             }
         }
 
+        public bool AddNote(Note note)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                note.therapist.nric = AccountBLL.GetNRIC();
+                note.creator.nric = AccountBLL.GetNRIC();
+
+                // check if every record is valid
+                RecordBLL recordBLL = new RecordBLL();
+
+                foreach (Record record in note.records)
+                {
+                    Entity.Patient patient = GetPatientPermissions(record.patientNRIC);
+
+                    if (patient.approvedTime == null || !recordBLL.VerifyRecord(record))
+                    {
+                        return false;
+                    }
+                }
+
+                therapistDAL.InsertNote(note);
+                foreach (Record record in note.records)
+                {
+                    therapistDAL.InsertNoteRecord(note, record);
+                }
+
+                return true;
+            }
+            return false;
+        }
+
+        public List<Note> GetNotes(string term)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                List<Note> notes = therapistDAL.RetrieveNotes(term, AccountBLL.GetNRIC());
+
+                //foreach (Entity.Patient patient in patients)
+                //{
+                //    if (patient.approvedTime == null)
+                //    {
+                //        patient.firstName = string.Empty;
+                //        patient.lastName = string.Empty;
+                //    }
+                //}
+                return notes;
+            }
+
+            return null;
+        }
     }
 }

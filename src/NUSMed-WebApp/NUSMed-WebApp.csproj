@@ -412,6 +412,7 @@
     <Compile Include="Classes\Entity\Account.cs" />
     <Compile Include="Classes\Entity\Diagnosis.cs" />
     <Compile Include="Classes\Entity\JWT.cs" />
+    <Compile Include="Classes\Entity\Note.cs" />
     <Compile Include="Classes\Entity\PatientDiagnosis.cs" />
     <Compile Include="Classes\Entity\Patient.cs" />
     <Compile Include="Classes\Entity\Record.cs" />

@@ -11,17 +11,23 @@
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-file-medical"></i>New Record</h1>
-            <p class="lead">Create a New Record for your Patient!
-                <br />Selected Patient: <asp:Label ID="LabelPatientNRIC" runat="server"></asp:Label>
+            <p class="lead">
+                Create a New Record for your Patient!
+                <br />
+                Selected Patient:
+                <asp:Label ID="LabelPatientNRIC" runat="server"></asp:Label>
             </p>
         </div>
     </div>
 
     <asp:UpdatePanel ID="UpdatePanelNewRecord" class="container" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
-            <div class="py-3">
-                <h2>Type</h2>
+            <div class="row">
+                <div class="col-12">
+                    <h2>Type</h2>
+                </div>
             </div>
+
             <div class="row pb-3">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="form-check form-check-inline">
@@ -81,9 +87,12 @@
                 </div>
             </div>
 
-            <div class="py-3">
-                <h2>Content</h2>
+            <div class="row">
+                <div class="col-12">
+                    <h2>Content</h2>
+                </div>
             </div>
+
             <div class="row pb-3">
                 <asp:Panel ID="PanelContent" class="col-12" runat="server">
                     <div class="form-group mt-2 mb-0">
@@ -110,9 +119,12 @@
                 </asp:Panel>
             </div>
 
-            <div class="py-3">
-                <h2>Information</h2>
+            <div class="row">
+                <div class="col-12">
+                    <h2>Basic Information</h2>
+                </div>
             </div>
+
             <div class="row pb-3">
                 <div class="col-12">
                     <div class="form-group">
@@ -155,7 +167,7 @@
             <asp:PostBackTrigger ControlID="buttonSubmit" />
         </Triggers>
     </asp:UpdatePanel>
-    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelNewRecord" DisplayAfter="0" DynamicLayout="false">
+    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelNewRecord" DisplayAfter="200" DynamicLayout="false">
         <ProgressTemplate>
             <div class="loading">Loading</div>
         </ProgressTemplate>

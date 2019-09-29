@@ -301,6 +301,83 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
+        /// Retrieve all of therapist's existing patients
+        /// </summary>
+        public List<Note> RetrieveNotes(string term, string therapistNRIC)
+        {
+            List<Note> result = new List<Note>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT mn.id, mn.title, mn.create_time,
+                    ac.name_first as creator_name_first, ac.name_last  as creator_name_last,
+                    at.name_first as therapist_name_first, at.name_last as therapist_name_last,
+                    ap.name_first as patient_name_first, ap.name_last as patient_name_last,
+                    rtp.permission_unapproved, rtp.request_time, rtp.permission_approved, rtp.approved_time
+                    FROM medical_note mn
+                    INNER JOIN account ac ON mn.creator_nric = ac.nric
+                    INNER JOIN account at ON mn.therapist_nric = at.nric
+                    INNER JOIN account ap ON mn.patient_nric = ap.nric
+                    LEFT JOIN record_type_permission rtp ON rtp.patient_nric = ap.nric
+                    WHERE mn.therapist_nric = @therapistNRIC AND mn.title LIKE @term
+                    GROUP BY mn.id;";
+
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Entity.Therapist therapist = new Entity.Therapist
+                            {
+                                firstName = Convert.ToString(reader["therapist_name_first"]),
+                                lastName = Convert.ToString(reader["therapist_name_last"])
+                            };
+
+                            Entity.Therapist creator = new Entity.Therapist
+                            {
+                                firstName = Convert.ToString(reader["creator_name_first"]),
+                                lastName = Convert.ToString(reader["creator_name_last"])
+                            };
+
+                            Entity.Patient patient = new Entity.Patient
+                            {
+                                firstName = Convert.ToString(reader["patient_name_first"]),
+                                lastName = Convert.ToString(reader["patient_name_last"]),
+                                permissionUnapproved = Convert.ToInt16(reader["permission_unapproved"]),
+                                permissionApproved = Convert.ToInt16(reader["permission_approved"])
+                            };
+                            patient.requestTime = reader["request_time"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["request_time"]);
+                            patient.approvedTime = reader["approved_time"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["approved_time"]);
+
+                            Note note = new Note
+                            {
+                                id = Convert.ToInt64(reader["id"]),
+                                title = Convert.ToString(reader["title"]),
+                                createTime = Convert.ToDateTime(reader["create_time"]),
+                                therapist = therapist,
+                                creator = creator,
+                                patient = patient
+                            };
+
+                            result.Add(note);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Insert a Request for Permissions relationship between Therapist and Patient
         /// </summary>
         public void InsertRecordTypeRequest(string patientNRIC, string therapistNRIC, short permission)
@@ -340,6 +417,52 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
                 cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
                 cmd.Parameters.AddWithValue("@code", code);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Insert a Diagnosis (Attribute to a patient)
+        /// </summary>
+        public void InsertNote(Note note)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"INSERT INTO medical_note (creator_nric, therapist_nric, patient_nric, title, description)
+                    VALUES (@creatorNRIC, @therapistNRIC, @patientNRIC, @title, @description);";
+
+                cmd.Parameters.AddWithValue("@creatorNRIC", note.creator.nric);
+                cmd.Parameters.AddWithValue("@therapistNRIC", note.therapist.nric);
+                cmd.Parameters.AddWithValue("@patientNRIC", note.patient.nric);
+                cmd.Parameters.AddWithValue("@title", note.title);
+                cmd.Parameters.AddWithValue("@description", note.description);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                    note.id = cmd.LastInsertedId;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Insert a Diagnosis (Attribute to a patient)
+        /// </summary>
+        public void InsertNoteRecord(Note note, Record record)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"INSERT INTO medical_note_record (medical_note_id, record_id)
+                    VALUES (@MedicalNoteID, @recordID);";
+
+                cmd.Parameters.AddWithValue("@MedicalNoteID", note.id);
+                cmd.Parameters.AddWithValue("@recordID", record.id);
 
                 using (cmd.Connection = connection)
                 {

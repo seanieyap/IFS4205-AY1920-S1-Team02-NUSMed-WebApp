@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-12">
                     <asp:GridView ID="GridViewAccounts" CssClass="table table-sm table-responsive-md" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                         ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowDeleting="GridViewAccounts_RowDeleting" OnRowCommand="GridViewAccounts_RowCommand"
                         OnPageIndexChanging="GridViewAccounts_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                         <Columns>
@@ -133,7 +133,7 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelAccounts" DisplayAfter="0" DynamicLayout="false">
+    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelAccounts" DisplayAfter="200" DynamicLayout="false">
         <ProgressTemplate>
             <div class="loading">Loading</div>
         </ProgressTemplate>
@@ -216,7 +216,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPersonal" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPersonal" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -271,7 +271,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPersonal" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPersonal" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -321,7 +321,7 @@
                                 </div>
                                 <div class="col-12 mt-3">
                                     <asp:GridView ID="GridViewTherapists2" CssClass="table table-sm table-responsive-md" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                                         ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowCommand="GridViewTherapists2_RowCommand"
                                         OnPageIndexChanging="GridViewTherapists2_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                                         <Columns>
@@ -389,7 +389,7 @@
 
                                 <div class="col-12 mt-3">
                                     <asp:GridView ID="GridViewTherapists" CssClass="table table-sm table-responsive-md" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                                         ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowCommand="GridViewTherapists_RowCommand"
                                         OnPageIndexChanging="GridViewTherapists_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                                         <Columns>
@@ -445,7 +445,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPatient" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPatient" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -489,7 +489,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelTherapist" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelTherapist" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -533,7 +533,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelResearcher" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelResearcher" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>
@@ -689,7 +689,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelStatus" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelStatus" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>

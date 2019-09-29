@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-12 offset-lg-3 col-lg-6">
                     <asp:GridView ID="GridViewPatient" CssClass="table table-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" FooterStyle-CssClass="table-secondary" EditRowStyle-CssClass="table-active"
+                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                         ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowCommand="GridViewPatient_RowCommand"
                         OnPageIndexChanging="GridViewPatient_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowDataBound="GridViewPatient_RowDataBound">
                         <Columns>
@@ -63,7 +63,7 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelAccounts" DisplayAfter="0" DynamicLayout="false">
+    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelAccounts" DisplayAfter="200" DynamicLayout="false">
         <ProgressTemplate>
             <div class="loading">Loading</div>
         </ProgressTemplate>
@@ -149,7 +149,7 @@
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelSelectPermissions" DisplayAfter="0" DynamicLayout="false">
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelSelectPermissions" DisplayAfter="200" DynamicLayout="false">
                 <ProgressTemplate>
                     <div class="loading">Loading</div>
                 </ProgressTemplate>

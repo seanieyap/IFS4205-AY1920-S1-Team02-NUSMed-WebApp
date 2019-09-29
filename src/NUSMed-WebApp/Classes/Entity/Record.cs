@@ -16,7 +16,7 @@ namespace NUSMed_WebApp.Classes.Entity
     {
         static readonly string[] suffixes = { "Bytes", "KB", "MB", "GB", "TB", "PB" };
 
-        public int id { get; set; }
+        public long id { get; set; }
         public string patientNRIC { get; set; }
         public string creatorNRIC { get; set; }
         private string _creatorFirstName;
@@ -153,8 +153,6 @@ namespace NUSMed_WebApp.Classes.Entity
                 byte[] hashValue1 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(patientNRIC));
                 byte[] hashValue2 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(new AccountBLL().GetCreateTime(patientNRIC).ToString("yyyy-MM-dd HH:mm:ss")));
 
-                DateTime test1 = new AccountBLL().GetCreateTime(patientNRIC);
-                string test2 = test1.ToString("yyyy-MM-dd HH:mm:ss");
                 byte[] concat = new byte[hashValue1.Length + hashValue2.Length];
                 Buffer.BlockCopy(hashValue1, 0, concat, 0, hashValue1.Length);
                 Buffer.BlockCopy(hashValue2, 0, concat, hashValue1.Length, hashValue2.Length);

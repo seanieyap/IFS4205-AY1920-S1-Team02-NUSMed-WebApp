@@ -42,7 +42,7 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             Record record = new Record
                             {
-                                id = Convert.ToInt32(reader["id"]),
+                                id = Convert.ToInt64(reader["id"]),
                                 patientNRIC = Convert.ToString(reader["patient_nric"]),
                                 creatorNRIC = Convert.ToString(reader["creator_nric"]),
                                 description = Convert.ToString(reader["description"]),
@@ -97,7 +97,7 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             Record record = new Record
                             {
-                                id = Convert.ToInt32(reader["id"]),
+                                id = Convert.ToInt64(reader["id"]),
                                 patientNRIC = Convert.ToString(reader["patient_nric"]),
                                 creatorNRIC = Convert.ToString(reader["creator_nric"]),
                                 description = Convert.ToString(reader["description"]),
@@ -156,7 +156,7 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             Record record = new Record
                             {
-                                id = Convert.ToInt32(reader["id"]),
+                                id = Convert.ToInt64(reader["id"]),
                                 patientNRIC = Convert.ToString(reader["patient_nric"]),
                                 creatorNRIC = Convert.ToString(reader["creator_nric"]),
                                 description = Convert.ToString(reader["description"]),
@@ -215,7 +215,7 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             Record record = new Record
                             {
-                                id = Convert.ToInt32(reader["id"]),
+                                id = Convert.ToInt64(reader["id"]),
                                 patientNRIC = Convert.ToString(reader["patient_nric"]),
                                 creatorNRIC = Convert.ToString(reader["creator_nric"]),
                                 description = Convert.ToString(reader["description"]),
@@ -241,6 +241,43 @@ namespace NUSMed_WebApp.Classes.DAL
 
             return result;
         }
+
+        /// <summary>
+        /// Retrieve Records information with specific id owned by specific patient
+        /// </summary>
+        public bool RetrieveRecordExists(long id, string patientNRIC)
+        {
+            bool result = new bool();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT EXISTS 
+	                (SELECT id
+	                FROM record
+	                WHERE id = @id AND patient_nric = @patientNRIC) 
+                as result;";
+
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = Convert.ToBoolean(reader["result"]);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
 
         /// <summary>
         /// Retrieve all the diagnoses attributed to a specific record
@@ -417,7 +454,7 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             Record record = new Record
                             {
-                                id = Convert.ToInt32(reader["id"]),
+                                id = Convert.ToInt64(reader["id"]),
                                 patientNRIC = Convert.ToString(reader["patient_nric"]),
                                 creatorNRIC = Convert.ToString(reader["creator_nric"]),
                                 description = Convert.ToString(reader["description"]),
@@ -469,7 +506,7 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             Record record = new Record
                             {
-                                id = Convert.ToInt32(reader["id"])
+                                id = Convert.ToInt64(reader["id"])
                             };
 
                             result.Add(record);
@@ -553,7 +590,25 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
-        public void DeleteRecordPermission(int recordID, string therapistNRIC)
+
+        public void DeleteRecordPermission(long recordID)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"DELETE FROM record_permission 
+                        WHERE record_id = @recordID;";
+
+                cmd.Parameters.AddWithValue("@recordID", recordID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteRecordPermission(long recordID, string therapistNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
@@ -678,7 +733,7 @@ namespace NUSMed_WebApp.Classes.DAL
         #endregion
 
         #region Deletions
-        public void DeleteRecord(int id)
+        public void DeleteRecord(long id)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
@@ -698,7 +753,7 @@ namespace NUSMed_WebApp.Classes.DAL
             }
         }
 
-        public void DeleteRecordDiagnosis(int id)
+        public void DeleteRecordDiagnosis(long id)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
@@ -715,22 +770,6 @@ namespace NUSMed_WebApp.Classes.DAL
             }
         }
 
-        public void DeleteRecordPermission(int id)
-        {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"DELETE FROM record_permission 
-                        WHERE record_id = @recordID;";
-
-                cmd.Parameters.AddWithValue("@recordID", id);
-
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
         #endregion
     }
 }

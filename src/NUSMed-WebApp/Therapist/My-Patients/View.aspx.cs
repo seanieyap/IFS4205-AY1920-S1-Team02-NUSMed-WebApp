@@ -3,8 +3,6 @@ using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -57,7 +55,6 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Permission View.');", true);
                 }
-
             }
             else if (e.CommandName.Equals("ViewInformation"))
             {
@@ -146,26 +143,23 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 DateTime? approvedTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "approvedTime");
                 DateTime? requestTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "requestTime");
                 Label LabelName = (Label)e.Row.FindControl("LabelName");
-                Label LabelNameStatus = (Label)e.Row.FindControl("LabelNameStatus");
                 LinkButton LinkButtonViewInformation = (LinkButton)e.Row.FindControl("LinkButtonViewInformation");
                 LinkButton LinkButtonViewDiagnosis = (LinkButton)e.Row.FindControl("LinkButtonViewDiagnosis");
                 LinkButton LinkButtonViewRecords = (LinkButton)e.Row.FindControl("LinkButtonViewRecords");
-                HyperLink LinkButtonNewRecords = (HyperLink)e.Row.FindControl("LinkButtonNewRecords");
+                HyperLink LinkButtonNewRecord = (HyperLink)e.Row.FindControl("LinkButtonNewRecord");
                 Label LabelPermissionStatus = (Label)e.Row.FindControl("LabelPermissionStatus");
 
-                // todo testing
                 if (approvedTime == null)
                 {
                     LabelName.Text = "Redacted";
-                    LabelNameStatus.Visible = true;
                     LinkButtonViewInformation.CssClass = "btn btn-secondary btn-sm disabled";
                     LinkButtonViewInformation.Enabled = false;
                     LinkButtonViewDiagnosis.CssClass = "btn btn-secondary btn-sm disabled";
                     LinkButtonViewDiagnosis.Enabled = false;
                     LinkButtonViewRecords.CssClass = "btn btn-secondary btn-sm disabled";
                     LinkButtonViewRecords.Enabled = false;
-                    LinkButtonNewRecords.CssClass = "btn btn-secondary btn-sm disabled";
-                    LinkButtonNewRecords.Enabled = false;
+                    LinkButtonNewRecord.CssClass = "btn btn-secondary btn-sm disabled";
+                    LinkButtonNewRecord.Enabled = false;
                 }
                 else
                 {
@@ -179,8 +173,21 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     LinkButtonViewRecords.CssClass = "btn btn-success btn-sm";
                     LinkButtonViewRecords.CommandName = "ViewRecords";
                     LinkButtonViewRecords.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
-                    LinkButtonNewRecords.CssClass = "btn btn-info btn-sm";
-                    LinkButtonNewRecords.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "nric"));
+
+                    Int16 permissionApproved = (Int16)DataBinder.Eval(e.Row.DataItem, "permissionApproved");
+                    if (permissionApproved == 0)
+                    {
+                        LinkButtonNewRecord.CssClass = "btn btn-secondary btn-sm disabled";
+                        LinkButtonNewRecord.Enabled = false;
+                        LinkButtonNewRecord.Attributes.Add("TabIndex", "0");
+                        LinkButtonNewRecord.Attributes.Add("data-toggle", "tooltip");
+                        LinkButtonNewRecord.Attributes.Add("title", "You do not have any record type permissions.");
+                    }
+                    else
+                    {
+                        LinkButtonNewRecord.CssClass = "btn btn-info btn-sm";
+                        LinkButtonNewRecord.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "nric"));
+                    }
                 }
 
                 if (requestTime == null)
@@ -483,7 +490,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
                 }
             }
-            if (e.CommandName.Equals("RecordDiagnosisView"))
+            else if (e.CommandName.Equals("RecordDiagnosisView"))
             {
                 try
                 {

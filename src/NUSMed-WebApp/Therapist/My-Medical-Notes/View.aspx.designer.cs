@@ -13,6 +13,42 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
     public partial class View {
         
         /// <summary>
+        /// UpdatePanelMedicalNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelMedicalNote;
+        
+        /// <summary>
+        /// TextboxSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextboxSearch;
+        
+        /// <summary>
+        /// ButtonSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ButtonSearch;
+        
+        /// <summary>
+        /// GridViewMedicalNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewMedicalNote;
+        
+        /// <summary>
         /// Master property.
         /// </summary>
         /// <remarks>

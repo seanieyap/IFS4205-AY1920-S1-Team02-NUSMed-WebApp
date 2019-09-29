@@ -37,6 +37,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     if (!patient.hasPermissionsApproved(record))
                     {
                         Record newRecord = new Record();
+                        newRecord.id = record.id;
                         newRecord.title = record.title;
                         newRecord.type = record.type;
                         newRecord.status = record.status;
@@ -111,7 +112,7 @@ namespace NUSMed_WebApp.Classes.BLL
             }
         }
 
-        public void SubmitRecordContent(Record record)
+        public void AddRecordContent(Record record)
         {
             if (AccountBLL.IsPatient() && record.patientNRIC.Equals(AccountBLL.GetNRIC()))
             {
@@ -213,6 +214,16 @@ namespace NUSMed_WebApp.Classes.BLL
                     recordDAL.DeleteRecord(record.id);
                 }
             }
+        }
+
+        public bool VerifyRecord(Record record)
+        {
+            if (AccountBLL.IsTherapist() && recordDAL.RetrieveRecordExists(record.id, record.patientNRIC))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
