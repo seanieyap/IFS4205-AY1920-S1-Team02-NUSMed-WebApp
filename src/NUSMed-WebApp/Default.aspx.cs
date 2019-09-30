@@ -238,8 +238,8 @@ namespace NUSMed_WebApp
         {
             inputNRIC.Value = string.Empty;
             inputPassword.Value = string.Empty;
-            inputNRIC.Attributes.Add("class", "form-control is-invalid");
-            inputPassword.Attributes.Add("class", "form-control is-invalid");
+            inputNRIC.Attributes.Add("class", "form-control form-control-sm is-invalid");
+            inputPassword.Attributes.Add("class", "form-control form-control-sm is-invalid");
             spanMessage.Visible = true;
         }
         #endregion

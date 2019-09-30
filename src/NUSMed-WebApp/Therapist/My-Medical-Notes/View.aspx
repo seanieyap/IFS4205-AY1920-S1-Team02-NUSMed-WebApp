@@ -16,11 +16,11 @@
         <ContentTemplate>
             <div class="row mb-4">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
-                    <asp:Panel CssClass="input-group" runat="server" DefaultButton="ButtonSearch">
+                    <asp:Panel CssClass="input-group input-group-sm" runat="server" DefaultButton="ButtonSearch">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Search</span>
                         </div>
-                        <asp:TextBox ID="TextboxSearch" CssClass="form-control" placeholder="Title" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="TextboxSearch" CssClass="form-control form-control-sm" placeholder="Title" runat="server"></asp:TextBox>
                         <div class="input-group-append">
                             <asp:LinkButton ID="ButtonSearch" CssClass="btn btn-outline-info" OnClick="ButtonSearch_Click" runat="server">
                                         <i class="fas fa-fw fa-search"></i> Go

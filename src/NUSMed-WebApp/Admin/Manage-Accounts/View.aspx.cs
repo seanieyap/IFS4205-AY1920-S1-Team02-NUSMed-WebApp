@@ -127,8 +127,8 @@ namespace NUSMed_WebApp.Admin.Account
                 try
                 {
                     ViewState["GridViewAccountsSelectedNRIC"] = nric;
-                    inputTherapistJobTitle.Attributes.Add("class", "form-control");
-                    inputTherapistDepartment.Attributes.Add("class", "form-control");
+                    inputTherapistJobTitle.Attributes.Add("class", "form-control form-control-sm");
+                    inputTherapistDepartment.Attributes.Add("class", "form-control form-control-sm");
                     spanMessageTherapistDetailsUpdate.Visible = false;
                     RefreshTherapistModal(nric);
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open Therapist Modal", "$('#modalTherapist').modal('show');", true);
@@ -143,8 +143,8 @@ namespace NUSMed_WebApp.Admin.Account
                 try
                 {
                     ViewState["GridViewAccountsSelectedNRIC"] = nric;
-                    inputResearcherJobTitle.Attributes.Add("class", "form-control");
-                    inputResearcherDepartment.Attributes.Add("class", "form-control");
+                    inputResearcherJobTitle.Attributes.Add("class", "form-control form-control-sm");
+                    inputResearcherDepartment.Attributes.Add("class", "form-control form-control-sm");
                     spanMessageResearcherUpdate.Visible = false;
                     RefreshResearcherModal(nric);
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open Researcher Modal", "$('#modalResearcher').modal('show');", true);
@@ -285,18 +285,18 @@ namespace NUSMed_WebApp.Admin.Account
             if (string.IsNullOrEmpty(jobTitle))
             {
                 validate[0] = false;
-                inputTherapistJobTitle.Attributes.Add("class", "form-control is-invalid");
+                inputTherapistJobTitle.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputTherapistJobTitle.Attributes.Add("class", "form-control is-valid");
+                inputTherapistJobTitle.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(department))
             {
                 validate[1] = false;
-                inputTherapistDepartment.Attributes.Add("class", "form-control is-invalid");
+                inputTherapistDepartment.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputTherapistDepartment.Attributes.Add("class", "form-control is-valid");
+                inputTherapistDepartment.Attributes.Add("class", "form-control form-control-sm is-valid");
             #endregion
 
             if (validate.Contains(false))
@@ -342,18 +342,18 @@ namespace NUSMed_WebApp.Admin.Account
             if (string.IsNullOrEmpty(jobTitle))
             {
                 validate[0] = false;
-                inputResearcherJobTitle.Attributes.Add("class", "form-control is-invalid");
+                inputResearcherJobTitle.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputResearcherJobTitle.Attributes.Add("class", "form-control is-valid");
+                inputResearcherJobTitle.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(department))
             {
                 validate[1] = false;
-                inputResearcherDepartment.Attributes.Add("class", "form-control is-invalid");
+                inputResearcherDepartment.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputResearcherDepartment.Attributes.Add("class", "form-control is-valid");
+                inputResearcherDepartment.Attributes.Add("class", "form-control form-control-sm is-valid");
             #endregion
 
             if (validate.Contains(false))

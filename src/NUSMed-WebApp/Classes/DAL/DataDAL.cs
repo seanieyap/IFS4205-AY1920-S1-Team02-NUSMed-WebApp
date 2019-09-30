@@ -155,17 +155,19 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve all the anonymised records
         /// </summary>
-        public List<RecordAnonymised> RetrieveRecords()
+        public List<PatientAnonymised> RetrieveAnonymised()
         {
-            List<RecordAnonymised> result = new List<RecordAnonymised>();
+            List<PatientAnonymised> result = new List<PatientAnonymised>();
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT r.patient_nric, r.type, r.content, r.file_extension,
-                    ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
-                    FROM records_anonymized ra
-                    INNER JOIN record r ON r.id = ra.record_id 
-                    LIMIT 100;";
+                cmd.CommandText = @"SELECT a.nric,
+                r.type, r.content, r.file_extension,
+                ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
+                FROM records_anonymized ra
+                INNER JOIN record r ON r.id = ra.record_id 
+                INNER JOIN account a ON a.nric = r.patient_nric
+                LIMIT 100;";
 
                 using (cmd.Connection = connection)
                 {
@@ -176,23 +178,22 @@ namespace NUSMed_WebApp.Classes.DAL
                     {
                         while (reader.Read())
                         {
-                            Record record = new Record
-                            {
-                                patientNRIC = Convert.ToString(reader["patient_nric"]),
-                                content = Convert.ToString(reader["content"]),
-                                fileExtension = Convert.ToString(reader["file_extension"]),
+                            //Record record = new Record
+                            //{
+                            //    patientNRIC = Convert.ToString(reader["patient_nric"]),
+                            //    content = Convert.ToString(reader["content"]),
+                            //    fileExtension = Convert.ToString(reader["file_extension"]),
+                            //};
+                            //record.type = RecordType.Get(Convert.ToString(reader["type"]));
 
-                            };
-                            record.type = RecordType.Get(Convert.ToString(reader["type"]));
-
-                            RecordAnonymised recordAnonymised = new RecordAnonymised
+                            PatientAnonymised recordAnonymised = new PatientAnonymised
                             {
                                 maritalStatus = Convert.ToString(reader["marital_status"]),
                                 gender = Convert.ToString(reader["gender"]),
                                 sex = Convert.ToString(reader["sex"]),
                                 age = Convert.ToString(reader["age"]),
                                 postal = Convert.ToString(reader["postal"]),
-                                createDate = Convert.ToString(reader["record_create_date"])
+                                //createDate = Convert.ToString(reader["record_create_date"])
                             };
 
                             result.Add(recordAnonymised);

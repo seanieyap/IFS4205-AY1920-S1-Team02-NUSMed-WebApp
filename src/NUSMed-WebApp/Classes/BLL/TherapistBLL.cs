@@ -151,10 +151,10 @@ namespace NUSMed_WebApp.Classes.BLL
                 !patientNRIC.Equals(AccountBLL.GetNRIC()) &&
                 therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
             {
-                List<Diagnosis> diagnoses = therapistDAL.RetrieveDiagnoses(term);
+                List<Diagnosis> patientDiagnoses = therapistDAL.RetrievePatientCurrentDiagnoses(patientNRIC, AccountBLL.GetNRIC(), term);
                 List<Diagnosis> result = new List<Diagnosis>();
 
-                foreach (Diagnosis diagnosis in diagnoses)
+                foreach (Diagnosis diagnosis in patientDiagnoses)
                 {
                     if (!recordDiagnoses.Any(x => x.diagnosis.code.Equals(diagnosis.code)))
                     {
@@ -163,7 +163,6 @@ namespace NUSMed_WebApp.Classes.BLL
                 }
                 return result;
             }
-
 
             return null;
         }

@@ -83,85 +83,85 @@ namespace NUSMed_WebApp
                 || !AccountBLL.IsNRICValid(nric))
             {
                 validate[0] = false;
-                inputNRIC.Attributes.Add("class", "form-control is-invalid");
+                inputNRIC.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputNRIC.Attributes.Add("class", "form-control is-valid");
+                inputNRIC.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(firstName))
             {
                 validate[1] = false;
-                inputFirstName.Attributes.Add("class", "form-control is-invalid");
+                inputFirstName.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputFirstName.Attributes.Add("class", "form-control is-valid");
+                inputFirstName.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(lastName))
             {
                 validate[2] = false;
-                inputLastName.Attributes.Add("class", "form-control is-invalid");
+                inputLastName.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputLastName.Attributes.Add("class", "form-control is-valid");
+                inputLastName.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(countryOfBirth))
             {
                 validate[3] = false;
-                inputCountryofBirth.Attributes.Add("class", "form-control is-invalid");
+                inputCountryofBirth.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputCountryofBirth.Attributes.Add("class", "form-control is-valid");
+                inputCountryofBirth.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(nationality))
             {
                 validate[4] = false;
-                inputNationality.Attributes.Add("class", "form-control is-invalid");
+                inputNationality.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputNationality.Attributes.Add("class", "form-control is-valid");
+                inputNationality.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(address))
             {
                 validate[5] = false;
-                inputAddress.Attributes.Add("class", "form-control is-invalid");
+                inputAddress.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputAddress.Attributes.Add("class", "form-control is-valid");
+                inputAddress.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (!AccountBLL.IsEmailAddress(email))
             {
                 validate[6] = false;
-                inputEmail.Attributes.Add("class", "form-control is-invalid");
+                inputEmail.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputEmail.Attributes.Add("class", "form-control is-valid");
+                inputEmail.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (!AccountBLL.IsContactNumber(contactNumber))
             {
                 validate[7] = false;
-                inputContactNumber.Attributes.Add("class", "form-control is-invalid");
+                inputContactNumber.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputContactNumber.Attributes.Add("class", "form-control is-valid");
+                inputContactNumber.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (!AccountBLL.IsDateOfBirthValid(doB, ref dateOfBirth))
             {
                 validate[8] = false;
-                inputDoB.Attributes.Add("class", "form-control is-invalid");
+                inputDoB.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputDoB.Attributes.Add("class", "form-control is-valid");
+                inputDoB.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (!AccountBLL.IsPasswordValid(password, passwordConfirm))
             {
                 validate[9] = false;
-                inputPassword.Attributes.Add("class", "form-control is-invalid");
-                inputPasswordConfirm.Attributes.Add("class", "form-control is-invalid");
+                inputPassword.Attributes.Add("class", "form-control form-control-sm is-invalid");
+                inputPasswordConfirm.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
             {
-                inputPassword.Attributes.Add("class", "form-control is-valid");
-                inputPasswordConfirm.Attributes.Add("class", "form-control is-valid");
+                inputPassword.Attributes.Add("class", "form-control form-control-sm is-valid");
+                inputPasswordConfirm.Attributes.Add("class", "form-control form-control-sm is-valid");
             }
 
             // reversed validation for token id
@@ -169,18 +169,18 @@ namespace NUSMed_WebApp
             if (string.IsNullOrEmpty(associatedTokenID) || AccountBLL.IsTokenIDValid(associatedTokenID))
             {
                 validate[10] = true;
-                inputAssociatedTokenID.Attributes.Add("class", "form-control is-valid");
+                inputAssociatedTokenID.Attributes.Add("class", "form-control form-control-sm is-valid");
             }
             else
-                inputAssociatedTokenID.Attributes.Add("class", "form-control is-invalid");
+                inputAssociatedTokenID.Attributes.Add("class", "form-control form-control-sm is-invalid");
 
             if (!AccountBLL.IsAddressPostalCode(addressPostalCode))
             {
                 validate[11] = false;
-                inputPostalCode.Attributes.Add("class", "form-control is-invalid");
+                inputPostalCode.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputPostalCode.Attributes.Add("class", "form-control is-valid");
+                inputPostalCode.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             #endregion
 
@@ -188,8 +188,8 @@ namespace NUSMed_WebApp
             {
                 if (!validate[9])
                 {
-                    inputPassword.Attributes.Add("class", "form-control is-invalid");
-                    inputPasswordConfirm.Attributes.Add("class", "form-control is-invalid");
+                    inputPassword.Attributes.Add("class", "form-control form-control-sm is-invalid");
+                    inputPasswordConfirm.Attributes.Add("class", "form-control form-control-sm is-invalid");
                 }
                 else
                 {

@@ -163,9 +163,8 @@
     <Content Include="Patient\My-Records\New-Record.aspx" />
     <Content Include="Patient\My-Records\View.aspx" />
     <Content Include="Patient\My-Therapists.aspx" />
-    <Content Include="Aggregated-Search.aspx" />
     <Content Include="Researcher\Dashboard.aspx" />
-    <Content Include="Researcher\Record-Search.aspx" />
+    <Content Include="Researcher\Search-Data.aspx" />
     <Content Include="Role-Selection.aspx" />
     <Content Include="Scripts\bootstrap-confirmation.js" />
     <Content Include="Scripts\bootstrap-confirmation.min.js" />
@@ -511,13 +510,6 @@
       <DependentUpon>My-Therapists.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Aggregated-Search.aspx.cs">
-      <DependentUpon>Aggregated-Search.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Aggregated-Search.aspx.designer.cs">
-      <DependentUpon>Aggregated-Search.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Researcher\Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -525,12 +517,12 @@
     <Compile Include="Researcher\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Researcher\Record-Search.aspx.cs">
-      <DependentUpon>Record-Search.aspx</DependentUpon>
+    <Compile Include="Researcher\Search-Data.aspx.cs">
+      <DependentUpon>Search-Data.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Researcher\Record-Search.aspx.designer.cs">
-      <DependentUpon>Record-Search.aspx</DependentUpon>
+    <Compile Include="Researcher\Search-Data.aspx.designer.cs">
+      <DependentUpon>Search-Data.aspx</DependentUpon>
     </Compile>
     <Compile Include="Role-Selection.aspx.cs">
       <DependentUpon>Role-Selection.aspx</DependentUpon>

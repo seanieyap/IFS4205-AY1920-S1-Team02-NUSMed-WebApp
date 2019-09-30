@@ -29,22 +29,22 @@ namespace NUSMed_WebApp.My_Account
             if (string.IsNullOrEmpty(passwordCurrent) || accountBLL.GetStatus(AccountBLL.GetNRIC(), passwordCurrent).status == 0)
             {
                 validate[0] = false;
-                inputPasswordCurrent.Attributes.Add("class", "form-control is-invalid");
+                inputPasswordCurrent.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputPasswordCurrent.Attributes.Add("class", "form-control is-valid");
+                inputPasswordCurrent.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(passwordNew) || string.IsNullOrEmpty(passwordNewRepeat)
                 || !AccountBLL.IsPasswordValid(passwordNew, passwordNewRepeat) || passwordCurrent.Equals(passwordNew))
             {
                 validate[1] = false;
-                inputPasswordNew.Attributes.Add("class", "form-control is-invalid");
-                inputPasswordNewRepeat.Attributes.Add("class", "form-control is-invalid");
+                inputPasswordNew.Attributes.Add("class", "form-control form-control-sm is-invalid");
+                inputPasswordNewRepeat.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
             {
-                inputPasswordNew.Attributes.Add("class", "form-control is-valid");
-                inputPasswordNewRepeat.Attributes.Add("class", "form-control is-valid");
+                inputPasswordNew.Attributes.Add("class", "form-control form-control-sm is-valid");
+                inputPasswordNewRepeat.Attributes.Add("class", "form-control form-control-sm is-valid");
             }
 
             if (!validate[0])
@@ -72,9 +72,9 @@ namespace NUSMed_WebApp.My_Account
                 }
                 catch
                 {
-                    inputPasswordCurrent.Attributes.Add("class", "form-control");
-                    inputPasswordNew.Attributes.Add("class", "form-control");
-                    inputPasswordNewRepeat.Attributes.Add("class", "form-control");
+                    inputPasswordCurrent.Attributes.Add("class", "form-control form-control-sm");
+                    inputPasswordNew.Attributes.Add("class", "form-control form-control-sm");
+                    inputPasswordNewRepeat.Attributes.Add("class", "form-control form-control-sm");
                     ScriptManager.RegisterStartupScript(this, GetType(), "update password error", "toastr['error']('Error occured when Updating Password');", true);
                 }
 

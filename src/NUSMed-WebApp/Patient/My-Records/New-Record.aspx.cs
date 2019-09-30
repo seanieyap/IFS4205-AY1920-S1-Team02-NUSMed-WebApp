@@ -71,18 +71,18 @@ namespace NUSMed_WebApp.Patient.My_Records
             if (record.IsTitleValid())
             {
                 validate[0] = false;
-                inputTitle.Attributes.Add("class", "form-control is-invalid");
+                inputTitle.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputTitle.Attributes.Add("class", "form-control is-valid");
+                inputTitle.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (record.IsDescriptionValid())
             {
                 validate[1] = false;
-                inputDescription.Attributes.Add("class", "form-control is-invalid");
+                inputDescription.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputDescription.Attributes.Add("class", "form-control is-valid");
+                inputDescription.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (record.type.isContent)
             {
@@ -91,16 +91,16 @@ namespace NUSMed_WebApp.Patient.My_Records
                 if (!record.IsContentValid())
                 {
                     validate[2] = false;
-                    inputContent.Attributes.Add("class", "form-control is-invalid");
+                    inputContent.Attributes.Add("class", "form-control form-control-sm is-invalid");
                 }
                 else
                 {
-                    inputContent.Attributes.Add("class", "form-control is-valid");
+                    inputContent.Attributes.Add("class", "form-control form-control-sm is-valid");
                 }
             }
             else
             {
-                inputContent.Attributes.Add("class", "form-control is-invalid");
+                inputContent.Attributes.Add("class", "form-control form-control-sm is-invalid");
 
                 record.fileName = Path.GetFileNameWithoutExtension(inputFile.FileName);
                 record.fileExtension = Path.GetExtension(inputFile.FileName);
@@ -147,7 +147,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                         inputFile.SaveAs(record.fullpath);
                     }
 
-                    recordBLL.AddRecordContent(record);
+                    recordBLL.AddRecord(record);
 
                     Session["NewRecordSuccess"] = "success";
                 }

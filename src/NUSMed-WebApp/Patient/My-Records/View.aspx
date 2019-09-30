@@ -182,11 +182,11 @@
                                     <p class="lead mb-2">Current Therapists</p>
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8 mx-auto">
-                                    <asp:Panel CssClass="input-group" runat="server" DefaultButton="LinkButtonFineGrainAllow">
+                                    <asp:Panel CssClass="input-group input-group-sm" runat="server" DefaultButton="LinkButtonFineGrainAllow">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Search</span>
                                         </div>
-                                        <asp:TextBox ID="TextboxSearchFineGrainAllow" CssClass="form-control" placeholder="First Name / Last Name" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="TextboxSearchFineGrainAllow" CssClass="form-control form-control-sm" placeholder="First Name / Last Name" runat="server"></asp:TextBox>
                                         <div class="input-group-append">
                                             <asp:LinkButton ID="LinkButtonFineGrainAllow" CssClass="btn btn-outline-info" OnClick="LinkButtonFineGrainAllow_Click" runat="server">
                                                 <i class="fas fa-fw fa-search"></i> Go

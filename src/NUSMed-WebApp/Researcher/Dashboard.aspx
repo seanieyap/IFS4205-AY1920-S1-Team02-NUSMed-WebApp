@@ -16,9 +16,9 @@
             <div class="col-12 col-md-6">
                 <div class="card border-0">
                     <div class="card-body text-center text-md-left">
-                        <h5 class="card-title"><i class="fas fa-fw fa-search"></i>Record Search</h5>
+                        <h5 class="card-title"><i class="fas fa-fw fa-search"></i>Data Search</h5>
                         <p class="card-text">Search for anonymised Records for your research purposes.</p>
-                        <a href="~/Researcher/Record-Search" class="btn btn-nus-orange mb-2" runat="server">Go to Record Search <i class="fa fa-angle-double-right"></i></a>
+                        <a href="~/Researcher/Search-Data" class="btn btn-nus-orange mb-2" runat="server">Go to Search Data <i class="fa fa-angle-double-right"></i></a>
                     </div>
                 </div>
             </div>

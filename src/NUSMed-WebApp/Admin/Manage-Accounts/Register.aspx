@@ -19,7 +19,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="inputNRIC">NRIC</label>
-                        <input id="inputNRIC" type="text" class="form-control" placeholder="NRIC" runat="server">
+                        <input id="inputNRIC" type="text" class="form-control form-control-sm" placeholder="NRIC" runat="server">
                         <div class="invalid-feedback" runat="server">
                             NRIC is invalid or has already been registered.
                         </div>
@@ -28,7 +28,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="inputDoB">Date of Birth</label>
-                        <input id="inputDoB" name="dateOfBirth" type="date" class="form-control" placeholder="Date of Birth" runat="server">
+                        <input id="inputDoB" name="dateOfBirth" type="date" class="form-control form-control-sm" placeholder="Date of Birth" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Date of Birth is invalid.
                         </div>
@@ -37,7 +37,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="inputFirstName">First Name</label>
-                        <input id="inputFirstName" type="text" class="form-control" placeholder="First Name" runat="server">
+                        <input id="inputFirstName" type="text" class="form-control form-control-sm" placeholder="First Name" runat="server">
                         <div class="invalid-feedback" runat="server">
                             First Name is invalid.
                         </div>
@@ -46,7 +46,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="inputLastName">Last Name</label>
-                        <input id="inputLastName" type="text" class="form-control" placeholder="Last Name" runat="server">
+                        <input id="inputLastName" type="text" class="form-control form-control-sm" placeholder="Last Name" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Last Name is invalid.
                         </div>
@@ -55,7 +55,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="inputCountryofBirth">Country of Birth</label>
-                        <select class="form-control" id="inputCountryofBirth" runat="server">
+                        <select class="form-control form-control-sm" id="inputCountryofBirth" runat="server">
                             <option value="">-- select one --</option>
                             <option value="Afghanistan">Afghanistan</option>
                             <option value="Albania">Albania</option>
@@ -260,7 +260,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="inputNationality">Nationality</label>
-                        <select class="form-control" id="inputNationality" runat="server">
+                        <select class="form-control form-control-sm" id="inputNationality" runat="server">
                             <option value="">-- select one --</option>
                             <option value="Afghan">Afghan </option>
                             <option value="Albanian">Albanian </option>
@@ -542,7 +542,7 @@
                 <div class="col-12 col-lg-8">
                     <div class="form-group">
                         <label for="inputAddress">Address</label>
-                        <input id="inputAddress" type="text" class="form-control" placeholder="Address" runat="server">
+                        <input id="inputAddress" type="text" class="form-control form-control-sm" placeholder="Address" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Address is invalid.
                         </div>
@@ -551,7 +551,7 @@
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
                         <label for="inputPostalCode">Postal Code <span class="text-muted small">(6-digits)</span></label>
-                        <input id="inputPostalCode" type="text" class="form-control" placeholder="Postal Code" runat="server">
+                        <input id="inputPostalCode" type="text" class="form-control form-control-sm" placeholder="Postal Code" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Postal Code is invalid.
                         </div>
@@ -560,7 +560,7 @@
                 <div class="col-12 col-lg-8">
                     <div class="form-group">
                         <label for="inputEmail">Email Address</label>
-                        <input id="inputEmail" type="email" class="form-control" placeholder="Email Address" runat="server">
+                        <input id="inputEmail" type="email" class="form-control form-control-sm" placeholder="Email Address" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Email Address is invalid.
                         </div>
@@ -569,7 +569,7 @@
                 <div class="col-12 col-lg-4">
                     <div class="form-group">
                         <label for="inputContactNumber">Contact Number <span class="text-muted small">(8-digits)</span></label>
-                        <input id="inputContactNumber" type="tel" class="form-control" placeholder="Contact Number" runat="server">
+                        <input id="inputContactNumber" type="tel" class="form-control form-control-sm" placeholder="Contact Number" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Contact Number is invalid.
                         </div>
@@ -584,13 +584,13 @@
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
                         <label for="inputPassword">Password <small class="text-muted">(Has to contain symbols, digits and 12 characters in length)</small></label>
-                        <input id="inputPassword" type="password" class="form-control" placeholder="Password" runat="server">
+                        <input id="inputPassword" type="password" class="form-control form-control-sm" placeholder="Password" runat="server">
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
                         <label for="inputPasswordConfirm">Confirm Password</label>
-                        <input id="inputPasswordConfirm" type="password" class="form-control" placeholder="Confirm Password" runat="server">
+                        <input id="inputPasswordConfirm" type="password" class="form-control form-control-sm" placeholder="Confirm Password" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Password does not meet requirements or does not match.
                         </div>
@@ -599,7 +599,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="inputAssociatedTokenID">Associated Token Device ID <small class="text-muted">(Leave blank to set account to be Omitted MFA)</small></label>
-                        <input id="inputAssociatedTokenID" type="text" class="form-control" placeholder="Associated Token Device ID" runat="server">
+                        <input id="inputAssociatedTokenID" type="text" class="form-control form-control-sm" placeholder="Associated Token Device ID" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Associated Token ID is invalid.
                         </div>

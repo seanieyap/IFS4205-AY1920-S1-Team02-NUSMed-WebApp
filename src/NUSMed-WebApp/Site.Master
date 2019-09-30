@@ -65,7 +65,6 @@
 
                 <nav id="NavLinks" class="mainNavLinks collapse navbar-collapse" runat="server">
                     <a id="navLinksHome" class="nav-link" href="~/" runat="server" visible="false"><i class="fas fa-fw fa-home"></i>Home</a>
-                    <a id="navLinksAggregatedSearch" class="nav-link" href="~/Aggregated-Search" runat="server" visible="false"><i class="fab fa-fw fa-searchengin"></i>Aggregated Search</a>
                     <a id="navLinksAbout" class="nav-link" href="~/about" runat="server" visible="false"><i class="fas fa-fw fa-question-circle"></i>About</a>
 
                     <%-- Patient Links--%>
@@ -105,7 +104,7 @@
 
                     <%-- Researcher Links--%>
                     <a id="navLinksResearcherDashboard" class="nav-link" href="~/Researcher/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
-                    <a id="navLinksResearcherRecordSearch" class="nav-link" href="~/Researcher/Record-Search" runat="server" visible="false"><i class="fas fa-fw fa-search"></i>Record Search</a>
+                    <a id="navLinksResearcherSearchData" class="nav-link" href="~/Researcher/Search-Data" runat="server" visible="false"><i class="fas fa-fw fa-search"></i>Record Search</a>
 
                     <%-- Admin Links --%>
                     <a id="navLinksAdminDashboard" class="nav-link" href="~/Admin/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>

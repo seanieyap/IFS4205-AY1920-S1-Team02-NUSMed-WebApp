@@ -492,18 +492,18 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
             if (note.IsTitleValid())
             {
                 validate[0] = false;
-                inputTitle.Attributes.Add("class", "form-control is-invalid");
+                inputTitle.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputTitle.Attributes.Add("class", "form-control is-valid");
+                inputTitle.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (note.IsDescriptionValid())
             {
                 validate[1] = false;
-                inputDescription.Attributes.Add("class", "form-control is-invalid");
+                inputDescription.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                inputDescription.Attributes.Add("class", "form-control is-valid");
+                inputDescription.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (!AccountBLL.IsNRICValid(note.patient.nric))
             {

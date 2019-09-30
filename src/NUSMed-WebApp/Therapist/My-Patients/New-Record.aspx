@@ -99,7 +99,7 @@
                         <label for="inputContent">
                             <asp:Label ID="LabelContent" runat="server" Text="Height Measurement"></asp:Label>
                             <asp:Label ID="LabelContentHelper" class="text-muted small" runat="server" Text="(Format: Centimetre, cm. Values: 0 - 280)"></asp:Label></label>
-                        <input id="inputContent" type="text" class="form-control" runat="server" placeholder="cm">
+                        <input id="inputContent" type="text" class="form-control form-control-sm" runat="server" placeholder="cm">
                         <div class="invalid-feedback" runat="server">
                             <i class="fas fa-fw fa-exclamation-circle"></i>Content is Invalid.
                         </div>
@@ -129,7 +129,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="inputTitle">Title <span class="text-muted small">(Maximum of 45 characters)</span></label>
-                        <input id="inputTitle" type="text" class="form-control" placeholder="Title" runat="server">
+                        <input id="inputTitle" type="text" class="form-control form-control-sm" placeholder="Title" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Title is invalid.
                         </div>
@@ -138,7 +138,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="inputDescription">Description <span class="text-muted small">(Maximum of 120 characters)</span></label>
-                        <input id="inputDescription" type="text" value="nil" class="form-control" placeholder="Description" runat="server">
+                        <input id="inputDescription" type="text" value="nil" class="form-control form-control-sm" placeholder="Description" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Description is invalid.
                         </div>

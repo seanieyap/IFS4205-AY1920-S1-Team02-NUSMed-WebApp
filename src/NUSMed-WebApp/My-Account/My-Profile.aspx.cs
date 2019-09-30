@@ -77,10 +77,10 @@ namespace NUSMed_WebApp
         {
             spanMessagePatientDetailsUpdate.Visible = false;
 
-            AddressEdit.Attributes.Add("class", "form-control");
-            PostalCodeEdit.Attributes.Add("class", "form-control");
-            EmailAddressEdit.Attributes.Add("class", "form-control");
-            ContactNumberEdit.Attributes.Add("class", "form-control");
+            AddressEdit.Attributes.Add("class", "form-control form-control-sm");
+            PostalCodeEdit.Attributes.Add("class", "form-control form-control-sm");
+            EmailAddressEdit.Attributes.Add("class", "form-control form-control-sm");
+            ContactNumberEdit.Attributes.Add("class", "form-control form-control-sm");
 
             Account account = accountBLL.GetAccount(AccountBLL.GetNRIC());
             AddressEdit.Value = account.address;
@@ -105,34 +105,34 @@ namespace NUSMed_WebApp
             if (string.IsNullOrEmpty(address))
             {
                 validate[0] = false;
-                AddressEdit.Attributes.Add("class", "form-control is-invalid");
+                AddressEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                AddressEdit.Attributes.Add("class", "form-control is-valid");
+                AddressEdit.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(addressPostalCode) || !AccountBLL.IsAddressPostalCode(addressPostalCode))
             {
                 validate[1] = false;
-                PostalCodeEdit.Attributes.Add("class", "form-control is-invalid");
+                PostalCodeEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                PostalCodeEdit.Attributes.Add("class", "form-control is-valid");
+                PostalCodeEdit.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(email) || !AccountBLL.IsEmailAddress(email))
             {
                 validate[2] = false;
-                EmailAddressEdit.Attributes.Add("class", "form-control is-invalid");
+                EmailAddressEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                EmailAddressEdit.Attributes.Add("class", "form-control is-valid");
+                EmailAddressEdit.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(contactNumber) || !AccountBLL.IsContactNumber(contactNumber))
             {
                 validate[3] = false;
-                ContactNumberEdit.Attributes.Add("class", "form-control is-invalid");
+                ContactNumberEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                ContactNumberEdit.Attributes.Add("class", "form-control is-valid");
+                ContactNumberEdit.Attributes.Add("class", "form-control form-control-sm is-valid");
             #endregion
 
             if (validate.Contains(false))
@@ -161,8 +161,8 @@ namespace NUSMed_WebApp
         {
             spanMessagePatientDetailsUpdate.Visible = false;
 
-            NOKNameEdit.Attributes.Add("class", "form-control");
-            NOKContactEdit.Attributes.Add("class", "form-control");
+            NOKNameEdit.Attributes.Add("class", "form-control form-control-sm");
+            NOKContactEdit.Attributes.Add("class", "form-control form-control-sm");
 
             Account account = accountBLL.GetPatientInformation(AccountBLL.GetNRIC());
             NOKNameEdit.Value = account.nokName;
@@ -182,18 +182,18 @@ namespace NUSMed_WebApp
             if (string.IsNullOrEmpty(nokName))
             {
                 validate[0] = false;
-                NOKNameEdit.Attributes.Add("class", "form-control is-invalid");
+                NOKNameEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                NOKNameEdit.Attributes.Add("class", "form-control is-valid");
+                NOKNameEdit.Attributes.Add("class", "form-control form-control-sm is-valid");
 
             if (string.IsNullOrEmpty(nokContact) || !AccountBLL.IsContactNumber(nokContact))
             {
                 validate[1] = false;
-                NOKContactEdit.Attributes.Add("class", "form-control is-invalid");
+                NOKContactEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
             }
             else
-                NOKContactEdit.Attributes.Add("class", "form-control is-valid");
+                NOKContactEdit.Attributes.Add("class", "form-control form-control-sm is-valid");
             #endregion
 
             if (validate.Contains(false))

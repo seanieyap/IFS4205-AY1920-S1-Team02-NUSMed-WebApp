@@ -112,7 +112,7 @@ namespace NUSMed_WebApp.Classes.BLL
             }
         }
 
-        public void AddRecordContent(Record record)
+        public void AddRecord(Record record)
         {
             if (AccountBLL.IsPatient() && record.patientNRIC.Equals(AccountBLL.GetNRIC()))
             {

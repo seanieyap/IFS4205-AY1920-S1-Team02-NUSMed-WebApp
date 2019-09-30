@@ -45,7 +45,7 @@ namespace NUSMed_WebApp
                     else if (AccountBLL.IsResearcher())
                     {
                         navLinksResearcherDashboard.Visible = true;
-                        navLinksResearcherRecordSearch.Visible = true;
+                        navLinksResearcherSearchData.Visible = true;
                     }
                     else if (AccountBLL.IsAdministrator())
                     {
@@ -77,7 +77,6 @@ namespace NUSMed_WebApp
             {
                 navLinksHome.Visible = true;
                 navLinksAbout.Visible = true;
-                navLinksAggregatedSearch.Visible = true;
             }
 
             // Toastr Notifications 
@@ -168,9 +167,9 @@ namespace NUSMed_WebApp
         {
             navLinksResearcherDashboard.Attributes.Add("class", "nav-link active");
         }
-        public void LiActiveResearcherRecordSearch()
+        public void LiActiveResearcherSearchData()
         {
-            navLinksResearcherRecordSearch.Attributes.Add("class", "nav-link active");
+            navLinksResearcherSearchData.Attributes.Add("class", "nav-link active");
         }
         #endregion
         #region Admin
@@ -216,12 +215,6 @@ namespace NUSMed_WebApp
         {
             navLinksAbout.Attributes.Add("class", "nav-link active");
         }
-
-        public void LiActiveAggregatedSearch()
-        {
-            navLinksAggregatedSearch.Attributes.Add("class", "nav-link active");
-        }
-
         #endregion
         #endregion
 

@@ -15,11 +15,11 @@
         <ContentTemplate>
             <div class="row mb-4">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Search</span>
                         </div>
-                        <asp:TextBox ID="TextboxSearch" CssClass="form-control" placeholder="NRIC" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="TextboxSearch" CssClass="form-control form-control-sm" placeholder="NRIC" runat="server"></asp:TextBox>
                         <div class="input-group-append">
                             <asp:LinkButton ID="ButtonSearch" CssClass="btn btn-outline-info" OnClick="ButtonSearch_Click" runat="server">
                                         <i class="fas fa-fw fa-search"></i> Go
@@ -156,55 +156,55 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>NRIC</label>
-                                        <input id="inputPersonalNRIC" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPersonalNRIC" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Date of Birth</label>
-                                        <input id="inputPersonalDoB" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPersonalDoB" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>First Name</label>
-                                        <input id="inputPersonalFirstName" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPersonalFirstName" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Last Name</label>
-                                        <input id="inputPersonalLastName" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPersonalLastName" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Country of Birth</label>
-                                        <input id="inputPersonalCountryofBirth" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPersonalCountryofBirth" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Nationality</label>
-                                        <input id="inputPersonalNationality" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPersonalNationality" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Sex</label>
-                                        <input id="inputPersonalSex" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPersonalSex" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Gender</label>
-                                        <input id="inputPersonalGender" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPersonalGender" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Marital Status</label>
-                                        <input id="inputPersonalMaritalStatus" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPersonalMaritalStatus" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                             </div>
@@ -212,7 +212,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit personal information.</p>
+                        <p class="text-info mb-0 mx-auto small"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit personal information.</p>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -242,25 +242,25 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Address</label>
-                                        <input id="inputAddress" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputAddress" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Postal Code</label>
-                                        <input id="inputPostalCode" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPostalCode" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Email Address</label>
-                                        <input id="inputEmailAddress" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputEmailAddress" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Contact Number</label>
-                                        <input id="inputContactNumber" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputContactNumber" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                             </div>
@@ -297,13 +297,13 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Name of Next of Kin</label>
-                                        <input id="inputPatientNokName" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPatientNokName" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Contact Number of Next of Kin</label>
-                                        <input id="inputPatientNokContact" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputPatientNokContact" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                             </div>
@@ -374,11 +374,11 @@
                                     <p class="text-muted">Note: Search is set to return maximum results of 25.</p>
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8 mx-auto">
-                                    <div class="input-group">
+                                    <div class="input-group input-group-sm">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Search</span>
                                         </div>
-                                        <asp:TextBox ID="TextboxSearchTherapist" CssClass="form-control" placeholder="NRIC" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="TextboxSearchTherapist" CssClass="form-control form-control-sm" placeholder="NRIC" runat="server"></asp:TextBox>
                                         <div class="input-group-append">
                                             <asp:LinkButton ID="ButtonSearchTherapist" CssClass="btn btn-outline-info" OnClick="ButtonSearchTherapist_Click" runat="server">
                                                 <i class="fas fa-fw fa-search"></i> Go
@@ -470,13 +470,13 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Job Title</label>
-                                        <input id="inputTherapistJobTitle" type="text" class="form-control" runat="server">
+                                        <input id="inputTherapistJobTitle" type="text" class="form-control form-control-sm" runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Department</label>
-                                        <input id="inputTherapistDepartment" type="text" class="form-control" runat="server">
+                                        <input id="inputTherapistDepartment" type="text" class="form-control form-control-sm" runat="server">
                                     </div>
                                 </div>
                             </div>
@@ -514,13 +514,13 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Job Title</label>
-                                        <input id="inputResearcherJobTitle" type="text" class="form-control" runat="server">
+                                        <input id="inputResearcherJobTitle" type="text" class="form-control form-control-sm" runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Department</label>
-                                        <input id="inputResearcherDepartment" type="text" class="form-control" runat="server">
+                                        <input id="inputResearcherDepartment" type="text" class="form-control form-control-sm" runat="server">
                                     </div>
                                 </div>
                             </div>
@@ -558,13 +558,13 @@
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Registered On</label>
-                                        <input id="inputStatusCreateTime" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputStatusCreateTime" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group">
                                         <label>Last Full Login</label>
-                                        <input id="inputStatusLastLogin" type="text" class="form-control" readonly runat="server">
+                                        <input id="inputStatusLastLogin" type="text" class="form-control form-control-sm" readonly runat="server">
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -589,11 +589,11 @@
                                         <label>
                                             Token Status:
                                             <asp:Label ID="LabelMFATokenStatus" runat="server"></asp:Label></label>
-                                        <div class="input-group">
+                                        <div class="input-group input-group-sm">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">MFA Token ID</span>
                                             </div>
-                                            <asp:TextBox ID="TextboxMFATokenIDUpdate" CssClass="form-control" placeholder="Leave blank to Disable" aria-label="Leave blank to Disable" aria-describedby="LinkButtonMFATokenIDEdit" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="TextboxMFATokenIDUpdate" CssClass="form-control form-control-sm" placeholder="Leave blank to Disable" aria-label="Leave blank to Disable" aria-describedby="LinkButtonMFATokenIDEdit" runat="server"></asp:TextBox>
                                             <div class="input-group-append">
                                                 <asp:LinkButton ID="LinkButtonTokenIDUpdate" CssClass="btn btn-outline-success" runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonTokenIDUpdate_Click">
                                                     <i class="far fa-fw fa-save"></i>
@@ -611,7 +611,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">MFA Device ID</span>
                                             </div>
-                                            <asp:TextBox ID="TextboxMFADeviceIDUpdate" CssClass="form-control" placeholder="Leave blank to Reset" aria-label="Leave blank to Reset" aria-describedby="LinkButtonMFADeviceIDEdit" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="TextboxMFADeviceIDUpdate" CssClass="form-control form-control-sm" placeholder="Leave blank to Reset" aria-label="Leave blank to Reset" aria-describedby="LinkButtonMFADeviceIDEdit" runat="server"></asp:TextBox>
                                             <div class="input-group-append">
                                                 <asp:LinkButton ID="LinkButtonDeviceIDUpdate" CssClass="btn btn-outline-success" runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonDeviceIDUpdate_Click">
                                                     <i class="far fa-fw fa-save"></i>

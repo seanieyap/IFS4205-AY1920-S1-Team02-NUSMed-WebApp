@@ -617,6 +617,51 @@ namespace NUSMed_WebApp.Classes.DAL
             return result;
         }
 
+        public List<Diagnosis> RetrievePatientCurrentDiagnoses(string patientNRIC, string therapistNRIC, string term)
+        {
+            List<Diagnosis> result = new List<Diagnosis>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT d.diagnosis_code, 
+                    d.diagnosis_description_short, d.category_title 
+                    FROM patient_diagnosis pd 
+                    INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
+                    INNER JOIN account a ON a.nric = pd.therapist_nric
+                    INNER JOIN record_type_permission rtp ON rtp.patient_nric = pd.patient_nric
+                    WHERE rtp.patient_nric = @patientNRIC AND rtp.therapist_nric = @therapistNRIC AND rtp.approved_time IS NOT NULL AND 
+                    pd.end IS NOT NULL AND
+                    (d.diagnosis_code LIKE @term OR d.diagnosis_description_long = @term OR d.category_title LIKE @term)
+                    ORDER BY pd.start DESC;";
+
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Diagnosis diagnosis = new Diagnosis
+                            {
+                                code = Convert.ToString(reader["diagnosis_code"]),
+                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
+                                categoryTitle = Convert.ToString(reader["category_title"])
+                            };
+                            result.Add(diagnosis);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Retrieve list of diagnosis based on a keyword
         /// </summary>

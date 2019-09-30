@@ -17,11 +17,11 @@
                 <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                     <div class="form-group">
                         <label for="inputNRIC">NRIC</label>
-                        <input id="inputNRIC" type="text" class="form-control" placeholder="NRIC" runat="server">
+                        <input id="inputNRIC" type="text" class="form-control form-control-sm" placeholder="NRIC" runat="server">
                     </div>
                     <div class="form-group">
                         <label for="inputPassword">Password</label>
-                        <input id="inputPassword" type="password" class="form-control" placeholder="Password" runat="server">
+                        <input id="inputPassword" type="password" class="form-control form-control-sm" placeholder="Password" runat="server">
                         <small id="passwordHelp" class="form-text text-muted">Please approach help-desk to reset forgotten passwords.</small>
                     </div>
                     <button type="submit" id="buttonLogin" class="btn btn-success" runat="server" onserverclick="ButtonLogin_ServerClick">Login</button>

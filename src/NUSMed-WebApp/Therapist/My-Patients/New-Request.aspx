@@ -15,11 +15,11 @@
         <ContentTemplate>
             <div class="row mb-4">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Search</span>
                         </div>
-                        <asp:TextBox ID="TextboxSearch" CssClass="form-control" placeholder="NRIC" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="TextboxSearch" CssClass="form-control form-control-sm" placeholder="NRIC" runat="server"></asp:TextBox>
                         <div class="input-group-append">
                             <asp:LinkButton ID="ButtonSearch" CssClass="btn btn-outline-info" OnClick="ButtonSearch_Click" runat="server">
                                         <i class="fas fa-fw fa-search"></i> Go

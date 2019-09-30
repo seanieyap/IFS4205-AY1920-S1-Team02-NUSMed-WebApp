@@ -7,11 +7,11 @@ using System.Web;
 namespace NUSMed_WebApp.Classes.Entity
 {
     [Serializable]
-    public class RecordAnonymised
+    public class PatientAnonymised
     {
-        public Record record { get; set; }
+        public List<Record> record { get; set; }
         public string postal { get; set; }
-        public string createDate { get; set; }
+        //public string createTime { get; set; }
         public string age { get; set; }
         private string _sex;
         public string sex

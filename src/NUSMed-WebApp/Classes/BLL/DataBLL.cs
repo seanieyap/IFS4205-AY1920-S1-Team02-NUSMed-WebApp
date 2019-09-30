@@ -28,11 +28,11 @@ namespace NUSMed_WebApp.Classes.BLL
             }
         }
 
-        public List<RecordAnonymised> getAnonymizedTableFromDb()
+        public List<PatientAnonymised> getAnonymizedTableFromDb()
         {
             if (AccountBLL.IsResearcher())
             {
-                return dataDAL.RetrieveRecords();
+                return dataDAL.RetrieveAnonymised();
             }
 
             return null;
