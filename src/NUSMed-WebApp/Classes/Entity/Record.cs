@@ -188,14 +188,14 @@ namespace NUSMed_WebApp.Classes.Entity
         #region Validation Helpers
         public bool IsTitleValid()
         {
-            if (string.IsNullOrEmpty(title) && title.Length <= 45)
+            if (!string.IsNullOrEmpty(title) && title.Length <= 45)
                 return true;
 
             return false;
         }
         public bool IsDescriptionValid()
         {
-            if (string.IsNullOrEmpty(description) && description.Length <= 120)
+            if (!string.IsNullOrEmpty(description) && description.Length <= 120)
                 return true;
 
             return false;
