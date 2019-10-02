@@ -43,7 +43,19 @@ namespace NUSMed_WebApp.API
                             record.patientNRIC = retrievedNRIC;
                             record.title = credentials.title;
                             record.description = credentials.description;
-                            record.type = RecordType.Get(credentials.type);
+
+                            string recordType = credentials.type;
+
+                            if (recordType.Equals(new HeightMeasurement().name))
+                            {
+                                return Request.CreateResponse(HttpStatusCode.Conflict);
+                            }
+                            if (recordType.Equals("Height Measurement"))
+                            {
+                                return Request.CreateResponse(HttpStatusCode.Conflict);
+                            }
+
+                            // record.type = RecordType.Get(credentials.type);
                             record.content = credentials.content;
 
                             if (!record.IsTitleValid())
