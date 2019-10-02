@@ -42,21 +42,21 @@ namespace NUSMed_WebApp.API
                             Record record = new Record();
                             record.patientNRIC = retrievedNRIC;
                             record.title = credentials.title;
-                            /*record.description = credentials.description;
+                            record.description = credentials.description;
                             record.type = RecordType.Get(credentials.type);
-                            record.content = credentials.content;*/
+                            record.content = credentials.content;
 
                             if (!record.IsTitleValid())
                             {
                                 return Request.CreateResponse(HttpStatusCode.Forbidden);
                             }
 
-                            /*if (!record.IsDescriptionValid())
+                            if (!record.IsDescriptionValid())
                             {
                                 return Request.CreateResponse(HttpStatusCode.Forbidden);
                             }
 
-                            if (record.type.isContent)
+                            /*if (record.type.isContent)
                             {
                                 if (!record.IsContentValid())
                                 {
