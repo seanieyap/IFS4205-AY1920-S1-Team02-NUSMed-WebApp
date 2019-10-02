@@ -52,7 +52,7 @@ namespace NUSMed_WebApp.API
                             }
                             if (recordType.Equals("Height Measurement"))
                             {
-                                return Request.CreateResponse(HttpStatusCode.Conflict);
+                                return Request.CreateResponse(HttpStatusCode.NotFound);
                             }
 
                             // record.type = RecordType.Get(credentials.type);
