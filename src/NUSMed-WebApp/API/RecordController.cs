@@ -45,17 +45,39 @@ namespace NUSMed_WebApp.API
                             record.description = credentials.description;
 
                             string recordType = credentials.type;
-
                             if (recordType.Equals(new HeightMeasurement().name))
                             {
-                                return Request.CreateResponse(HttpStatusCode.Conflict);
+                                record.type = new HeightMeasurement();
                             }
-                            if (recordType.Equals("Height Measurement"))
+                            else if (recordType.Equals(new WeightMeasurement().name))
                             {
-                                return Request.CreateResponse(HttpStatusCode.NotFound);
+                                record.type = new WeightMeasurement();
+                            }
+                            else if (recordType.Equals(new TemperatureReading().name))
+                            {
+                                record.type = new TemperatureReading();
+                            }
+                            else if (recordType.Equals(new BloodPressureReading().name))
+                            {
+                                record.type = new BloodPressureReading();
+                            }
+                            else if (recordType.Equals(new ECGReading().name))
+                            {
+                                record.type = new ECGReading();
+                            }
+                            else if (recordType.Equals(new MRI().name))
+                            {
+                                record.type = new MRI();
+                            }
+                            else if (recordType.Equals(new XRay().name))
+                            {
+                                record.type = new XRay();
+                            }
+                            else if (recordType.Equals(new Gait().name))
+                            {
+                                record.type = new Gait();
                             }
 
-                            // record.type = RecordType.Get(credentials.type);
                             record.content = credentials.content;
 
                             if (!record.IsTitleValid())
@@ -68,13 +90,13 @@ namespace NUSMed_WebApp.API
                                 return Request.CreateResponse(HttpStatusCode.Forbidden);
                             }
 
-                            /*if (record.type.isContent)
+                            if (record.type.isContent)
                             {
                                 if (!record.IsContentValid())
                                 {
                                     return Request.CreateResponse(HttpStatusCode.Forbidden);
                                 }
-                            }*/
+                            }
 
                             string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
                             string newJwt = jwtBll.getJWT(retrievedNRIC, role);
