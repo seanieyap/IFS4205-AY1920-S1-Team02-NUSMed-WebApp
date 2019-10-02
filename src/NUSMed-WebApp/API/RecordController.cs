@@ -39,6 +39,31 @@ namespace NUSMed_WebApp.API
 
                         if (account.status == 1)
                         {
+                            Record record = new Record();
+                            record.patientNRIC = retrievedNRIC;
+                            record.title = credentials.title;
+                            record.description = credentials.description;
+                            record.type = RecordType.Get(credentials.type);
+                            record.content = credentials.content;
+
+                            if (!record.IsTitleValid())
+                            {
+                                return Request.CreateResponse(HttpStatusCode.Forbidden);
+                            }
+
+                            if (!record.IsDescriptionValid())
+                            {
+                                return Request.CreateResponse(HttpStatusCode.Forbidden);
+                            }
+
+                            if (record.type.isContent)
+                            {
+                                if (!record.IsContentValid())
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.Forbidden);
+                                }
+                            }
+
                             string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
                             string newJwt = jwtBll.getJWT(retrievedNRIC, role);
                             response = Request.CreateResponse(HttpStatusCode.OK, newJwt);

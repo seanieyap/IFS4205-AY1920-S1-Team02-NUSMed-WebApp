@@ -85,7 +85,7 @@ namespace NUSMed_WebApp.Classes.Entity
                 decimal contentDecimal;
                 if (decimal.TryParse(content, NumberStyles.Number, CultureInfo.InvariantCulture, out contentDecimal))
                 {
-                    if (contentDecimal > 0 && contentDecimal <= 280)
+                    if (contentDecimal >= 0 && contentDecimal <= 280)
                     {
                         return true;
                     }
