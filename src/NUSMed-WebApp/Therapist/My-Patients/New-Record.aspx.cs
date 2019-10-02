@@ -107,7 +107,7 @@ namespace NUSMed_WebApp.Therapist.My_Records
 
 
             // If any fields are empty
-            if (record.IsTitleValid())
+            if (!record.IsTitleValid())
             {
                 validate[0] = false;
                 inputTitle.Attributes.Add("class", "form-control form-control-sm is-invalid");
@@ -115,7 +115,7 @@ namespace NUSMed_WebApp.Therapist.My_Records
             else
                 inputTitle.Attributes.Add("class", "form-control form-control-sm is-valid");
 
-            if (record.IsDescriptionValid())
+            if (!record.IsDescriptionValid())
             {
                 validate[1] = false;
                 inputDescription.Attributes.Add("class", "form-control form-control-sm is-invalid");
