@@ -1,9 +1,11 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Text;
 using System.Web;
 using System.Web.Caching;
@@ -39,6 +41,10 @@ namespace NUSMed_WebApp.API
 
                     if (accountBLL.IsValid(retrievedNRIC, deviceID))
                     {
+                        List<string> userData = new List<string>();
+                        userData.Add("Patient");
+                        GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
+                        HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());
                         Account account = accountBLL.GetStatus(retrievedNRIC);
 
                         if (account.status == 1)
@@ -95,13 +101,14 @@ namespace NUSMed_WebApp.API
                                 string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
                                 string newJwt = jwtBll.GetJWT(retrievedNRIC, role);
 
-                                JWT jwtEntity = new JWT
-                                {
-                                    nric = retrievedNRIC,
-                                    Roles = role,
-                                };
+                                //JWT jwtEntity = new JWT
+                                //{
+                                //    nric = retrievedNRIC,
+                                //    Roles = role,
+                                //};
 
-                                recordBLL.AddRecord(record, jwtEntity);
+                                //recordBLL.AddRecord(record, jwtEntity);
+                                recordBLL.AddRecord(record);
 
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                             }

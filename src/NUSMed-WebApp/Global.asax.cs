@@ -42,7 +42,7 @@ namespace NUSMed_WebApp
         /// <summary>
         /// Overload method for form authentication role function.
         /// </summary>
-        protected void FormsAuthentication_OnAuthenticate(Object sender, FormsAuthenticationEventArgs e)
+        protected void FormsAuthentication_OnAuthenticate(object sender, FormsAuthenticationEventArgs e)
         {
             if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
             {
@@ -76,19 +76,6 @@ namespace NUSMed_WebApp
                         FormsAuthentication.SignOut();
                         FormsAuthentication.RedirectToLoginPage("fail-auth=true");
                     }
-
-                    // if not cached, cache user
-                    //if (HttpContext.Current == null || HttpContext.Current.Cache[nric] == null)
-                    //{
-                    //    HttpRuntime.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
-                    //}
-                    //else if (!HttpRuntime.Cache[nric].ToString().Equals(guid))
-                    //{
-                    //    // Cache does not match, hence multiple logins detected
-                    //    FormsAuthentication.SignOut();
-                    //    FormsAuthentication.RedirectToLoginPage("multiple-logins=true");
-                    //    return;
-                    //}
 
                     // if not cached, cache user
                     if (!HttpRuntime.Cache[nric].ToString().Equals(guid))
