@@ -267,7 +267,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit Contact information.</p>
+                        <p class="text-info mb-0 mx-auto small"><i class="fas fa-fw fa-info-circle"></i>Administrators are unable to edit Contact information.</p>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -441,7 +441,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <p class="text-info mb-0 mx-auto text-center"><i class="fas fa-fw fa-info-circle"></i>Once the patient has been assigned an Emergency Therapist, the therapist requires physical approval via token scan to receive full permissions and access to patient.</p>
+                        <p class="text-info mb-0 mx-auto text-center small"><i class="fas fa-fw fa-info-circle"></i>Once the patient has been assigned an Emergency Therapist, the therapist requires physical approval via token scan to receive full permissions and access to patient.</p>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -685,7 +685,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <p class="text-info mb-0 mx-auto"><i class="fas fa-fw fa-info-circle"></i>Please note that all Actions are logged. Abuse of authority will not be tolerated.</p>
+                        <p class="text-info mb-0 mx-auto small"><i class="fas fa-fw fa-info-circle"></i>Please note that all Actions are logged. Abuse of authority will not be tolerated.</p>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
