@@ -607,7 +607,7 @@
                                         <label>
                                             Device Status:
                                             <asp:Label ID="LabelMFADeviceStatus" runat="server"></asp:Label></label>
-                                        <div class="form-group input-group">
+                                        <div class="form-group input-group input-group-sm">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">MFA Device ID</span>
                                             </div>
