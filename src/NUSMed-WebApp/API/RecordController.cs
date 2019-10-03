@@ -83,19 +83,19 @@ namespace NUSMed_WebApp.API
 
                             if (!record.IsTitleValid())
                             {
-                                return Request.CreateResponse(HttpStatusCode.Forbidden);
+                                return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record title");
                             }
 
                             if (!record.IsDescriptionValid())
                             {
-                                return Request.CreateResponse(HttpStatusCode.Forbidden);
+                                return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record description");
                             }
 
                             if (record.type.isContent)
                             {
                                 if (!record.IsContentValid())
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.Forbidden);
+                                    return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record content");
                                 }
                             }
                             else
@@ -106,7 +106,7 @@ namespace NUSMed_WebApp.API
 
                                 if (!record.IsFileValid())
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.Forbidden);
+                                    return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record file");
                                 }
                             }
 
