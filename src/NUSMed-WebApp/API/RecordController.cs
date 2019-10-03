@@ -97,6 +97,17 @@ namespace NUSMed_WebApp.API
                                     return Request.CreateResponse(HttpStatusCode.Forbidden);
                                 }
                             }
+                            else
+                            {
+                                record.fileName = credentials.fileName;
+                                record.fileExtension = credentials.fileExtension;
+                                record.fileSize = credentials.fileSize;
+
+                                if (!record.IsFileValid())
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.Forbidden);
+                                }
+                            }
 
                             string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
                             string newJwt = jwtBll.getJWT(retrievedNRIC, role);
