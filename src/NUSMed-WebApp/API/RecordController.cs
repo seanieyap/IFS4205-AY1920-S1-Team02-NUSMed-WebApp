@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
@@ -82,7 +83,7 @@ namespace NUSMed_WebApp.API
 
                                 Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
 
-                                File.WriteAllBytes(record.fullpath, credentials.fileContent);
+                                File.WriteAllBytes(record.fullpath, Encoding.ASCII.GetBytes(credentials.fileContent.ToString()));
                             }
                             RecordBLL recordBLL = new RecordBLL();
                             recordBLL.AddRecord(record);
