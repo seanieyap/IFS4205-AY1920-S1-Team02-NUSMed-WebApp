@@ -1,6 +1,7 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web;
@@ -108,6 +109,17 @@ namespace NUSMed_WebApp.API
                                     return Request.CreateResponse(HttpStatusCode.Forbidden);
                                 }
                             }
+
+                            /*if (!record.type.isContent)
+                            {
+                                record.createTime = DateTime.Now;
+
+                                Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
+
+                                //inputFile.SaveAs(record.fullpath);
+                            }
+                            RecordBLL recordBLL = new RecordBLL();
+                            recordBLL.AddRecord(record);*/
 
                             string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
                             string newJwt = jwtBll.getJWT(retrievedNRIC, role);
