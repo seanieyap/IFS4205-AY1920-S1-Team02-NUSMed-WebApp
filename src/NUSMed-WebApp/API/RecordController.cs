@@ -45,7 +45,8 @@ namespace NUSMed_WebApp.API
                             record.patientNRIC = retrievedNRIC;
                             record.title = credentials.title;
                             record.description = credentials.description;
-                            record.type = RecordType.Get(credentials.type.ToString());
+                            string recordType = credentials.type;
+                            record.type = RecordType.Get(recordType);
                             record.content = credentials.content;
 
                             if (!record.IsTitleValid())
