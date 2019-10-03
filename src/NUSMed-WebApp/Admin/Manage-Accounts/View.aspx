@@ -596,7 +596,7 @@
                                             <asp:TextBox ID="TextboxMFATokenIDUpdate" CssClass="form-control form-control-sm" placeholder="Leave blank to Disable" aria-label="Leave blank to Disable" aria-describedby="LinkButtonMFATokenIDEdit" runat="server"></asp:TextBox>
                                             <div class="input-group-append">
                                                 <asp:LinkButton ID="LinkButtonTokenIDUpdate" CssClass="btn btn-outline-success" runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonTokenIDUpdate_Click">
-                                                    <i class="far fa-fw fa-save"></i>
+                                                    <i class="far fa-fw fa-save"></i> Update
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
@@ -614,7 +614,7 @@
                                             <asp:TextBox ID="TextboxMFADeviceIDUpdate" CssClass="form-control form-control-sm" placeholder="Leave blank to Reset" aria-label="Leave blank to Reset" aria-describedby="LinkButtonMFADeviceIDEdit" runat="server"></asp:TextBox>
                                             <div class="input-group-append">
                                                 <asp:LinkButton ID="LinkButtonDeviceIDUpdate" CssClass="btn btn-outline-success" runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonDeviceIDUpdate_Click">
-                                                    <i class="far fa-fw fa-save"></i>
+                                                    <i class="far fa-fw fa-save"></i> Update
                                                 </asp:LinkButton>
                                             </div>
                                         </div>

@@ -15,6 +15,8 @@ namespace NUSMed_WebApp.API
     [RoutePrefix("api/record")]
     public class RecordController : ApiController
     {
+        private readonly RecordBLL recordBLL = new RecordBLL();
+
         // POST api/record/patient/upload
         // Patient uploads a record for himself
         [Route("patient/upload")]
@@ -31,7 +33,7 @@ namespace NUSMed_WebApp.API
 
             if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
             {
-                if (jwtBll.validateJWT(jwt))
+                if (jwtBll.ValidateJWT(jwt))
                 {
                     string retrievedNRIC = jwtBll.getNRIC(jwt);
 
@@ -41,56 +43,73 @@ namespace NUSMed_WebApp.API
 
                         if (account.status == 1)
                         {
-                            Record record = new Record();
-                            record.patientNRIC = retrievedNRIC;
-                            record.title = credentials.title;
-                            record.description = credentials.description;
-                            record.type = RecordType.Get(Convert.ToString(credentials.type));
-                            record.content = credentials.content;
-
-                            if (!record.IsTitleValid())
+                            try
                             {
-                                return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record title");
-                            }
+                                Record record = new Record();
+                                record.patientNRIC = credentials.patientNRIC;
+                                record.creatorNRIC = retrievedNRIC;
+                                record.title = credentials.title;
+                                record.description = credentials.description;
+                                record.type = RecordType.Get(Convert.ToString(credentials.type));
+                                record.content = string.Empty;
 
-                            if (!record.IsDescriptionValid())
-                            {
-                                return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record description");
-                            }
-
-                            if (record.type.isContent)
-                            {
-                                if (!record.IsContentValid())
+                                if (!record.IsTitleValid())
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record content");
+                                    return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record title");
                                 }
-                            }
-                            else
-                            {
-                                record.fileName = credentials.fileName;
-                                record.fileExtension = credentials.fileExtension;
-                                record.fileSize = credentials.fileSize;
 
-                                if (!record.IsFileValid())
+                                if (!record.IsDescriptionValid())
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record file");
+                                    return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record description");
                                 }
-                            }
 
-                            if (!record.type.isContent)
+                                if (record.type.isContent)
+                                {
+                                    if (!record.IsContentValid())
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record content");
+                                    }
+                                    else
+                                    {
+                                        record.content = credentials.content;
+                                    }
+                                }
+                                else
+                                {
+                                    record.fileName = credentials.fileName;
+                                    record.fileExtension = credentials.fileExtension;
+                                    record.fileSize = credentials.fileSize;
+
+                                    if (!record.IsFileValid())
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record file");
+                                    }
+
+                                    record.createTime = DateTime.Now;
+
+                                    Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
+
+                                    File.WriteAllBytes(record.fullpath, Encoding.ASCII.GetBytes(Convert.ToString(credentials.fileContent)));
+                                }
+
+                                string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
+                                string newJwt = jwtBll.GetJWT(retrievedNRIC, role);
+
+                                JWT jwtEntity = new JWT
+                                {
+                                    nric = retrievedNRIC,
+                                    Roles = role,
+                                };
+
+                                recordBLL.AddRecord(record, jwtEntity);
+
+                                response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                            }
+                            catch
                             {
-                                record.createTime = DateTime.Now;
-
-                                Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
-
-                                File.WriteAllBytes(record.fullpath, Encoding.ASCII.GetBytes(Convert.ToString(credentials.fileContent)));
+                                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
                             }
-                            RecordBLL recordBLL = new RecordBLL();
-                            recordBLL.AddRecord(record);
 
-                            string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
-                            string newJwt = jwtBll.getJWT(retrievedNRIC, role);
-                            response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                             return response;
                         }
                     }

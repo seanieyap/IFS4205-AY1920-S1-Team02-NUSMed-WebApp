@@ -1,7 +1,6 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -104,7 +103,6 @@ namespace NUSMed_WebApp.Therapist.My_Records
 
             #region Validation
             bool[] validate = Enumerable.Repeat(true, 3).ToArray();
-
 
             // If any fields are empty
             if (!record.IsTitleValid())

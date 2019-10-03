@@ -1,13 +1,10 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 
 namespace NUSMed_WebApp.Classes.Entity
 {
@@ -17,7 +14,22 @@ namespace NUSMed_WebApp.Classes.Entity
         static readonly string[] suffixes = { "Bytes", "KB", "MB", "GB", "TB", "PB" };
 
         public long id { get; set; }
-        public string patientNRIC { get; set; }
+        private string _patientNRIC;
+        public string patientNRIC
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_patientNRIC))
+                {
+                    return _patientNRIC;
+                }
+                return _patientNRIC.ToUpper();
+            }
+            set
+            {
+                _patientNRIC = value.ToUpper();
+            }
+        }
         public string creatorNRIC { get; set; }
         private string _creatorFirstName;
         public string creatorFirstName
@@ -144,29 +156,21 @@ namespace NUSMed_WebApp.Classes.Entity
 
         public string GetFileDirectoryNameHash()
         {
-            if ((AccountBLL.IsPatient() && AccountBLL.GetNRIC().Equals(patientNRIC))
-                || (AccountBLL.IsTherapist()))
+            SHA256 Sha256 = SHA256.Create();
+            byte[] hashValue1 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(patientNRIC));
+            byte[] hashValue2 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(new AccountBLL().GetCreateTime(patientNRIC).ToString("yyyy-MM-dd HH:mm:ss")));
+
+            byte[] concat = new byte[hashValue1.Length + hashValue2.Length];
+            Buffer.BlockCopy(hashValue1, 0, concat, 0, hashValue1.Length);
+            Buffer.BlockCopy(hashValue2, 0, concat, hashValue1.Length, hashValue2.Length);
+            byte[] hash = Sha256.ComputeHash(concat);
+
+            string result = string.Empty;
+            foreach (byte b in hash)
             {
-
-                // todo permission check for therapist
-                SHA256 Sha256 = SHA256.Create();
-                byte[] hashValue1 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(patientNRIC));
-                byte[] hashValue2 = Sha256.ComputeHash(Encoding.ASCII.GetBytes(new AccountBLL().GetCreateTime(patientNRIC).ToString("yyyy-MM-dd HH:mm:ss")));
-
-                byte[] concat = new byte[hashValue1.Length + hashValue2.Length];
-                Buffer.BlockCopy(hashValue1, 0, concat, 0, hashValue1.Length);
-                Buffer.BlockCopy(hashValue2, 0, concat, hashValue1.Length, hashValue2.Length);
-                byte[] hash = Sha256.ComputeHash(concat);
-
-                string result = string.Empty;
-                foreach (byte b in hash)
-                {
-                    result += string.Format("{0:x2}", b);
-                }
-                return result;
+                result += string.Format("{0:x2}", b);
             }
-
-            return null;
+            return result;
         }
 
         public string GetMD5HashFromFile()

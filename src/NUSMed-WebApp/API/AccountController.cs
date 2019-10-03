@@ -13,6 +13,8 @@ namespace NUSMed_WebApp.API
     [RoutePrefix("api/account")]
     public class AccountController : ApiController
     {
+        private readonly AccountBLL accountBLL = new AccountBLL();
+
         // POST api/account/authenticate
         // Authenticate NRIC + password + device ID upon launching mobile app
         [Route("authenticate")]
@@ -26,18 +28,17 @@ namespace NUSMed_WebApp.API
             string jwt = credentials.jwt;
             //string guid = credentials.guid;
 
-            AccountBLL accountBLL = new AccountBLL();
             JWTBLL jwtBll = new JWTBLL();
 
             if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
             {
-                if (jwtBll.validateJWT(jwt))
+                if (jwtBll.ValidateJWT(jwt))
                 {
                     string retrievedNRIC = jwtBll.getNRIC(jwt);
 
                     if (accountBLL.IsValid(retrievedNRIC, deviceID))
                     {
-                        string newJwt = jwtBll.updateJWT(jwt);
+                        string newJwt = jwtBll.UpdateJWT(jwt);
                         response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                         return response;
                     }
@@ -99,8 +100,6 @@ namespace NUSMed_WebApp.API
             string deviceID = credentials.deviceID;
             string tokenID = credentials.tokenID;
 
-            AccountBLL accountBLL = new AccountBLL();
-
             if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && 
                 AccountBLL.IsDeviceIDValid(deviceID) && AccountBLL.IsTokenIDValid(tokenID))
             {
@@ -141,12 +140,12 @@ namespace NUSMed_WebApp.API
 
             if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID) && AccountBLL.IsTokenIDValid(tokenID))
             {
-                if (jwtBll.validateJWT(jwt))
+                if (jwtBll.ValidateJWT(jwt))
                 {
                     string retrievedNRIC = jwtBll.getNRIC(jwt);
 
                     // validate deviceID and tokenID for a nric
-                    if (new AccountBLL().IsValid(retrievedNRIC, tokenID, deviceID))
+                    if (accountBLL.IsValid(retrievedNRIC, tokenID, deviceID))
                     {
                         if (HttpContext.Current.Cache[retrievedNRIC + "_MFAAttempt"] != null &&
                             HttpContext.Current.Cache.Get(retrievedNRIC + "_MFAAttempt").ToString().Equals("Awaiting"))
@@ -157,7 +156,7 @@ namespace NUSMed_WebApp.API
                             account.associatedTokenID = tokenID;
                             HttpContext.Current.Cache.Insert(retrievedNRIC + "_MFAAttempt", account, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
 
-                            string newJwt = jwtBll.updateJWT(jwt);
+                            string newJwt = jwtBll.UpdateJWT(jwt);
                             response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                         }
                         else
@@ -208,12 +207,11 @@ namespace NUSMed_WebApp.API
             string deviceID = credentials.deviceID;
             string jwt = credentials.jwt;
 
-            AccountBLL accountBLL = new AccountBLL();
             JWTBLL jwtBll = new JWTBLL();
 
             if (!string.IsNullOrEmpty(newJwtRole) && !string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
             {
-                if (jwtBll.validateJWT(jwt))
+                if (jwtBll.ValidateJWT(jwt))
                 {
                     string retrievedNRIC = jwtBll.getNRIC(jwt);
 
@@ -225,13 +223,13 @@ namespace NUSMed_WebApp.API
                         {
                             if (newJwtRole.Equals("10") && account.patientStatus == 1)
                             {
-                                string newJwt = jwtBll.getJWT(retrievedNRIC, newJwtRole);
+                                string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                                 return response;
                             }
                             else if (newJwtRole.Equals("01") && account.therapistStatus == 1)
                             {
-                                string newJwt = jwtBll.getJWT(retrievedNRIC, newJwtRole);
+                                string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                                 return response;
                             }
@@ -252,12 +250,11 @@ namespace NUSMed_WebApp.API
             string deviceID = credentials.deviceID;
             string jwt = credentials.jwt;
 
-            AccountBLL accountBLL = new AccountBLL();
             JWTBLL jwtBll = new JWTBLL();
 
             if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
             {
-                if (jwtBll.validateJWT(jwt))
+                if (jwtBll.ValidateJWT(jwt))
                 {
                     string retrievedNRIC = jwtBll.getNRIC(jwt);
 
@@ -268,7 +265,7 @@ namespace NUSMed_WebApp.API
                         if (account.status == 1)
                         {
                             string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
-                            string newJwt = jwtBll.getJWT(retrievedNRIC, role);
+                            string newJwt = jwtBll.GetJWT(retrievedNRIC, role);
                             response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                             return response;
                         }

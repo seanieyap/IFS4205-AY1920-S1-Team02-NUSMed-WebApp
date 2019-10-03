@@ -61,7 +61,6 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
             {
                 try
                 {
-                    // todo add additional permission checks.
                     Classes.Entity.Patient patient = therapistBLL.GetPatientInformation(nric);
 
                     // Personal Details

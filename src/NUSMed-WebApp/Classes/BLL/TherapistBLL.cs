@@ -86,6 +86,16 @@ namespace NUSMed_WebApp.Classes.BLL
             return null;
         }
 
+        public Entity.Patient GetPatientPermissions(string patientNRIC, JWT jwt)
+        {
+            if (jwt.Roles == "01" && !patientNRIC.Equals(jwt.nric))
+            {
+                return therapistDAL.RetrievePatientPermission(patientNRIC, jwt.nric);
+            }
+
+            return null;
+        }
+
         public void SubmitRequest(string patientNRIC, short permission)
         {
             if (AccountBLL.IsTherapist() &&

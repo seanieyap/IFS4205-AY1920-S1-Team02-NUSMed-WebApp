@@ -1,9 +1,6 @@
 ﻿using NUSMed_WebApp.Classes.Entity;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
@@ -19,7 +16,7 @@ namespace NUSMed_WebApp.Classes.BLL
         {
         }
 
-        public bool validateJWT(string jwt)
+        public bool ValidateJWT(string jwt)
         {
             bool validated = false;
 
@@ -66,7 +63,7 @@ namespace NUSMed_WebApp.Classes.BLL
             return jwtEntity.nric;
         }
 
-        public string getJWT(string nric, string role)
+        public string GetJWT(string nric, string role)
         {
             JWT jwtEntity = new JWT
             {
@@ -89,7 +86,7 @@ namespace NUSMed_WebApp.Classes.BLL
             return jwt;
         }
 
-        public string updateJWT(string jwt)
+        public string UpdateJWT(string jwt)
         {
             string[] jwtParts = jwt.Split('.');
 

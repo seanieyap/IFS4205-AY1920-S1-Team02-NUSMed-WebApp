@@ -13,6 +13,10 @@ Link: https://github.com/seanieyap/IFS4205-AY1920-S1-Team02-NUSMed-AndroidApp
 
 ### Reports
 Plan and Team Assignment Report: https://www.overleaf.com/read/fcwnhhbdbvrb
+
 Database Design Report: https://www.overleaf.com/read/mtvxqmwfvvkz
+
 Tool Assessment Report: https://www.overleaf.com/read/xvqqkgcwhknh
+
 Design Report: https://www.overleaf.com/read/zfskxbzdgmzb
+

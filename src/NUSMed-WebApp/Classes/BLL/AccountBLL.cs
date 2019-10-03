@@ -55,7 +55,7 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             JWTBLL jwtBll = new JWTBLL();
 
-            String jwt = jwtBll.getJWT(nric, role);
+            string jwt = jwtBll.GetJWT(nric, role);
 
             if (role.Equals("11"))
             {
@@ -134,7 +134,6 @@ namespace NUSMed_WebApp.Classes.BLL
             if ((IsPatient() && nric.Equals(GetNRIC())) ||
                 IsTherapist())
             {
-                // todo permission check
                 return accountDAL.RetrieveCreateTime(nric);
             }
 
