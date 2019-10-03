@@ -119,8 +119,8 @@ namespace NUSMed_WebApp.API
 
                                 File.WriteAllBytes(record.fullpath, Encoding.ASCII.GetBytes(credentials.fileContent.ToString()));
                             }
-                            RecordBLL recordBLL = new RecordBLL();
-                            recordBLL.AddRecord(record);
+                            /*RecordBLL recordBLL = new RecordBLL();
+                            recordBLL.AddRecord(record);*/
 
                             string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
                             string newJwt = jwtBll.getJWT(retrievedNRIC, role);
