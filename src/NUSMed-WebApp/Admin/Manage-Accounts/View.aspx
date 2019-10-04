@@ -15,7 +15,8 @@
         <ContentTemplate>
             <div class="row mb-4">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
-                    <div class="input-group input-group-sm">
+                    <asp:Panel CssClass="input-group input-group-sm" runat="server" DefaultButton="ButtonSearch">
+
                         <div class="input-group-prepend">
                             <span class="input-group-text">Search</span>
                         </div>
@@ -25,7 +26,7 @@
                                         <i class="fas fa-fw fa-search"></i> Go
                             </asp:LinkButton>
                         </div>
-                    </div>
+                    </asp:Panel>
                 </div>
             </div>
 

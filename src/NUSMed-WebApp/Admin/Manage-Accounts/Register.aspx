@@ -663,7 +663,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success mr-auto" runat="server" onserverclick="buttonRefresh_ServerClick">Register another Account</button>
-                    <a class="btn btn-secondary" href="~/Admin/Manage-Account/View" role="button" runat="server">Go to View Accounts</a>
+                    <a class="btn btn-secondary" href="~/Admin/Manage-Accounts/View" role="button" runat="server">Go to View Accounts</a>
                 </div>
             </div>
         </div>
