@@ -28,7 +28,7 @@
                     <div class="card-body text-center text-md-left">
                         <h5 class="card-title"><i class="fas fa-fw fa-database"></i>My Medical Notes</h5>
                         <p class="card-text">Create and view medical notes for communications between therapists like yourself. Sharing of medical notes can also be done via the "view" page!</p>
-                        <a href="~/Therapist/My-Medical-Notes/View" class="btn btn-nus-orange mb-2" runat="server">View Medical Notes<i class="fa fa-angle-double-right"></i></a>
+                        <a href="~/Therapist/My-Medical-Notes/View" class="btn btn-nus-orange mb-2" runat="server">View Medical Notes <i class="fa fa-angle-double-right"></i></a>
                         <a href="~/Therapist/My-Medical-Notes/New-Medical-Note" class="btn btn-nus-orange mb-2" runat="server">Create New Medical Note <i class="fa fa-angle-double-right"></i></a>
                     </div>
                 </div>

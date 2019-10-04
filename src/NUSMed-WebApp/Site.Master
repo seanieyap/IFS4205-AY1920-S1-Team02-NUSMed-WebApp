@@ -107,7 +107,9 @@
                     <a id="navLinksResearcherSearchData" class="nav-link" href="~/Researcher/Search-Data" runat="server" visible="false"><i class="fas fa-fw fa-search"></i>Record Search</a>
 
                     <%-- Admin Links --%>
-                    <a id="navLinksAdminDashboard" class="nav-link" href="~/Admin/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
+                    <a id="navLinksAdminDashboard" class="nav-link" href="~/Admin/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span class="d-inline-block d-md-none d-lg-inline-block">Dashboard</span>
+                    </a>
                     <div id="navLinksAdminManageAccounts" class="nav-item dropdown" runat="server" visible="false">
                         <a id="navLinksAdminManageAccountsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
                             <i class="fas fa-fw fa-users-cog"></i>Manage Accounts<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
