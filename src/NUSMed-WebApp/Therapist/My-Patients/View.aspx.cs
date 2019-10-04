@@ -60,7 +60,6 @@ namespace NUSMed_WebApp.Therapist.My_Patients
             {
                 try
                 {
-                    // todo add additional permission checks.
                     Classes.Entity.Patient patient = therapistBLL.GetPatientInformation(nric);
 
                     // Personal Details
@@ -649,9 +648,9 @@ namespace NUSMed_WebApp.Therapist.My_Patients
 
         protected void GridViewRecordDiagnosesAdd_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            GridViewPatientDiagnosisAdd.PageIndex = e.NewPageIndex;
-            GridViewPatientDiagnosisAdd.DataSource = ViewState["GridViewRecordDiagnosesAdd"];
-            GridViewPatientDiagnosisAdd.DataBind();
+            GridViewRecordDiagnosesAdd.PageIndex = e.NewPageIndex;
+            GridViewRecordDiagnosesAdd.DataSource = ViewState["GridViewRecordDiagnosesAdd"];
+            GridViewRecordDiagnosesAdd.DataBind();
         }
 
         protected void GridViewRecordDiagnosesAdd_RowCommand(object sender, GridViewCommandEventArgs e)

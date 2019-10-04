@@ -23,7 +23,7 @@
             <div class="row pb-3">
                 <div class="col-12">
                     <div class="form-group">
-                        <label for="inputTitle">Title <span class="text-muted small">(Maximum of 45 characters)</span></label>
+                        <label for="inputTitle">Title <span class="text-muted small">(Maximum of 75 characters)</span></label>
                         <input id="inputTitle" type="text" class="form-control form-control-sm" placeholder="Title" runat="server">
                         <div class="invalid-feedback" runat="server">
                             Title is invalid.
@@ -32,10 +32,10 @@
                 </div>
                 <div class="col-12">
                     <div class="form-group">
-                        <label for="inputDescription">Description <span class="text-muted small">(Maximum of 120 characters)</span></label>
-                        <input id="inputDescription" type="text" value="nil" class="form-control form-control-sm" placeholder="Description" runat="server">
+                        <label for="inputContent">Content <span class="text-muted small">(Maximum of 65,535 characters)</span></label>
+                        <asp:TextBox ID="TextBoxContent" CssClass="form-control form-control-sm" TextMode="MultiLine" Rows="10" runat="server"></asp:TextBox>
                         <div class="invalid-feedback" runat="server">
-                            Description is invalid.
+                            Content is invalid.
                         </div>
                     </div>
                 </div>
@@ -203,7 +203,7 @@
                 </div>
             </div>
 
-            <div id="modelSuccess" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div id="modelSuccess" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered text-center" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -229,7 +229,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
 
-    <div id="modalInformation" class="modal" tabindex="-1" role="dialog">
+    <div id="modalInformation" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelInformation" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -358,7 +358,7 @@
         </div>
     </div>
 
-    <div id="modalFileView" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div id="modalFileView" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelFileView" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -396,7 +396,7 @@
         </div>
     </div>
 
-    <div id="modalDiagnosisView" class="modal" tabindex="-1" role="dialog">
+    <div id="modalDiagnosisView" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelDiagnosisView" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -415,7 +415,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <asp:GridView ID="GridViewPatientDiagnoses" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" 
+                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"
                                             ItemType="NUSMed_WebApp.Classes.Entity.PatientDiagnosis" OnPageIndexChanging="GridViewPatientDiagnoses_PageIndexChanging"
                                             EmptyDataRowStyle-CssClass="empty-table" runat="server">
                                             <Columns>
@@ -488,7 +488,7 @@
         </div>
     </div>
 
-    <div id="modalRecordDiagnosisView" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div id="modalRecordDiagnosisView" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelRecordDiagnosisView" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -507,7 +507,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <asp:GridView ID="GridViewRecordDiagnoses" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" 
+                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"
                                             ItemType="NUSMed_WebApp.Classes.Entity.RecordDiagnosis" OnPageIndexChanging="GridViewRecordDiagnoses_PageIndexChanging"
                                             EmptyDataRowStyle-CssClass="empty-table" runat="server">
                                             <Columns>

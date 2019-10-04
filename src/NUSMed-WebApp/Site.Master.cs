@@ -4,10 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace NUSMed_WebApp
 {
@@ -342,6 +340,28 @@ namespace NUSMed_WebApp
                     throw new InvalidOperationException("Validation of " +
                                         "Anti-XSRF token failed.");
                 }
+            }
+        }
+
+        public bool IsLocalUrl(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return false;
+            }
+
+            Uri absoluteUri;
+            if (Uri.TryCreate(url, UriKind.Absolute, out absoluteUri))
+            {
+                return string.Equals(this.Request.Url.Host, absoluteUri.Host,
+                            StringComparison.OrdinalIgnoreCase);
+            }
+            else
+            {
+                bool isLocal = !url.StartsWith("http:", StringComparison.OrdinalIgnoreCase)
+                    && !url.StartsWith("https:", StringComparison.OrdinalIgnoreCase)
+                    && Uri.IsWellFormedUriString(url, UriKind.Relative);
+                return isLocal;
             }
         }
     }

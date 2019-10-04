@@ -139,7 +139,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
 
-    <div id="modalPersonal" class="modal" tabindex="-1" role="dialog">
+    <div id="modalPersonal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelPersonal" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -225,7 +225,7 @@
         </div>
     </div>
 
-    <div id="modalContact" class="modal" tabindex="-1" role="dialog">
+    <div id="modalContact" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelContact" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -280,7 +280,7 @@
         </div>
     </div>
 
-    <div id="modalPatient" class="modal" tabindex="-1" role="dialog">
+    <div id="modalPatient" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelPatient" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -453,7 +453,7 @@
         </div>
     </div>
 
-    <div id="modalTherapist" class="modal" tabindex="-1" role="dialog">
+    <div id="modalTherapist" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelTherapist" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -497,7 +497,7 @@
         </div>
     </div>
 
-    <div id="modalResearcher" class="modal" tabindex="-1" role="dialog">
+    <div id="modalResearcher" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelResearcher" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -541,7 +541,7 @@
         </div>
     </div>
 
-    <div id="modalStatus" class="modal" tabindex="-1" role="dialog">
+    <div id="modalStatus" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelStatus" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>

@@ -236,15 +236,36 @@ namespace NUSMed_WebApp.Classes.BLL
             {
                 List<Note> notes = therapistDAL.RetrieveNotes(term, AccountBLL.GetNRIC());
 
-                //foreach (Entity.Patient patient in patients)
-                //{
-                //    if (patient.approvedTime == null)
-                //    {
-                //        patient.firstName = string.Empty;
-                //        patient.lastName = string.Empty;
-                //    }
-                //}
+                foreach (Note note in notes)
+                {
+                    if (note.patient.approvedTime == null)
+                    {
+                        note.patient.firstName = string.Empty;
+                        note.patient.lastName = string.Empty;
+                    }
+                }
                 return notes;
+            }
+
+            return null;
+        }
+
+        public Note GetNote(int id)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                Note note = therapistDAL.RetrieveNote(id, AccountBLL.GetNRIC());
+
+                if (note.patient.approvedTime != null)
+                {
+                    note.patient = therapistDAL.RetrievePatientInformation(note.patient.nric, AccountBLL.GetNRIC());
+                }
+                //if ()
+                //{
+
+                //}
+
+                return note;
             }
 
             return null;

@@ -4,7 +4,6 @@ using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 using System.IO;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Linq;
 
@@ -471,7 +470,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
         {
             Note note = new Note();
             note.title = inputTitle.Value.Trim();
-            note.description = inputDescription.Value.Trim();
+            note.content = TextBoxContent.Text.Trim();
             HashSet<int> selectedRecords = new HashSet<int>();
 
             if (ViewState["GridViewPatientSelectedPatientNRIC"] != null)
@@ -488,7 +487,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
             bool[] validate = Enumerable.Repeat(true, 3).ToArray();
 
             // If any fields are empty
-            if (note.IsTitleValid())
+            if (!note.IsTitleValid())
             {
                 validate[0] = false;
                 inputTitle.Attributes.Add("class", "form-control form-control-sm is-invalid");
@@ -496,13 +495,13 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
             else
                 inputTitle.Attributes.Add("class", "form-control form-control-sm is-valid");
 
-            if (note.IsDescriptionValid())
+            if (!note.IsContentValid())
             {
                 validate[1] = false;
-                inputDescription.Attributes.Add("class", "form-control form-control-sm is-invalid");
+                TextBoxContent.CssClass = "form-control form-control-sm is-invalid";
             }
             else
-                inputDescription.Attributes.Add("class", "form-control form-control-sm is-valid");
+                TextBoxContent.CssClass="form-control form-control-sm is-valid";
 
             if (!AccountBLL.IsNRICValid(note.patient.nric))
             {
@@ -552,7 +551,10 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
 
         protected void buttonSuccessCreateAnother_ServerClick(object sender, EventArgs e)
         {
-            Response.Redirect(Request.RawUrl);
+            if (Master.IsLocalUrl(Request.RawUrl))
+            {
+                Response.Redirect(Request.RawUrl);
+            }
         }
     }
 }

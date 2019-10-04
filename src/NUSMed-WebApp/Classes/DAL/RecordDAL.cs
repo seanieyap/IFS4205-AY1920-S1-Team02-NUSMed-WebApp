@@ -125,7 +125,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve Records information with specific id owned by specific patient
         /// </summary>
-        public Record RetrieveRecord(int id, string therapistNRIC)
+        public Record RetrieveRecord(long recordID, string therapistNRIC)
         {
             Record result = new Record();
 
@@ -142,7 +142,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     WHERE r.id = @id AND rtp.therapist_nric = @therapistNRIC
                     ORDER BY r.create_time DESC;";
 
-                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@id", recordID);
                 cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
 
                 using (cmd.Connection = connection)
@@ -177,6 +177,67 @@ namespace NUSMed_WebApp.Classes.DAL
 
                             record.recordPermissionStatus = reader["record_permission_status"] == DBNull.Value ? null : (short?)Convert.ToInt16(reader["record_permission_status"]);
                             result = record;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve Records information attached to a note
+        /// </summary>
+        public List<Record> RetrieveRecords(long noteID, string patientNRIC, string therapistNRIC)
+        {
+            List<Record> result = new List<Record>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT r.id, r.patient_nric, r.creator_nric, r.description, r.type, r.content, r.title, 
+                    r.create_time, r.is_emergency, r.file_extension, r.status as record_status,
+                    a.name_first as creator_name_first, a.name_last as creator_name_last,
+                    rp.status as record_permission_status
+                    FROM medical_note mn 
+					INNER JOIN medical_note_record mnr ON mnr.medical_note_id = mn.id
+					INNER JOIN record r ON r.id = mnr.record_id
+                    INNER JOIN account a ON a.nric = r.creator_nric
+                    LEFT JOIN record_permission rp ON rp.record_id = r.id AND rp.therapist_nric = @therapistNRIC
+                    WHERE mn.therapist_nric = @therapistNRIC AND mn.patient_nric = @patientNRIC AND mnr.medical_note_id = @noteID
+                    ORDER BY r.create_time DESC;";
+
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+                cmd.Parameters.AddWithValue("@noteID", noteID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Record record = new Record
+                            {
+                                id = Convert.ToInt64(reader["id"]),
+                                patientNRIC = Convert.ToString(reader["patient_nric"]),
+                                creatorNRIC = Convert.ToString(reader["creator_nric"]),
+                                description = Convert.ToString(reader["description"]),
+                                type = RecordType.Get(Convert.ToString(reader["type"])),
+                                content = Convert.ToString(reader["content"]),
+                                title = Convert.ToString(reader["title"]),
+                                isEmergency = Convert.ToBoolean(reader["is_emergency"]),
+                                createTime = Convert.ToDateTime(reader["create_time"]),
+                                creatorFirstName = Convert.ToString(reader["creator_name_first"]),
+                                creatorLastName = Convert.ToString(reader["creator_name_last"]),
+                                fileExtension = Convert.ToString(reader["file_extension"]),
+                                status = Convert.ToInt16(reader["record_status"])
+                            };
+                            record.recordPermissionStatus = reader["record_permission_status"] == DBNull.Value ? null : (short?)Convert.ToInt16(reader["record_permission_status"]);
+
+                            result.Add(record);
                         }
                     }
                 }

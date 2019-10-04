@@ -215,7 +215,10 @@ namespace NUSMed_WebApp
 
         protected void buttonRefresh_ServerClick(object sender, EventArgs e)
         {
-            Response.Redirect(Request.RawUrl);
+            if (Master.IsLocalUrl(Request.RawUrl))
+            {
+                Response.Redirect(Request.RawUrl);
+            }
         }
     }
 }

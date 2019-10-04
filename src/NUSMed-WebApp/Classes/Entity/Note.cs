@@ -15,20 +15,20 @@ namespace NUSMed_WebApp.Classes.Entity
         public Therapist creator { get; set; } = new Therapist();
         public List<Record> records { get; set; } = new List<Record>();
         public string title { get; set; }
-        public string description { get; set; }
+        public string content { get; set; }
         public DateTime createTime { get; set; }
 
         #region Validation Helpers
         public bool IsTitleValid()
         {
-            if (string.IsNullOrEmpty(title) && title.Length <= 45)
+            if (!string.IsNullOrEmpty(title) && title.Length <= 75)
                 return true;
 
             return false;
         }
-        public bool IsDescriptionValid()
+        public bool IsContentValid()
         {
-            if (string.IsNullOrEmpty(description) && description.Length <= 120)
+            if (!string.IsNullOrEmpty(content))
                 return true;
 
             return false;

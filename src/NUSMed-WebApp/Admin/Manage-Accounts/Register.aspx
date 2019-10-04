@@ -651,7 +651,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
 
-    <div id="modelSuccess" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div id="modelSuccess" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content">
                 <div class="modal-header">

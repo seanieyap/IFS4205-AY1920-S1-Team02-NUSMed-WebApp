@@ -8,9 +8,7 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
 using System.Web;
-using System.Web.Caching;
 using System.Web.Http;
-using System.Web.Security;
 
 namespace NUSMed_WebApp.API
 {
@@ -25,7 +23,7 @@ namespace NUSMed_WebApp.API
         [HttpPost]
         public HttpResponseMessage PatientUpload([FromBody]dynamic credentials)
         {
-            var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Unauthorized);
 
             string deviceID = credentials.deviceID;
             string jwt = credentials.jwt;

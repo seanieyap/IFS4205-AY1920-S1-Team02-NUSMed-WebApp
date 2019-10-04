@@ -30,7 +30,7 @@
             </div>
 
             <%--Multiple logins detected--%>
-            <asp:Panel ID="multipleLoginsModal" class="modal" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
+            <asp:Panel ID="multipleLoginsModal" class="modal fade" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -50,7 +50,7 @@
                 </div>
             </asp:Panel>
 
-            <asp:Panel ID="MFAFailModal" class="modal" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
+            <asp:Panel ID="MFAFailModal" class="modal fade" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -70,7 +70,7 @@
                 </div>
             </asp:Panel>
 
-            <asp:Panel ID="failAuthModal" class="modal" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
+            <asp:Panel ID="failAuthModal" class="modal fade" TabIndex="-1" role="dialog" runat="server" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -90,7 +90,7 @@
                 </div>
             </asp:Panel>
 
-            <asp:Panel ID="NoRoleModal" runat="server" class="modal" TabIndex="-1" role="dialog" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
+            <asp:Panel ID="NoRoleModal" runat="server" class="modal fade" TabIndex="-1" role="dialog" data-backdrop="static" data-keyboard="false" Visible="false" ClientIDMode="Static">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -119,7 +119,7 @@
 
 
     <%--MFA Modal--%>
-    <div id="modalMFA" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div id="modalMFA" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content">
                 <div class="modal-header">

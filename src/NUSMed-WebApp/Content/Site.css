@@ -194,6 +194,10 @@ a.aspNetDisabled.btn.btn-secondary.disabled {
     z-index: 11;
 }
 
+.modal {
+    overflow: auto !important;
+}
+
 /* Gridview Pagination */
 .pagination-gridview {
 }

@@ -31,13 +31,13 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputTitle;
         
         /// <summary>
-        /// inputDescription control.
+        /// TextBoxContent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText inputDescription;
+        protected global::System.Web.UI.WebControls.TextBox TextBoxContent;
         
         /// <summary>
         /// TextboxSearch control.

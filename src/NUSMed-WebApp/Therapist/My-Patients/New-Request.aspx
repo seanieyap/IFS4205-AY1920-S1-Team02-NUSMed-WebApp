@@ -69,7 +69,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
 
-    <div id="modalSelectPermissions" class="modal" tabindex="-1" role="dialog">
+    <div id="modalSelectPermissions" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelSelectPermissions" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>

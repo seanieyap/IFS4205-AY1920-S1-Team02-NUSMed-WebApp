@@ -189,7 +189,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
 
-    <div id="modalContactDetails" class="modal" tabindex="-1" role="dialog">
+    <div id="modalContactDetails" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelContactDetails" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -259,7 +259,7 @@
         </div>
     </div>
 
-    <div id="modalPatientDetails" class="modal" tabindex="-1" role="dialog">
+    <div id="modalPatientDetails" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelPatientDetails" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>

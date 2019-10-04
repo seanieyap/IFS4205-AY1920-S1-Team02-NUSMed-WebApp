@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.Caching;
 using System.Web.Security;
+using System.Collections.Specialized;
 
 namespace NUSMed_WebApp
 {
@@ -226,13 +227,16 @@ namespace NUSMed_WebApp
         #region Helpers
         protected void buttonCloseModal_ServerClick(object sender, EventArgs e)
         {
-            var nameValueCollection = HttpUtility.ParseQueryString(HttpContext.Current.Request.QueryString.ToString());
+            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(HttpContext.Current.Request.QueryString.ToString());
             nameValueCollection.Remove("fail-auth");
             nameValueCollection.Remove("fail-mfa");
             nameValueCollection.Remove("multiple-logins");
             string url = HttpContext.Current.Request.Path + "?" + nameValueCollection;
 
-            Response.Redirect(url);
+            if (Master.IsLocalUrl(url))
+            {
+                Response.Redirect(url);
+            }
         }
         private void AuthenticationError()
         {

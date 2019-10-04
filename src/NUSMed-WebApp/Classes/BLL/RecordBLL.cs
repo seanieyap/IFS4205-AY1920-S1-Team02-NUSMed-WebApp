@@ -57,6 +57,39 @@ namespace NUSMed_WebApp.Classes.BLL
             return null;
         }
 
+        public List<Record> GetRecords(long noteID, string patientNRIC)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                List<Record> records = recordDAL.RetrieveRecords(noteID, patientNRIC, AccountBLL.GetNRIC());
+                Entity.Patient patient = new TherapistBLL().GetPatient(patientNRIC);
+
+                List<Record> result = new List<Record>();
+                foreach (Record record in records)
+                {
+                    if (!patient.hasPermissionsApproved(record))
+                    {
+                        Record newRecord = new Record();
+                        newRecord.id = record.id;
+                        newRecord.title = record.title;
+                        newRecord.type = record.type;
+                        newRecord.status = record.status;
+                        newRecord.recordPermissionStatus = record.recordPermissionStatus;
+                        result.Add(newRecord);
+                    }
+                    else
+                    {
+                        record.permited = true;
+                        result.Add(record);
+                    }
+                }
+
+                return result;
+            }
+
+            return null;
+        }
+
         public Record GetRecord(int id)
         {
             if (AccountBLL.IsPatient())

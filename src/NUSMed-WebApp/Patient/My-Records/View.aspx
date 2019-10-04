@@ -100,7 +100,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
 
-    <div id="modalFileView" class="modal" tabindex="-1" role="dialog">
+    <div id="modalFileView" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelFileView" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -142,7 +142,7 @@
         </div>
     </div>
 
-    <div id="modalFineGrain" class="modal" tabindex="-1" role="dialog">
+    <div id="modalFineGrain" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelFineGrain" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
@@ -261,7 +261,7 @@
         </div>
     </div>
 
-    <div id="modalDiagnosisView" class="modal" tabindex="-1" role="dialog">
+    <div id="modalDiagnosisView" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelRecordDiagnosis" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
