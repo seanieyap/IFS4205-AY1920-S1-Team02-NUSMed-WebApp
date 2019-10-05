@@ -3,8 +3,11 @@
 <%@ MasterType VirtualPath="~/site.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <%--<link href="~/Content/bootstrap-select.css" rel="stylesheet" runat="server" />--%>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
+
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-search"></i>Search Data</h1>
@@ -23,17 +26,43 @@
             <div class="row mb-4">
                 <div class="col-6">
                     <div class="form-group row">
-                        <label class="col-3" for="inputCountryofBirth">
+                        <label id="labelInputAge" class="col-3" runat="server">
                             Age 
-                            <span class="text-info" TabIndex="0" data-toggle="tooltip" runat="server" title="This field has been generalised..."><i class="fas fa-fw fa-info-circle"></i></span>
+                            <span id="labelTitleAge" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                         </label>
-                        <select class="form-control form-control-sm offset-1 col-7" id="inputCountryofBirth" runat="server">
-                            <option value="">-- select one --</option>
-                            <option value="Afghanistan">Afghanistan</option>
-                            <option value="Albania">Albania</option>
+
+                        <input id="inputAgeLevel0" type="text" class="form-control form-control-sm offset-1 col-7" placeholder="Age" runat="server" visible="false">
+
+                        <select id="inputAgeLevel1" class="my-select form-control form-control-sm offset-1 col-7" multiple="true" runat="server" visible="false">
+                            <option value="">-- select --</option>
+                            <option value="0-9">0 - 9</option>
+                            <option value="10-19">10 - 19</option>
+                            <option value="20-29">20 - 29</option>
+                            <option value="30-39">30 - 39</option>
+                            <option value="40-49">40 - 49</option>
+                            <option value="50-59">50 - 59</option>
+                            <option value="60-69">60 - 69</option>
+                            <option value="70-79">70 - 79</option>
+                            <option value="80-89">80 - 89</option>
+                            <option value="90-99">90 - 99</option>
                         </select>
+
+                        <select id="inputAgeLevel2" class="form-control form-control-sm offset-1 col-7" runat="server" visible="false">
+                            <option value="">-- select one --</option>
+                            <option value="0-19">0 - 19</option>
+                            <option value="20-39">20 - 39</option>
+                            <option value="40-59">40 - 59</option>
+                            <option value="60-79">60 - 79</option>
+                            <option value="80-99">80 - 99</option>
+                        </select>
+
+                        <select id="inputAgeLevel3" class="form-control form-control-sm offset-1 col-7" runat="server" visible="false" disabled="disabled">
+                            <option value="*">*</option>
+                        </select>
+
                     </div>
                 </div>
+
                 <div class="col-6">
                     <div class="form-group row">
                         <label class="col-3" for="inputCountryofBirth">Sex</label>
@@ -74,7 +103,7 @@
                         </select>
                     </div>
                 </div>
-                                <div class="col-6">
+                <div class="col-6">
                     <div class="form-group row">
                         <label class="col-3" for="inputCountryofBirth">Diagnosis</label>
                         <select class="form-control form-control-sm offset-1 col-7" id="Select8" runat="server">
@@ -128,7 +157,7 @@
 
             <div class="row">
                 <div class="col-12 mb-4 text-center">
-                    <button type="submit" id="buttonRegister" class="btn btn-success" runat="server">Filter Patients and Records</button>
+                    <button type="submit" id="buttonFilter" onserverclick="buttonFilter_ServerClick" class="btn btn-success" runat="server">Filter Patients and Records</button>
                 </div>
             </div>
 
@@ -199,6 +228,7 @@
             <div class="loading">Loading</div>
         </ProgressTemplate>
     </asp:UpdateProgress>
+    <%--<script src="~/Scripts/bootstrap-select.min.js" runat="server"></script>--%>
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
@@ -207,6 +237,16 @@
             $(function () {
                 // Enable Tooltips
                 $('[data-toggle="tooltip"]').tooltip({ html: true });
+
+
+                // Enable Multiple Select
+                //$('.multi-select').multiselect({
+                //    templates: {
+                //        li: '<li><a href="javascript:void(0);"><label class="pl-2"></label></a></li>'
+                //    }
+                //});
+                $('.my-select').selectpicker();
+
             });
         }
     </script>

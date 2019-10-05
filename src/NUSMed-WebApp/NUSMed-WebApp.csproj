@@ -154,6 +154,7 @@
     <Content Include="Admin\Manage-Logs\Record_Logs.aspx" />
     <Content Include="Admin\Researcher-Data.aspx" />
     <Content Include="Contact.aspx" />
+    <Content Include="Content\bootstrap-select.css" />
     <Content Include="Content\loading.css" />
     <Content Include="Images\logo-white.png" />
     <Content Include="My-Account\Change-Password.aspx" />
@@ -199,6 +200,7 @@
     <Content Include="Errors\404.aspx" />
     <Content Include="Errors\error.html" />
     <Content Include="Scripts\back-to-top.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -410,13 +412,15 @@
     <Compile Include="Classes\DAL\RecordLogDAL.cs" />
     <Compile Include="Classes\DAL\TherapistDAL.cs" />
     <Compile Include="Classes\Entity\Account.cs" />
+    <Compile Include="Classes\Entity\Data.cs" />
     <Compile Include="Classes\Entity\Diagnosis.cs" />
+    <Compile Include="Classes\Entity\GeneralizedSetting.cs" />
     <Compile Include="Classes\Entity\JWT.cs" />
     <Compile Include="Classes\Entity\Note.cs" />
     <Compile Include="Classes\Entity\PatientDiagnosis.cs" />
     <Compile Include="Classes\Entity\Patient.cs" />
     <Compile Include="Classes\Entity\Record.cs" />
-    <Compile Include="Classes\Entity\RecordAnonymised.cs" />
+    <Compile Include="Classes\Entity\PatientAnonymised.cs" />
     <Compile Include="Classes\Entity\RecordDiagnosis.cs" />
     <Compile Include="Classes\Entity\RecordType.cs" />
     <Compile Include="Classes\Entity\Therapist.cs" />
