@@ -101,7 +101,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
                 }
                 catch
                 {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Retrieving Records.');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Selecting Patient.');", true);
                 }
             }
             else if (e.CommandName.Equals("DeselectPatient"))
@@ -113,7 +113,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
                 }
                 catch
                 {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Retrieving Records.');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error De-selecting Patient.');", true);
                 }
             }
             else if (e.CommandName.Equals("ViewDiagnosis"))
@@ -282,8 +282,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
 
                 if (ViewState["GridViewRecordSelectedIDs"] != null)
                 {
-
-                    if (((HashSet<int>)ViewState["GridViewRecordSelectedIDs"]).Contains(Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "id"))))
+                    if (((HashSet<long>)ViewState["GridViewRecordSelectedIDs"]).Contains(Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "id"))))
                     {
                         e.Row.CssClass = "table-success";
                         LinkButtonViewSelectRecord.CommandName = "DeselectRecord";
@@ -383,13 +382,13 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
 
                     if (ViewState["GridViewRecordSelectedIDs"] != null)
                     {
-                        HashSet<int> recordSelectedIDs = (HashSet<int>)ViewState["GridViewRecordSelectedIDs"];
+                        HashSet<long> recordSelectedIDs = (HashSet<long>)ViewState["GridViewRecordSelectedIDs"];
                         recordSelectedIDs.Add(id);
                         ViewState["GridViewRecordSelectedIDs"] = recordSelectedIDs;
                     }
                     else
                     {
-                        HashSet<int> recordSelectedIDs = new HashSet<int>();
+                        HashSet<long> recordSelectedIDs = new HashSet<long>();
                         recordSelectedIDs.Add(id);
                         ViewState["GridViewRecordSelectedIDs"] = recordSelectedIDs;
                     }
@@ -409,13 +408,13 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
 
                     if (ViewState["GridViewRecordSelectedIDs"] != null)
                     {
-                        HashSet<int> recordSelectedIDs = (HashSet<int>)ViewState["GridViewRecordSelectedIDs"];
+                        HashSet<long> recordSelectedIDs = (HashSet<long>)ViewState["GridViewRecordSelectedIDs"];
                         recordSelectedIDs.Remove(id);
                         ViewState["GridViewRecordSelectedIDs"] = recordSelectedIDs;
                     }
                     else
                     {
-                        ViewState["GridViewRecordSelectedIDs"] = new HashSet<int>();
+                        ViewState["GridViewRecordSelectedIDs"] = new HashSet<long>();
                     }
 
                     Bind_GridViewPatientAndRecord();
@@ -471,7 +470,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
             Note note = new Note();
             note.title = inputTitle.Value.Trim();
             note.content = TextBoxContent.Text.Trim();
-            HashSet<int> selectedRecords = new HashSet<int>();
+            HashSet<long> selectedRecords = new HashSet<long>();
 
             if (ViewState["GridViewPatientSelectedPatientNRIC"] != null)
             {
@@ -480,7 +479,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
 
             if (ViewState["GridViewRecordSelectedIDs"] != null)
             {
-                selectedRecords = (HashSet<int>)ViewState["GridViewRecordSelectedIDs"];
+                selectedRecords = (HashSet<long>)ViewState["GridViewRecordSelectedIDs"];
             }
 
             #region Validation

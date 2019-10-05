@@ -598,7 +598,7 @@
 
                                                 <asp:TemplateField HeaderText="End">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="LabelPatientDiagnosesEnd" runat="server" Visible="false"></asp:Label>
+                                                        <asp:Label ID="LabelPatientDiagnosesEnd" runat="server" ></asp:Label>
                                                         <asp:LinkButton ID="LinkButtonPatientDiagnosesEnd" CssClass="btn btn-sm btn-success" data-toggle="confirmation" data-title="This is Permanent. Confirm?"
                                                             CommandName="UpdateEndPatientDiagnosis" CommandArgument='<%# Item.diagnosis.code %>' runat="server" Visible="false">
                                                         <i class="fas fa-fw fa-check-circle"></i> Declare End 

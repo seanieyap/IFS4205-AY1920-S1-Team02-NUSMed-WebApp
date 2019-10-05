@@ -551,12 +551,10 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 if (endDateTime == null)
                 {
                     LinkButton LinkButtonPatientDiagnosesEnd = (LinkButton)e.Row.FindControl("LinkButtonPatientDiagnosesEnd");
-                    LinkButtonPatientDiagnosesEnd.Visible = true;
                 }
                 else
                 {
                     LabelPatientDiagnosesEnd.Text = endDateTime.ToString();
-                    LabelPatientDiagnosesEnd.Visible = true;
                 }
             }
         }

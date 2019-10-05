@@ -68,35 +68,39 @@ namespace NUSMed_WebApp
                     AccountBLL accountBLL = new AccountBLL();
                     Account account = accountBLL.GetStatus(nric);
 
-                    if (account.status == 0 
-                        || !((account.roles.Count() > 0 && userData[0] == "Multiple") || account.roles.Contains(userData[0]))
-                        || formAuthenticationTicket.IssueDate < account.lastFullLogin
-                        || HttpContext.Current == null || HttpContext.Current.Cache[nric] == null)
-                    {
+                    if(account.status == 0 || !((account.roles.Count() > 0 && userData[0] == "Multiple") || account.roles.Contains(userData[0])) || formAuthenticationTicket.IssueDate < account.lastFullLogin)
+                    {                        
+                        // Must be fradulent request
                         FormsAuthentication.SignOut();
                         FormsAuthentication.RedirectToLoginPage("fail-auth=true");
                     }
-
-                    // if not cached, cache user
-                    if (!HttpRuntime.Cache[nric].ToString().Equals(guid))
+                    else if (HttpContext.Current == null || HttpContext.Current.Cache[nric] == null)
+                    {
+                        // May be user revisiting after a long time
+                        FormsAuthentication.SignOut();
+                        FormsAuthentication.RedirectToLoginPage();
+                    }
+                    else if (!HttpRuntime.Cache[nric].ToString().Equals(guid))
                     {
                         // Cache does not match, hence multiple logins detected
                         FormsAuthentication.SignOut();
                         FormsAuthentication.RedirectToLoginPage("multiple-logins=true");
-                        return;
                     }
-                    e.User = new GenericPrincipal(new GenericIdentity(formAuthenticationTicket.Name, "Forms"), userData.ToArray());
-
-                    // Renew
-                    FormsAuthenticationTicket newFormAuthenticationTicket = FormsAuthentication.RenewTicketIfOld(formAuthenticationTicket);
-                    if (formAuthenticationTicket != newFormAuthenticationTicket)
+                    else
                     {
-                        HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(newFormAuthenticationTicket));
-                        cookie.HttpOnly = true;
-                        cookie.Secure = FormsAuthentication.RequireSSL;
-                        cookie.Domain = FormsAuthentication.CookieDomain;
-                        cookie.Expires = newFormAuthenticationTicket.Expiration;
-                        HttpContext.Current.Response.Cookies.Add(cookie);
+                        e.User = new GenericPrincipal(new GenericIdentity(formAuthenticationTicket.Name, "Forms"), userData.ToArray());
+
+                        // Renew
+                        FormsAuthenticationTicket newFormAuthenticationTicket = FormsAuthentication.RenewTicketIfOld(formAuthenticationTicket);
+                        if (formAuthenticationTicket != newFormAuthenticationTicket)
+                        {
+                            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(newFormAuthenticationTicket));
+                            cookie.HttpOnly = true;
+                            cookie.Secure = FormsAuthentication.RequireSSL;
+                            cookie.Domain = FormsAuthentication.CookieDomain;
+                            cookie.Expires = newFormAuthenticationTicket.Expiration;
+                            HttpContext.Current.Response.Cookies.Add(cookie);
+                        }
                     }
                 }
                 catch

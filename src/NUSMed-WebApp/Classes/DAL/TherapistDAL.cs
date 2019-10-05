@@ -24,7 +24,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     INNER JOIN account_patient ap ON a.nric = ap.nric
                     WHERE a.`nric` LIKE @term AND a.status > 0 AND ap.status = 1
                     ORDER BY nric
-                    LIMIT 50;";
+                    LIMIT 25;";
 
                 cmd.Parameters.AddWithValue("@term", "%" + term + "%");
 
@@ -301,6 +301,52 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
+        /// Retrieve all therapists except current
+        /// </summary>
+        public List<Entity.Therapist> RetrieveTherapists(string term, string nric)
+        {
+            List<Entity.Therapist> result = new List<Entity.Therapist>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT a.nric, a.name_first, a.name_last, at.job_title, at.department
+                    FROM account a
+                    INNER JOIN account_therapist at ON a.nric = at.nric 
+                    WHERE a.nric != @nric AND at.status = 1  AND (a.name_first LIKE @term OR a.name_last LIKE @term) 
+                    ORDER BY a.name_last ASC, a.name_first ASC
+                    LIMIT 25;";
+
+                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
+                cmd.Parameters.AddWithValue("@nric", nric);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Entity.Therapist therapist = new Entity.Therapist
+                            {
+                                nric = Convert.ToString(reader["nric"]),
+                                firstName = Convert.ToString(reader["name_first"]),
+                                lastName = Convert.ToString(reader["name_last"]),
+                                therapistJobTitle = Convert.ToString(reader["job_title"]),
+                                therapistDepartment = Convert.ToString(reader["department"])
+                            };
+
+                            result.Add(therapist);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Retrieve all of therapist's existing patients
         /// </summary>
         public List<Note> RetrieveNotes(string term, string therapistNRIC)
@@ -312,7 +358,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.CommandText = @"SELECT mn.id, mn.title, mn.create_time,
                     ac.name_first as creator_name_first, ac.name_last  as creator_name_last,
                     at.name_first as therapist_name_first, at.name_last as therapist_name_last,
-                    ap.name_first as patient_name_first, ap.name_last as patient_name_last,
+                    ap.nric as patient_nric, ap.name_first as patient_name_first, ap.name_last as patient_name_last,
                     rtp.permission_unapproved, rtp.request_time, rtp.permission_approved, rtp.approved_time
                     FROM medical_note mn
                     INNER JOIN account ac ON mn.creator_nric = ac.nric
@@ -320,7 +366,8 @@ namespace NUSMed_WebApp.Classes.DAL
                     INNER JOIN account ap ON mn.patient_nric = ap.nric
                     LEFT JOIN record_type_permission rtp ON rtp.patient_nric = ap.nric
                     WHERE mn.therapist_nric = @therapistNRIC AND mn.title LIKE @term
-                    GROUP BY mn.id;";
+                    GROUP BY mn.id
+                    ORDER BY mn.create_time DESC;";
 
                 cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
                 cmd.Parameters.AddWithValue("@term", "%" + term + "%");
@@ -348,6 +395,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
                             Entity.Patient patient = new Entity.Patient
                             {
+                                nric = Convert.ToString(reader["patient_nric"]),
                                 firstName = Convert.ToString(reader["patient_name_first"]),
                                 lastName = Convert.ToString(reader["patient_name_last"]),
                                 permissionUnapproved = Convert.ToInt16(reader["permission_unapproved"]),
@@ -380,14 +428,14 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve all of therapist's existing patients
         /// </summary>
-        public Note RetrieveNote(int id, string therapistNRIC)
+        public Note RetrieveNote(long id, string therapistNRIC)
         {
             Note result = new Note();
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT mn.id, mn.title, mn.content, mn.create_time,
-                    ac.name_first as creator_name_first, ac.name_last  as creator_name_last,
+                    ac.name_first as creator_name_first, ac.name_last as creator_name_last, ac.nric as creator_nric,
                     at.name_first as therapist_name_first, at.name_last as therapist_name_last,
                     ap.nric as patient_nric,
                     rtp.permission_unapproved, rtp.request_time, rtp.permission_approved, rtp.approved_time
@@ -419,6 +467,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
                             Entity.Therapist creator = new Entity.Therapist
                             {
+                                nric = Convert.ToString(reader["creator_nric"]),
                                 firstName = Convert.ToString(reader["creator_name_first"]),
                                 lastName = Convert.ToString(reader["creator_name_last"])
                             };
@@ -446,6 +495,42 @@ namespace NUSMed_WebApp.Classes.DAL
                             };
 
                             result = note;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve existance of note of therapist
+        /// </summary>
+        public bool RetrieveNoteExist(long id, string therapistNRIC)
+        {
+            bool result = false;
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT EXISTS 
+	                    (SELECT id
+	                    FROM medical_note mn
+	                    WHERE id = @id AND mn.therapist_nric = @therapistNRIC) 
+                    as result;";
+
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = Convert.ToBoolean(reader["result"]);
                         }
                     }
                 }

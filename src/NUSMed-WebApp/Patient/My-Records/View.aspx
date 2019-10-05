@@ -31,7 +31,7 @@
                                     <%# Item.description %>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="type">
+                            <asp:TemplateField HeaderText="Type">
                                 <ItemTemplate>
                                     <%# Item.type.name %>
                                 </ItemTemplate>

@@ -133,6 +133,18 @@ namespace NUSMed_WebApp.Classes.BLL
             return null;
         }
 
+        public List<PatientDiagnosis> GetPatientDiagnoses(string patientNRIC, long id)
+        {
+            if (AccountBLL.IsTherapist() &&
+                !patientNRIC.Equals(AccountBLL.GetNRIC()) &&
+                therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
+            {
+                return therapistDAL.RetrievePatientDiagnoses(patientNRIC, AccountBLL.GetNRIC());
+            }
+
+            return null;
+        }
+
         public List<Diagnosis> GetDiagnoses(string term, string patientNRIC, List<PatientDiagnosis> patientDiagnoses)
         {
             if (AccountBLL.IsTherapist() &&
@@ -199,6 +211,42 @@ namespace NUSMed_WebApp.Classes.BLL
             }
         }
 
+        public List<Note> GetNotes(string term)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                List<Note> notes = therapistDAL.RetrieveNotes(term, AccountBLL.GetNRIC());
+
+                foreach (Note note in notes)
+                {
+                    if (note.patient.approvedTime == null)
+                    {
+                        note.patient.firstName = string.Empty;
+                        note.patient.lastName = string.Empty;
+                    }
+                }
+                return notes;
+            }
+
+            return null;
+        }
+
+        public Note GetNote(long id)
+        {
+            if (AccountBLL.IsTherapist())
+            {
+                Note note = therapistDAL.RetrieveNote(id, AccountBLL.GetNRIC());
+
+                if (note.patient.approvedTime != null)
+                {
+                    note.patient = therapistDAL.RetrievePatientInformation(note.patient.nric, AccountBLL.GetNRIC());
+                }
+
+                return note;
+            }
+
+            return null;
+        }
         public bool AddNote(Note note)
         {
             if (AccountBLL.IsTherapist())
@@ -230,45 +278,44 @@ namespace NUSMed_WebApp.Classes.BLL
             return false;
         }
 
-        public List<Note> GetNotes(string term)
+        public void SendNote(long noteID, HashSet<string> therapistsNRIC)
+        {
+            if (AccountBLL.IsTherapist() && HasNote(noteID))
+            {
+                Note note = therapistDAL.RetrieveNote(noteID, AccountBLL.GetNRIC());
+                note.records = new RecordBLL().GetRecords(note.patient.nric, note.id);
+
+                foreach (string therapistNRIC in therapistsNRIC)
+                {
+                    note.therapist.nric = therapistNRIC;
+
+                    therapistDAL.InsertNote(note);
+                    foreach (Record record in note.records)
+                    {
+                        therapistDAL.InsertNoteRecord(note, record);
+                    }
+                }
+
+            }
+        }
+        public List<Entity.Therapist> GetTherapists(string term)
         {
             if (AccountBLL.IsTherapist())
             {
-                List<Note> notes = therapistDAL.RetrieveNotes(term, AccountBLL.GetNRIC());
-
-                foreach (Note note in notes)
-                {
-                    if (note.patient.approvedTime == null)
-                    {
-                        note.patient.firstName = string.Empty;
-                        note.patient.lastName = string.Empty;
-                    }
-                }
-                return notes;
+                return therapistDAL.RetrieveTherapists(term, AccountBLL.GetNRIC());
             }
 
             return null;
         }
 
-        public Note GetNote(int id)
+        private bool HasNote(long noteID)
         {
             if (AccountBLL.IsTherapist())
             {
-                Note note = therapistDAL.RetrieveNote(id, AccountBLL.GetNRIC());
-
-                if (note.patient.approvedTime != null)
-                {
-                    note.patient = therapistDAL.RetrievePatientInformation(note.patient.nric, AccountBLL.GetNRIC());
-                }
-                //if ()
-                //{
-
-                //}
-
-                return note;
+                return therapistDAL.RetrieveNoteExist(noteID, AccountBLL.GetNRIC());
             }
 
-            return null;
+            return false;
         }
     }
 }

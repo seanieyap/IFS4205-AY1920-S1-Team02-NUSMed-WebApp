@@ -316,7 +316,7 @@ namespace NUSMed_WebApp.Classes.DAL
 	                (SELECT id
 	                FROM record
 	                WHERE id = @id AND patient_nric = @patientNRIC) 
-                as result;";
+                    as result;";
 
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);

@@ -245,7 +245,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                     recordBLL.UpdateRecordTherapistDefault(recordID, therapistNRIC);
                     Update_FineGrainModal();
 
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Therapist Fine Grain Permissions has been Set to \"Default\" to access record " + recordID + ".');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Therapist Fine Grain Permissions has been Set to \"Default\" to access specified record.');", true);
                 }
                 catch
                 {
@@ -259,7 +259,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                     recordBLL.UpdateRecordTherapistAllow(recordID, therapistNRIC);
                     Update_FineGrainModal();
 
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Therapist Fine Grain Permissions has been Set to \"Allow\" to access record " + recordID + ".');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Therapist Fine Grain Permissions has been Set to \"Allow\" to access specified record.');", true);
                 }
                 catch
                 {
@@ -274,7 +274,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                     recordBLL.UpdateRecordTherapistDisallow(recordID, therapistNRIC);
                     Update_FineGrainModal();
 
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Therapist Fine Grain Permissions has been Set to \"Disallow\" to access record " + recordID + ".');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Therapist Fine Grain Permissions has been Set to \"Disallow\" to access specified record.');", true);
                 }
                 catch
                 {
@@ -301,14 +301,29 @@ namespace NUSMed_WebApp.Patient.My_Records
         protected void LinkButtonStatusDisable_Click(object sender, EventArgs e)
         {
             int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
-            recordBLL.UpdateRecordDisable(recordID);
-
+            try
+            {
+                recordBLL.UpdateRecordDisable(recordID);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Status of specified Record has been set to \"Disabled\".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Error setting status of Record to \"Disabled\".');", true);
+            }
             Update_FineGrainModal();
         }
         protected void LinkButtonStatusEnable_Click(object sender, EventArgs e)
         {
             int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
-            recordBLL.UpdateRecordEnable(recordID);
+            try
+            {
+                recordBLL.UpdateRecordEnable(recordID);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Status of specified Record has been set to \"Enabled\".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Error setting status of Record to \"Enabled\".');", true);
+            }
 
             Update_FineGrainModal();
         }

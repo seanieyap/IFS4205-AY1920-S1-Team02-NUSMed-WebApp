@@ -57,7 +57,7 @@ namespace NUSMed_WebApp.Classes.BLL
             return null;
         }
 
-        public List<Record> GetRecords(long noteID, string patientNRIC)
+        public List<Record> GetRecords(string patientNRIC, long noteID)
         {
             if (AccountBLL.IsTherapist())
             {

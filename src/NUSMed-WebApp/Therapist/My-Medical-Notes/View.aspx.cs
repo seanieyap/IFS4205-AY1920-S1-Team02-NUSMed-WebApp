@@ -3,8 +3,6 @@ using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -43,19 +41,90 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
         }
         protected void GridViewMedicalNote_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            string id = e.CommandArgument.ToString();
+            long id = Convert.ToInt64(e.CommandArgument.ToString());
             ViewState["GridViewGridViewMedicalNoteSelectedID"] = id;
 
             if (e.CommandName.Equals("ViewNote"))
             {
                 try
                 {
-                    Update_UpdatePanelNote(Convert.ToInt32(id));
+                    Note note = therapistBLL.GetNote(id);
+
+                    // Note Details
+                    inputTitle.Value = note.title;
+                    TextBoxContent.Text = note.content;
+                    inputCreateBy.Value = note.creator.lastName + " " + note.creator.firstName;
+                    inputCreateTime.Value = note.createTime.ToString();
+                    inputPatientNRIC.Value = note.patient.nric;
+
+                    if (note.patient.approvedTime == null)
+                    {
+                        inputPatientName.Value = "Redacted";
+
+                        PanelNoteUnauthorized.Visible = true;
+                        modalNoteAccordion.Visible = false;
+                    }
+                    else
+                    {
+                        inputPatientName.Value = note.patient.lastName + " " + note.patient.firstName;
+
+                        // Personal Details
+                        inputNRIC.Value = note.patient.nric;
+                        DateofBirth.Value = note.patient.dateOfBirth.ToString("MM/dd/yyyy");
+                        FirstName.Value = note.patient.firstName;
+                        LastName.Value = note.patient.lastName;
+                        CountryofBirth.Value = note.patient.countryOfBirth;
+                        Nationality.Value = note.patient.nationality;
+                        Sex.Value = note.patient.sex;
+                        Gender.Value = note.patient.gender;
+                        MaritalStatus.Value = note.patient.maritalStatus;
+
+                        // Contact Details
+                        Address.Value = note.patient.address;
+                        PostalCode.Value = note.patient.addressPostalCode;
+                        EmailAddress.Value = note.patient.email;
+                        ContactNumber.Value = note.patient.contactNumber;
+
+                        // Patient NOK Details
+                        NOKName.Value = note.patient.nokName;
+                        NOKContact.Value = note.patient.nokContact;
+
+                        // Patient Diagnoses
+                        List<PatientDiagnosis> patientDiagnoses = therapistBLL.GetPatientDiagnoses(note.patient.nric, id);
+                        ViewState["GridViewPatientDiagnoses"] = patientDiagnoses;
+                        GridViewPatientDiagnoses.DataSource = patientDiagnoses;
+                        GridViewPatientDiagnoses.DataBind();
+
+                        // Records
+                        List<Record> records = new RecordBLL().GetRecords(note.patient.nric, note.id);
+                        ViewState["GridViewRecords"] = records;
+                        GridViewRecords.DataSource = records;
+                        GridViewRecords.DataBind();
+
+                        PanelNoteUnauthorized.Visible = false;
+                        modalNoteAccordion.Visible = true;
+                    }
+
+                    ViewState["GridViewPatientSelectedNRIC"] = note.patient.nric;
+
+                    UpdatePanelNote.Update();
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Note Modal", "$('#modalNote').modal('show');", true);
                 }
                 catch
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Note View.');", true);
+                }
+            }
+            else if (e.CommandName.Equals("ViewSendNoteModal"))
+            {
+                try
+                {
+                    Bind_GridViewTherapistSendNote();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Note Modal", "$('#modalSendNote').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Send Note View.');", true);
                 }
             }
 
@@ -71,93 +140,45 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                LinkButton LinkButtonNote = (LinkButton)e.Row.FindControl("LinkButtonNote");
-                DateTime? approvedTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "patient.approvedTime");
-                //DateTime? requestTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "patient.requestTime");
+                DateTime? patientApprovedTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "patient.approvedTime");
+                Label LabelPatientName = (Label)e.Row.FindControl("LabelPatientName");
 
-                if (approvedTime == null)
+                if (patientApprovedTime == null)
                 {
-                    //LabelName.Text = "Redacted";
-                    //LinkButtonViewInformation.CssClass = "btn btn-secondary btn-sm disabled";
-                    //LinkButtonViewInformation.Enabled = false;
-                    //LinkButtonViewDiagnosis.CssClass = "btn btn-secondary btn-sm disabled";
-                    //LinkButtonViewDiagnosis.Enabled = false;
-                    LinkButtonNote.CssClass = "btn btn-secondary btn-sm disabled";
-                    LinkButtonNote.Enabled = false;
-                    //LinkButtonNewRecord.CssClass = "btn btn-secondary btn-sm disabled";
-                    //LinkButtonNewRecord.Enabled = false;
+                    LabelPatientName.Text = "Redacted";
                 }
                 else
                 {
-                    //LabelName.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "lastName")) + " " + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "firstName"));
-                    //LinkButtonViewInformation.CssClass = "btn btn-success btn-sm";
-                    //LinkButtonViewInformation.CommandName = "ViewInformation";
-                    //LinkButtonViewInformation.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
-                    //LinkButtonViewDiagnosis.CssClass = "btn btn-success btn-sm";
-                    //LinkButtonViewDiagnosis.CommandName = "ViewDiagnosis";
-                    //LinkButtonViewDiagnosis.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
-                    LinkButtonNote.CssClass = "btn btn-success btn-sm";
-                    LinkButtonNote.CommandName = "ViewNote";
-                    LinkButtonNote.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
-
-                    //Int16 permissionApproved = (Int16)DataBinder.Eval(e.Row.DataItem, "permissionApproved");
-                    //if (permissionApproved == 0)
-                    //{
-                    //    LinkButtonNewRecord.CssClass = "btn btn-secondary btn-sm disabled";
-                    //    LinkButtonNewRecord.Enabled = false;
-                    //    LinkButtonNewRecord.Attributes.Add("TabIndex", "0");
-                    //    LinkButtonNewRecord.Attributes.Add("data-toggle", "tooltip");
-                    //    LinkButtonNewRecord.Attributes.Add("title", "You do not have any record type permissions.");
-                    //}
-                    //else
-                    //{
-                    //    LinkButtonNewRecord.CssClass = "btn btn-info btn-sm";
-                    //    LinkButtonNewRecord.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "nric"));
-                    //}
+                    LabelPatientName.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "patient.lastName")) + " " + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "firstName"));
                 }
             }
         }
+        #endregion
 
-        private void Update_UpdatePanelNote(int id)
+        #region Patient Diagnosis Functions
+        protected void GridViewPatientDiagnoses_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            Note note = therapistBLL.GetNote(id);
+            GridViewPatientDiagnoses.PageIndex = e.NewPageIndex;
+            GridViewPatientDiagnoses.DataSource = ViewState["GridViewPatientDiagnoses"];
+            GridViewPatientDiagnoses.DataBind();
+        }
 
-            // Note Details
-            inputTitle.Value = note.title;
-            TextBoxContent.Text = note.content;
+        protected void GridViewPatientDiagnoses_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Label LabelPatientDiagnosesEnd = (Label)e.Row.FindControl("LabelPatientDiagnosesEnd");
+                DateTime? endDateTime = (DateTime?)DataBinder.Eval(e.Row.DataItem, "end");
 
-
-            // Personal Details
-            LabelInformationNRIC.Text = note.patient.nric;
-            inputNRIC.Value = note.patient.nric;
-            DateofBirth.Value = note.patient.dateOfBirth.ToString("MM/dd/yyyy");
-            FirstName.Value = note.patient.firstName;
-            LastName.Value = note.patient.lastName;
-            CountryofBirth.Value = note.patient.countryOfBirth;
-            Nationality.Value = note.patient.nationality;
-            Sex.Value = note.patient.sex;
-            Gender.Value = note.patient.gender;
-            MaritalStatus.Value = note.patient.maritalStatus;
-
-            // Contact Details
-            Address.Value = note.patient.address;
-            PostalCode.Value = note.patient.addressPostalCode;
-            EmailAddress.Value = note.patient.email;
-            ContactNumber.Value = note.patient.contactNumber;
-
-            // Patient NOK Details
-            NOKName.Value = note.patient.nokName;
-            NOKContact.Value = note.patient.nokContact;
-
-            // Records
-            List<Record> records = new RecordBLL().GetRecords(note.id, note.patient.nric);
-            ViewState["GridViewRecords"] = records;
-            GridViewRecords.DataSource = records;
-            GridViewRecords.DataBind();
-
-            ViewState["GridViewPatientSelectedNRIC"] = note.patient.nric;
-
-            UpdatePanelNote.Update();
+                if (endDateTime == null)
+                {
+                    LabelPatientDiagnosesEnd.Text = "Present";
+                }
+                else
+                {
+                    LabelPatientDiagnosesEnd.Text = endDateTime.ToString();
+                }
+            }
         }
 
         #endregion
@@ -344,6 +365,132 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
         {
             ScriptManager.RegisterStartupScript(this, GetType(), "Close View Record Diagnosis Modal", " $('#modalRecordDiagnosisView').modal('hide'); $('#modalNote').modal('show');", true);
         }
+        #endregion
+
+        #region
+        protected void Bind_GridViewTherapistSendNote()
+        {
+            string term = TextBoxSearchTherapist.Text.Trim().ToLower();
+            List<Classes.Entity.Therapist> therapists = therapistBLL.GetTherapists(term);
+            ViewState["GridViewTherapistSendNote"] = therapists;
+            GridViewTherapistSendNote.DataSource = therapists;
+            GridViewTherapistSendNote.DataBind();
+            UpdatePanelSendNote.Update();
+        }
+        protected void GridViewTherapistSendNote_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName.Equals("SelectTherapist"))
+            {
+                try
+                {
+                    string nric = e.CommandArgument.ToString();
+
+                    if (ViewState["GridViewTherapistSendNoteSelectedNRIC"] != null)
+                    {
+                        HashSet<string> selectedTherapists = (HashSet<string>)ViewState["GridViewTherapistSendNoteSelectedNRIC"];
+                        selectedTherapists.Add(nric);
+                        ViewState["GridViewTherapistSendNoteSelectedNRIC"] = selectedTherapists;
+                    }
+                    else
+                    {
+                        HashSet<string> recordSelectedIDs = new HashSet<string>();
+                        recordSelectedIDs.Add(nric);
+                        ViewState["GridViewTherapistSendNoteSelectedNRIC"] = recordSelectedIDs;
+                    }
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Selecting Therapist.');", true);
+                }
+            }
+            else if (e.CommandName.Equals("DeselectTherapist"))
+            {
+                try
+                {
+                    string nric = e.CommandArgument.ToString();
+
+                    if (ViewState["GridViewTherapistSendNoteSelectedNRIC"] != null)
+                    {
+                        HashSet<string> selectedTherapists = (HashSet<string>)ViewState["GridViewTherapistSendNoteSelectedNRIC"];
+                        selectedTherapists.Remove(nric);
+                        ViewState["GridViewTherapistSendNoteSelectedNRIC"] = selectedTherapists;
+                    }
+                    else
+                    {
+                        ViewState["GridViewTherapistSendNoteSelectedNRIC"] = new HashSet<string>();
+                    }
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error De-selecting Therapist.');", true);
+                }
+            }
+
+            Bind_GridViewTherapistSendNote();
+        }
+        protected void GridViewTherapistSendNote_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewTherapistSendNote.PageIndex = e.NewPageIndex;
+            GridViewTherapistSendNote.DataSource = ViewState["GridViewTherapistSendNote"];
+            GridViewTherapistSendNote.DataBind();
+        }
+        protected void GridViewTherapistSendNote_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                LinkButton LinkButtonViewSelectTherapist = (LinkButton)e.Row.FindControl("LinkButtonViewSelectTherapist");
+                LinkButtonViewSelectTherapist.CssClass = "btn btn-primary btn-sm";
+                LinkButtonViewSelectTherapist.CommandArgument = DataBinder.Eval(e.Row.DataItem, "nric").ToString();
+
+                if (ViewState["GridViewTherapistSendNoteSelectedNRIC"] != null)
+                {
+                    if (((HashSet<string>)ViewState["GridViewTherapistSendNoteSelectedNRIC"]).Contains(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "nric"))))
+                    {
+                        e.Row.CssClass = "table-success";
+                        LinkButtonViewSelectTherapist.CommandName = "DeselectTherapist";
+                        LinkButtonViewSelectTherapist.Text = "<i class=\"fas fa-fw fa-minus-square\"></i><span class=\"d-none d-lg-inline-block\">Deselect</span>";
+                    }
+                    else
+                    {
+                        LinkButtonViewSelectTherapist.CommandName = "SelectTherapist";
+                        LinkButtonViewSelectTherapist.Text = "<i class=\"fas fa-fw fa-hand-pointer\"></i><span class=\"d-none d-lg-inline-block\">Select</span>";
+                    }
+                }
+                else
+                {
+                    LinkButtonViewSelectTherapist.CommandName = "SelectTherapist";
+                    LinkButtonViewSelectTherapist.Text = "<i class=\"fas fa-fw fa-hand-pointer\"></i><span class=\"d-none d-lg-inline-block\">Select</span>";
+                }
+            }
+        }
+        protected void ButtonSearchSendNote_Click(object sender, EventArgs e)
+        {
+            Bind_GridViewTherapistSendNote();
+        }
+        protected void buttonSendNote_ServerClick(object sender, EventArgs e)
+        {
+            try
+            {
+                HashSet<string> selectedTherapists = new HashSet<string>();
+
+                if (ViewState["GridViewTherapistSendNoteSelectedNRIC"] != null)
+                {
+                    selectedTherapists = (HashSet<string>)ViewState["GridViewTherapistSendNoteSelectedNRIC"];
+                }
+
+                long noteID = (long) ViewState["GridViewGridViewMedicalNoteSelectedID"];
+
+                therapistBLL.SendNote(noteID, selectedTherapists);
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "open modal", "$('#modalSendNote').modal('hide'); toastr['success']('Success in Sending Medical Note to other Therapist(s)');", true);
+
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Sending a Medical Note');", true);
+            }
+        }
+
         #endregion
     }
 }

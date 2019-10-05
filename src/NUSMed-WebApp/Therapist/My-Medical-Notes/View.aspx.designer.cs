@@ -58,15 +58,6 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         protected global::System.Web.UI.UpdatePanel UpdatePanelNote;
         
         /// <summary>
-        /// LabelInformationNRIC control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelInformationNRIC;
-        
-        /// <summary>
         /// inputTitle control.
         /// </summary>
         /// <remarks>
@@ -83,6 +74,60 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TextBoxContent;
+        
+        /// <summary>
+        /// inputCreateBy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputCreateBy;
+        
+        /// <summary>
+        /// inputCreateTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputCreateTime;
+        
+        /// <summary>
+        /// inputPatientNRIC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputPatientNRIC;
+        
+        /// <summary>
+        /// inputPatientName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputPatientName;
+        
+        /// <summary>
+        /// PanelNoteUnauthorized control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelNoteUnauthorized;
+        
+        /// <summary>
+        /// modalNoteAccordion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel modalNoteAccordion;
         
         /// <summary>
         /// inputNRIC control.
@@ -218,6 +263,15 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText NOKContact;
+        
+        /// <summary>
+        /// GridViewPatientDiagnoses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewPatientDiagnoses;
         
         /// <summary>
         /// GridViewRecords control.
@@ -371,6 +425,51 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton buttonCloseModalRecordDiagnosisViewBottom;
+        
+        /// <summary>
+        /// UpdatePanelSendNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelSendNote;
+        
+        /// <summary>
+        /// TextBoxSearchTherapist control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBoxSearchTherapist;
+        
+        /// <summary>
+        /// ButtonSearchSendNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ButtonSearchSendNote;
+        
+        /// <summary>
+        /// GridViewTherapistSendNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewTherapistSendNote;
+        
+        /// <summary>
+        /// buttonSendNote control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonSendNote;
         
         /// <summary>
         /// Master property.

@@ -14,23 +14,10 @@ namespace NUSMed_WebApp.Classes.Entity
         public DateTime? requestTime { get; set; }
         public short permissionApproved { get; set; } = 0;
         public DateTime? approvedTime { get; set; }
-        public DateTime PermissionCreateTime { get; set; }
         public bool isEmergency { get; set; } = false;
 
         #region permission   
         public short? recordPermissionStatus { get; set; }
-
-        //public bool hasPermissionsApproved(Record record)
-        //{
-        //    if ((permissionApproved & record.type.permissionFlag) != 0)
-        //    {
-        //        //if ()
-        //        //{
-        //        return true;
-        //        //}
-        //    }
-        //    return false;
-        //}
 
         public bool hasHeightMeasurementPermissionsApproved
         {

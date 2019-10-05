@@ -24,7 +24,7 @@ namespace NUSMed_WebApp.Patient
             }
         }
 
-        #region GridViewPatient Functions
+        #region GridViewTherapist Functions
         protected void Bind_GridViewTherapist()
         {
             string term = TextboxSearch.Text.Trim().ToLower();
@@ -60,10 +60,6 @@ namespace NUSMed_WebApp.Patient
             GridViewTherapist.PageIndex = e.NewPageIndex;
             GridViewTherapist.DataSource = ViewState["GridViewPatient"];
             GridViewTherapist.DataBind();
-        }
-        protected void ButtonSearch_Click(object sender, EventArgs e)
-        {
-            Bind_GridViewTherapist();
         }
         protected void GridViewTherapist_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -110,6 +106,10 @@ namespace NUSMed_WebApp.Patient
                 }
 
             }
+        }
+        protected void ButtonSearch_Click(object sender, EventArgs e)
+        {
+            Bind_GridViewTherapist();
         }
         #endregion
         private void Update_UpdatePanelPermissions(string nric)

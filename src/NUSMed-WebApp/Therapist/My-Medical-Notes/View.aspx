@@ -23,7 +23,7 @@
                         <asp:TextBox ID="TextboxSearch" CssClass="form-control form-control-sm" placeholder="Title" runat="server"></asp:TextBox>
                         <div class="input-group-append">
                             <asp:LinkButton ID="ButtonSearch" CssClass="btn btn-outline-info" OnClick="ButtonSearch_Click" runat="server">
-                                        <i class="fas fa-fw fa-search"></i> Go
+                                <i class="fas fa-fw fa-search"></i> Go
                             </asp:LinkButton>
                         </div>
                     </asp:Panel>
@@ -37,51 +37,41 @@
                         OnRowCommand="GridViewMedicalNote_RowCommand" OnRowDataBound="GridViewMedicalNote_RowDataBound"
                         OnPageIndexChanging="GridViewMedicalNote_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                         <Columns>
-                            <asp:TemplateField HeaderText="Title">
+                            <asp:TemplateField HeaderText="Title" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <%# Item.title %>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Patient / Subject" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                            <asp:TemplateField HeaderText="Subject NRIC" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <%# Item.patient.lastName + " " +Item.patient.firstName %>
+                                    <%# Item.patient.nric %>
                                 </ItemTemplate>
                             </asp:TemplateField>
-
+                            <asp:TemplateField HeaderText="Subject Name" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                <ItemTemplate>
+                                    <asp:Label ID="LabelPatientName" runat="server"></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField HeaderText="Created By" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <%# Item.therapist.lastName + " " +Item.therapist.firstName %>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Creation Time">
+                            <asp:TemplateField HeaderText="Creation Time" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <%# Item.createTime %>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Action" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <asp:Label ID="LabelNoteStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
-                                    <asp:LinkButton ID="LinkButtonNote" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
+                                    <asp:LinkButton CssClass="btn btn-success btn-sm" runat="server" CommandName="ViewNote" CommandArgument='<%# Item.id %>'>
+                                        <i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span>
+                                    </asp:LinkButton>
+                                    <asp:LinkButton CssClass="btn btn-warning btn-sm" runat="server" CommandName="ViewSendNoteModal" CommandArgument='<%# Item.id %>'>
+                                        <i class="fas fa-fw fa-share-square"></i><span class="d-none d-lg-inline-block">Send</span>
+                                    </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
-
-                            <%--                            <asp:TemplateField HeaderText="Information" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="LinkButtonViewInformation" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Diagnoses" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="LinkButtonViewDiagnosis" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Records" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
-                                <ItemTemplate>
-                                    <asp:Label ID="LabelRecordStatus" TabIndex="0" data-toggle="tooltip" runat="server" Visible="false"><i class="fas fa-fw fa-info-circle"></i></asp:Label>
-                                    <asp:LinkButton ID="LinkButtonViewRecords" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
-                                    <asp:HyperLink ID="LinkButtonNewRecord" runat="server"><i class="fas fa-fw fa-file-medical"></i><span class="d-none d-lg-inline-block">New Record</span></asp:HyperLink>
-                                </ItemTemplate>
-                            </asp:TemplateField>--%>
                         </Columns>
                         <EmptyDataTemplate>
                             <div class="alert alert-info text-center py-4" role="alert">
@@ -108,14 +98,12 @@
             <asp:UpdatePanel ID="UpdatePanelNote" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
-                        <h5 class="modal-title">Patient 
-                            <asp:Label ID="LabelInformationNRIC" runat="server"></asp:Label>: View Information</h5>
+                        <h5 class="modal-title">View Note</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-
                         <div class="row text-left mb-3">
                             <div class="col-12">
                                 <div class="form-group">
@@ -129,9 +117,48 @@
                                     <asp:TextBox ID="TextBoxContent" CssClass="form-control form-control-sm" TextMode="MultiLine" Rows="10" runat="server" Enabled="false"></asp:TextBox>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label>Created By</label>
+                                    <input id="inputCreateBy" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label>Create Time</label>
+                                    <input id="inputCreateTime" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label>Subject / Patient NRIC</label>
+                                    <input id="inputPatientNRIC" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label>Subject / Patient Name</label>
+                                    <input id="inputPatientName" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="accordion" id="modalNoteAccordion">
+                        <asp:Panel ID="PanelNoteUnauthorized" CssClass="row" runat="server">
+                            <div class="col-12">
+                                <div class="alert alert-danger text-center py-4" role="alert">
+                                    <h4 class="alert-heading"><i class="fas fa-fw fa-times-circle mr-2"></i>Unauthorized.
+                                    </h4>
+                                    <p>
+                                        You do not have permissions granted by the Subject / Patient of this Medical Note.<br />
+                                        You are unable to view patient information, patient diagnoses and Records attached to this note.
+                                    </p>
+                                    <hr>
+                                    <p class="mb-0">To gain access, you required approved permissions from the Subject / Patient.</p>
+                                </div>
+                            </div>
+                        </asp:Panel>
+
+                        <asp:Panel ID="modalNoteAccordion" CssClass="accordion" ClientIDMode="Static" runat="server">
                             <div class="card">
                                 <div class="card-header" id="PatientPersonalInformationHeader">
                                     <h2 class="mb-0">
@@ -252,12 +279,68 @@
                                 <div class="card-header" id="PatientDiagnosisHeader">
                                     <h2 class="mb-0">
                                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#PatientDiagnosis" aria-expanded="false" aria-controls="PatientDiagnosis">
-                                            Subject / Patient Diagnoses
+                                            Subject / Patient Attributed Diagnoses
                                         </button>
                                     </h2>
                                 </div>
                                 <div id="PatientDiagnosis" class="collapse" aria-labelledby="PatientDiagnosisHeader" data-parent="#modalNoteAccordion">
                                     <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <asp:GridView ID="GridViewPatientDiagnoses" CssClass="table table-sm small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
+                                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"
+                                                    ItemType="NUSMed_WebApp.Classes.Entity.PatientDiagnosis" OnPageIndexChanging="GridViewPatientDiagnoses_PageIndexChanging" OnRowDataBound="GridViewPatientDiagnoses_RowDataBound"
+                                                    EmptyDataRowStyle-CssClass="empty-table" runat="server">
+                                                    <Columns>
+                                                        <asp:TemplateField HeaderText="Code">
+                                                            <ItemTemplate>
+                                                                <%# Item.diagnosis.code %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+
+                                                        <asp:TemplateField HeaderText="Description">
+                                                            <ItemTemplate>
+                                                                <%# Item.diagnosis.descriptionShort %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+
+                                                        <asp:TemplateField HeaderText="Category">
+                                                            <ItemTemplate>
+                                                                <%# Item.diagnosis.categoryTitle %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+
+                                                        <asp:TemplateField HeaderText="Assigned By">
+                                                            <ItemTemplate>
+                                                                <%# Item.therapist.lastName + " " + Item.therapist.firstName %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+
+                                                        <asp:TemplateField HeaderText="Start">
+                                                            <ItemTemplate>
+                                                                <%# Item.start %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+
+                                                        <asp:TemplateField HeaderText="End">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="LabelPatientDiagnosesEnd" runat="server"></asp:Label>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+
+                                                    </Columns>
+                                                    <EmptyDataTemplate>
+                                                        <div class="alert alert-info text-center py-4" role="alert">
+                                                            <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Patient does not have any Diagnosis attributed to him/her.
+                                                            </h4>
+                                                            <p>No therapists had probably attributed any diagnoses to the patient.</p>
+                                                            <hr>
+                                                            <p class="mb-0">If this is a mistake, please contact the help-desk for assistance.</p>
+                                                        </div>
+                                                    </EmptyDataTemplate>
+                                                </asp:GridView>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -341,10 +424,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                        </div>
-
-
+                        </asp:Panel>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
@@ -494,6 +574,104 @@
             </asp:UpdateProgress>
         </div>
     </div>
+
+    <div id="modalSendNote" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <asp:UpdatePanel ID="UpdatePanelSendNote" class="modal-content" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-header">
+                        <h5 class="modal-title text-capitalize"><i class="fas fa-fw fa-eye"></i>
+                            Send Medical Note</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>List of Therapists</h4>
+                                <div class="row mb-4">
+                                    <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
+                                        <asp:Panel CssClass="input-group input-group-sm" runat="server" DefaultButton="ButtonSearchSendNote">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Search</span>
+                                            </div>
+                                            <asp:TextBox ID="TextBoxSearchTherapist" CssClass="form-control form-control-sm" placeholder="First Name / Last Name" runat="server"></asp:TextBox>
+                                            <div class="input-group-append">
+                                                <asp:LinkButton ID="ButtonSearchSendNote" CssClass="btn btn-outline-info" OnClick="ButtonSearchSendNote_Click" runat="server">
+                                                    <i class="fas fa-fw fa-search"></i> Go
+                                                </asp:LinkButton>
+                                            </div>
+                                        </asp:Panel>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <asp:GridView ID="GridViewTherapistSendNote" CssClass="table table-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
+                                            AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" ItemType="NUSMed_WebApp.Classes.Entity.Therapist"
+                                            DataKeyNames="nric" OnRowCommand="GridViewTherapistSendNote_RowCommand" OnPageIndexChanging="GridViewTherapistSendNote_PageIndexChanging"
+                                            EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowDataBound="GridViewTherapistSendNote_RowDataBound">
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="Therapist's Name" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                                    <ItemTemplate>
+                                                        <%# Item.lastName + " " + Item.firstName %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Title" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                                    <ItemTemplate>
+                                                        <%# Item.therapistJobTitle == string.Empty ?  "Nil" : Item.therapistJobTitle %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Department" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                                    <ItemTemplate>
+                                                        <%# Item.therapistDepartment == string.Empty ?  "Nil" : Item.therapistDepartment %>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Permissions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton ID="LinkButtonViewSelectTherapist" runat="server">
+                                                            <i class="fas fa-fw fa-hand-pointer"></i><span class="d-none d-lg-inline-block">Select</span>
+                                                        </asp:LinkButton>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                            <EmptyDataTemplate>
+                                                <div class="alert alert-info text-center py-4" role="alert">
+                                                    <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search returned no results.
+                                                    </h4>
+                                                    <p>Do try widening your search parameter.</p>
+                                                    <hr>
+                                                    <p class="mb-0">New here? Try entering a search term and hit "Go"!</p>
+                                                </div>
+                                            </EmptyDataTemplate>
+                                        </asp:GridView>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="buttonSendNote" type="button" class="btn btn-sm btn-success" runat="server" onserverclick="buttonSendNote_ServerClick"><i class="fas fa-fw fa-share"></i>Send</button>
+                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelSendNote" DisplayAfter="200" DynamicLayout="false">
+                <ProgressTemplate>
+                    <div class="loading">Loading</div>
+                </ProgressTemplate>
+            </asp:UpdateProgress>
+        </div>
+    </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
+    <script type="text/javascript">
+        function pageLoad() {
+            $(function () {
+                // Enable Tooltips
+                $('[data-toggle="tooltip"]').tooltip({ html: true });
+            });
+        }
+    </script>
 </asp:Content>

@@ -48,7 +48,6 @@
             </div>
 
             <div class="row mb-4">
-
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
                     <asp:Panel CssClass="input-group input-group-sm" runat="server" DefaultButton="ButtonSearch">
                         <div class="input-group-prepend">
@@ -98,7 +97,6 @@
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
-
                         </Columns>
                         <EmptyDataTemplate>
                             <div class="alert alert-info text-center py-4" role="alert">
@@ -175,9 +173,7 @@
 
                             <asp:TemplateField HeaderText="User Action" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="LinkButtonViewSelectRecord" runat="server">
-                                        <i class="fas fa-fw fa-hand-pointer"></i><span class="d-none d-lg-inline-block">Select</span>
-                                    </asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButtonViewSelectRecord" runat="server"></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
