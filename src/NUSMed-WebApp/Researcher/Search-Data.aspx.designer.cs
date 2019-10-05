@@ -22,13 +22,58 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.UpdatePanel UpdatePanelPatientAnonymised;
         
         /// <summary>
-        /// inputCountryofBirth control.
+        /// labelInputAge control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect inputCountryofBirth;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputAge;
+        
+        /// <summary>
+        /// labelTitleAge control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelTitleAge;
+        
+        /// <summary>
+        /// inputAgeLevel0 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText inputAgeLevel0;
+        
+        /// <summary>
+        /// inputAgeLevel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect inputAgeLevel1;
+        
+        /// <summary>
+        /// inputAgeLevel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect inputAgeLevel2;
+        
+        /// <summary>
+        /// inputAgeLevel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect inputAgeLevel3;
         
         /// <summary>
         /// Select1 control.
@@ -103,13 +148,13 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.HtmlControls.HtmlSelect Select7;
         
         /// <summary>
-        /// buttonRegister control.
+        /// buttonFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton buttonRegister;
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonFilter;
         
         /// <summary>
         /// GridViewPatientAnonymised control.
