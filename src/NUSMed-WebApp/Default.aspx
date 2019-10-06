@@ -25,7 +25,7 @@
                         <small id="passwordHelp" class="form-text text-muted">Please approach help-desk to reset forgotten passwords.</small>
                     </div>
                     <button type="submit" id="buttonLogin" class="btn btn-success" runat="server" onserverclick="ButtonLogin_ServerClick">Login</button>
-                    <span id="spanMessage" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>Invalid NRIC/Password</span>
+                    <span id="spanMessage" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>Invalid Credentials or Account Disabled</span>
                 </div>
             </div>
 

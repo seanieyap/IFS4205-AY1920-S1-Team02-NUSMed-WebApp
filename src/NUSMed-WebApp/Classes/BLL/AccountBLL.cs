@@ -108,6 +108,9 @@ namespace NUSMed_WebApp.Classes.BLL
             string salt = accountDAL.RetrieveSalt(nric);
             HashSalt hashSalt = GenerateSaltedHash(salt, password);
 
+            Account account = accountDAL.RetrieveStatus(nric, hashSalt.Hash, deviceID, tokenID);
+            Lockout(nric, account);
+
             return accountDAL.RetrieveStatus(nric, hashSalt.Hash, deviceID, tokenID);
         }
         public Account GetStatus(string nric, string password, string deviceID)
@@ -115,18 +118,56 @@ namespace NUSMed_WebApp.Classes.BLL
             string salt = accountDAL.RetrieveSalt(nric);
             HashSalt hashSalt = GenerateSaltedHash(salt, password);
 
-            return accountDAL.RetrieveStatus(nric, hashSalt.Hash, deviceID);
+            Account account = accountDAL.RetrieveStatus(nric, hashSalt.Hash, deviceID);
+            Lockout(nric, account);
+
+            return account;
         }
         public Account GetStatus(string nric, string password)
         {
             string salt = accountDAL.RetrieveSalt(nric);
             HashSalt hashSalt = GenerateSaltedHash(salt, password);
 
-            return accountDAL.RetrieveStatus(nric, hashSalt.Hash);
+            Account account = accountDAL.RetrieveStatus(nric, hashSalt.Hash);
+            Lockout(nric, account);
+
+            return account;
         }
         public Account GetStatus(string nric)
         {
-            return accountDAL.RetrieveStatus(nric);
+            Account account = accountDAL.RetrieveStatus(nric);
+            Lockout(nric, account);
+
+            return account;
+        }
+
+        private void Lockout(string nric, Account account)
+        {
+            if (string.IsNullOrEmpty(account.nric) || account.status == 0)
+            {
+                if (HttpContext.Current == null || HttpContext.Current.Cache[nric + "_LoginAttempt"] == null)
+                {
+                    HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+                }
+                else
+                {
+                    int count = Convert.ToInt16(HttpContext.Current.Cache[nric + "_LoginAttempt"]);
+
+                    if (count >= 3)
+                    {
+                        accountDAL.UpdateStatusDisable(nric);
+                        HttpContext.Current.Cache.Remove(nric + "_LoginAttempt");
+                    }
+                    else
+                    {
+                        HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", count + 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+                    }
+                }
+            }
+            else
+            {
+                HttpContext.Current.Cache.Remove(nric + "_LoginAttempt");
+            }
         }
 
         public DateTime GetCreateTime(string nric)

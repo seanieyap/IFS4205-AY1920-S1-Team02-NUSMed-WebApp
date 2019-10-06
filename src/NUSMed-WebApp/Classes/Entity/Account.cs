@@ -132,32 +132,32 @@ namespace NUSMed_WebApp.Classes.Entity
         public DateTime createTime { get; set; }
         public DateTime? lastFullLogin { get; set; } = null;
 
-        public string accountStatus
-        {
-            get
-            {
-                if (status == 0)
-                    return "Disabled/Lock";
-                else if (status == 1)
-                    return "Enabled";
-                else if (status == 2)
-                    return "Enabled, Omitted from MFA";
-                else
-                    return "Unknown";
-            }
-        }
+        //public string accountStatus
+        //{
+        //    get
+        //    {
+        //        if (status == 0)
+        //            return "Disabled/Lock";
+        //        else if (status == 1)
+        //            return "Enabled";
+        //        else if (status == 2)
+        //            return "Enabled, Omitted from MFA";
+        //        else
+        //            return "Unknown";
+        //    }
+        //}
 
-        public int age
-        {
-            get
-            {
-                DateTime today = DateTime.Today;
-                int age = today.Year - dateOfBirth.Date.Year;
-                if (dateOfBirth.Date > today.AddYears(-age))
-                    age--;
-                return age;
-            }
-        }
+        //public int age
+        //{
+        //    get
+        //    {
+        //        DateTime today = DateTime.Today;
+        //        int age = today.Year - dateOfBirth.Date.Year;
+        //        if (dateOfBirth.Date > today.AddYears(-age))
+        //            age--;
+        //        return age;
+        //    }
+        //}
 
         #region Patient
         private string _nokName;
@@ -222,7 +222,7 @@ namespace NUSMed_WebApp.Classes.Entity
         // 0 = disabled / lock, 
         // 1 = active with MFA,
         // 2 = active, excluded from MFA.
-        public int status { get; set; } = 0;
+        public short status { get; set; } = 0;
 
         #region MFA 
         // Token ID, NFC chip

@@ -72,10 +72,12 @@ namespace NUSMed_WebApp
                 if (account.status == 0)
                 {
                     AuthenticationError();
-                    return;
                 }
                 else
                 {
+                    // Remove attemps counter
+                    HttpContext.Current.Cache.Remove(nric + "_LoginAttempt");
+
                     // Trigger MFA
                     if (account.status == 1)
                     {
@@ -116,7 +118,6 @@ namespace NUSMed_WebApp
                             {
                                 accountBLL.Login(nric, "Multiple");
                             }
-
                             Response.Redirect("~/");
                         }
                         catch
@@ -125,7 +126,6 @@ namespace NUSMed_WebApp
                         }
                     }
                 }
-
             }
             else
             {

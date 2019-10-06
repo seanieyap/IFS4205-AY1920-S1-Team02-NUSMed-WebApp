@@ -491,7 +491,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT a.status as status, 
+                cmd.CommandText = @"SELECT a.status as status, a.nric,
                     ap.status as patient_status, at.status as therapist_status, 
                     ar.status as researcher_status, aa.status as admin_status
                     FROM account a 
@@ -518,7 +518,8 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             result = new Account
                             {
-                                status = Convert.ToInt32(reader["status"]),
+                                nric = Convert.ToString(reader["nric"]),
+                                status = Convert.ToInt16(reader["status"]),
                                 patientStatus = Convert.ToInt32(reader["patient_status"]),
                                 therapistStatus = Convert.ToInt32(reader["therapist_status"]),
                                 researcherStatus = Convert.ToInt32(reader["researcher_status"]),
@@ -541,7 +542,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT a.status as status, 
+                cmd.CommandText = @"SELECT a.status as status, a.nric,
                     ap.status as patient_status, at.status as therapist_status, 
                     ar.status as researcher_status, aa.status as admin_status
                     FROM account a 
@@ -566,7 +567,8 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             result = new Account
                             {
-                                status = Convert.ToInt32(reader["status"]),
+                                nric = Convert.ToString(reader["nric"]),
+                                status = Convert.ToInt16(reader["status"]),
                                 patientStatus = Convert.ToInt32(reader["patient_status"]),
                                 therapistStatus = Convert.ToInt32(reader["therapist_status"]),
                                 researcherStatus = Convert.ToInt32(reader["researcher_status"]),
@@ -589,7 +591,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT a.status as status, 
+                cmd.CommandText = @"SELECT a.status as status, a.nric,
                     ap.status as patient_status, at.status as therapist_status, 
                     ar.status as researcher_status, aa.status as admin_status
                     FROM account a 
@@ -613,7 +615,8 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             result = new Account
                             {
-                                status = Convert.ToInt32(reader["status"]),
+                                nric = Convert.ToString(reader["nric"]),
+                                status = Convert.ToInt16(reader["status"]),
                                 patientStatus = Convert.ToInt32(reader["patient_status"]),
                                 therapistStatus = Convert.ToInt32(reader["therapist_status"]),
                                 researcherStatus = Convert.ToInt32(reader["researcher_status"]),
@@ -754,7 +757,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT a.status as status, a.last_full_login, 
+                cmd.CommandText = @"SELECT a.status as status, a.last_full_login, a.nric, 
                     a.associated_token_id, a.associated_device_id,
                     ap.status as patient_status, at.status as therapist_status, 
                     ar.status as researcher_status, aa.status as admin_status
@@ -778,7 +781,8 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             result = new Account
                             {
-                                status = Convert.ToInt32(reader["status"]),
+                                nric = Convert.ToString(reader["nric"]),
+                                status = Convert.ToInt16(reader["status"]),
                                 associatedTokenID = Convert.ToString(reader["associated_token_id"]),
                                 associatedDeviceID = Convert.ToString(reader["associated_device_id"]),
                                 patientStatus = Convert.ToInt32(reader["patient_status"]),
@@ -862,7 +866,7 @@ namespace NUSMed_WebApp.Classes.DAL
                         {
                             result = new Account
                             {
-                                status = Convert.ToInt32(reader["status"]),
+                                status = Convert.ToInt16(reader["status"]),
                                 patientStatus = Convert.ToInt32(reader["patient_status"]),
                                 therapistStatus = Convert.ToInt32(reader["therapist_status"]),
                                 researcherStatus = Convert.ToInt32(reader["researcher_status"]),
