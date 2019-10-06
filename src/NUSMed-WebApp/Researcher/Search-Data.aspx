@@ -4,12 +4,8 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <link href="/Content/bootstrap-select.min.css" rel="stylesheet" type="text/css" runat="server" />
-    <%--        <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/Scripts/bootstrap-select.min.js") %>
-    </asp:PlaceHolder>--%>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
-    <%--<script src="~/Scripts/bootstrap-select.min.js" type="text/javascript" runat="server"></script>--%>
 
     <div class="container">
         <div class="py-5 mx-auto text-center">
