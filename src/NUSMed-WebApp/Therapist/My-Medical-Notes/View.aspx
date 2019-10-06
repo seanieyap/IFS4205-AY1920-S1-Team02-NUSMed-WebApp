@@ -5,6 +5,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/plotly-latest.min.js") %>
+    </asp:PlaceHolder>
+
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-notes-medical"></i>View My Medical Notes</h1>
@@ -54,7 +58,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Created By" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <%# Item.therapist.lastName + " " +Item.therapist.firstName %>
+                                    <%# Item.therapist.lastName + " " + Item.therapist.firstName %>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Creation Time" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
@@ -103,63 +107,61 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <div class="row text-left mb-3">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Title</label>
-                                    <input id="inputTitle" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Content</label>
-                                    <asp:TextBox ID="TextBoxContent" CssClass="form-control form-control-sm" TextMode="MultiLine" Rows="10" runat="server" Enabled="false"></asp:TextBox>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Created By</label>
-                                    <input id="inputCreateBy" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Create Time</label>
-                                    <input id="inputCreateTime" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Subject / Patient NRIC</label>
-                                    <input id="inputPatientNRIC" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Subject / Patient Name</label>
-                                    <input id="inputPatientName" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
-                                </div>
-                            </div>
-                        </div>
-
-                        <asp:Panel ID="PanelNoteUnauthorized" CssClass="row" runat="server">
-                            <div class="col-12">
-                                <div class="alert alert-danger text-center py-4" role="alert">
-                                    <h4 class="alert-heading"><i class="fas fa-fw fa-times-circle mr-2"></i>Unauthorized.
-                                    </h4>
-                                    <p>
-                                        You do not have permissions granted by the Subject / Patient of this Medical Note.<br />
-                                        You are unable to view patient information, patient diagnoses and Records attached to this note.
-                                    </p>
-                                    <hr>
-                                    <p class="mb-0">To gain access, you required approved permissions from the Subject / Patient.</p>
-                                </div>
-                            </div>
-                        </asp:Panel>
-
+                    <div class="modal-body">                       
                         <asp:Panel ID="modalNoteAccordion" CssClass="accordion" ClientIDMode="Static" runat="server">
-                            <div class="card">
+                            <asp:Panel CssClass="card" runat="server" ClientIDMode="Static">
+                                <div class="card-header" id="NoteInformationHeader">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#NoteInformation" aria-expanded="false" aria-controls="NoteInformation">
+                                            Note Information
+                                        </button>
+                                    </h2>
+                                </div>
+
+                                <div id="NoteInformation" class="collapse" aria-labelledby="NoteInformationHeader" data-parent="#modalNoteAccordion" >
+                                    <div class="card-body">
+                                        <div class="row text-left mb-3">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Title</label>
+                                                    <input id="inputTitle" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Content</label>
+                                                    <asp:TextBox ID="TextBoxContent" CssClass="form-control form-control-sm" TextMode="MultiLine" Rows="10" runat="server" Enabled="false"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Created By</label>
+                                                    <input id="inputCreateBy" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Create Time</label>
+                                                    <input id="inputCreateTime" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Subject / Patient NRIC</label>
+                                                    <input id="inputPatientNRIC" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="form-group">
+                                                    <label>Subject / Patient Name</label>
+                                                    <input id="inputPatientName" type="text" class="form-control form-control-sm" readonly runat="server" disabled="disabled">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </asp:Panel>
+                            <asp:Panel ID="PanelPatientPersonalInformation" CssClass="card" runat="server" ClientIDMode="Static">
                                 <div class="card-header" id="PatientPersonalInformationHeader">
                                     <h2 class="mb-0">
                                         <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#PatientPersonalInformation" aria-expanded="false" aria-controls="PatientPersonalInformation">
@@ -274,8 +276,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card">
+                            </asp:Panel>
+                            <asp:Panel ID="PanelPatientDiagnosis" CssClass="card" runat="server" ClientIDMode="Static">
                                 <div class="card-header" id="PatientDiagnosisHeader">
                                     <h2 class="mb-0">
                                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#PatientDiagnosis" aria-expanded="false" aria-controls="PatientDiagnosis">
@@ -343,8 +345,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card">
+                            </asp:Panel>
+                            <asp:Panel ID="PanelNoteRecords" CssClass="card" runat="server" ClientIDMode="Static">
                                 <div class="card-header" id="NoteRecordsHeader">
                                     <h2 class="mb-0">
                                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#NoteRecords" aria-expanded="false" aria-controls="NoteRecords">
@@ -356,7 +358,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-12">
-                                                <asp:GridView ID="GridViewRecords" CssClass="table table-sm table-responsive-md small" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
+                                                <asp:GridView ID="GridViewRecords" CssClass="table table-sm table-responsive-md small" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
                                                     AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"
                                                     OnRowDataBound="GridViewRecords_RowDataBound" OnRowCommand="GridViewRecords_RowCommand" ItemType="NUSMed_WebApp.Classes.Entity.Record"
                                                     OnPageIndexChanging="GridViewRecords_PageIndexChanging" DataKeyNames="id" EmptyDataRowStyle-CssClass="empty-table" runat="server">
@@ -423,6 +425,21 @@
                                         </div>
                                     </div>
                                 </div>
+                            </asp:Panel>
+                        </asp:Panel>
+
+                        <asp:Panel ID="PanelNoteUnauthorized" CssClass="row" runat="server" Visible="false">
+                            <div class="col-12">
+                                <div class="alert alert-danger text-center py-4" role="alert">
+                                    <h4 class="alert-heading"><i class="fas fa-fw fa-times-circle mr-2"></i>Unauthorized.
+                                    </h4>
+                                    <p>
+                                        You do not have permissions granted by the Subject / Patient of this Medical Note.<br />
+                                        You are unable to view patient information, patient diagnoses and Records attached to this note.
+                                    </p>
+                                    <hr>
+                                    <p class="mb-0">To gain access, you required approved permissions from the Subject / Patient.</p>
+                                </div>
                             </div>
                         </asp:Panel>
                     </div>
@@ -440,7 +457,7 @@
     </div>
 
     <div id="modalFileView" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelFileView" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
@@ -457,7 +474,7 @@
                             <source id="modalFileViewVideoSource" src="/" type="video/mp4" runat="server">
                             Your browser does not support the video tag.
                         </video>
-                        <asp:Label ID="modalFileViewLabelText" runat="server" Visible="false"></asp:Label>
+                        <asp:Panel ID="modalFileViewPanelText" runat="server" Visible="false" ClientIDMode="Static"></asp:Panel>
                     </div>
                     <div class="modal-footer">
                         <a id="FileDownloadLinkviaModal" class="btn btn-warning btn-sm" runat="server">
@@ -485,7 +502,7 @@
         </div>
     </div>
 
-    <div id="modalRecordDiagnosisView" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div id="modalRecordDiagnosisView" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelRecordDiagnosisView" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>

@@ -62,7 +62,9 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
                         inputPatientName.Value = "Redacted";
 
                         PanelNoteUnauthorized.Visible = true;
-                        modalNoteAccordion.Visible = false;
+                        PanelPatientPersonalInformation.Visible = false;
+                        PanelPatientDiagnosis.Visible = false;
+                        PanelNoteRecords.Visible = false;
                     }
                     else
                     {
@@ -100,15 +102,12 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
                         ViewState["GridViewRecords"] = records;
                         GridViewRecords.DataSource = records;
                         GridViewRecords.DataBind();
-
-                        PanelNoteUnauthorized.Visible = false;
-                        modalNoteAccordion.Visible = true;
                     }
 
                     ViewState["GridViewPatientSelectedNRIC"] = note.patient.nric;
 
                     UpdatePanelNote.Update();
-                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Note Modal", "$('#modalNote').modal('show');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Note Modal", "$('#modalNote').modal('show'); $('#NoteInformation').collapse('show');", true);
                 }
                 catch
                 {
@@ -149,7 +148,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
                 }
                 else
                 {
-                    LabelPatientName.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "patient.lastName")) + " " + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "firstName"));
+                    LabelPatientName.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "patient.lastName")) + " " + Convert.ToString(DataBinder.Eval(e.Row.DataItem, "patient.firstName"));
                 }
             }
         }
@@ -259,6 +258,8 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
             GridViewRecords.PageIndex = e.NewPageIndex;
             GridViewRecords.DataSource = ViewState["GridViewRecords"];
             GridViewRecords.DataBind();
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#NoteRecords').collapse('show');", true);
         }
         protected void GridViewRecords_RowCommand(object sender, GridViewCommandEventArgs e)
         {
@@ -271,39 +272,39 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
 
                     modalFileViewImage.Visible = false;
                     modalFileViewVideo.Visible = false;
-                    modalFileViewLabelText.Visible = false;
-
-                    if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
-                    {
-                        modalFileViewImage.Visible = true;
-                        modalFileViewImage.ImageUrl = "~/Therapist/Download.ashx?record=" + record.id;
-                    }
-                    else if (record.fileExtension == ".txt")
-                    {
-                        // todo, create timeseries
-                        modalFileViewLabelText.Visible = true;
-                        if (record.IsFileSafe())
-                        {
-                            modalFileViewLabelText.Text = File.ReadAllText(record.fullpath);
-                        }
-                        else
-                        {
-                            modalFileViewLabelText.Text = "File Corrupted";
-                        }
-                    }
-                    else if (record.fileExtension == ".mp4")
-                    {
-                        modalFileViewVideo.Visible = true;
-                        modalFileViewVideoSource.Attributes.Add("src", "~/Therapist/Download.ashx?record=" + record.id);
-                    }
+                    modalFileViewPanelText.Visible = false;
 
                     labelRecordName.Text = record.title;
                     modalFileViewLabelFileName.Text = record.fileName + record.fileExtension;
                     modalFileViewLabelFileSize.Text = record.fileSizeMegabytes;
                     FileDownloadLinkviaModal.HRef = "~/Therapist/Download.ashx?record=" + record.id.ToString();
 
+                    if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
+                    {
+                        modalFileViewImage.Visible = true;
+                        modalFileViewImage.ImageUrl = "~/Therapist/Download.ashx?record=" + record.id;
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalNote').modal('hide'); $('#modalFileView').modal('show'); $('#NoteRecords').collapse('show');", true);
+                    }
+                    else if (record.fileExtension == ".txt")
+                    {
+                        modalFileViewPanelText.Visible = true;
+                        if (record.IsFileSafe())
+                        {
+                            string js = record.type.GetTextPlotJS(File.ReadAllText(record.fullpath));
+
+                            ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').on('shown.bs.modal', function (e) {  " + js + "}); $('#modalNote').modal('hide'); $('#modalFileView').modal('show'); $('#NoteRecords').collapse('show');", true);
+                        }
+                    }
+                    else if (record.fileExtension == ".mp4")
+                    {
+                        modalFileViewVideo.Visible = true;
+                        modalFileViewVideoSource.Attributes.Add("src", "~/Patient/Download.ashx?record=" + record.id);
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalNote').modal('hide'); $('#modalFileView').modal('show'); $('#NoteRecords').collapse('show');", true);
+                    }
+
                     UpdatePanelFileView.Update();
-                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalNote').modal('hide'); $('#modalFileView').modal('show');", true);
                 }
                 catch
                 {
@@ -320,7 +321,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
                     Bind_GridViewRecordDiagnoses();
 
                     UpdatePanelRecordDiagnosisView.Update();
-                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View Record Diagnosis Modal", "$('#modalNote').modal('hide'); $('#modalRecordDiagnosisView').modal('show');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View Record Diagnosis Modal", "$('#modalNote').modal('hide'); $('#modalRecordDiagnosisView').modal('show'); $('#NoteRecords').collapse('show');", true);
                 }
                 catch
                 {

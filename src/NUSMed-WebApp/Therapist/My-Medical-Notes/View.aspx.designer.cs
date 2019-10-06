@@ -58,6 +58,15 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         protected global::System.Web.UI.UpdatePanel UpdatePanelNote;
         
         /// <summary>
+        /// modalNoteAccordion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel modalNoteAccordion;
+        
+        /// <summary>
         /// inputTitle control.
         /// </summary>
         /// <remarks>
@@ -112,22 +121,13 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         protected global::System.Web.UI.HtmlControls.HtmlInputText inputPatientName;
         
         /// <summary>
-        /// PanelNoteUnauthorized control.
+        /// PanelPatientPersonalInformation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PanelNoteUnauthorized;
-        
-        /// <summary>
-        /// modalNoteAccordion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel modalNoteAccordion;
+        protected global::System.Web.UI.WebControls.Panel PanelPatientPersonalInformation;
         
         /// <summary>
         /// inputNRIC control.
@@ -265,6 +265,15 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         protected global::System.Web.UI.HtmlControls.HtmlInputText NOKContact;
         
         /// <summary>
+        /// PanelPatientDiagnosis control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelPatientDiagnosis;
+        
+        /// <summary>
         /// GridViewPatientDiagnoses control.
         /// </summary>
         /// <remarks>
@@ -274,6 +283,15 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         protected global::System.Web.UI.WebControls.GridView GridViewPatientDiagnoses;
         
         /// <summary>
+        /// PanelNoteRecords control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelNoteRecords;
+        
+        /// <summary>
         /// GridViewRecords control.
         /// </summary>
         /// <remarks>
@@ -281,6 +299,15 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridViewRecords;
+        
+        /// <summary>
+        /// PanelNoteUnauthorized control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelNoteUnauthorized;
         
         /// <summary>
         /// UpdatePanelFileView control.
@@ -337,13 +364,13 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes {
         protected global::System.Web.UI.HtmlControls.HtmlSource modalFileViewVideoSource;
         
         /// <summary>
-        /// modalFileViewLabelText control.
+        /// modalFileViewPanelText control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label modalFileViewLabelText;
+        protected global::System.Web.UI.WebControls.Panel modalFileViewPanelText;
         
         /// <summary>
         /// FileDownloadLinkviaModal control.

@@ -6,6 +6,9 @@
     <link href="/Content/bootstrap-select.min.css" rel="stylesheet" type="text/css" runat="server" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
+        <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/bootstrap-select.min.js") %>
+    </asp:PlaceHolder>
 
     <div class="container">
         <div class="py-5 mx-auto text-center">

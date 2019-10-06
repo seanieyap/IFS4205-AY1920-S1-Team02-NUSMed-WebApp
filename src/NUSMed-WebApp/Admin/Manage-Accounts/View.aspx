@@ -3,6 +3,10 @@
 <%@ MasterType VirtualPath="~/site.Master" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="BodyContent" runat="server">
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/bootstrap-confirmation.js") %>
+    </asp:PlaceHolder>
+
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-users"></i>View Accounts</h1>

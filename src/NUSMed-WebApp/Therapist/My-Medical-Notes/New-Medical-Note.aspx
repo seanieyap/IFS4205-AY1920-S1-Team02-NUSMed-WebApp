@@ -5,6 +5,11 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/plotly-latest.min.js") %>
+        <%: Scripts.Render("~/Scripts/bootstrap-confirmation.js") %>
+    </asp:PlaceHolder>
+
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-notes-medical"></i>New Medical Note</h1>
@@ -354,8 +359,8 @@
         </div>
     </div>
 
-    <div id="modalFileView" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div id="modalFileView" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelFileView" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
@@ -372,7 +377,7 @@
                             <source id="modalFileViewVideoSource" src="/" type="video/mp4" runat="server">
                             Your browser does not support the video tag.
                         </video>
-                        <asp:Label ID="modalFileViewLabelText" runat="server" Visible="false"></asp:Label>
+                        <asp:Panel ID="modalFileViewPanelText" runat="server" Visible="false" ClientIDMode="Static"></asp:Panel>
                     </div>
                     <div class="modal-footer">
                         <span class="text-info small" runat="server">

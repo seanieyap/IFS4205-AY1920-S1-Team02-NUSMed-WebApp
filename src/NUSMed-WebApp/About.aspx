@@ -2,15 +2,43 @@
 <%@ MasterType VirtualPath="~/site.Master" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="BodyContent" runat="server">
-    <h2><%: Title %>.</h2>
-    <h3>Your application description page.</h3>
-    <p>Use this area to provide additional information.</p>
-    <asp:Button runat="server" OnClick="Unnamed_Click" Text="fake mfa success login"/>
-    <asp:Button runat="server" OnClick="Unnamed_Click1" Text="fake mfa fail login"/>
-    <asp:Button runat="server" OnClick="Unnamed_Click2" Text="get session id"/>
-    <asp:Label ID="label1" Text="nil" runat="server"></asp:Label>
+                <div id="DivTimeSeries">
+</div>
 
-    <asp:LinkButton ID="LinkButtonGenerate" CssClass="btn btn-lg btn-success" runat="server" OnClick="LinkButtonGenerate_Click">Generate Anony</asp:LinkButton>
+    <script src="/Scripts/plotly-latest.min.js" type="text/javascript"></script>
+    <script>
+        //Plotly.d3.csv("/Scripts/finance-charts-apple.txt", function (err, rows) {
 
-    
+            //function unpack(rows, key) {
+            //    return rows.map(function (row) { return row[key]; });
+            //}
+
+        //var layout = {
+        //    title: 'Basic Time Series',
+        //};
+
+        //    var trace1 = {
+        //        type: "scatter",
+        //        mode: "lines",
+        //        name: 'ECG',
+        //        y: [],
+        //        x: [],
+        //        line: { color: '#17BECF' }
+        //    }
+
+        //    //var trace2 = {
+        //    //    type: "scatter",
+        //    //    mode: "lines",
+        //    //    name: 'AAPL Low',
+        //    //    x: unpack(rows, 'Date'),
+        //    //    y: unpack(rows, 'AAPL.Low'),
+        //    //    line: { color: '#7F7F7F' }
+        //    //}trace1
+
+        //    //var data = [];
+
+
+        //Plotly.newPlot('DivTimeSeries', [trace1], layout);
+        //})
+    </script>
 </asp:Content>

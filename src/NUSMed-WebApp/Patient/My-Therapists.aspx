@@ -5,6 +5,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/bootstrap-confirmation.js") %>
+    </asp:PlaceHolder>
+
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-user-md"></i>My Therapists</h1>
@@ -33,7 +37,7 @@
             <div class="row">
                 <div class="col-12">
                     <asp:GridView ID="GridViewTherapist" CssClass="table table-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
+                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"
                         ItemType="NUSMed_WebApp.Classes.Entity.Therapist" DataKeyNames="nric" OnRowCommand="GridViewTherapist_RowCommand"
                         OnPageIndexChanging="GridViewTherapist_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowDataBound="GridViewTherapist_RowDataBound">
                         <Columns>

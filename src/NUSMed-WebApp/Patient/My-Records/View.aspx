@@ -5,6 +5,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/plotly-latest.min.js") %>
+    </asp:PlaceHolder>
+
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-file-medical"></i>View My Records</h1>
@@ -101,7 +105,7 @@
     </asp:UpdateProgress>
 
     <div id="modalFileView" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <asp:UpdatePanel ID="UpdatePanelFileView" class="modal-content" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
@@ -118,7 +122,7 @@
                             <source id="modalFileViewVideoSource" src="nil" runat="server">
                             Your browser does not support the video tag.
                         </video>
-                        <asp:Label ID="modalFileViewLabelText" runat="server" Visible="false"></asp:Label>
+                        <asp:Panel ID="modalFileViewPanelText" runat="server" Visible="false" ClientIDMode="Static"></asp:Panel>
                     </div>
                     <div class="modal-footer">
                         <a id="FileDownloadLinkviaModal" class="btn btn-warning btn-sm" runat="server">
@@ -337,6 +341,7 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
+
     <script type="text/javascript">
         function pageLoad() {
             $(function () {

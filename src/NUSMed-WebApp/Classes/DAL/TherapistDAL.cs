@@ -252,7 +252,8 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.CommandText = @"SELECT a.nric, a.name_first, a.birth_country, a.nationality, a.sex, a.gender,
                     a.marital_status, a.name_last, a.address, a.address_postal_code, a.email, a.contact_number, a.create_time,
                     a.last_full_login, a.date_of_birth,
-                    ap.nok_name, ap.nok_contact_number
+                    ap.nok_name, ap.nok_contact_number,
+                    rtp.approved_time
                     FROM record_type_permission rtp
                     INNER JOIN account a ON a.nric = rtp.patient_nric 
                     INNER JOIN account_patient ap ON ap.nric = rtp.patient_nric
@@ -290,6 +291,8 @@ namespace NUSMed_WebApp.Classes.DAL
                                 nokName = Convert.ToString(reader["nok_name"]),
                                 nokContact = Convert.ToString(reader["nok_contact_number"]),
                             };
+                            patient.approvedTime = reader["approved_time"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["approved_time"]);
 
                             result = patient;
                         }

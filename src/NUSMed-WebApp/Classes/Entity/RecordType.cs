@@ -28,6 +28,12 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             return false;
         }
+
+        public virtual string GetTextPlotJS(string data)
+        {
+            return string.Empty;
+        }
+
         public static RecordType Get(string type)
         {
             if (type.Equals(new HeightMeasurement().name))
@@ -217,6 +223,47 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             return false;
         }
+        public override string GetTextPlotJS(string data)
+        {
+            string[] dataArray = data.Split(',');
+            List<string> timeList = new List<string>();
+
+            double timeBuffer = 0;
+            foreach (string value in dataArray)
+            {
+                timeList.Add(timeBuffer.ToString());
+                timeBuffer += 0.008;
+            }
+
+            string times = string.Join(", ", timeList.ToArray());
+
+            string js = @"
+                var layout = {
+                    title: 'ECG Heartbeat',
+                    yaxis: {
+                        title: 'Magnitude',
+                        autotick: true,
+                        ticks: 'outside',
+                      },
+                      xaxis: {
+                        title: 'Time (seconds)',
+                        autotick: true,
+                        ticks: 'outside',
+                      },
+                };
+
+                var trace1 = {
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: 'ECG',
+                        y: [" + data + @"],
+                        x: [" + times + @"],
+                        line: { color: '#17BECF' }
+                };
+                Plotly.newPlot('modalFileViewPanelText', [trace1], layout);";
+
+            return js;
+        }
     }
     [Serializable]
     public class MRI : RecordType
@@ -281,5 +328,10 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             return false;
         }
+        public override string GetTextPlotJS(string data)
+        {
+            return string.Empty;
+        }
+
     }
 }

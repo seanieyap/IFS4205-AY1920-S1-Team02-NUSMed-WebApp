@@ -450,39 +450,39 @@ namespace NUSMed_WebApp.Therapist.My_Patients
 
                     modalFileViewImage.Visible = false;
                     modalFileViewVideo.Visible = false;
-                    modalFileViewLabelText.Visible = false;
-
-                    if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
-                    {
-                        modalFileViewImage.Visible = true;
-                        modalFileViewImage.ImageUrl = "~/Therapist/Download.ashx?record=" + record.id;
-                    }
-                    else if (record.fileExtension == ".txt")
-                    {
-                        // todo, create timeseries
-                        modalFileViewLabelText.Visible = true;
-                        if (record.IsFileSafe())
-                        {
-                            modalFileViewLabelText.Text = File.ReadAllText(record.fullpath);
-                        }
-                        else
-                        {
-                            modalFileViewLabelText.Text = "File Corrupted";
-                        }
-                    }
-                    else if (record.fileExtension == ".mp4")
-                    {
-                        modalFileViewVideo.Visible = true;
-                        modalFileViewVideoSource.Attributes.Add("src", "~/Therapist/Download.ashx?record=" + record.id);
-                    }
+                    modalFileViewPanelText.Visible = false;
 
                     labelRecordName.Text = record.title;
                     modalFileViewLabelFileName.Text = record.fileName + record.fileExtension;
                     modalFileViewLabelFileSize.Text = record.fileSizeMegabytes;
                     FileDownloadLinkviaModal.HRef = "~/Therapist/Download.ashx?record=" + record.id.ToString();
 
+                    if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
+                    {
+                        modalFileViewImage.Visible = true;
+                        modalFileViewImage.ImageUrl = "~/Therapist/Download.ashx?record=" + record.id;
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').modal('show');", true);
+                    }
+                    else if (record.fileExtension == ".txt")
+                    {
+                        modalFileViewPanelText.Visible = true;
+                        if (record.IsFileSafe())
+                        {
+                            string js = record.type.GetTextPlotJS(File.ReadAllText(record.fullpath));
+
+                            ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').on('shown.bs.modal', function (e) {  " + js + "}); $('#modalFileView').modal('show');", true);
+                        }
+                    }
+                    else if (record.fileExtension == ".mp4")
+                    {
+                        modalFileViewVideo.Visible = true;
+                        modalFileViewVideoSource.Attributes.Add("src", "~/Therapist/Download.ashx?record=" + record.id);
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').modal('show');", true);
+                    }
+
                     UpdatePanelFileView.Update();
-                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').modal('show');", true);
                 }
                 catch
                 {
