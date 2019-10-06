@@ -25,6 +25,7 @@
                 <%--Framework Scripts--%>
                 <asp:ScriptReference Name="MsAjaxBundle" />
                 <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Path="~/Scripts/bootstrap-select.min.js" />
                 <asp:ScriptReference Path="~/Scripts/umd/popper.js" />
                 <asp:ScriptReference Path="~/Scripts/bootstrap.js" />
                 <asp:ScriptReference Name="WebFormsJs" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
