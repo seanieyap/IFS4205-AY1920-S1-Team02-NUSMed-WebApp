@@ -269,5 +269,66 @@ namespace NUSMed_WebApp.Classes.DAL
       }
       return patientsList;
     }
+
+    public DataTable RetrieveDiagnoses()
+    {
+      DataTable diagnosesTable = new DataTable();
+
+      using (MySqlCommand cmd = new MySqlCommand())
+      {
+        cmd.CommandText = @"SELECT DISTINCT rd.diagnosis_code, diagnosis_description_short FROM records_anonymized ra
+                            INNER JOIN record_diagnosis rd ON rd.record_id = ra.record_id INNER JOIN diagnosis d ON d.diagnosis_code = rd.diagnosis_code  ORDER BY diagnosis_description_short ASC;";
+
+        using (cmd.Connection = connection)
+        {
+          cmd.Connection.Open();
+          cmd.ExecuteNonQuery();
+
+          MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+          da.Fill(diagnosesTable);
+        }
+      }
+      return diagnosesTable;
+    }
+
+    public DataTable RetrievePostal()
+    {
+      DataTable postalCodeTable = new DataTable();
+
+      using (MySqlCommand cmd = new MySqlCommand())
+      {
+        cmd.CommandText = @"SELECT DISTINCT ra.postal FROM records_anonymized ra ORDER BY ra.postal ASC;";
+
+        using (cmd.Connection = connection)
+        {
+          cmd.Connection.Open();
+          cmd.ExecuteNonQuery();
+
+          MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+          da.Fill(postalCodeTable);
+        }
+      }
+      return postalCodeTable;
+    }
+
+    public DataTable RetrieveCreationDate()
+    {
+      DataTable recordCreationDateTable = new DataTable();
+
+      using (MySqlCommand cmd = new MySqlCommand())
+      {
+        cmd.CommandText = @"SELECT DISTINCT ra.record_create_date FROM records_anonymized ra ORDER BY ra.record_create_date ASC;";
+
+        using (cmd.Connection = connection)
+        {
+          cmd.Connection.Open();
+          cmd.ExecuteNonQuery();
+
+          MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+          da.Fill(recordCreationDateTable);
+        }
+      }
+      return recordCreationDateTable;
+    }
   }
 }

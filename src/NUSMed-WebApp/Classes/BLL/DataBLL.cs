@@ -46,7 +46,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
         foreach (Tuple<string, string> selectItem in selectItems)
         {
-          paraList.Add( new Tuple<string, string>("@" + selectItem.Item1 + selectItem.Item2, selectItem.Item2));
+          paraList.Add(new Tuple<string, string>("@" + selectItem.Item1 + selectItem.Item2, selectItem.Item2));
         }
 
         if (tempList.Count > 0)
@@ -58,6 +58,36 @@ namespace NUSMed_WebApp.Classes.BLL
 
         string query = stringBuilder.ToString();
         return dataDAL.RetrievePatients(query, paraList);
+      }
+
+      return null;
+    }
+
+    public DataTable GetDiagnoses()
+    {
+      if (AccountBLL.IsResearcher())
+      {
+        return dataDAL.RetrieveDiagnoses();
+      }
+
+      return null;
+    }
+
+    public DataTable GetPostal()
+    {
+      if (AccountBLL.IsResearcher())
+      {
+        return dataDAL.RetrievePostal();
+      }
+
+      return null;
+    }
+
+    public DataTable GetRecordCreationDate()
+    {
+      if (AccountBLL.IsResearcher())
+      {
+        return dataDAL.RetrieveCreationDate();
       }
 
       return null;
