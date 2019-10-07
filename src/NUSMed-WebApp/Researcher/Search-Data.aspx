@@ -36,7 +36,7 @@
                         <div class="offset-1 col-7">
                             <input id="inputAgeLevel0" type="text" class="form-control form-control-sm" placeholder="Age" runat="server" visible="false">
                             
-                            <select id="inputAgeLevel1" class="selectpicker form-control form-control-sm" runat="server" visible="false">
+                            <select id="inputAgeLevel1" class="selectpicker form-control form-control-sm" multiple="true" runat="server" visible="false">
                                 <option value="">-- select --</option>
                                 <option value="0-9">0 - 9</option>
                                 <option value="10-19">10 - 19</option>
@@ -50,7 +50,7 @@
                                 <option value="90-99">90 - 99</option>
                             </select>
 
-                            <select id="inputAgeLevel2" class="selectpicker form-control form-control-sm" runat="server" visible="false">
+                            <select id="inputAgeLevel2" class="selectpicker form-control form-control-sm" multiple="true" runat="server" visible="false">
                                 <option value="">-- select one --</option>
                                 <option value="0-19">0 - 19</option>
                                 <option value="20-39">20 - 39</option>
