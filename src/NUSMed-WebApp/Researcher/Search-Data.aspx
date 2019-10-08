@@ -34,7 +34,7 @@
                         </label>
 
                         <div class="offset-1 col-7">
-                            <asp:ListBox ID="inputSexLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" runat="server" ClientIDMode="Static"></asp:ListBox>
+                            <asp:ListBox ID="inputSexLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                         </label>
 
                         <div class="offset-1 col-7">
-                            <asp:ListBox ID="inputGenderLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" runat="server" ClientIDMode="Static"></asp:ListBox>
+                            <asp:ListBox ID="inputGenderLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                         </label>
 
                         <div class="offset-1 col-7">
-                            <asp:ListBox ID="inputPostal" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" runat="server" ClientIDMode="Static">
+                            <asp:ListBox ID="inputPostal" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static">
                             </asp:ListBox>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         </label>
 
                         <div class="offset-1 col-7">
-                            <asp:ListBox ID="inputMaritalStatusLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" runat="server" ClientIDMode="Static"></asp:ListBox>
+                            <asp:ListBox ID="inputMaritalStatusLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                         </label>
 
                         <div class="offset-1 col-7">
-                            <asp:ListBox ID="inputRecordType" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" runat="server" ClientIDMode="Static">
+                            <asp:ListBox ID="inputRecordType" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static">
                             </asp:ListBox>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                         </label>
 
                         <div class="offset-1 col-7">
-                            <asp:ListBox ID="inputDiagnosis" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" runat="server" ClientIDMode="Static">
+                            <asp:ListBox ID="inputDiagnosis" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static">
                             </asp:ListBox>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                         </label>
 
                         <div class="offset-1 col-7">
-                            <asp:ListBox ID="inputCreationDate" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" runat="server" ClientIDMode="Static">
+                            <asp:ListBox ID="inputCreationDate" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static">
                             </asp:ListBox>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
                         </label>
 
                         <div class="offset-1 col-7">
-                            <asp:ListBox ID="inputAgeLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" runat="server" ClientIDMode="Static"></asp:ListBox>
+                            <asp:ListBox ID="inputAgeLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
@@ -136,7 +136,7 @@
 
             <div class="row">
                 <div class="col-12 mb-4 text-center">
-                    <button type="submit" id="buttonFilter" onserverclick="buttonFilter_ServerClick" class="btn btn-success" runat="server">Filter Patients and Records</button>
+                    <button type="button" id="buttonFilter" onserverclick="buttonFilter_ServerClick" class="btn btn-success" runat="server">Filter Patients and Records</button>
                 </div>
             </div>
 

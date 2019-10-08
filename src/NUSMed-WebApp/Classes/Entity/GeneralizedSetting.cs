@@ -221,6 +221,7 @@ namespace NUSMed_WebApp.Classes.Entity
     }
 
     public int postal { get; set; } = -1;
+    // return list here
     public int age { get; set; } = -1;
     public IList<Tuple<string, string>> ageOptions
     {
@@ -244,6 +245,23 @@ namespace NUSMed_WebApp.Classes.Entity
     }
 
     public int recordCreationDate { get; set; } = -1;
+
+  }
+
+  [Serializable]
+  public class FilteredValues
+  {
+    // Patient
+    public List<string> sex { get; set; } = new List<string>();
+    public List<string> gender { get; set; } = new List<string>();
+    public List<string> maritalStatus { get; set; } = new List<string>();
+    public List<string> postal { get; set; } = new List<string>();
+
+    // Record
+    public List<string> recordType { get; set; } = new List<string>();
+    public List<string> diagnosis { get; set; } = new List<string>();
+    public List<string> creationDate { get; set; } = new List<string>();
+    public List<string> age { get; set; } = new List<string>();
 
   }
 }

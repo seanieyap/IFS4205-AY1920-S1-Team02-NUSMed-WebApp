@@ -19,7 +19,7 @@ namespace NUSMed_WebApp.Researcher
 
       if (!IsPostBack)
       {
-        Bind_GridViewPatientAnonymised();
+        Bind_GridViewPatientAnonymised(new FilteredValues());
       }
     }
 
@@ -155,13 +155,14 @@ namespace NUSMed_WebApp.Researcher
       //Bind_GridViewMedicalNote();
     }
 
-    protected void Bind_GridViewPatientAnonymised()
+    protected void Bind_GridViewPatientAnonymised(FilteredValues fv)
     {
       GeneralizedSetting generalizedSetting = dataBLL.GetGeneralizedSettingFromDb();
 
       // precheck if -1
 
       // Age
+      inputAgeLevel.Items.Clear();
       labelTitleAge.Attributes.Add("title", "This quasi-identifier has been generalized to Level " + generalizedSetting.age);
       if (generalizedSetting.ageOptions != null)
       {
@@ -176,6 +177,7 @@ namespace NUSMed_WebApp.Researcher
       }
 
       // Marital Status
+      inputMaritalStatusLevel.Items.Clear();
       labelTitleMaritalStatus.Attributes.Add("title", "This quasi-identifier has been generalized to Level " + generalizedSetting.maritalStatus);
       if (generalizedSetting.maritalStatusOptions != null)
       {
@@ -190,6 +192,7 @@ namespace NUSMed_WebApp.Researcher
       }
 
       // Gender
+      inputGenderLevel.Items.Clear();
       labelTitleGender.Attributes.Add("title", "This quasi-identifier has been generalized to Level " + generalizedSetting.gender);
       if (generalizedSetting.genderOptions != null)
       {
@@ -204,6 +207,7 @@ namespace NUSMed_WebApp.Researcher
       }
 
       // Sex
+      inputSexLevel.Items.Clear();
       labelTitleSex.Attributes.Add("title", "This quasi-identifier has been generalized to Level " + generalizedSetting.sex);
       if (generalizedSetting.sexOptions != null)
       {
@@ -218,6 +222,7 @@ namespace NUSMed_WebApp.Researcher
       }
 
       // Postal
+      inputPostal.Items.Clear();
       DataTable postalCodeTable = dataBLL.GetPostal();
       foreach (DataRow postalCode in postalCodeTable.Rows)
       {
@@ -231,6 +236,7 @@ namespace NUSMed_WebApp.Researcher
       }
 
       // Record Type
+      inputRecordType.Items.Clear();
       inputRecordType.Items.Add(new ListItem("Blood Pressure Reading", "Blood Pressure Reading"));
       inputRecordType.Items.Add(new ListItem("ECG", "ECG"));
       inputRecordType.Items.Add(new ListItem("Gait", "Gait"));
@@ -240,6 +246,7 @@ namespace NUSMed_WebApp.Researcher
       inputRecordType.Items.Add(new ListItem("X-ray", "X-ray"));
 
       // Diagnoses
+      inputDiagnosis.Items.Clear();
       DataTable diagnosesTable = dataBLL.GetDiagnoses();
       foreach (DataRow diagnosis in diagnosesTable.Rows)
       {
@@ -247,6 +254,7 @@ namespace NUSMed_WebApp.Researcher
       }
 
       // Creation Date
+      inputCreationDate.Items.Clear();
       DataTable creationDateTable = dataBLL.GetRecordCreationDate();
       foreach (DataRow creationDate in creationDateTable.Rows)
       {
@@ -259,7 +267,9 @@ namespace NUSMed_WebApp.Researcher
       }
 
 
-      List<PatientAnonymised> recordAnonymised = dataBLL.GetPatients(new List<Tuple<string, string>>());
+      // List<PatientAnonymised> recordAnonymised = dataBLL.GetPatients(new List<Tuple<string, string>>());
+      //List<PatientAnonymised> recordAnonymised = dataBLL.GetPatients(new FilteredValues());
+      List<PatientAnonymised> recordAnonymised = dataBLL.GetPatients(fv);
       ViewState["GridViewPatientAnonymised"] = recordAnonymised;
       GridViewPatientAnonymised.DataSource = recordAnonymised;
       GridViewPatientAnonymised.DataBind();
@@ -272,6 +282,51 @@ namespace NUSMed_WebApp.Researcher
       GeneralizedSetting generalizedSetting = dataBLL.GetGeneralizedSettingFromDb();
 
       #region Validation: Match and Get only valid inputs
+      FilteredValues fv = new FilteredValues();
+
+      // Marital Status
+      List<string> inputMaritalStatusValues = new List<string>();
+      foreach (ListItem item in inputMaritalStatusLevel.Items)
+      {
+        if (item.Selected)
+        {
+          if (generalizedSetting.maritalStatusOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+          {
+            inputMaritalStatusValues.Add(item.Value.Trim());
+          }
+        }
+      }
+      fv.maritalStatus = inputMaritalStatusValues;
+
+      // Sex
+      List<string> inputSexValues = new List<string>();
+      foreach (ListItem item in inputSexLevel.Items)
+      {
+        if (item.Selected)
+        {
+          if (generalizedSetting.sexOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+          {
+            inputSexValues.Add(item.Value.Trim());
+          }
+        }
+      }
+      fv.sex = inputSexValues;
+
+      // Gender
+      List<string> inputGenderValues = new List<string>();
+      foreach (ListItem item in inputGenderLevel.Items)
+      {
+        if (item.Selected)
+        {
+          if (generalizedSetting.genderOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+          {
+            inputGenderValues.Add(item.Value.Trim());
+          }
+        }
+      }
+      fv.gender = inputGenderValues;
+
+
       // Age
       List<string> inputAgeValues = new List<string>();
       foreach (ListItem item in inputAgeLevel.Items)
@@ -284,12 +339,61 @@ namespace NUSMed_WebApp.Researcher
           }
         }
       }
+      fv.age = inputAgeValues;
+
+      // TO DO: Postal Validation
+      List<string> inputPostalValues = new List<string>();
+      foreach (ListItem item in inputPostal.Items)
+      {
+        if (item.Selected)
+        {
+          inputPostalValues.Add(item.Value.Trim());
+        }
+      }
+      fv.postal = inputPostalValues;
+
+      // Record Type
+      List<string> inputRecordTypeValues = new List<string>();
+      foreach (ListItem item in inputRecordType.Items)
+      {
+        if (item.Selected)
+        {
+          inputRecordTypeValues.Add(item.Value.Trim());
+        }
+      }
+      fv.recordType = inputRecordTypeValues;
+
+      // Diagnosis
+      List<string> inputDiagnosisValues = new List<string>();
+      foreach (ListItem item in inputDiagnosis.Items)
+      {
+        if (item.Selected)
+        {
+            inputDiagnosisValues.Add(item.Value.Trim());
+        }
+      }
+      fv.diagnosis = inputDiagnosisValues;
+
+      // Creation Date
+      List<string> inputCreationDateValues = new List<string>();
+      foreach (ListItem item in inputCreationDate.Items)
+      {
+        if (item.Selected)
+        {
+          inputCreationDateValues.Add(item.Value.Trim());
+        }
+      }
+      fv.creationDate = inputCreationDateValues;
+
+
+      //dataBLL.GetPatients(fv);
+
 
       #endregion
 
 
       // validate values you have got
-      Bind_GridViewPatientAnonymised();
+      Bind_GridViewPatientAnonymised(fv);
     }
   }
 }

@@ -28,25 +28,101 @@ namespace NUSMed_WebApp.Classes.BLL
         dataDAL.UpdateGeneralizationLevel(genLevel);
       }
     }
-    public List<PatientAnonymised> GetPatients(List<Tuple<string, string>> selectItems)
+    //public List<PatientAnonymised> GetPatients(List<Tuple<string, string>> selectItems)
+    //{
+    //  if (AccountBLL.IsResearcher())
+    //  {
+    //    StringBuilder stringBuilder = new StringBuilder();
+    //    stringBuilder.Append(@"SELECT ra.record_id, ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
+    //    FROM records_anonymized ra INNER JOIN record r ON ra.record_id = r.id");
+
+    //    List<string> tempList = new List<string>();
+    //    List<Tuple<string, string>> paraList = new List<Tuple<string, string>>();
+
+    //    if (selectItems.Any())
+    //    {
+    //      tempList.Add(" (" + string.Join(" AND ", selectItems.Select(tuple => tuple.Item1 + " = @" + tuple.Item1 + tuple.Item2)) + ")");
+    //    }
+
+    //    foreach (Tuple<string, string> selectItem in selectItems)
+    //    {
+    //      paraList.Add(new Tuple<string, string>("@" + selectItem.Item1 + selectItem.Item2, selectItem.Item2));
+    //    }
+
+    //    if (tempList.Count > 0)
+    //    {
+    //      stringBuilder.Append(" WHERE " + string.Join(" AND ", tempList));
+    //    }
+
+    //    stringBuilder.Append(" GROUP BY r.patient_nric;");
+
+    //    string query = stringBuilder.ToString();
+    //    return dataDAL.RetrievePatients(query, paraList);
+    //  }
+
+    //  return null;
+    //}
+
+    /// <summary>
+    /// Retrieve patients that fit the filters set
+    /// </summary>
+    /// <param name="selectItems">List of Tuple of column name, placeholder, value</param>
+    /// <returns>List of PatientAnonymised</returns>
+    public List<PatientAnonymised> GetPatients(FilteredValues fv)
     {
       if (AccountBLL.IsResearcher())
       {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append(@"SELECT ra.record_id, ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
-        FROM records_anonymized ra INNER JOIN record r ON ra.record_id = r.id");
+        stringBuilder.Append(@"SELECT r.patient_nric, ra.record_id, ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
+        FROM records_anonymized ra INNER JOIN record r ON ra.record_id = r.id INNER JOIN record_diagnosis rd ON r.id = rd.record_id");
 
         List<string> tempList = new List<string>();
-        List<Tuple<string, string>> paraList = new List<Tuple<string, string>>();
 
-        if (selectItems.Any())
+        List <Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>> ();
+        if (fv.sex.Count > 0)
         {
-          tempList.Add(" (" + string.Join(" AND ", selectItems.Select(tuple => tuple.Item1 + " = @" + tuple.Item1 + tuple.Item2)) + ")");
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.sex", fv.sex));
         }
 
-        foreach (Tuple<string, string> selectItem in selectItems)
+        if (fv.gender.Count > 0)
         {
-          paraList.Add(new Tuple<string, string>("@" + selectItem.Item1 + selectItem.Item2, selectItem.Item2));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.gender", fv.gender));
+        }
+
+        if (fv.maritalStatus.Count > 0)
+        {
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.marital_status", fv.maritalStatus));
+        }
+
+        if (fv.postal.Count > 0)
+        {
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.postal", fv.postal));
+        }
+
+        if (fv.recordType.Count > 0)
+        {
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("r.type", fv.recordType));
+        }
+
+        if (fv.diagnosis.Count > 0)
+        {
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("rd.diagnosis_code", fv.diagnosis));
+        }
+
+        if (fv.creationDate.Count > 0)
+        {
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.record_create_date", fv.creationDate));
+        }
+
+        if (fv.age.Count > 0)
+        {
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.age", fv.age));
+        }
+
+
+        if (columnsAndValuesList.Any())
+        {
+          tempList.Add(" (" + string.Join(" AND ", columnsAndValuesList.Select(tuple => JoinMultipleSelectedValues(tuple.Item1, tuple.Item2))) + ")");
         }
 
         if (tempList.Count > 0)
@@ -54,13 +130,29 @@ namespace NUSMed_WebApp.Classes.BLL
           stringBuilder.Append(" WHERE " + string.Join(" AND ", tempList));
         }
 
-        stringBuilder.Append(" GROUP BY r.patient_nric;");
+        stringBuilder.Append(" GROUP BY r.patient_nric LIMIT 100;");
 
-        string query = stringBuilder.ToString();
-        return dataDAL.RetrievePatients(query, paraList);
+        //string query = stringBuilder.ToString();
+        return dataDAL.RetrievePatients(stringBuilder.ToString());
+      }
+      return null;
+    }
+
+    private string JoinMultipleSelectedValues(string columnName, List<string> valuesList)
+    {
+      StringBuilder sb = new StringBuilder();
+      List<string> tempList = new List<string>();
+      if (valuesList.Any())
+      {
+        tempList.Add(" (" + string.Join(" OR ", valuesList.Select(value => columnName + " = " + "'" + value + "'")) + ")");
       }
 
-      return null;
+      if (tempList.Count > 0)
+      {
+        sb.Append(string.Join(" OR ", tempList));
+      }
+
+      return sb.ToString();
     }
 
     public DataTable GetDiagnoses()
