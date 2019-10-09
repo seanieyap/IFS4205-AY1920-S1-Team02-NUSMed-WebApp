@@ -233,18 +233,50 @@ namespace NUSMed_WebApp.Classes.DAL
       return generalizedSetting;
     }
 
-    public List<PatientAnonymised> RetrievePatients(string query, List<Tuple<string, string>> paraList)
+    //public List<PatientAnonymised> RetrievePatients(string query, List<Tuple<string, string>> paraList)
+    //{
+    //  List<PatientAnonymised> patientsList = new List<PatientAnonymised>();
+
+    //  using (MySqlCommand cmd = new MySqlCommand())
+    //  {
+    //    cmd.CommandText = query;
+
+    //    foreach (Tuple<string, string> para in paraList)
+    //    {
+    //      cmd.Parameters.AddWithValue(para.Item1, para.Item2);
+    //    }
+
+    //    using (cmd.Connection = connection)
+    //    {
+    //      cmd.Connection.Open();
+    //      cmd.ExecuteNonQuery();
+
+    //      using (MySqlDataReader reader = cmd.ExecuteReader())
+    //      {
+    //        while (reader.Read())
+    //        {
+    //          PatientAnonymised patientAnonymised = new PatientAnonymised();
+    //          patientAnonymised.maritalStatus = Convert.ToString(reader["marital_status"]);
+    //          patientAnonymised.gender = Convert.ToString(reader["gender"]);
+    //          patientAnonymised.sex = Convert.ToString(reader["sex"]);
+    //          patientAnonymised.age = Convert.ToString(reader["age"]);
+    //          patientAnonymised.postal = Convert.ToString(reader["postal"]);
+
+    //          patientsList.Add(patientAnonymised);
+    //        }
+    //      }
+    //    }
+    //  }
+    //  return patientsList;
+    //}
+
+    public List<PatientAnonymised> RetrievePatients(string query)
     {
       List<PatientAnonymised> patientsList = new List<PatientAnonymised>();
 
       using (MySqlCommand cmd = new MySqlCommand())
       {
         cmd.CommandText = query;
-
-        foreach (Tuple<string, string> para in paraList)
-        {
-          cmd.Parameters.AddWithValue(para.Item1, para.Item2);
-        }
 
         using (cmd.Connection = connection)
         {
@@ -268,6 +300,68 @@ namespace NUSMed_WebApp.Classes.DAL
         }
       }
       return patientsList;
+    }
+
+    public DataTable RetrieveDiagnoses()
+    {
+      DataTable diagnosesTable = new DataTable();
+
+      using (MySqlCommand cmd = new MySqlCommand())
+      {
+        //cmd.CommandText = @"SELECT DISTINCT rd.diagnosis_code, diagnosis_description_short FROM records_anonymized ra
+        //                    INNER JOIN record_diagnosis rd ON rd.record_id = ra.record_id INNER JOIN diagnosis d ON d.diagnosis_code = rd.diagnosis_code  ORDER BY diagnosis_description_short ASC;";
+        cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short FROM diagnosis d;";
+
+        using (cmd.Connection = connection)
+        {
+          cmd.Connection.Open();
+          cmd.ExecuteNonQuery();
+
+          MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+          da.Fill(diagnosesTable);
+        }
+      }
+      return diagnosesTable;
+    }
+
+    public DataTable RetrievePostal()
+    {
+      DataTable postalCodeTable = new DataTable();
+
+      using (MySqlCommand cmd = new MySqlCommand())
+      {
+        cmd.CommandText = @"SELECT DISTINCT ra.postal FROM records_anonymized ra ORDER BY ra.postal ASC;";
+
+        using (cmd.Connection = connection)
+        {
+          cmd.Connection.Open();
+          cmd.ExecuteNonQuery();
+
+          MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+          da.Fill(postalCodeTable);
+        }
+      }
+      return postalCodeTable;
+    }
+
+    public DataTable RetrieveCreationDate()
+    {
+      DataTable recordCreationDateTable = new DataTable();
+
+      using (MySqlCommand cmd = new MySqlCommand())
+      {
+        cmd.CommandText = @"SELECT DISTINCT ra.record_create_date FROM records_anonymized ra ORDER BY ra.record_create_date ASC;";
+
+        using (cmd.Connection = connection)
+        {
+          cmd.Connection.Open();
+          cmd.ExecuteNonQuery();
+
+          MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+          da.Fill(recordCreationDateTable);
+        }
+      }
+      return recordCreationDateTable;
     }
   }
 }
