@@ -90,6 +90,39 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         public string fileChecksum { get; set; }
         public string fileExtension { get; set; }
+        public bool fileIsImage
+        {
+            get
+            {
+                if (fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".jpeg")
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public bool fileIsText
+        {
+            get
+            {
+                if (fileExtension == ".txt" || fileExtension == ".csv")
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public bool fileIsVideo
+        {
+            get
+            {
+                if (fileExtension == ".mp4")
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public int? fileSize { get; set; }
         public string fileSizeMegabytes
         {

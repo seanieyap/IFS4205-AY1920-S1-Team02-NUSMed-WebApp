@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -237,7 +238,7 @@ namespace NUSMed_WebApp.Classes.Entity
 
             string times = string.Join(", ", timeList.ToArray());
 
-            string js = @"
+            return @"
                 var layout = {
                     title: 'ECG Heartbeat',
                     yaxis: {
@@ -261,8 +262,6 @@ namespace NUSMed_WebApp.Classes.Entity
                         line: { color: '#17BECF' }
                 };
                 Plotly.newPlot('modalFileViewPanelText', [trace1], layout);";
-
-            return js;
         }
     }
     [Serializable]
@@ -330,7 +329,110 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         public override string GetTextPlotJS(string data)
         {
-            return string.Empty;
+
+            List<string> time = new List<string>();
+            List<string> ax = new List<string>();
+            List<string> ay = new List<string>();
+            List<string> az = new List<string>();
+            List<string> gx = new List<string>();
+            List<string> gy = new List<string>();
+            List<string> gz = new List<string>();
+
+            string line = string.Empty;
+            using (StringReader reader = new StringReader(data))
+            {
+                line = string.Empty;
+
+                do
+                {
+                    line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        string[] tokens = line.Split(',');
+                        time.Add(tokens[0]);
+                        ax.Add(tokens[1]);
+                        ay.Add(tokens[2]);
+                        az.Add(tokens[3]);
+                        gx.Add(tokens[4]);
+                        gy.Add(tokens[5]);
+                        gz.Add(tokens[6]);
+                    }
+
+                } while (line != null);
+            }
+
+            string seconds = string.Join(", ", time.ToArray());
+
+            return @"
+                var layout = {
+                    title: 'Gait Timeseries',
+                yaxis: {
+                    title: 'Magnitude',
+                    autotick: true,
+                    ticks: 'outside',
+                  },
+                  xaxis: {
+                    title: 'Time (seconds)',
+                    autotick: true,
+                    ticks: 'outside',
+                  },
+                };
+
+                var trace1 = {
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: 'ax',
+                        y: [" + string.Join(", ", ax.ToArray()) + @"],
+                        x: [" + seconds + @"],
+                        line: { color: '#e6194B' }
+                }
+
+                var trace2 = {
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: 'ay',
+                        y: [" + string.Join(", ", ay.ToArray()) + @"],
+                        x: [" + seconds + @"],
+                        line: { color: '#ffe119' }
+                }
+
+                var trace3 = {
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: 'az',
+                        y: [" + string.Join(", ", az.ToArray()) + @"],
+                        x: [" + seconds + @"],
+                        line: { color: '#3cb44b' }
+                }
+
+                var trace4 = {
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: 'gx',
+                        y: [" + string.Join(", ", gx.ToArray()) + @"],
+                        x: [" + seconds + @"],
+                        line: { color: '#4363d8' }
+                }
+
+                var trace5 = {
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: 'gy',
+                        y: [" + string.Join(", ", gy.ToArray()) + @"],
+                        x: [" + seconds + @"],
+                        line: { color: '#f032e6' }
+                }
+
+                var trace6 = {
+                        type: 'scatter',
+                        mode: 'lines',
+                        name: 'gz',
+                        y: [" + string.Join(", ", gz.ToArray()) + @"],
+                        x: [" + seconds + @"],
+                        line: { color: '#a9a9a9' }
+                }
+
+                Plotly.newPlot('modalFileViewPanelText', [trace1, trace2, trace3, trace4, trace5, trace6], layout);";
         }
 
     }

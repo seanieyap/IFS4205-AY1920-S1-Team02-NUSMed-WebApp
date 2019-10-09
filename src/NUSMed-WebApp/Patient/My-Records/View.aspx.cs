@@ -54,7 +54,6 @@ namespace NUSMed_WebApp.Patient.My_Records
                 LinkbuttonDiagnosisView.CommandName = "DiagnosisView";
                 LinkbuttonDiagnosisView.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
 
-
                 if (recordType.isContent)
                 {
                     Label LabelContent = (Label)e.Row.FindControl("LabelContent");
@@ -107,14 +106,14 @@ namespace NUSMed_WebApp.Patient.My_Records
                     modalFileViewLabelFileSize.Text = record.fileSizeMegabytes;
                     FileDownloadLinkviaModal.HRef = "~/Patient/Download.ashx?record=" + record.id.ToString();
 
-                    if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
+                    if (record.fileIsImage)
                     {
                         modalFileViewImage.Visible = true;
                         modalFileViewImage.ImageUrl = "~/Patient/Download.ashx?record=" + record.id;
 
                         ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').modal('show');", true);
                     }
-                    else if (record.fileExtension == ".txt")
+                    else if (record.fileIsText)
                     {
                         modalFileViewPanelText.Visible = true;
                         if (record.IsFileSafe())
@@ -124,7 +123,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                             ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').on('shown.bs.modal', function (e) {  "+js+ "}); $('#modalFileView').modal('show');", true);
                         }
                     }
-                    else if (record.fileExtension == ".mp4")
+                    else if (record.fileIsVideo)
                     {
                         modalFileViewVideo.Visible = true;
                         modalFileViewVideoSource.Attributes.Add("src", "~/Patient/Download.ashx?record=" + record.id);
