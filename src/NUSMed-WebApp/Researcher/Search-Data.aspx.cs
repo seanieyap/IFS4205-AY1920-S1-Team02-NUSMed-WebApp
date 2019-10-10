@@ -341,13 +341,16 @@ namespace NUSMed_WebApp.Researcher
       }
       fv.age = inputAgeValues;
 
-      // TO DO: Postal Validation
       List<string> inputPostalValues = new List<string>();
+      DataTable postalTable = dataBLL.GetPostal();
       foreach (ListItem item in inputPostal.Items)
       {
         if (item.Selected)
         {
-          inputPostalValues.Add(item.Value.Trim());
+          if (postalTable.AsEnumerable().Any(row => row.Field<string>("postal").Equals(item.Value.Trim())))
+          {
+            inputPostalValues.Add(item.Value.Trim());
+          }
         }
       }
       fv.postal = inputPostalValues;
@@ -365,28 +368,33 @@ namespace NUSMed_WebApp.Researcher
 
       // Diagnosis
       List<string> inputDiagnosisValues = new List<string>();
+      DataTable diagnosesTable = dataBLL.GetDiagnoses();
       foreach (ListItem item in inputDiagnosis.Items)
       {
         if (item.Selected)
         {
+          if (diagnosesTable.AsEnumerable().Any(row => row.Field<string>("diagnosis_code").Equals(item.Value.Trim())))
+          {
             inputDiagnosisValues.Add(item.Value.Trim());
+          }
         }
       }
       fv.diagnosis = inputDiagnosisValues;
 
       // Creation Date
       List<string> inputCreationDateValues = new List<string>();
+      DataTable creationDateTable = dataBLL.GetRecordCreationDate();
       foreach (ListItem item in inputCreationDate.Items)
       {
         if (item.Selected)
         {
-          inputCreationDateValues.Add(item.Value.Trim());
+          if (creationDateTable.AsEnumerable().Any(row => row.Field<string>("record_create_date").Equals(item.Value.Trim())))
+          {
+            inputCreationDateValues.Add(item.Value.Trim());
+          }
         }
       }
       fv.creationDate = inputCreationDateValues;
-
-
-      //dataBLL.GetPatients(fv);
 
 
       #endregion

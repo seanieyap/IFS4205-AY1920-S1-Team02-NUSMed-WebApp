@@ -22,6 +22,33 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.UpdatePanel UpdatePanelPatientAnonymised;
         
         /// <summary>
+        /// labelInputAge control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputAge;
+        
+        /// <summary>
+        /// labelTitleAge control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelTitleAge;
+        
+        /// <summary>
+        /// inputAgeLevel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox inputAgeLevel;
+        
+        /// <summary>
         /// labelInputSex control.
         /// </summary>
         /// <remarks>
@@ -182,33 +209,6 @@ namespace NUSMed_WebApp.Researcher {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox inputCreationDate;
-        
-        /// <summary>
-        /// labelInputAge control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputAge;
-        
-        /// <summary>
-        /// labelTitleAge control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelTitleAge;
-        
-        /// <summary>
-        /// inputAgeLevel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox inputAgeLevel;
         
         /// <summary>
         /// buttonFilter control.
