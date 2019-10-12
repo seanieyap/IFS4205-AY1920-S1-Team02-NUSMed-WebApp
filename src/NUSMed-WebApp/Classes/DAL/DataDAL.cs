@@ -9,7 +9,6 @@ namespace NUSMed_WebApp.Classes.DAL
 {
   public class DataDAL : DAL
   {
-
     public DataDAL() : base() { }
 
     /// <summary>

@@ -40,13 +40,13 @@ namespace NUSMed_WebApp {
         protected global::System.Web.UI.HtmlControls.HtmlInputPassword inputPassword;
         
         /// <summary>
-        /// buttonLogin control.
+        /// ButtonLogin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton buttonLogin;
+        protected global::System.Web.UI.WebControls.LinkButton ButtonLogin;
         
         /// <summary>
         /// spanMessage control.

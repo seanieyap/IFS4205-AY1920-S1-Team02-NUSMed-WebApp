@@ -1,8 +1,6 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using NUSMed_WebApp.Classes.Entity;
 
 namespace NUSMed_WebApp.Classes.DAL

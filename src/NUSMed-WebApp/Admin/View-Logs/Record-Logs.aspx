@@ -2,21 +2,18 @@
 
 <%@ MasterType VirtualPath="~/site.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-        <link href="/Content/bootstrap-select.min.css" rel="stylesheet" type="text/css" runat="server" />
-    <link href="/Content/tempusdominus-bootstrap-4.min.css" rel="stylesheet" type="text/css" runat="server" />
+    <link href="/Content/log" rel="stylesheet" type="text/css" runat="server" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
  <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/Scripts/bootstrap-select.min.js") %>
-        <%: Scripts.Render("~/Scripts/moment.min.js") %>
-        <%: Scripts.Render("~/Scripts/tempusdominus-bootstrap-4.min.js") %>
+        <%: Scripts.Render("~/bundles/LogJs") %>
     </asp:PlaceHolder>
 
     <div class="container">
         <div class="py-5 mx-auto text-center">
-            <h1 class="display-4"><i class="fas fa-fw fa-user-plus"></i>Record Logs</h1>
-            <p class="lead mb-0">Restricted. This page is meant for administrators only.</p>
-            <p class="lead">Page is limited to 200 log event per search.</p>
+            <h1 class="display-4"><i class="fas fa-fw fa-database"></i>Record Logs</h1>
+            <p class="lead mb-1">Restricted. This page is meant for administrators only.</p>
+            <p class="text-muted">Page is limited to 200 log event per search.</p>
         </div>
     </div>
 
@@ -122,11 +119,10 @@
 
                         <EmptyDataTemplate>
                             <div class="alert alert-info text-center py-4" role="alert">
-                                <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search returned no results.
-                                </h4>
-                                <p>Do try widening your search parameter.</p>
+                                <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search returned no results.</h4>
+                                <p>Do try widening your search parameter(s).</p>
                                 <hr>
-                                <p class="mb-0">New here? Try entering a search term and hit "Go"!</p>
+                                <p class="mb-0">New here? Try entering some search parameters and hit "Search"!</p>
                             </div>
                         </EmptyDataTemplate>
                     </asp:GridView>

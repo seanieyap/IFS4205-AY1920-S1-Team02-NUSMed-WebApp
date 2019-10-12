@@ -28,59 +28,59 @@
             <div class="row mb-4">
                 <div class="col-6">
                     <div class="form-group row">
-                        <label id="labelInputAge" class="col-3" for="inputAgeLevel" runat="server">
+                        <label class="col-4" for="inputAgeLevel" runat="server">
                             Age 
                             <span id="labelTitleAge" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                         </label>
 
-                        <div class="offset-1 col-7">
+                        <div class="col-8">
                             <asp:ListBox ID="inputAgeLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label id="labelInputSex" class="col-3" for="inputSexLevel" runat="server">
+                        <label class="col-4" for="inputSexLevel" runat="server">
                             Sex 
                             <span id="labelTitleSex" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                         </label>
 
-                        <div class="offset-1 col-7">
+                        <div class="col-8">
                             <asp:ListBox ID="inputSexLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label id="labelInputGender" class="col-3" for="inputGenderLevel" runat="server">
+                        <label class="col-4" for="inputGenderLevel" runat="server">
                             Gender 
                             <span id="labelTitleGender" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                         </label>
 
-                        <div class="offset-1 col-7">
+                        <div class="col-8">
                             <asp:ListBox ID="inputGenderLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label id="labelInputPostal" class="col-3" for="inputPostal" runat="server">
+                        <label class="col-4" for="inputPostal" runat="server">
                             Postal Code
                         </label>
 
-                        <div class="offset-1 col-7">
+                        <div class="col-8">
                             <asp:ListBox ID="inputPostal" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label id="labelInputMaritalStatus" class="col-3" for="inputMaritalStatusLevel" runat="server">
+                        <label class="col-4" for="inputMaritalStatusLevel" runat="server">
                             Marital Status 
                             <span id="labelTitleMaritalStatus" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                         </label>
 
-                        <div class="offset-1 col-7">
+                        <div class="col-8">
                             <asp:ListBox ID="inputMaritalStatusLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
@@ -96,34 +96,34 @@
             <div class="row mb-4">
                 <div class="col-6">
                     <div class="form-group row">
-                        <label id="labelInputRecordType" class="col-3" for="inputRecordType" runat="server">
+                        <label class="col-4" for="inputRecordType" runat="server">
                             Record Type 
                         </label>
 
-                        <div class="offset-1 col-7">
+                        <div class="col-8">
                             <asp:ListBox ID="inputRecordType" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label id="labelInputDiagnosis" class="col-3" for="inputDiagnosis" runat="server">
+                        <label class="col-4" for="inputDiagnosis" runat="server">
                             Diagnosis 
                         </label>
 
-                        <div class="offset-1 col-7">
+                        <div class="col-8">
                             <asp:ListBox ID="inputDiagnosis" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label id="labelInputCreationDate" class="col-3" for="inputCreationDate" runat="server">
+                        <label class="col-4" for="inputCreationDate" runat="server">
                             Record Creation Date
                             <span id="labelTitleCreationDate" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                         </label>
 
-                        <div class="offset-1 col-7">
+                        <div class="col-8">
                             <asp:ListBox ID="inputCreationDate" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>

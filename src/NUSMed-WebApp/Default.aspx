@@ -14,7 +14,7 @@
     <asp:UpdatePanel ID="UpdatePanelAccount" class="container" runat="server" UpdateMode="Always">
         <ContentTemplate>
             <div class="row">
-                <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                <asp:Panel CssClass="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4" runat="server" DefaultButton="ButtonLogin">
                     <div class="form-group">
                         <label for="inputNRIC">NRIC</label>
                         <input id="inputNRIC" type="text" class="form-control" placeholder="NRIC" runat="server">
@@ -24,9 +24,9 @@
                         <input id="inputPassword" type="password" class="form-control" placeholder="Password" runat="server">
                         <small id="passwordHelp" class="form-text text-muted">Please approach help-desk to reset forgotten passwords.</small>
                     </div>
-                    <button type="button" id="buttonLogin" class="btn btn-success" runat="server" onserverclick="ButtonLogin_ServerClick">Login</button>
+                    <asp:LinkButton ID="ButtonLogin" CssClass="btn btn-success" runat="server" OnClick="ButtonLogin_ServerClick">Login</asp:LinkButton>
                     <span id="spanMessage" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>Invalid Credentials or Account Disabled</span>
-                </div>
+                </asp:Panel>
             </div>
 
             <%--Multiple logins detected--%>

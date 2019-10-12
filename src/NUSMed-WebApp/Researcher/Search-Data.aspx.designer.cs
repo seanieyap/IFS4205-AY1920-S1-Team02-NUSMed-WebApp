@@ -22,15 +22,6 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.UpdatePanel UpdatePanelPatientAnonymised;
         
         /// <summary>
-        /// labelInputAge control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputAge;
-        
-        /// <summary>
         /// labelTitleAge control.
         /// </summary>
         /// <remarks>
@@ -47,15 +38,6 @@ namespace NUSMed_WebApp.Researcher {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox inputAgeLevel;
-        
-        /// <summary>
-        /// labelInputSex control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputSex;
         
         /// <summary>
         /// labelTitleSex control.
@@ -76,15 +58,6 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.WebControls.ListBox inputSexLevel;
         
         /// <summary>
-        /// labelInputGender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputGender;
-        
-        /// <summary>
         /// labelTitleGender control.
         /// </summary>
         /// <remarks>
@@ -103,15 +76,6 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.WebControls.ListBox inputGenderLevel;
         
         /// <summary>
-        /// labelInputPostal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputPostal;
-        
-        /// <summary>
         /// inputPostal control.
         /// </summary>
         /// <remarks>
@@ -119,15 +83,6 @@ namespace NUSMed_WebApp.Researcher {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox inputPostal;
-        
-        /// <summary>
-        /// labelInputMaritalStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputMaritalStatus;
         
         /// <summary>
         /// labelTitleMaritalStatus control.
@@ -148,15 +103,6 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.WebControls.ListBox inputMaritalStatusLevel;
         
         /// <summary>
-        /// labelInputRecordType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputRecordType;
-        
-        /// <summary>
         /// inputRecordType control.
         /// </summary>
         /// <remarks>
@@ -166,15 +112,6 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.WebControls.ListBox inputRecordType;
         
         /// <summary>
-        /// labelInputDiagnosis control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputDiagnosis;
-        
-        /// <summary>
         /// inputDiagnosis control.
         /// </summary>
         /// <remarks>
@@ -182,15 +119,6 @@ namespace NUSMed_WebApp.Researcher {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox inputDiagnosis;
-        
-        /// <summary>
-        /// labelInputCreationDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelInputCreationDate;
         
         /// <summary>
         /// labelTitleCreationDate control.

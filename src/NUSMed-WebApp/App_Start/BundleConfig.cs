@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Optimization;
-using System.Web.UI;
+﻿using System.Web.Optimization;
 
 namespace NUSMed_WebApp
 {
@@ -29,14 +24,19 @@ namespace NUSMed_WebApp
                     "~/Scripts/WebForms/MsAjax/MicrosoftAjaxTimer.js",
                     "~/Scripts/WebForms/MsAjax/MicrosoftAjaxWebForms.js"));
 
-            // Use the Development version of Modernizr to develop with and learn from. Then, when you’re
-            // ready for production, use the build tool at https://modernizr.com to pick only the tests you need
+            // More info at https://modernizr.com
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                             "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/SiteJSBack").Include(
                     "~/Scripts/back-to-top.js",
                     "~/Scripts/site.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/LogJs").Include(
+                    "~/Scripts/bootstrap-select.min.js",
+                    "~/Scripts/moment.min.js",
+                    "~/Scripts/tempusdominus-bootstrap-4.min.js"));
+
         }
     }
 }
