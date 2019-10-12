@@ -17,7 +17,7 @@
                         <h5 class="card-title">Role: Patient</h5>
                         <p class="card-text">
                             Create and View your Medical Records, Medical Diagnosis and more.                       
-                            <button type="submit" id="buttonLoginPatient" class="btn btn-success float-right" runat="server" onserverclick="buttonLoginPatient_ServerClick">Select</button>
+                            <button type="button" id="buttonLoginPatient" class="btn btn-success float-right" runat="server" onserverclick="buttonLoginPatient_ServerClick">Select</button>
                         </p>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                         <h5 class="card-title">Role: Therapist</h5>
                         <p class="card-text">
                             View your Patients, their Information, their Medical Records and Diagnosis.                       
-                            <button type="submit" id="buttonLoginTherapist" class="btn btn-success float-right" runat="server" onserverclick="buttonLoginTherapist_ServerClick">Select</button>
+                            <button type="button" id="buttonLoginTherapist" class="btn btn-success float-right" runat="server" onserverclick="buttonLoginTherapist_ServerClick">Select</button>
                         </p>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <h5 class="card-title">Role: Researcher</h5>
                         <p class="card-text">
                             Select and Download Aggregated Data and Records.                       
-                            <button type="submit" id="buttonLoginResearcher" class="btn btn-success float-right" runat="server" onserverclick="buttonLoginResearcher_ServerClick">Select</button>
+                            <button type="button" id="buttonLoginResearcher" class="btn btn-success float-right" runat="server" onserverclick="buttonLoginResearcher_ServerClick">Select</button>
                         </p>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                         <h5 class="card-title">Role: Administrator</h5>
                         <p class="card-text">
                             Manage User Accounts, Information and Status.                       
-                            <button type="submit" id="buttonLoginAdmin" class="btn btn-success float-right" runat="server" onserverclick="buttonLoginAdmin_ServerClick">Select</button>
+                            <button type="button" id="buttonLoginAdmin" class="btn btn-success float-right" runat="server" onserverclick="buttonLoginAdmin_ServerClick">Select</button>
                         </p>
                     </div>
                 </div>

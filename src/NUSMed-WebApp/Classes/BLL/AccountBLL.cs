@@ -3,12 +3,8 @@ using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net.Mail;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
@@ -19,7 +15,7 @@ namespace NUSMed_WebApp.Classes.BLL
     public class AccountBLL
     {
         private readonly AccountDAL accountDAL = new AccountDAL();
-
+        private readonly LogBLL logBLL = new LogBLL();
         public AccountBLL()
         {
         }
@@ -49,7 +45,7 @@ namespace NUSMed_WebApp.Classes.BLL
             HttpContext.Current.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
             HttpContext.Current.Response.Cookies.Add(cookie);
 
-            new LogAccountDAL().Insert(nric, nric, "Login", "Using role, " + role + ".");
+            logBLL.LogAccountEvent(nric, "Login", "Into role, " + role + ".");
         }
         public string LoginDevice(string nric, string role)
         {
@@ -70,7 +66,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 role = "Therapist";
             }
 
-            new LogAccountDAL().Insert(nric, nric, "Device Login", "Using role, " + role + ".");
+            logBLL.LogAccountEvent(nric, "Device Login", "Into role, " + role + ".");
 
             return jwt;
 
@@ -148,6 +144,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 if (HttpContext.Current == null || HttpContext.Current.Cache[nric + "_LoginAttempt"] == null)
                 {
                     HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+                    logBLL.LogAccountEvent(nric, "Account Login Failed Attempt", "Attempt 1.");
                 }
                 else
                 {
@@ -156,11 +153,15 @@ namespace NUSMed_WebApp.Classes.BLL
                     if (count >= 3)
                     {
                         accountDAL.UpdateStatusDisable(nric);
+                        logBLL.LogAccountEvent(nric, "Account Disabled", "Due to 3 failed attempts within 5 mins.");
+
                         HttpContext.Current.Cache.Remove(nric + "_LoginAttempt");
                     }
                     else
                     {
                         HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", count + 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+
+                        logBLL.LogAccountEvent(nric, "Account Login Failed Attempt", "Attempt " + count + 1 + ".");
                     }
                 }
             }
@@ -184,7 +185,9 @@ namespace NUSMed_WebApp.Classes.BLL
         public Account GetStatus()
         {
             if (IsAuthenticated())
+            {
                 return accountDAL.RetrieveStatus(GetNRIC());
+            }
 
             return null;
         }
@@ -282,14 +285,18 @@ namespace NUSMed_WebApp.Classes.BLL
         public Account GetAccount(string nric)
         {
             if (IsAuthenticated() && !IsMultiple())
+            {
                 return accountDAL.Retrieve(nric);
+            }
 
             return null;
         }
         public Account GetPersonalInformation(string nric)
         {
             if (IsAdministrator())
+            {
                 return accountDAL.RetrievePersonalInformation(nric);
+            }
 
             return null;
         }

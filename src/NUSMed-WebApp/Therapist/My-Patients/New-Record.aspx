@@ -148,7 +148,7 @@
 
             <div class="row mt-3">
                 <div class="col-12 text-left">
-                    <button type="submit" id="buttonSubmit" class="btn btn-success mr-auto ml-auto" runat="server" onserverclick="buttonSubmit_ServerClick">Submit</button>
+                    <button type="button" id="buttonSubmit" class="btn btn-success mr-auto ml-auto" runat="server" onserverclick="buttonSubmit_ServerClick">Submit</button>
                     <span id="spanMessage" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false">
                         <i class="fas fa-exclamation-circle fa-fw"></i>There are errors in the form.
                     </span>

@@ -639,7 +639,7 @@
 
             <div class="row mt-3">
                 <div class="col-12 text-left">
-                    <button type="submit" id="buttonRegister" class="btn btn-success mr-auto ml-auto" runat="server" onserverclick="ButtonRegister_ServerClick">Register</button>
+                    <button type="button" id="buttonRegister" class="btn btn-success mr-auto ml-auto" runat="server" onserverclick="ButtonRegister_ServerClick">Register</button>
                     <span id="spanMessage" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-3" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>There are errors in the form.</span>
                 </div>
             </div>
@@ -662,7 +662,7 @@
                     <p class="display-3">success</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success mr-auto" runat="server" onserverclick="buttonRefresh_ServerClick">Register another Account</button>
+                    <button type="button" class="btn btn-success mr-auto" runat="server" onserverclick="buttonRefresh_ServerClick">Register another Account</button>
                     <a class="btn btn-secondary" href="~/Admin/Manage-Accounts/View" role="button" runat="server">Go to View Accounts</a>
                 </div>
             </div>

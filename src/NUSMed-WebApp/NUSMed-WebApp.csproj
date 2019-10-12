@@ -157,6 +157,7 @@
     <Content Include="Content\bootstrap-select.css" />
     <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Content\loading.css" />
+    <Content Include="Content\tempusdominus-bootstrap-4.min.css" />
     <Content Include="Images\logo-white.png" />
     <Content Include="My-Account\Change-Password.aspx" />
     <Content Include="My-Account\My-Profile.aspx" />
@@ -271,12 +272,14 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\plotly-latest.min.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\site.js" />
+    <Content Include="Scripts\tempusdominus-bootstrap-4.min.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
@@ -401,9 +404,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\BLL\AccountBLL.cs" />
-    <Compile Include="Classes\BLL\AccountLogBLL.cs" />
     <Compile Include="Classes\BLL\DataBLL.cs" />
     <Compile Include="Classes\BLL\JWTBLL.cs" />
+    <Compile Include="Classes\BLL\LogBLL.cs" />
     <Compile Include="Classes\BLL\PatientBLL.cs" />
     <Compile Include="Classes\BLL\RecordBLL.cs" />
     <Compile Include="Classes\BLL\RecordLogBLL.cs" />
@@ -423,6 +426,7 @@
     <Compile Include="Classes\Entity\Diagnosis.cs" />
     <Compile Include="Classes\Entity\GeneralizedSetting.cs" />
     <Compile Include="Classes\Entity\JWT.cs" />
+    <Compile Include="Classes\Entity\LogEvent.cs" />
     <Compile Include="Classes\Entity\Note.cs" />
     <Compile Include="Classes\Entity\PatientDiagnosis.cs" />
     <Compile Include="Classes\Entity\Patient.cs" />

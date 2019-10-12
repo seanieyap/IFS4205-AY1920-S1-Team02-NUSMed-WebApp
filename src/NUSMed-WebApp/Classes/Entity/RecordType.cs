@@ -349,7 +349,7 @@ namespace NUSMed_WebApp.Classes.Entity
                     if (line != null)
                     {
                         string[] tokens = line.Split(',');
-                        time.Add(tokens[0]);
+                        time.Add((Convert.ToDouble(tokens[0]) / 1000).ToString());
                         ax.Add(tokens[1]);
                         ay.Add(tokens[2]);
                         az.Add(tokens[3]);
@@ -384,7 +384,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         name: 'ax',
                         y: [" + string.Join(", ", ax.ToArray()) + @"],
                         x: [" + seconds + @"],
-                        line: { color: '#e6194B' }
+                        line: { color: '#d53e4f' }
                 }
 
                 var trace2 = {
@@ -393,7 +393,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         name: 'ay',
                         y: [" + string.Join(", ", ay.ToArray()) + @"],
                         x: [" + seconds + @"],
-                        line: { color: '#ffe119' }
+                        line: { color: '#fc8d59' }
                 }
 
                 var trace3 = {
@@ -402,7 +402,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         name: 'az',
                         y: [" + string.Join(", ", az.ToArray()) + @"],
                         x: [" + seconds + @"],
-                        line: { color: '#3cb44b' }
+                        line: { color: '#fee08b' }
                 }
 
                 var trace4 = {
@@ -411,7 +411,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         name: 'gx',
                         y: [" + string.Join(", ", gx.ToArray()) + @"],
                         x: [" + seconds + @"],
-                        line: { color: '#4363d8' }
+                        line: { color: '#e6f598' }
                 }
 
                 var trace5 = {
@@ -420,7 +420,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         name: 'gy',
                         y: [" + string.Join(", ", gy.ToArray()) + @"],
                         x: [" + seconds + @"],
-                        line: { color: '#f032e6' }
+                        line: { color: '#99d594' }
                 }
 
                 var trace6 = {
@@ -429,7 +429,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         name: 'gz',
                         y: [" + string.Join(", ", gz.ToArray()) + @"],
                         x: [" + seconds + @"],
-                        line: { color: '#a9a9a9' }
+                        line: { color: '#3288bd' }
                 }
 
                 Plotly.newPlot('modalFileViewPanelText', [trace1, trace2, trace3, trace4, trace5, trace6], layout);";

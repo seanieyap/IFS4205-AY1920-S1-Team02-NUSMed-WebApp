@@ -839,7 +839,8 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.CommandText = @"SELECT diagnosis_code, diagnosis_description_short, category_title
                     FROM diagnosis 
                     WHERE diagnosis_code LIKE @term OR diagnosis_description_long = @term OR category_title LIKE @term
-                    ORDER BY diagnosis_code desc LIMIT 25;";
+                    ORDER BY diagnosis_code desc 
+                    LIMIT 25;";
 
                 cmd.Parameters.AddWithValue("@term", "%" + term + "%");
 

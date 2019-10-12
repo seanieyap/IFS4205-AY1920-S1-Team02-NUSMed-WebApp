@@ -1,17 +1,6 @@
 ﻿using NUSMed_WebApp.Classes.DAL;
 using NUSMed_WebApp.Classes.Entity;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net.Mail;
-using System.Runtime.InteropServices;
-using System.Security;
-using System.Security.Cryptography;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Caching;
-using System.Web.Security;
 
 namespace NUSMed_WebApp.Classes.BLL
 {

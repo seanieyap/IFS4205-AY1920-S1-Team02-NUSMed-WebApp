@@ -28,7 +28,7 @@
                         <input id="inputPasswordNewRepeat" type="password" class="form-control form-control-sm" placeholder="Verify New Password" runat="server">
                         <small id="" class="form-text text-muted">Has to contain symbols, digits and 12 characters in length.</small>
                     </div>
-                    <button type="submit" id="buttonChangePassword" class="btn btn-sm btn-success" runat="server" onserverclick="buttonChangePassword_ServerClick"><i class="fas fa-fw fa-edit"></i>Update</button>
+                    <button type="button" id="buttonChangePassword" class="btn btn-sm btn-success" runat="server" onserverclick="buttonChangePassword_ServerClick"><i class="fas fa-fw fa-edit"></i>Update</button>
                     <span id="spanMessage" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-2" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>
                         <asp:Label ID="labelMessage" runat="server"></asp:Label></span>
                 </div>

@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.Caching;
-using NUSMed_WebApp.Classes.BLL;
-using NUSMed_WebApp.Classes.Entity;
 using System.IO;
 
 namespace NUSMed_WebApp
@@ -35,7 +30,7 @@ namespace NUSMed_WebApp
                     if (line != null)
                     {
                         string[] tokens = line.Split(',');
-                        time.Add(tokens[0]);
+                        time.Add((Convert.ToDouble(tokens[0]) / 1000).ToString());
                         ax.Add(tokens[1]);
                         ay.Add(tokens[2]);
                         az.Add(tokens[3]);
@@ -43,7 +38,6 @@ namespace NUSMed_WebApp
                         gy.Add(tokens[5]);
                         gz.Add(tokens[6]);
                     }
-
                 } while (line != null);
             }
 
@@ -120,8 +114,6 @@ namespace NUSMed_WebApp
 
                 Plotly.newPlot('modalFileViewPanelText', [trace1, trace2, trace3, trace4, trace5, trace6], layout);
             ", true);
-
         }
-
     }
 }
