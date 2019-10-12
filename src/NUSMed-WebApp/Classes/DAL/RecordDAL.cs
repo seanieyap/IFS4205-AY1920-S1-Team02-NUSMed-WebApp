@@ -615,6 +615,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
         #endregion
 
+        #region Updates
         public void UpdateRecordEnable(int recordID, string patientNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
@@ -651,38 +652,69 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
+        #endregion
 
-        public void DeleteRecordPermission(long recordID)
+        #region Insertions
+        /// <summary>
+        /// Insert new record
+        /// </summary>
+        public void InsertContent(Record record, string creatorNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"DELETE FROM record_permission 
-                        WHERE record_id = @recordID;";
+                cmd.CommandText = @"INSERT INTO record
+                    (patient_nric, creator_nric, title, description, type, content, is_emergency)
+                    VALUES
+                    (@patientNRIC, @creatorNRIC, @title, @description, @type, @content, @isEmergency);";
 
-                cmd.Parameters.AddWithValue("@recordID", recordID);
+                cmd.Parameters.AddWithValue("@patientNRIC", record.patientNRIC);
+                cmd.Parameters.AddWithValue("@creatorNRIC", creatorNRIC);
+                cmd.Parameters.AddWithValue("@title", record.title);
+                cmd.Parameters.AddWithValue("@description", record.description);
+                cmd.Parameters.AddWithValue("@content", record.content);
+                cmd.Parameters.AddWithValue("@type", record.type.name);
+                cmd.Parameters.AddWithValue("@isEmergency", record.isEmergency);
 
                 using (cmd.Connection = connection)
                 {
                     cmd.Connection.Open();
                     cmd.ExecuteNonQuery();
+                    record.id = cmd.LastInsertedId;
                 }
             }
         }
-
-        public void DeleteRecordPermission(long recordID, string therapistNRIC)
+        /// <summary>
+        /// Insert new record
+        /// </summary>
+        public void InsertFile(Record record, string creatorNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"DELETE FROM record_permission 
-                    WHERE record_id = @recordID AND therapist_nric = @therapistNRIC;";
+                cmd.CommandText = @"INSERT INTO record
+                    (patient_nric, creator_nric, title, description, type,
+                    file_name, file_extension, file_size, file_checksum, create_time, is_emergency)
+                    VALUES
+                    (@patientNRIC, @creatorNRIC, @title, @description, @type,
+                    @fileName, @fileExtension, @fileSize, @fileChecksum, @createTime, @isEmergency);";
 
-                cmd.Parameters.AddWithValue("@recordID", recordID);
-                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+                cmd.Parameters.AddWithValue("@patientNRIC", record.patientNRIC);
+                cmd.Parameters.AddWithValue("@creatorNRIC", creatorNRIC);
+                cmd.Parameters.AddWithValue("@title", record.title);
+                cmd.Parameters.AddWithValue("@description", record.description);
+                cmd.Parameters.AddWithValue("@type", record.type.name);
+
+                cmd.Parameters.AddWithValue("@fileName", record.fileName);
+                cmd.Parameters.AddWithValue("@fileExtension", record.fileExtension);
+                cmd.Parameters.AddWithValue("@fileSize", record.fileSize);
+                cmd.Parameters.AddWithValue("@fileChecksum", record.fileChecksum);
+                cmd.Parameters.AddWithValue("@createTime", record.createTime.ToString("yyyy-MM-dd H:mm:ss"));
+                cmd.Parameters.AddWithValue("@isEmergency", record.isEmergency);
 
                 using (cmd.Connection = connection)
                 {
                     cmd.Connection.Open();
                     cmd.ExecuteNonQuery();
+                    record.id = cmd.LastInsertedId;
                 }
             }
         }
@@ -728,69 +760,6 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
-
-        #region Insertions
-        /// <summary>
-        /// Insert new record
-        /// </summary>
-        public void InsertContent(Record record, string creatorNRIC)
-        {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"INSERT INTO record
-                    (patient_nric, creator_nric, title, description, type, content, is_emergency)
-                    VALUES
-                    (@patientNRIC, @creatorNRIC, @title, @description, @type, @content, @isEmergency);";
-
-                cmd.Parameters.AddWithValue("@patientNRIC", record.patientNRIC);
-                cmd.Parameters.AddWithValue("@creatorNRIC", creatorNRIC);
-                cmd.Parameters.AddWithValue("@title", record.title);
-                cmd.Parameters.AddWithValue("@description", record.description);
-                cmd.Parameters.AddWithValue("@content", record.content);
-                cmd.Parameters.AddWithValue("@type", record.type.name);
-                cmd.Parameters.AddWithValue("@isEmergency", record.isEmergency);
-
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-        /// <summary>
-        /// Insert new record
-        /// </summary>
-        public void InsertFile(Record record, string creatorNRIC)
-        {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"INSERT INTO record
-                    (patient_nric, creator_nric, title, description, type,
-                    file_name, file_extension, file_size, file_checksum, create_time, is_emergency)
-                    VALUES
-                    (@patientNRIC, @creatorNRIC, @title, @description, @type,
-                    @fileName, @fileExtension, @fileSize, @fileChecksum, @createTime, @isEmergency);";
-
-                cmd.Parameters.AddWithValue("@patientNRIC", record.patientNRIC);
-                cmd.Parameters.AddWithValue("@creatorNRIC", creatorNRIC);
-                cmd.Parameters.AddWithValue("@title", record.title);
-                cmd.Parameters.AddWithValue("@description", record.description);
-                cmd.Parameters.AddWithValue("@type", record.type.name);
-
-                cmd.Parameters.AddWithValue("@fileName", record.fileName);
-                cmd.Parameters.AddWithValue("@fileExtension", record.fileExtension);
-                cmd.Parameters.AddWithValue("@fileSize", record.fileSize);
-                cmd.Parameters.AddWithValue("@fileChecksum", record.fileChecksum);
-                cmd.Parameters.AddWithValue("@createTime", record.createTime.ToString("yyyy-MM-dd H:mm:ss"));
-                cmd.Parameters.AddWithValue("@isEmergency", record.isEmergency);
-
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
         #endregion
 
         #region Deletions
@@ -813,7 +782,6 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
-
         public void DeleteRecordDiagnosis(long id)
         {
             using (MySqlCommand cmd = new MySqlCommand())
@@ -822,6 +790,39 @@ namespace NUSMed_WebApp.Classes.DAL
                         WHERE record_id = @recordID;";
 
                 cmd.Parameters.AddWithValue("@recordID", id);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void DeleteRecordPermission(long recordID)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"DELETE FROM record_permission 
+                        WHERE record_id = @recordID;";
+
+                cmd.Parameters.AddWithValue("@recordID", recordID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void DeleteRecordPermission(long recordID, string therapistNRIC)
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"DELETE FROM record_permission 
+                    WHERE record_id = @recordID AND therapist_nric = @therapistNRIC;";
+
+                cmd.Parameters.AddWithValue("@recordID", recordID);
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
 
                 using (cmd.Connection = connection)
                 {

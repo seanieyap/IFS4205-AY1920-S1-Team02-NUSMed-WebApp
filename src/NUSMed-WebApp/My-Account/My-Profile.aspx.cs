@@ -23,7 +23,7 @@ namespace NUSMed_WebApp
         }
         private void UpdatePanelMyProfile_Bind()
         {
-            Account account = accountBLL.GetAccount(AccountBLL.GetNRIC());
+            Account account = accountBLL.GetAccount();
 
             // Personal Details
             nric.Value = account.nric;
@@ -82,7 +82,7 @@ namespace NUSMed_WebApp
             EmailAddressEdit.Attributes.Add("class", "form-control form-control-sm");
             ContactNumberEdit.Attributes.Add("class", "form-control form-control-sm");
 
-            Account account = accountBLL.GetAccount(AccountBLL.GetNRIC());
+            Account account = accountBLL.GetAccount();
             AddressEdit.Value = account.address;
             PostalCodeEdit.Value = account.addressPostalCode;
             EmailAddressEdit.Value = account.email;

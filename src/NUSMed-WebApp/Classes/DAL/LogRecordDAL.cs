@@ -2,23 +2,19 @@
 using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace NUSMed_WebApp.Classes.DAL
 {
-    public class LogAccountDAL : LogDAL
+    public class LogRecordDAL : DALLog
     {
-        public LogAccountDAL() : base() { }
-
         /// <summary>
-        /// Insert Log
+        /// Insert Record Log Event
         /// </summary>
         public void Insert(string creatorNRIC, string action, string description)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"INSERT INTO account
+                cmd.CommandText = @"INSERT INTO record
                     (creator_nric, action, description)
                     VALUES (@creatorNRIC, @action, @description);";
 
@@ -39,7 +35,7 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
-        /// Retrieve Log Events
+        /// Retrieve Record Log Events
         /// </summary>
         public List<LogEvent> Retrieve(string query, List<Tuple<string, string>> subjectNRICsValidated, List<Tuple<string, string>> actionsValidated, string dateTimeFromValidated, string dateTimeToValidated)
         {
@@ -102,7 +98,7 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT distinct creator_nric
-                    FROM account
+                    FROM record
                     ORDER BY creator_nric DESC;";
 
                 using (cmd.Connection = connection)
@@ -133,7 +129,7 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT distinct action
-                    FROM account
+                    FROM record
                     ORDER BY creator_nric DESC;";
 
                 using (cmd.Connection = connection)
@@ -153,5 +149,6 @@ namespace NUSMed_WebApp.Classes.DAL
 
             return result;
         }
+
     }
 }

@@ -191,10 +191,7 @@ namespace NUSMed_WebApp
                     inputPassword.Attributes.Add("class", "form-control form-control-sm is-invalid");
                     inputPasswordConfirm.Attributes.Add("class", "form-control form-control-sm is-invalid");
                 }
-                else
-                {
 
-                }
                 spanMessage.Visible = true;
             }
             else

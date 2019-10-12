@@ -1,25 +1,21 @@
 ﻿using NUSMed_WebApp.Classes.DAL;
 using NUSMed_WebApp.Classes.Entity;
-using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
 
 namespace NUSMed_WebApp.Classes.BLL
 {
     public class RecordBLL
     {
         private readonly RecordDAL recordDAL = new RecordDAL();
+        private readonly LogRecordBLL logRecordBLL = new LogRecordBLL();
 
         public List<Record> GetRecords()
         {
             if (AccountBLL.IsPatient())
             {
-                return recordDAL.RetrieveRecords(AccountBLL.GetNRIC());
+                List<Record> result = recordDAL.RetrieveRecords(AccountBLL.GetNRIC());
+                logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "View Records", "Self.");
+                return result;
             }
 
             return null;
@@ -51,12 +47,12 @@ namespace NUSMed_WebApp.Classes.BLL
                     }
                 }
 
+                logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "View Records", "Action on: " + patientNRIC + ".");
                 return result;
             }
 
             return null;
         }
-
         public List<Record> GetRecords(string patientNRIC, long noteID)
         {
             if (AccountBLL.IsTherapist())
@@ -84,26 +80,29 @@ namespace NUSMed_WebApp.Classes.BLL
                     }
                 }
 
+                logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "View Records of Note", "Action on: " + patientNRIC + " , Note ID: " + noteID + ".");
                 return result;
             }
 
             return null;
         }
-
-        public Record GetRecord(int id)
+        public Record GetRecord(int recordID)
         {
             if (AccountBLL.IsPatient())
             {
-                return recordDAL.RetrieveRecord(AccountBLL.GetNRIC(), id);
+                return recordDAL.RetrieveRecord(AccountBLL.GetNRIC(), recordID);
             }
             else if (AccountBLL.IsTherapist())
             {
-                Record record = recordDAL.RetrieveRecord(id, AccountBLL.GetNRIC());
+                Record record = recordDAL.RetrieveRecord(recordID, AccountBLL.GetNRIC());
                 Entity.Patient patient = new TherapistBLL().GetPatient(record.patientNRIC);
 
                 if (patient.hasPermissionsApproved(record))
                 {
                     record.permited = true;
+
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "View Record", "Record ID: " + recordID + ".");
+
                     return record;
                 }
             }
@@ -111,36 +110,40 @@ namespace NUSMed_WebApp.Classes.BLL
             return null;
         }
 
-        public List<RecordDiagnosis> GetRecordDiagnoses(int id)
+        public List<RecordDiagnosis> GetRecordDiagnoses(int recordID)
         {
             if (AccountBLL.IsPatient())
             {
-                return recordDAL.RetrieveRecordDiagnoses(id, AccountBLL.GetNRIC());
+                return recordDAL.RetrieveRecordDiagnoses(recordID, AccountBLL.GetNRIC());
             }
             else if (AccountBLL.IsTherapist())
             {
-                Record record = recordDAL.RetrieveRecord(id, AccountBLL.GetNRIC());
+                Record record = recordDAL.RetrieveRecord(recordID, AccountBLL.GetNRIC());
                 Entity.Patient patient = new TherapistBLL().GetPatient(record.patientNRIC);
 
                 if (patient.hasPermissionsApproved(record))
                 {
-                    return recordDAL.RetrieveRecordDiagnoses(id, record.patientNRIC, AccountBLL.GetNRIC());
+                    List<RecordDiagnosis> result = recordDAL.RetrieveRecordDiagnoses(recordID, record.patientNRIC, AccountBLL.GetNRIC());
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "View Record Diagnoses", "Record ID: " + recordID + ".");
+                    return result;
                 }
             }
 
             return null;
         }
 
-        public void AddRecordDiagnosis(string patientNRIC, int id, string code)
+        public void AddRecordDiagnosis(string patientNRIC, int recordID, string code)
         {
             if (AccountBLL.IsTherapist())
             {
-                Record record = recordDAL.RetrieveRecord(id, AccountBLL.GetNRIC());
+                Record record = recordDAL.RetrieveRecord(recordID, AccountBLL.GetNRIC());
                 Entity.Patient patient = new TherapistBLL().GetPatient(record.patientNRIC);
 
                 if (record.patientNRIC.Equals(patientNRIC) && patient.hasPermissionsApproved(record))
                 {
-                    recordDAL.InsertRecordDiagnosis(AccountBLL.GetNRIC(), id, code);
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record Diagnoses", "Action on: " + patientNRIC + ", Record ID: " + recordID + ", Diagnosis Code: " + code + ".");
+
+                    recordDAL.InsertRecordDiagnosis(AccountBLL.GetNRIC(), recordID, code);
                 }
             }
         }
@@ -152,12 +155,14 @@ namespace NUSMed_WebApp.Classes.BLL
                 if (record.type.isContent)
                 {
                     recordDAL.InsertContent(record, AccountBLL.GetNRIC());
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
                 }
                 else if (!record.type.isContent)
                 {
                     record.fileChecksum = record.GetMD5HashFromFile();
 
                     recordDAL.InsertFile(record, AccountBLL.GetNRIC());
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
                 }
             }
             else if (AccountBLL.IsTherapist())
@@ -173,12 +178,14 @@ namespace NUSMed_WebApp.Classes.BLL
                 if (record.type.isContent)
                 {
                     recordDAL.InsertContent(record, AccountBLL.GetNRIC());
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
                 }
                 else if (!record.type.isContent)
                 {
                     record.fileChecksum = record.GetMD5HashFromFile();
 
                     recordDAL.InsertFile(record, AccountBLL.GetNRIC());
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
                 }
             }
         }
@@ -190,12 +197,14 @@ namespace NUSMed_WebApp.Classes.BLL
                 if (record.type.isContent)
                 {
                     recordDAL.InsertContent(record, jwt.nric);
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
                 }
                 else if (!record.type.isContent)
                 {
                     record.fileChecksum = record.GetMD5HashFromFile();
 
                     recordDAL.InsertFile(record, jwt.nric);
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
                 }
             }
             else if (jwt.Equals("01"))
@@ -211,12 +220,14 @@ namespace NUSMed_WebApp.Classes.BLL
                 if (record.type.isContent)
                 {
                     recordDAL.InsertContent(record, jwt.nric);
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
                 }
                 else if (!record.type.isContent)
                 {
                     record.fileChecksum = record.GetMD5HashFromFile();
 
                     recordDAL.InsertFile(record, jwt.nric);
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
                 }
             }
         }
@@ -227,6 +238,7 @@ namespace NUSMed_WebApp.Classes.BLL
             if (AccountBLL.IsPatient())
             {
                 recordDAL.UpdateRecordEnable(recordID, AccountBLL.GetNRIC());
+                logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Update Record Status Enable", "Record ID: " + recordID + ".");
             }
         }
         public void UpdateRecordDisable(int recordID)
@@ -234,6 +246,7 @@ namespace NUSMed_WebApp.Classes.BLL
             if (AccountBLL.IsPatient())
             {
                 recordDAL.UpdateRecordDisable(recordID, AccountBLL.GetNRIC());
+                logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Update Record Status Disable", "Record ID: " + recordID + ".");
             }
         }
         public void UpdateRecordTherapistDefault(int recordID, string therapistNRIC)
@@ -243,6 +256,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 if (recordDAL.RetrieveRecordOwner(AccountBLL.GetNRIC(), recordID))
                 {
                     recordDAL.DeleteRecordPermission(recordID, therapistNRIC);
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Update Record Status Default", "Record ID: " + recordID + ".");
                 }
             }
         }
@@ -254,6 +268,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 if (recordDAL.RetrieveRecordOwner(AccountBLL.GetNRIC(), recordID))
                 {
                     recordDAL.InsertRecordPermissionAllow(recordID, therapistNRIC);
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Update Record Fine Grain Permission Allow", "Action on: " + therapistNRIC + ", Record ID: " + recordID + ".");
                 }
             }
         }
@@ -264,6 +279,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 if (recordDAL.RetrieveRecordOwner(AccountBLL.GetNRIC(), recordID))
                 {
                     recordDAL.InsertRecordPermissionDisallow(recordID, therapistNRIC);
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Update Record Fine Grain Permission Disallow", "Action on: " + therapistNRIC + ", Record ID: " + recordID + ".");
                 }
             }
         }

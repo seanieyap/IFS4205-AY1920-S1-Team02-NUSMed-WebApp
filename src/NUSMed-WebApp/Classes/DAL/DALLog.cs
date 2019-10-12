@@ -3,11 +3,11 @@ using System.Configuration;
 
 namespace NUSMed_WebApp.Classes.DAL
 {
-    public class LogDAL
+    public class DALLog
     {
         protected MySqlConnection connection;
 
-        protected LogDAL()
+        public DALLog()
         {
             connection = new MySqlConnection(Get().ConnectionString);
         }

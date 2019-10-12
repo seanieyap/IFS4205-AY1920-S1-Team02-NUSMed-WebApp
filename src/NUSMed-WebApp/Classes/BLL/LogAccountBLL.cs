@@ -7,13 +7,13 @@ using System.Text;
 
 namespace NUSMed_WebApp.Classes.BLL
 {
-    public class LogBLL
+    public class LogAccountBLL
     {
-        private readonly LogAccountDAL logAccountDAL = new LogAccountDAL();
+        private readonly LogAccountDAL logDAL = new LogAccountDAL();
 
-        public void LogAccountEvent(string creatorNRIC, string action, string description)
+        public void LogEvent(string creatorNRIC, string action, string description)
         {
-            logAccountDAL.Insert(creatorNRIC, action, description);
+            logDAL.Insert(creatorNRIC, action, description);
         }
 
         public List<LogEvent> GetAccountLogs(List<string> subjectNRICs, List<string> actions, DateTime? dateTimeFrom, DateTime? dateTimeTo)
@@ -26,8 +26,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 {
                     if (subjectNRICsValidatedDictionary.ContainsKey(subjectNRIC))
                     {
-                        //subjectNRICsValidated.Add("@" + subjectNRIC);
-                        subjectNRICsValidated.Add(new Tuple<string, string>("@" + subjectNRIC, subjectNRIC));
+                        subjectNRICsValidated.Add(new Tuple<string, string>("@" + subjectNRIC.Replace(" ", String.Empty), subjectNRIC));
                     }
                 }
 
@@ -37,20 +36,19 @@ namespace NUSMed_WebApp.Classes.BLL
                 {
                     if (actionsValidatedDictionary.ContainsKey(action))
                     {
-                        //actionsValidated.Add("@" + action);
-                        actionsValidated.Add(new Tuple<string, string>("@" + action, action));
+                        actionsValidated.Add(new Tuple<string, string>("@" + action.Replace(" ", String.Empty), action));
                     }
                 }
 
                 string dateTimeFromValidated = string.Empty;
                 if (dateTimeFrom != null)
                 {
-                    dateTimeFromValidated = dateTimeFrom?.ToString("yyyy-dd-MM HH:mm:ss");
+                    dateTimeFromValidated = dateTimeFrom?.ToString("yyyy-MM-dd HH:mm:ss");
                 }
                 string dateTimeToValidated = string.Empty;
                 if (dateTimeTo != null)
                 {
-                    dateTimeToValidated = dateTimeTo?.ToString("yyyy-dd-MM HH:mm:ss");
+                    dateTimeToValidated = dateTimeTo?.ToString("yyyy-MM-dd HH:mm:ss");
                 }
 
                 // Build Query
@@ -67,11 +65,11 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 if (subjectNRICsValidated.Count > 0)
                 {
-                    temp.Add(string.Join(" OR ", subjectNRICsValidated.Select(t => "created_by = " + t.Item1)));
+                    temp.Add("(" + string.Join(" OR ", subjectNRICsValidated.Select(t => "creator_nric = " + t.Item1)) + ")");
                 }
                 if (actionsValidated.Count > 0)
                 {
-                    temp.Add(string.Join(" OR ", actionsValidated.Select(t => "action = " + t.Item1)));
+                    temp.Add("(" + string.Join(" OR ", actionsValidated.Select(t => "action = " + t.Item1)) + ")");
                 }
 
                 if (!string.IsNullOrEmpty(dateTimeFromValidated))
@@ -85,9 +83,9 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 stringBuilder.Append(string.Join(" AND ", temp));
 
-                stringBuilder.Append(" ORDER BY create_time DESC LIMIT 100;");
+                stringBuilder.Append(" ORDER BY create_time DESC LIMIT 200;");
 
-                return logAccountDAL.Retrieve(stringBuilder.ToString(), subjectNRICsValidated, actionsValidated, dateTimeFromValidated, dateTimeToValidated);
+                return logDAL.Retrieve(stringBuilder.ToString(), subjectNRICsValidated, actionsValidated, dateTimeFromValidated, dateTimeToValidated);
             }
 
             return null;
@@ -97,7 +95,7 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (AccountBLL.IsAdministrator())
             {
-                return logAccountDAL.RetrieveCreatorNRICs();
+                return logDAL.RetrieveCreatorNRICs();
             }
 
             return null;
@@ -106,7 +104,7 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (AccountBLL.IsAdministrator())
             {
-                return logAccountDAL.RetrieveActions();
+                return logDAL.RetrieveActions();
             }
 
             return null;

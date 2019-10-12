@@ -150,8 +150,9 @@
     <Content Include="Admin\Manage-Accounts\Register.aspx" />
     <Content Include="Admin\Manage-Accounts\View.aspx" />
     <Content Include="Admin\Dashboard.aspx" />
-    <Content Include="Admin\Manage-Logs\Account-Logs.aspx" />
-    <Content Include="Admin\Manage-Logs\Record_Logs.aspx" />
+    <Content Include="Admin\View-Logs\Account-Logs.aspx" />
+    <Content Include="Admin\View-Logs\Permission-Logs.aspx" />
+    <Content Include="Admin\View-Logs\Record-Logs.aspx" />
     <Content Include="Admin\Researcher-Data.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-select.css" />
@@ -370,19 +371,26 @@
     <Compile Include="Admin\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Manage-Logs\Account-Logs.aspx.cs">
+    <Compile Include="Admin\View-Logs\Account-Logs.aspx.cs">
       <DependentUpon>Account-Logs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\Manage-Logs\Account-Logs.aspx.designer.cs">
+    <Compile Include="Admin\View-Logs\Account-Logs.aspx.designer.cs">
       <DependentUpon>Account-Logs.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Manage-Logs\Record_Logs.aspx.cs">
-      <DependentUpon>Record_Logs.aspx</DependentUpon>
+    <Compile Include="Admin\View-Logs\Permission-Logs.aspx.cs">
+      <DependentUpon>Permission-Logs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\Manage-Logs\Record_Logs.aspx.designer.cs">
-      <DependentUpon>Record_Logs.aspx</DependentUpon>
+    <Compile Include="Admin\View-Logs\Permission-Logs.aspx.designer.cs">
+      <DependentUpon>Permission-Logs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\View-Logs\Record-Logs.aspx.cs">
+      <DependentUpon>Record-Logs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\View-Logs\Record-Logs.aspx.designer.cs">
+      <DependentUpon>Record-Logs.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Researcher-Data.aspx.cs">
       <DependentUpon>Researcher-Data.aspx</DependentUpon>
@@ -406,17 +414,21 @@
     <Compile Include="Classes\BLL\AccountBLL.cs" />
     <Compile Include="Classes\BLL\DataBLL.cs" />
     <Compile Include="Classes\BLL\JWTBLL.cs" />
-    <Compile Include="Classes\BLL\LogBLL.cs" />
+    <Compile Include="Classes\BLL\LogPermissionBLL.cs" />
+    <Compile Include="Classes\BLL\LogRecordBLL.cs" />
+    <Compile Include="Classes\BLL\LogAccountBLL.cs" />
     <Compile Include="Classes\BLL\PatientBLL.cs" />
     <Compile Include="Classes\BLL\RecordBLL.cs" />
     <Compile Include="Classes\BLL\RecordLogBLL.cs" />
     <Compile Include="Classes\BLL\TherapistBLL.cs" />
     <Compile Include="Classes\Common\Sanitize.cs" />
     <Compile Include="Classes\DAL\AccountDAL.cs" />
-    <Compile Include="Classes\DAL\AccountLogDAL.cs" />
     <Compile Include="Classes\DAL\DAL.cs" />
+    <Compile Include="Classes\DAL\DALLog.cs" />
     <Compile Include="Classes\DAL\DataDAL.cs" />
-    <Compile Include="Classes\DAL\LogDAL.cs" />
+    <Compile Include="Classes\DAL\LogPermissionDAL.cs" />
+    <Compile Include="Classes\DAL\LogRecordDAL.cs" />
+    <Compile Include="Classes\DAL\LogAccountDAL.cs" />
     <Compile Include="Classes\DAL\PatientDAL.cs" />
     <Compile Include="Classes\DAL\RecordDAL.cs" />
     <Compile Include="Classes\DAL\RecordLogDAL.cs" />

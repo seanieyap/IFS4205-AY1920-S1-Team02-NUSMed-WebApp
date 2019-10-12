@@ -1,12 +1,12 @@
-﻿<%@ Page Title="Account Logs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Account-Logs.aspx.cs" Inherits="NUSMed_WebApp.Admin.Manage_Logs.Account_Logs" %>
+﻿<%@ Page Title="Record Logs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Record-Logs.aspx.cs" Inherits="NUSMed_WebApp.Admin.View_Logs.Record_Logs" %>
 
 <%@ MasterType VirtualPath="~/site.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <link href="/Content/bootstrap-select.min.css" rel="stylesheet" type="text/css" runat="server" />
+        <link href="/Content/bootstrap-select.min.css" rel="stylesheet" type="text/css" runat="server" />
     <link href="/Content/tempusdominus-bootstrap-4.min.css" rel="stylesheet" type="text/css" runat="server" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
-    <asp:PlaceHolder runat="server">
+ <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Scripts/bootstrap-select.min.js") %>
         <%: Scripts.Render("~/Scripts/moment.min.js") %>
         <%: Scripts.Render("~/Scripts/tempusdominus-bootstrap-4.min.js") %>
@@ -14,8 +14,9 @@
 
     <div class="container">
         <div class="py-5 mx-auto text-center">
-            <h1 class="display-4"><i class="fas fa-fw fa-user-plus"></i>Account Logs</h1>
-            <p class="lead">Restricted. This page is meant for administrators only.</p>
+            <h1 class="display-4"><i class="fas fa-fw fa-user-plus"></i>Record Logs</h1>
+            <p class="lead mb-0">Restricted. This page is meant for administrators only.</p>
+            <p class="lead">Page is limited to 200 log event per search.</p>
         </div>
     </div>
 
@@ -90,7 +91,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <asp:GridView ID="GridViewLogs" CssClass="table table-sm table-responsive-md small text-truncate" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
+                    <asp:GridView ID="GridViewLogs" CssClass="table table-sm table-responsive-md small text-truncate" AllowPaging="true" PageSize="20" PagerStyle-CssClass="pagination-gridview"
                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" OnPageIndexChanging="GridViewAccounts_PageIndexChanging"
                         ItemType="NUSMed_WebApp.Classes.Entity.LogEvent" DataKeyNames="id" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                         <Columns>

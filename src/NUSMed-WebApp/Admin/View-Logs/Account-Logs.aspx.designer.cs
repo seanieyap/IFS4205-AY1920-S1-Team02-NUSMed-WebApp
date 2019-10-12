@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NUSMed_WebApp.Admin.Manage_Logs {
+namespace NUSMed_WebApp.Admin.View_Logs {
     
     
     public partial class Account_Logs {

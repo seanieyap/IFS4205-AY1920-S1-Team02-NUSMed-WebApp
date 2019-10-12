@@ -26,10 +26,11 @@
             <div class="col-12 col-md-6">
                 <div class="card border-0">
                     <div class="card-body text-center text-md-left">
-                        <h5 class="card-title"><i class="fas fa-fw fa-database"></i>Manage Logs</h5>
+                        <h5 class="card-title"><i class="fas fa-fw fa-database"></i>View Logs</h5>
                         <p class="card-text">Manage Application Logs of events invoked by the system. Find out why did what and etc.</p>
-                        <a href="~/Admin/Manage-Logs/Account-Logs" class="btn btn-nus-orange mb-2" runat="server">View Account Logs <i class="fa fa-angle-double-right"></i></a>
-                        <a href="~/Admin/Manage-Logs/Record-Logs" class="btn btn-nus-orange mb-2" runat="server">View Record Logs <i class="fa fa-angle-double-right"></i></a>
+                        <a href="~/Admin/View-Logs/Account-Logs" class="btn btn-nus-orange mb-2" runat="server">Account Logs <i class="fa fa-angle-double-right"></i></a>
+                        <a href="~/Admin/View-Logs/Record-Logs" class="btn btn-nus-orange mb-2" runat="server">Record Logs <i class="fa fa-angle-double-right"></i></a>
+                        <a href="~/Admin/View-Logs/Permission-Logs" class="btn btn-nus-orange mb-2" runat="server">Permission Logs <i class="fa fa-angle-double-right"></i></a>
                     </div>
                 </div>
             </div>

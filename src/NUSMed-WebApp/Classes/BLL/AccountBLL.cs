@@ -15,7 +15,7 @@ namespace NUSMed_WebApp.Classes.BLL
     public class AccountBLL
     {
         private readonly AccountDAL accountDAL = new AccountDAL();
-        private readonly LogBLL logBLL = new LogBLL();
+        private readonly LogAccountBLL logBLL = new LogAccountBLL();
         public AccountBLL()
         {
         }
@@ -45,7 +45,7 @@ namespace NUSMed_WebApp.Classes.BLL
             HttpContext.Current.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
             HttpContext.Current.Response.Cookies.Add(cookie);
 
-            logBLL.LogAccountEvent(nric, "Login", "Into role, " + role + ".");
+            logBLL.LogEvent(nric, "Login", "Into role, " + role + ".");
         }
         public string LoginDevice(string nric, string role)
         {
@@ -66,7 +66,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 role = "Therapist";
             }
 
-            logBLL.LogAccountEvent(nric, "Device Login", "Into role, " + role + ".");
+            logBLL.LogEvent(nric, "Device Login", "Into role, " + role + ".");
 
             return jwt;
 
@@ -144,7 +144,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 if (HttpContext.Current == null || HttpContext.Current.Cache[nric + "_LoginAttempt"] == null)
                 {
                     HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
-                    logBLL.LogAccountEvent(nric, "Account Login Failed Attempt", "Attempt 1.");
+                    logBLL.LogEvent(nric, "Account Login Failed Attempt", "Attempt 1.");
                 }
                 else
                 {
@@ -153,7 +153,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     if (count >= 3)
                     {
                         accountDAL.UpdateStatusDisable(nric);
-                        logBLL.LogAccountEvent(nric, "Account Disabled", "Due to 3 failed attempts within 5 mins.");
+                        logBLL.LogEvent(nric, "Account Disabled", "Due to 3 failed attempts within 5 mins.");
 
                         HttpContext.Current.Cache.Remove(nric + "_LoginAttempt");
                     }
@@ -161,7 +161,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     {
                         HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", count + 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
 
-                        logBLL.LogAccountEvent(nric, "Account Login Failed Attempt", "Attempt " + count + 1 + ".");
+                        logBLL.LogEvent(nric, "Account Login Failed Attempt", "Attempt " + count + 1 + ".");
                     }
                 }
             }
@@ -282,11 +282,13 @@ namespace NUSMed_WebApp.Classes.BLL
             return false;
         }
 
-        public Account GetAccount(string nric)
+        public Account GetAccount()
         {
             if (IsAuthenticated() && !IsMultiple())
             {
-                return accountDAL.Retrieve(nric);
+                logBLL.LogEvent(GetNRIC(), "View Account Information", "Self.");
+
+                return accountDAL.Retrieve(GetNRIC());
             }
 
             return null;
@@ -295,6 +297,8 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (IsAdministrator())
             {
+                logBLL.LogEvent(GetNRIC(), "View Personal Information", "Action On: " + nric + ".");
+
                 return accountDAL.RetrievePersonalInformation(nric);
             }
 
@@ -303,49 +307,77 @@ namespace NUSMed_WebApp.Classes.BLL
         public Account GetContactInformation(string nric)
         {
             if (IsAdministrator())
+            {
+                logBLL.LogEvent(GetNRIC(), "View Contact Information", "Action On: " + nric + ".");
+
                 return accountDAL.RetrieveContactInformation(nric);
+            }
 
             return null;
         }
         public Account GetPatientInformation(string nric)
         {
             if (IsPatient() || IsAdministrator())
+            {
+                logBLL.LogEvent(GetNRIC(), "View Patient Information", "Action On: " + nric + ".");
+
                 return accountDAL.RetrievePatientInformation(nric);
+            }
 
             return null;
         }
         public Account GetTherapistInformation(string nric)
         {
             if (IsTherapist() || IsAdministrator())
+            {
+                logBLL.LogEvent(GetNRIC(), "View Therapist Information", "Action On: " + nric + ".");
+
                 return accountDAL.RetrieveTherapistInformation(nric);
+            }
 
             return null;
         }
         public Account GetResearcherInformation(string nric)
         {
             if (IsResearcher() || IsAdministrator())
+            {
+                logBLL.LogEvent(GetNRIC(), "View Researcher Information", "Action On: " + nric + ".");
+
                 return accountDAL.RetrieveReseearcherInformation(nric);
+            }
 
             return null;
         }
         public Account GetStatusInformation(string nric)
         {
             if (IsAdministrator())
+            {
+                logBLL.LogEvent(GetNRIC(), "View Status Information", "Action on: " + nric + ".");
+
                 return accountDAL.RetrieveStatusInformation(nric);
+            }
 
             return null;
         }
         public List<Account> GetTherapists(string patientNRIC, string term)
         {
             if (IsAdministrator())
+            {
+                logBLL.LogEvent(GetNRIC(), "View List of Therapists", "Action on: " + patientNRIC + ", using term: " + term + ".");
+
                 return accountDAL.RetrieveTherapists(patientNRIC, term);
+            }
 
             return null;
         }
         public List<Account> GetEmergencyTherapists(string nric)
         {
             if (IsAdministrator())
+            {
+                logBLL.LogEvent(GetNRIC(), "View Emergency Therapists", "Action on: " + nric + ".");
+
                 return accountDAL.RetrieveEmergencyTherapists(nric);
+            }
 
             return null;
         }
@@ -357,17 +389,27 @@ namespace NUSMed_WebApp.Classes.BLL
                 HashSalt hashSalt = GenerateSaltedHash(password);
                 accountDAL.UpdatePassword(nric, hashSalt.Hash, hashSalt.Salt);
                 Logout();
+
+                logBLL.LogEvent(GetNRIC(), "Change Password", "Self.");
             }
         }
         public void UpdateContactDetails(string address, string addressPostalCode, string email, string contactNumber)
         {
             if (IsAuthenticated())
+            {
+                logBLL.LogEvent(GetNRIC(), "Update Contact Information", "Self.");
+
                 accountDAL.UpdateContactDetails(GetNRIC(), address, addressPostalCode, email, contactNumber);
+            }
         }
         public void UpdatePatientDetails(string nokName, string nokContact)
         {
             if (IsAuthenticated())
+            {
+                logBLL.LogEvent(GetNRIC(), "Update Patient Information", "Self.");
+
                 accountDAL.UpdatePatientDetails(GetNRIC(), nokName, nokContact);
+            }
         }
         #endregion
 
@@ -407,6 +449,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 account.status = 1;
 
             accountDAL.Insert(account);
+            logBLL.LogEvent(GetNRIC(), "Register Account", "Subject NRIC: " + nric + ".");
 
             if (roles.Contains("Patient"))
                 RoleEnablePatient(account.nric);
@@ -428,7 +471,10 @@ namespace NUSMed_WebApp.Classes.BLL
         public List<Account> GetAllAccounts(string term)
         {
             if (IsAdministrator())
+            {
+                logBLL.LogEvent(GetNRIC(), "Get All Accounts", "Term: " + term + ".");
                 return accountDAL.RetrieveAllAccounts(term, GetNRIC());
+            }
 
             return null;
         }
@@ -438,44 +484,72 @@ namespace NUSMed_WebApp.Classes.BLL
             {
                 new RecordBLL().DeleteRecords(nric);
                 accountDAL.Delete(nric);
+                logBLL.LogEvent(GetNRIC(), "Delete Account", "Action on: " + nric + ".");
             }
         }
         public void UpdateTherapistDetails(string nric, string jobTitle, string department)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Update Therapist Information", "Action on: " + nric + ".");
+
                 accountDAL.UpdateTherapistDetails(nric, jobTitle, department);
+            }
         }
         public void UpdateResearcherDetails(string nric, string jobTitle, string department)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Update Researcher Information", "Action on: " + nric + ".");
+
                 accountDAL.UpdateResearcherDetails(nric, jobTitle, department);
+            }
         }
         public void AddEmergencyTherapist(string nric, string therapistNRIC)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
-                accountDAL.InsertEmergencyTherapist(nric, therapistNRIC);
+            {
+                logBLL.LogEvent(GetNRIC(), "Add Emergency Therapist", "Action on: " + nric + ", Therapist added: " + therapistNRIC + ".");
 
+                accountDAL.InsertEmergencyTherapist(nric, therapistNRIC);
+            }
         }
         public void RemoveEmergencyTherapist(string nric, string therapistNRIC)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Remove Emergency Therapist", "Action on: " + nric + ", Therapist removed: " + therapistNRIC + ".");
+
                 accountDAL.DeleteEmergencyTherapist(nric, therapistNRIC);
+            }
         }
         #region Status
         public void StatusDisable(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Status Disable", "Action on: " + nric + ".");
+
                 accountDAL.UpdateStatusDisable(nric);
+            }
         }
         public void StatusEnable(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Status Enable", "Action on: " + nric + ".");
+
                 accountDAL.UpdateStatusEnable(nric);
+            }
         }
         public void StatusEnableWithoutMFA(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Status Enable Without MFA", "Action on: " + nric + ".");
+
                 accountDAL.UpdateStatusEnableWithoutMFA(nric);
+            }
         }
         #endregion
 
@@ -484,44 +558,76 @@ namespace NUSMed_WebApp.Classes.BLL
         public void RoleEnablePatient(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Role Enable Patient", "Action on: " + nric + ".");
+
                 accountDAL.UpdatePatientEnable(nric);
+            }
         }
         public void RoleEnableTherapist(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Role Enable Therapist", "Action on: " + nric + ".");
+
                 accountDAL.UpdateTherapistEnable(nric);
+            }
         }
         public void RoleEnableResearcher(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Role Enable Researcher", "Action on: " + nric + ".");
+
                 accountDAL.UpdateResearcherEnable(nric);
+            }
         }
         public void RoleEnableAdmin(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Role Enable Admin", "Action on: " + nric + ".");
+
                 accountDAL.UpdateAdminEnable(nric);
+            }
         }
         #endregion
         #region Disable
         public void RoleDisablePatient(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Role Disable Patient", "Action on: " + nric + ".");
+
                 accountDAL.UpdatePatientDisable(nric);
+            }
         }
         public void RoleDisableTherapist(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Role Disable Therapist", "Action on: " + nric + ".");
+
                 accountDAL.UpdateTherapistDisable(nric);
+            }
         }
         public void RoleDisableResearcher(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Role Disable Researcher", "Action on: " + nric + ".");
+
                 accountDAL.UpdateResearcherDisable(nric);
+            }
         }
         public void RoleDisableAdmin(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
+            {
+                logBLL.LogEvent(GetNRIC(), "Role Disable Admin", "Action on: " + nric + ".");
+
                 accountDAL.UpdateAdminDisable(nric);
+            }
         }
         #endregion
         #endregion
@@ -531,6 +637,8 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
             {
+                logBLL.LogEvent(GetNRIC(), "MFA Token ID Update", "Action on: " + nric + ".");
+
                 accountDAL.UpdateMFATokenID(nric, tokenID);
             }
         }
@@ -538,11 +646,16 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
             {
+                logBLL.LogEvent(GetNRIC(), "MFA Device ID Update", "Action on: " + nric + ".");
+
                 accountDAL.UpdateMFADeviceID(nric, deviceID);
             }
         }
         public void MFADeviceIDUpdateFromPhone(string nric, string tokenID, string deviceID)
         {
+            // todo
+            logBLL.LogEvent(GetNRIC(), "MFA Device ID Update From Phone", "Action on: " + nric + ".");
+
             accountDAL.UpdateMFADeviceIDFromPhone(nric, tokenID, deviceID);
         }
         #endregion

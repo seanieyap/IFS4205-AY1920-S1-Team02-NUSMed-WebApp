@@ -149,11 +149,6 @@
                         OnRowCommand="GridViewPatientAnonymised_RowCommand" OnPageIndexChanging="GridViewPatientAnonymised_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table"
                         runat="server" OnRowDataBound="GridViewPatientAnonymised_RowDataBound">
                         <Columns>
-                            <%--                            <asp:TemplateField HeaderText="Age">
-                                <ItemTemplate>
-                                    <%# Item.age %>
-                                </ItemTemplate>
-                            </asp:TemplateField>--%>
                             <asp:TemplateField HeaderText="Sex">
                                 <ItemTemplate>
                                     <%# Item.sex %>
@@ -179,7 +174,6 @@
                                     <asp:LinkButton ID="LinkButtonViewRecords" CssClass="btn btn-info btn-sm" runat="server">
                                         <i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span>
                                     </asp:LinkButton>
-                                    <%--<asp:LinkButton ID="LinkButton1" CssClass="btn btn-info btn-sm" runat="server" CommandArgument='<%# Item.nric %>' CommandName="ViewPermission"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>--%>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -210,14 +204,8 @@
                 // Enable Tooltips
                 $('[data-toggle="tooltip"]').tooltip({ html: true });
 
-                $.fn.selectpicker.Constructor.BootstrapVersion = '4';
                 // Enable Multiple Select
-                //$('.multi-select').multiselect({
-                //    templates: {
-                //        li: '<li><a href="javascript:void(0);"><label class="pl-2"></label></a></li>'
-                //    }
-                //});
-                //$('.my-select').selectpicker();
+                $.fn.selectpicker.Constructor.BootstrapVersion = '4';
                 $('.selectpicker').selectpicker();
             });
         }

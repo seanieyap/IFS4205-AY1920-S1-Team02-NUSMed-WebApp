@@ -50,7 +50,7 @@ namespace NUSMed_WebApp
                         navLinksAdminDashboard.Visible = true;
                         navLinksAdminManageAccounts.Visible = true;
                         navLinksAdminResearcherData.Visible = true;
-                        navLinksAdminManageLogs.Visible = true;
+                        navLinksAdminViewLogs.Visible = true;
                     }
 
                     if (!AccountBLL.HasMultipleRole())
@@ -175,9 +175,9 @@ namespace NUSMed_WebApp
         {
             navLinksAdminDashboard.Attributes.Add("class", "nav-link active");
         }
-        public void LiActiveAdminManageLogs()
+        public void LiActiveAdminViewLogs()
         {
-            navLinksAdminManageLogsDropdown.Attributes.Add("class", "nav-link active");
+            navLinksAdminViewLogsDropdown.Attributes.Add("class", "nav-link active");
         }
         public void LiActiveAdminViewAccountLogs()
         {
@@ -186,6 +186,10 @@ namespace NUSMed_WebApp
         public void LiActiveAdminViewRecordLogs()
         {
             navLinksAdminViewRecordLogs.Attributes.Add("class", "dropdown-item active");
+        }
+        public void LiActiveAdminViewPermissionLogs()
+        {
+            navLinksAdminViewPermissionLogs.Attributes.Add("class", "dropdown-item active");
         }
         public void LiActiveAdminManageAccounts()
         {

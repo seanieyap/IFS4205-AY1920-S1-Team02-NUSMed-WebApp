@@ -118,13 +118,14 @@
                             <a id="navLinksAdminAccountRegistration" class="dropdown-item" href="~/Admin/Manage-Accounts/Register" runat="server">Register Account</a>
                         </div>
                     </div>
-                    <div id="navLinksAdminManageLogs" class="nav-item dropdown" runat="server" visible="false">
-                        <a id="navLinksAdminManageLogsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
-                            <i class="fas fa-fw fa-database"></i>Manage Logs<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
+                    <div id="navLinksAdminViewLogs" class="nav-item dropdown" runat="server" visible="false">
+                        <a id="navLinksAdminViewLogsDropdown" class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">
+                            <i class="fas fa-fw fa-database"></i>View Logs<i class="fas fa-fw fa-caret-down ml-1 mr-0"></i>
                         </a>
                         <div class="dropdown-menu py-0" aria-labelledby="navLinksAdminManageLogs">
-                            <a id="navLinksAdminViewAccountLogs" class="dropdown-item" href="~/Admin/Manage-Logs/Account-Logs" runat="server">Account Logs</a>
-                            <a id="navLinksAdminViewRecordLogs" class="dropdown-item" href="~/Admin/Manage-Logs/Record_Logs" runat="server">Record Logs</a>
+                            <a id="navLinksAdminViewAccountLogs" class="dropdown-item" href="~/Admin/View-Logs/Account-Logs" runat="server">Account Logs</a>
+                            <a id="navLinksAdminViewRecordLogs" class="dropdown-item" href="~/Admin/View-Logs/Record-Logs" runat="server">Record Logs</a>
+                            <a id="navLinksAdminViewPermissionLogs" class="dropdown-item" href="~/Admin/View-Logs/Permission-Logs" runat="server">Permission Logs</a>
                         </div>
                     </div>
                     <a id="navLinksAdminResearcherData" class="nav-link" href="~/Admin/Researcher-Data" runat="server" visible="false"><i class="fas fa-fw fa-table"></i>Researcher Data</a>
