@@ -28,7 +28,19 @@
             <div class="row mb-4">
                 <div class="col-6">
                     <div class="form-group row">
-                        <label class="col-3" for="inputSexLevel" runat="server">
+                        <label id="labelInputAge" class="col-3" for="inputAgeLevel" runat="server">
+                            Age 
+                            <span id="labelTitleAge" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
+                        </label>
+
+                        <div class="offset-1 col-7">
+                            <asp:ListBox ID="inputAgeLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group row">
+                        <label id="labelInputSex" class="col-3" for="inputSexLevel" runat="server">
                             Sex 
                             <span id="labelTitleSex" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                         </label>
@@ -40,7 +52,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label class="col-3" for="inputGenderLevel" runat="server">
+                        <label id="labelInputGender" class="col-3" for="inputGenderLevel" runat="server">
                             Gender 
                             <span id="labelTitleGender" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                         </label>
@@ -52,7 +64,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label class="col-3" for="inputPostal" runat="server">
+                        <label id="labelInputPostal" class="col-3" for="inputPostal" runat="server">
                             Postal Code
                         </label>
 
@@ -63,7 +75,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label class="col-3" for="inputMaritalStatusLevel" runat="server">
+                        <label id="labelInputMaritalStatus" class="col-3" for="inputMaritalStatusLevel" runat="server">
                             Marital Status 
                             <span id="labelTitleMaritalStatus" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                         </label>
@@ -84,7 +96,7 @@
             <div class="row mb-4">
                 <div class="col-6">
                     <div class="form-group row">
-                        <label class="col-3" for="inputRecordType" runat="server">
+                        <label id="labelInputRecordType" class="col-3" for="inputRecordType" runat="server">
                             Record Type 
                         </label>
 
@@ -95,7 +107,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label class="col-3" for="inputDiagnosis" runat="server">
+                        <label id="labelInputDiagnosis" class="col-3" for="inputDiagnosis" runat="server">
                             Diagnosis 
                         </label>
 
@@ -106,25 +118,13 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group row">
-                        <label class="col-3" for="inputCreationDate" runat="server">
+                        <label id="labelInputCreationDate" class="col-3" for="inputCreationDate" runat="server">
                             Record Creation Date
                             <span id="labelTitleCreationDate" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                         </label>
 
                         <div class="offset-1 col-7">
                             <asp:ListBox ID="inputCreationDate" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group row">
-                        <label class="col-3" for="inputAgeLevel" runat="server">
-                            Age 
-                            <span id="labelTitleAge" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
-                        </label>
-
-                        <div class="offset-1 col-7">
-                            <asp:ListBox ID="inputAgeLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                         </div>
                     </div>
                 </div>
@@ -149,6 +149,11 @@
                         OnRowCommand="GridViewPatientAnonymised_RowCommand" OnPageIndexChanging="GridViewPatientAnonymised_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table"
                         runat="server" OnRowDataBound="GridViewPatientAnonymised_RowDataBound">
                         <Columns>
+                            <%--                            <asp:TemplateField HeaderText="Age">
+                                <ItemTemplate>
+                                    <%# Item.age %>
+                                </ItemTemplate>
+                            </asp:TemplateField>--%>
                             <asp:TemplateField HeaderText="Sex">
                                 <ItemTemplate>
                                     <%# Item.sex %>
@@ -205,8 +210,14 @@
                 // Enable Tooltips
                 $('[data-toggle="tooltip"]').tooltip({ html: true });
 
-                // Enable Multiple Select
                 $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+                // Enable Multiple Select
+                //$('.multi-select').multiselect({
+                //    templates: {
+                //        li: '<li><a href="javascript:void(0);"><label class="pl-2"></label></a></li>'
+                //    }
+                //});
+                //$('.my-select').selectpicker();
                 $('.selectpicker').selectpicker();
             });
         }
