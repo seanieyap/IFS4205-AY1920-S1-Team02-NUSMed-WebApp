@@ -262,7 +262,7 @@ namespace NUSMed_WebApp
 
         protected void Page_Init(object sender, EventArgs e)
         {            //First, check for the existence of the Anti-XSS cookie
-            var requestCookie = Request.Cookies[AntiXsrfTokenKey];
+            HttpCookie requestCookie = Request.Cookies[AntiXsrfTokenKey];
             Guid requestCookieGuidValue;
 
             //If the CSRF cookie is found, parse the token from the cookie.
@@ -292,7 +292,7 @@ namespace NUSMed_WebApp
                 Page.ViewStateUserKey = _antiXsrfTokenValue;
 
                 //Create the non-persistent CSRF cookie
-                var responseCookie = new HttpCookie(AntiXsrfTokenKey)
+                HttpCookie responseCookie = new HttpCookie(AntiXsrfTokenKey)
                 {
                     //Set the HttpOnly property to prevent the cookie from
                     //being accessed by client side script
@@ -304,8 +304,7 @@ namespace NUSMed_WebApp
 
                 //If we are using SSL, the cookie should be set to secure to
                 //prevent it from being sent over HTTP connections
-                if (FormsAuthentication.RequireSSL &&
-                    Request.IsSecureConnection)
+                if (FormsAuthentication.RequireSSL)
                 {
                     responseCookie.Secure = true;
                 }
@@ -328,7 +327,7 @@ namespace NUSMed_WebApp
 
                 //If a user name is assigned, set the user name
                 ViewState[AntiXsrfUserNameKey] =
-                       Context.User.Identity.Name ?? String.Empty;
+                       Context.User.Identity.Name ?? string.Empty;
             }
             //During all subsequent post backs to the page, the token value from
             //the cookie should be validated against the token in the view state
@@ -339,7 +338,7 @@ namespace NUSMed_WebApp
                 //Validate the Anti-XSRF token
                 if ((string)ViewState[AntiXsrfTokenKey] != _antiXsrfTokenValue
                     || (string)ViewState[AntiXsrfUserNameKey] !=
-                         (Context.User.Identity.Name ?? String.Empty))
+                         (Context.User.Identity.Name ?? string.Empty))
                 {
                     throw new InvalidOperationException("Validation of " +
                                         "Anti-XSRF token failed.");

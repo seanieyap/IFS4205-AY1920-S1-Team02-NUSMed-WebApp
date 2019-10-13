@@ -74,7 +74,7 @@ namespace NUSMed_WebApp.Classes.BLL
             {
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.Append(@"SELECT r.patient_nric, ra.record_id, ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
-        FROM records_anonymized ra INNER JOIN record r ON ra.record_id = r.id INNER JOIN record_diagnosis rd ON r.id = rd.record_id");
+                    FROM records_anonymized ra INNER JOIN record r ON ra.record_id = r.id INNER JOIN record_diagnosis rd ON r.id = rd.record_id");
 
                 List<Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>>();
                 if (fv.sex.Count > 0)
@@ -131,7 +131,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 stringBuilder.Append(" GROUP BY r.patient_nric LIMIT 100;");
 
-                //string query = stringBuilder.ToString();
                 return dataDAL.RetrievePatients(stringBuilder.ToString());
             }
             return null;
@@ -183,15 +182,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-        //public List<PatientAnonymised> GetAnonymizedTableFromDb()
-        //{
-        //  if (AccountBLL.IsResearcher())
-        //  {
-        //    return dataDAL.RetrieveAnonymised();
-        //  }
-
-        //  return null;
-        //}
 
         public GeneralizedSetting GetGeneralizedSettingFromDb()
         {
@@ -238,7 +228,6 @@ namespace NUSMed_WebApp.Classes.BLL
                 //FILE_POSTAL_HIERARCHY = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Data-Hierarchy/postal_hierarchy.csv"));
                 //FILE_RECORD_DATE_HIERARCHY = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Data-Hierarchy/record_date_hierarchy.csv"));
 
-
                 quasiIdentifiersFilePaths = new List<string>(new string[] { FILE_AGE_HIERARCHY, FILE_SEX_HIERARCHY, FILE_GENDER_HIERARCHY, FILE_MARITAL_STATUS_HIERARCHY, FILE_POSTAL_HIERARCHY, FILE_RECORD_DATE_HIERARCHY });
             }
 
@@ -256,7 +245,6 @@ namespace NUSMed_WebApp.Classes.BLL
                 string createdDate = createdDateTime.ToString("yyyy-M-d");
                 return createdDate;
             }
-
 
             private void InitializeAnonymizer()
             {

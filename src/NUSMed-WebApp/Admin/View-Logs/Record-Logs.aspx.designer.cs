@@ -13,15 +13,6 @@ namespace NUSMed_WebApp.Admin.View_Logs {
     public partial class Record_Logs {
         
         /// <summary>
-        /// UpdatePanelLogs control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanelLogs;
-        
-        /// <summary>
         /// InputSubjectNRICs control.
         /// </summary>
         /// <remarks>
@@ -65,6 +56,15 @@ namespace NUSMed_WebApp.Admin.View_Logs {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton ButtonSearch;
+        
+        /// <summary>
+        /// UpdatePanelLogs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelLogs;
         
         /// <summary>
         /// GridViewLogs control.

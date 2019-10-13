@@ -61,7 +61,7 @@ namespace NUSMed_WebApp.Admin.View_Logs
                 DateTime? dateTimeTo = string.IsNullOrEmpty(inputDateTimeTo.Value) ? null : 
                     (DateTime?) DateTime.ParseExact(inputDateTimeTo.Value, "MM/dd/yyyy h:mm tt", System.Globalization.CultureInfo.InvariantCulture);
 
-                List<LogEvent> logEvents = logBLL.GetAccountLogs(subjectNRICs, actions, dateTimeFrom, dateTimeTo);
+                List<LogEvent> logEvents = logBLL.GetLogs(subjectNRICs, actions, dateTimeFrom, dateTimeTo);
                 ViewState["GridViewLogs"] = logEvents;
                 GridViewLogs.DataSource = logEvents;
                 GridViewLogs.DataBind();

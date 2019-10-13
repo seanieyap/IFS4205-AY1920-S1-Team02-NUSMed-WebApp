@@ -16,7 +16,7 @@ namespace NUSMed_WebApp.Classes.BLL
             logDAL.Insert(creatorNRIC, action, description);
         }
 
-        public List<LogEvent> GetAccountLogs(List<string> subjectNRICs, List<string> actions, DateTime? dateTimeFrom, DateTime? dateTimeTo)
+        public List<LogEvent> GetLogs(List<string> subjectNRICs, List<string> actions, DateTime? dateTimeFrom, DateTime? dateTimeTo)
         {
             if (AccountBLL.IsAdministrator())
             {
@@ -36,7 +36,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 {
                     if (actionsValidatedDictionary.ContainsKey(action))
                     {
-                        actionsValidated.Add(new Tuple<string, string>("@" + action, action));
+                        actionsValidated.Add(new Tuple<string, string>("@" + action.Replace(" ", String.Empty), action));
                     }
                 }
 
@@ -65,7 +65,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 if (subjectNRICsValidated.Count > 0)
                 {
-                    temp.Add(string.Join(" OR ", subjectNRICsValidated.Select(t => "created_by = " + t.Item1)));
+                    temp.Add(string.Join(" OR ", subjectNRICsValidated.Select(t => "creator_nric = " + t.Item1)));
                 }
                 if (actionsValidated.Count > 0)
                 {

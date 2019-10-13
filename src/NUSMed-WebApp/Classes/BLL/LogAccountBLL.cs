@@ -16,7 +16,7 @@ namespace NUSMed_WebApp.Classes.BLL
             logDAL.Insert(creatorNRIC, action, description);
         }
 
-        public List<LogEvent> GetAccountLogs(List<string> subjectNRICs, List<string> actions, DateTime? dateTimeFrom, DateTime? dateTimeTo)
+        public List<LogEvent> GetLogs(List<string> subjectNRICs, List<string> actions, DateTime? dateTimeFrom, DateTime? dateTimeTo)
         {
             if (AccountBLL.IsAdministrator())
             {

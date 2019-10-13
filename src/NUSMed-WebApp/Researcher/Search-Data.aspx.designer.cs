@@ -13,15 +13,6 @@ namespace NUSMed_WebApp.Researcher {
     public partial class Search_Data {
         
         /// <summary>
-        /// UpdatePanelPatientAnonymised control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanelPatientAnonymised;
-        
-        /// <summary>
         /// labelTitleAge control.
         /// </summary>
         /// <remarks>
@@ -146,6 +137,15 @@ namespace NUSMed_WebApp.Researcher {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton buttonFilter;
+        
+        /// <summary>
+        /// UpdatePanelPatientAnonymised control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelPatientAnonymised;
         
         /// <summary>
         /// GridViewPatientAnonymised control.

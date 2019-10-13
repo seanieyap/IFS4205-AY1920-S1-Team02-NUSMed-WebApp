@@ -17,138 +17,143 @@
         </div>
     </div>
 
-    <asp:UpdatePanel ID="UpdatePanelPatientAnonymised" class="container" runat="server" UpdateMode="Conditional">
-        <ContentTemplate>
-            <div class="row">
-                <div class="col-12 mb-3">
-                    <h2>Filter By Patient Data</h2>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <h2>Filter By Patient Data</h2>
             </div>
+        </div>
 
-            <div class="row mb-4">
-                <div class="col-6">
-                    <div class="form-group row">
-                        <label class="col-4" for="inputAgeLevel" runat="server">
-                            Age 
+        <div class="row mb-4">
+            <div class="col-6">
+                <div class="form-group row">
+                    <label class="col-4" for="inputAgeLevel" runat="server">
+                        Age 
                             <span id="labelTitleAge" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
-                        </label>
+                    </label>
 
-                        <div class="col-8">
-                            <asp:ListBox ID="inputAgeLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
-                        </div>
+                    <div class="col-8">
+                        <asp:ListBox ID="inputAgeLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="form-group row">
-                        <label class="col-4" for="inputSexLevel" runat="server">
-                            Sex 
+            </div>
+            <div class="col-6">
+                <div class="form-group row">
+                    <label class="col-4" for="inputSexLevel" runat="server">
+                        Sex 
                             <span id="labelTitleSex" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
-                        </label>
+                    </label>
 
-                        <div class="col-8">
-                            <asp:ListBox ID="inputSexLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
-                        </div>
+                    <div class="col-8">
+                        <asp:ListBox ID="inputSexLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="form-group row">
-                        <label class="col-4" for="inputGenderLevel" runat="server">
-                            Gender 
+            </div>
+            <div class="col-6">
+                <div class="form-group row">
+                    <label class="col-4" for="inputGenderLevel" runat="server">
+                        Gender 
                             <span id="labelTitleGender" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
-                        </label>
+                    </label>
 
-                        <div class="col-8">
-                            <asp:ListBox ID="inputGenderLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
-                        </div>
+                    <div class="col-8">
+                        <asp:ListBox ID="inputGenderLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="form-group row">
-                        <label class="col-4" for="inputPostal" runat="server">
-                            Postal Code
-                        </label>
+            </div>
+            <div class="col-6">
+                <div class="form-group row">
+                    <label class="col-4" for="inputPostal" runat="server">
+                        Postal Code
+                    </label>
 
-                        <div class="col-8">
-                            <asp:ListBox ID="inputPostal" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
-                        </div>
+                    <div class="col-8">
+                        <asp:ListBox ID="inputPostal" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="form-group row">
-                        <label class="col-4" for="inputMaritalStatusLevel" runat="server">
-                            Marital Status 
+            </div>
+            <div class="col-6">
+                <div class="form-group row">
+                    <label class="col-4" for="inputMaritalStatusLevel" runat="server">
+                        Marital Status 
                             <span id="labelTitleMaritalStatus" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
-                        </label>
+                    </label>
 
-                        <div class="col-8">
-                            <asp:ListBox ID="inputMaritalStatusLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
-                        </div>
+                    <div class="col-8">
+                        <asp:ListBox ID="inputMaritalStatusLevel" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col-12 mb-3">
-                    <h2>Filter By Record Data</h2>
+        <div class="row">
+            <div class="col-12 mb-3">
+                <h2>Filter By Record Data</h2>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-6">
+                <div class="form-group row">
+                    <label class="col-4" for="inputRecordType" runat="server">
+                        Record Type 
+                    </label>
+
+                    <div class="col-8">
+                        <asp:ListBox ID="inputRecordType" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
+                    </div>
                 </div>
             </div>
+            <div class="col-6">
+                <div class="form-group row">
+                    <label class="col-4" for="inputDiagnosis" runat="server">
+                        Diagnosis 
+                    </label>
 
-            <div class="row mb-4">
-                <div class="col-6">
-                    <div class="form-group row">
-                        <label class="col-4" for="inputRecordType" runat="server">
-                            Record Type 
-                        </label>
-
-                        <div class="col-8">
-                            <asp:ListBox ID="inputRecordType" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
-                        </div>
+                    <div class="col-8">
+                        <asp:ListBox ID="inputDiagnosis" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="form-group row">
-                        <label class="col-4" for="inputDiagnosis" runat="server">
-                            Diagnosis 
-                        </label>
-
-                        <div class="col-8">
-                            <asp:ListBox ID="inputDiagnosis" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group row">
-                        <label class="col-4" for="inputCreationDate" runat="server">
-                            Record Creation Date
+            </div>
+            <div class="col-6">
+                <div class="form-group row">
+                    <label class="col-4" for="inputCreationDate" runat="server">
+                        Record Creation Date
                             <span id="labelTitleCreationDate" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
-                        </label>
+                    </label>
 
-                        <div class="col-8">
-                            <asp:ListBox ID="inputCreationDate" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
-                        </div>
+                    <div class="col-8">
+                        <asp:ListBox ID="inputCreationDate" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col-12 mb-4 text-center">
-                    <button type="button" id="buttonFilter" onserverclick="buttonFilter_ServerClick" class="btn btn-success" runat="server">Filter Patients and Records</button>
-                </div>
+        <div class="row">
+            <div class="col-12 mb-4 text-center">
+                <button type="button" id="buttonFilter" onserverclick="buttonFilter_ServerClick" class="btn btn-success" runat="server">Filter Patients and Records</button>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <h2>Anonymised Patients and their Records</h2>
-                </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Anonymised Patients and their Records</h2>
             </div>
+        </div>
 
-            <div class="row">
+        <asp:UpdatePanel ID="UpdatePanelPatientAnonymised" class="row" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
                 <div class="col-12">
-                    <asp:GridView ID="GridViewPatientAnonymised" CssClass="table table-sm small" AllowPaging="true" PageSize="20" PagerStyle-CssClass="pagination-gridview"
+                    <asp:GridView ID="GridViewPatientAnonymised" CssClass="table table-sm table-responsive-md small" AllowPaging="true" PageSize="20" PagerStyle-CssClass="pagination-gridview"
                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" ItemType="NUSMed_WebApp.Classes.Entity.PatientAnonymised"
                         OnRowCommand="GridViewPatientAnonymised_RowCommand" OnPageIndexChanging="GridViewPatientAnonymised_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table"
                         runat="server" OnRowDataBound="GridViewPatientAnonymised_RowDataBound">
                         <Columns>
+                                                        <asp:TemplateField HeaderText="Age">
+                                <ItemTemplate>
+                                    <%# Item.age %>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField HeaderText="Sex">
                                 <ItemTemplate>
                                     <%# Item.sex %>
@@ -188,14 +193,18 @@
                         </EmptyDataTemplate>
                     </asp:GridView>
                 </div>
-            </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
-    <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPatientAnonymised" DisplayAfter="200" DynamicLayout="false">
-        <ProgressTemplate>
-            <div class="loading">Loading</div>
-        </ProgressTemplate>
-    </asp:UpdateProgress>
+            </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="buttonFilter" />
+            </Triggers>
+        </asp:UpdatePanel>
+        <asp:UpdateProgress runat="server" AssociatedUpdatePanelID="UpdatePanelPatientAnonymised" DisplayAfter="200" DynamicLayout="false">
+            <ProgressTemplate>
+                <div class="loading">Loading</div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>
+    </div>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterContent" runat="server">
     <script type="text/javascript">

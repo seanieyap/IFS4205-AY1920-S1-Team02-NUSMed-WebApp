@@ -259,113 +259,122 @@ namespace NUSMed_WebApp.Researcher
 
         protected void buttonFilter_ServerClick(object sender, EventArgs e)
         {
-            // Retrieve gen settings
-            GeneralizedSetting generalizedSetting = dataBLL.GetGeneralizedSettingFromDb();
-
-            #region Validation: Match and Get only valid inputs
-            FilteredValues filteredValues = new FilteredValues();
-
-            // Marital Status
-            foreach (ListItem item in inputMaritalStatusLevel.Items)
+            try
             {
-                if (item.Selected)
+                // Retrieve gen settings
+                GeneralizedSetting generalizedSetting = dataBLL.GetGeneralizedSettingFromDb();
+
+                #region Validation: Match and Get only valid inputs
+                FilteredValues filteredValues = new FilteredValues();
+
+                // Marital Status
+                foreach (ListItem item in inputMaritalStatusLevel.Items)
                 {
-                    if (generalizedSetting.maritalStatusOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                    if (item.Selected)
                     {
-                        filteredValues.maritalStatus.Add(item.Value.Trim());
+                        if (generalizedSetting.maritalStatusOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                        {
+                            filteredValues.maritalStatus.Add(item.Value.Trim());
+                        }
                     }
                 }
-            }
 
-            // Sex
-            foreach (ListItem item in inputSexLevel.Items)
-            {
-                if (item.Selected)
+                // Sex
+                foreach (ListItem item in inputSexLevel.Items)
                 {
-                    if (generalizedSetting.sexOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                    if (item.Selected)
                     {
-                        filteredValues.sex.Add(item.Value.Trim());
+                        if (generalizedSetting.sexOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                        {
+                            filteredValues.sex.Add(item.Value.Trim());
+                        }
                     }
                 }
-            }
 
-            // Gender
-            foreach (ListItem item in inputGenderLevel.Items)
-            {
-                if (item.Selected)
+                // Gender
+                foreach (ListItem item in inputGenderLevel.Items)
                 {
-                    if (generalizedSetting.genderOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                    if (item.Selected)
                     {
-                        filteredValues.gender.Add(item.Value.Trim());
+                        if (generalizedSetting.genderOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                        {
+                            filteredValues.gender.Add(item.Value.Trim());
+                        }
                     }
                 }
-            }
 
-            // Age
-            foreach (ListItem item in inputAgeLevel.Items)
-            {
-                if (item.Selected)
+                // Age
+                foreach (ListItem item in inputAgeLevel.Items)
                 {
-                    if (generalizedSetting.ageOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                    if (item.Selected)
                     {
-                        filteredValues.age.Add(item.Value.Trim());
+                        if (generalizedSetting.ageOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                        {
+                            filteredValues.age.Add(item.Value.Trim());
+                        }
                     }
                 }
-            }
 
-            DataTable postalTable = dataBLL.GetPostal();
-            foreach (ListItem item in inputPostal.Items)
-            {
-                if (item.Selected)
+                DataTable postalTable = dataBLL.GetPostal();
+                foreach (ListItem item in inputPostal.Items)
                 {
-                    if (postalTable.AsEnumerable().Any(row => row.Field<string>("postal").Equals(item.Value.Trim())))
+                    if (item.Selected)
                     {
-                        filteredValues.postal.Add(item.Value.Trim());
+                        if (postalTable.AsEnumerable().Any(row => row.Field<string>("postal").Equals(item.Value.Trim())))
+                        {
+                            filteredValues.postal.Add(item.Value.Trim());
+                        }
                     }
                 }
-            }
 
-            // Record Type
-            foreach (ListItem item in inputRecordType.Items)
-            {
-                if (item.Selected)
+                // Record Type
+                foreach (ListItem item in inputRecordType.Items)
                 {
-                    filteredValues.recordType.Add(item.Value.Trim());
-                }
-            }
-
-            // Diagnosis
-            DataTable diagnosesTable = dataBLL.GetDiagnoses();
-            foreach (ListItem item in inputDiagnosis.Items)
-            {
-                if (item.Selected)
-                {
-                    if (diagnosesTable.AsEnumerable().Any(row => row.Field<string>("diagnosis_code").Equals(item.Value.Trim())))
+                    if (item.Selected)
                     {
-                        filteredValues.diagnosis.Add(item.Value.Trim());
+                        filteredValues.recordType.Add(item.Value.Trim());
                     }
                 }
-            }
 
-            // Creation Date
-            DataTable creationDateTable = dataBLL.GetRecordCreationDate();
-            foreach (ListItem item in inputCreationDate.Items)
-            {
-                if (item.Selected)
+                // Diagnosis
+                DataTable diagnosesTable = dataBLL.GetDiagnoses();
+                foreach (ListItem item in inputDiagnosis.Items)
                 {
-                    if (creationDateTable.AsEnumerable().Any(row => row.Field<string>("record_create_date").Equals(item.Value.Trim())))
+                    if (item.Selected)
                     {
-                        filteredValues.creationDate.Add(item.Value.Trim());
+                        if (diagnosesTable.AsEnumerable().Any(row => row.Field<string>("diagnosis_code").Equals(item.Value.Trim())))
+                        {
+                            filteredValues.diagnosis.Add(item.Value.Trim());
+                        }
                     }
                 }
-            }
-            #endregion
 
-            List<PatientAnonymised> recordAnonymised = dataBLL.GetPatients(filteredValues);
-            ViewState["GridViewPatientAnonymised"] = recordAnonymised;
-            GridViewPatientAnonymised.DataSource = recordAnonymised;
-            GridViewPatientAnonymised.DataBind();
-            UpdatePanelPatientAnonymised.Update();
+                // Creation Date
+                DataTable creationDateTable = dataBLL.GetRecordCreationDate();
+                foreach (ListItem item in inputCreationDate.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (creationDateTable.AsEnumerable().Any(row => row.Field<string>("record_create_date").Equals(item.Value.Trim())))
+                        {
+                            filteredValues.creationDate.Add(item.Value.Trim());
+                        }
+                    }
+                }
+                #endregion
+
+                List<PatientAnonymised> recordAnonymised = dataBLL.GetPatients(filteredValues);
+                ViewState["GridViewPatientAnonymised"] = recordAnonymised;
+                GridViewPatientAnonymised.DataSource = recordAnonymised;
+                GridViewPatientAnonymised.DataBind();
+                UpdatePanelPatientAnonymised.Update();
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Data successfully displayed.');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when displaying data.');", true);
+            }
         }
     }
 }
