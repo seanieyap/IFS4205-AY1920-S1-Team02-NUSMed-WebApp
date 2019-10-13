@@ -149,7 +149,7 @@
                         OnRowCommand="GridViewPatientAnonymised_RowCommand" OnPageIndexChanging="GridViewPatientAnonymised_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table"
                         runat="server" OnRowDataBound="GridViewPatientAnonymised_RowDataBound">
                         <Columns>
-                                                        <asp:TemplateField HeaderText="Age">
+                            <asp:TemplateField HeaderText="Age">
                                 <ItemTemplate>
                                     <%# Item.age %>
                                 </ItemTemplate>
@@ -174,11 +174,15 @@
                                     <%# Item.postal %>
                                 </ItemTemplate>
                             </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Diagnoses" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                                <ItemTemplate>
+                                    <asp:LinkButton ID="LinkButtonViewDiagnosis" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
                             <asp:TemplateField HeaderText="Records" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="LinkButtonViewRecords" CssClass="btn btn-info btn-sm" runat="server">
-                                        <i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span>
-                                    </asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButtonViewRecords" CssClass="btn btn-info btn-sm" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>

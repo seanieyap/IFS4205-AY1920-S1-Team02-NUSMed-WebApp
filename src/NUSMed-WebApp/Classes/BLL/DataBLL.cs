@@ -66,55 +66,55 @@ namespace NUSMed_WebApp.Classes.BLL
         /// <summary>
         /// Retrieve patients that fit the filters set
         /// </summary>
-        /// <param name="selectItems">List of Tuple of column name, placeholder, value</param>
+        /// <param name="filteredValues">Object containing filtered values</param>
         /// <returns>List of PatientAnonymised</returns>
-        public List<PatientAnonymised> GetPatients(FilteredValues fv)
+        public List<PatientAnonymised> GetPatients(FilteredValues filteredValues)
         {
             if (AccountBLL.IsResearcher())
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append(@"SELECT r.patient_nric, ra.record_id, ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
+                stringBuilder.Append(@"SELECT ra.record_id, ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
                     FROM records_anonymized ra INNER JOIN record r ON ra.record_id = r.id INNER JOIN record_diagnosis rd ON r.id = rd.record_id");
 
                 List<Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>>();
-                if (fv.sex.Count > 0)
+                if (filteredValues.sex.Count > 0)
                 {
-                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.sex", fv.sex));
+                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.sex", filteredValues.sex));
                 }
 
-                if (fv.gender.Count > 0)
+                if (filteredValues.gender.Count > 0)
                 {
-                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.gender", fv.gender));
+                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.gender", filteredValues.gender));
                 }
 
-                if (fv.maritalStatus.Count > 0)
+                if (filteredValues.maritalStatus.Count > 0)
                 {
-                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.marital_status", fv.maritalStatus));
+                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.marital_status", filteredValues.maritalStatus));
                 }
 
-                if (fv.postal.Count > 0)
+                if (filteredValues.postal.Count > 0)
                 {
-                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.postal", fv.postal));
+                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.postal", filteredValues.postal));
                 }
 
-                if (fv.recordType.Count > 0)
+                if (filteredValues.recordType.Count > 0)
                 {
-                    columnsAndValuesList.Add(new Tuple<string, List<string>>("r.type", fv.recordType));
+                    columnsAndValuesList.Add(new Tuple<string, List<string>>("r.type", filteredValues.recordType));
                 }
 
-                if (fv.diagnosis.Count > 0)
+                if (filteredValues.diagnosis.Count > 0)
                 {
-                    columnsAndValuesList.Add(new Tuple<string, List<string>>("rd.diagnosis_code", fv.diagnosis));
+                    columnsAndValuesList.Add(new Tuple<string, List<string>>("rd.diagnosis_code", filteredValues.diagnosis));
                 }
 
-                if (fv.creationDate.Count > 0)
+                if (filteredValues.creationDate.Count > 0)
                 {
-                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.record_create_date", fv.creationDate));
+                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.record_create_date", filteredValues.creationDate));
                 }
 
-                if (fv.age.Count > 0)
+                if (filteredValues.age.Count > 0)
                 {
-                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.age", fv.age));
+                    columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.age", filteredValues.age));
                 }
 
                 List<string> tempList = new List<string>();
@@ -129,7 +129,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     stringBuilder.Append(" WHERE " + string.Join(" AND ", tempList));
                 }
 
-                stringBuilder.Append(" GROUP BY r.patient_nric LIMIT 100;");
+                stringBuilder.Append(" GROUP BY r.patient_nric LIMIT 200;");
 
                 return dataDAL.RetrievePatients(stringBuilder.ToString());
             }

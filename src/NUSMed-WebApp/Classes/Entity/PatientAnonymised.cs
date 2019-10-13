@@ -9,7 +9,6 @@ namespace NUSMed_WebApp.Classes.Entity
     {
         public List<Record> record { get; set; }
         public string postal { get; set; }
-        //public string createTime { get; set; }
         public string age { get; set; }
         private string _sex;
         public string sex
