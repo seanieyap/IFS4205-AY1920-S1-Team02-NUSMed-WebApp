@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Record Logs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Permission-Logs.aspx.cs" Inherits="NUSMed_WebApp.Admin.View_Logs.Permission_Logs" %>
+﻿<%@ Page Title="Permission Logs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Permission-Logs.aspx.cs" Inherits="NUSMed_WebApp.Admin.View_Logs.Permission_Logs" %>
 
 <%@ MasterType VirtualPath="~/site.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
