@@ -321,8 +321,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.CommandText = @" ";
 
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append(@"SELECT pd.diagnosis_code, pd.start, pd.end, 
-                    d.diagnosis_description_short, d.category_title 
+                stringBuilder.Append(@"SELECT pd.diagnosis_code, d.diagnosis_description_short, d.category_title 
                     FROM patient_diagnosis pd 
                     INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
 					WHERE pd.patient_nric = 
@@ -360,10 +359,7 @@ namespace NUSMed_WebApp.Classes.DAL
                             {
                                 therapist = new Entity.Therapist(),
                                 diagnosis = diagnosis,
-                                start = Convert.ToDateTime(reader["start"]),
                             };
-                            patientDiagnosis.end = reader["end"] == DBNull.Value ? null :
-                               (DateTime?)Convert.ToDateTime(reader["end"]);
 
                             result.Add(patientDiagnosis);
                         }
@@ -389,8 +385,8 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, 
-                    r.create_time, r.file_extension
+                stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, r.file_extension,
+                    ra.record_create_date
                     FROM record r
                     INNER JOIN records_anonymized ra ON ra.record_id = r.id 
                     INNER JOIN account a ON a.nric = r.creator_nric
@@ -421,7 +417,7 @@ namespace NUSMed_WebApp.Classes.DAL
                                 type = RecordType.Get(Convert.ToString(reader["type"])),
                                 content = Convert.ToString(reader["content"]),
                                 title = Convert.ToString(reader["title"]),
-                                createTime = Convert.ToDateTime(reader["create_time"]),
+                                createTimeAnon = Convert.ToString(reader["record_create_date"]),
                                 fileExtension = Convert.ToString(reader["file_extension"])
                             };
                             result.Add(record);

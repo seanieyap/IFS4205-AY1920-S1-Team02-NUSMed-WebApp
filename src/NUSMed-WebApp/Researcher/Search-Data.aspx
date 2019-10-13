@@ -258,7 +258,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Creation Time">
                                             <ItemTemplate>
-                                                <%# Item.createTime.ToString() %>
+                                                <%# Item.createTimeAnon %>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Diagnosis" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
@@ -385,12 +385,6 @@
                                                 <asp:TemplateField HeaderText="Category">
                                                     <ItemTemplate>
                                                         <%# Item.diagnosis.categoryTitle %>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-
-                                                <asp:TemplateField HeaderText="Start">
-                                                    <ItemTemplate>
-                                                        <%# Item.start %>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>

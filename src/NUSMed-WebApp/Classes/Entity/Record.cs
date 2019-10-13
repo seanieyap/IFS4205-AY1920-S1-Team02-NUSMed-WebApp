@@ -66,6 +66,7 @@ namespace NUSMed_WebApp.Classes.Entity
         public string title { get; set; }
         public string description { get; set; }
         public DateTime createTime { get; set; }
+        public string createTimeAnon { get; set; }
         public string fileName { get; set; }
         public string fileNameHash
         {
