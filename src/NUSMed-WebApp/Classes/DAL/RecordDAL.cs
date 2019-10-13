@@ -121,69 +121,6 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
-        /// Retrieve Records information with specific id owned by specific patient
-        /// </summary>
-        public Record RetrieveRecord(long recordID, string therapistNRIC)
-        {
-            Record result = new Record();
-
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"SELECT DISTINCT r.id, r.patient_nric, r.creator_nric, r.description, r.type, r.content, r.title, 
-                    r.file_name, r.file_extension, r.file_checksum, r.file_size, r.create_time, r.is_emergency, r.file_extension, r.status as record_status,
-                    a.name_first as creator_name_first, a.name_last as creator_name_last,
-                    rp.status as record_permission_status
-                    FROM record r
-                    INNER JOIN account a ON a.nric = r.creator_nric
-                    INNER JOIN record_type_permission rtp ON rtp.patient_nric = r.patient_nric
-                    LEFT JOIN record_permission rp ON rp.record_id = r.id AND rp.therapist_nric = @therapistNRIC
-                    WHERE r.id = @id AND rtp.therapist_nric = @therapistNRIC
-                    ORDER BY r.create_time DESC;";
-
-                cmd.Parameters.AddWithValue("@id", recordID);
-                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
-
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            Record record = new Record
-                            {
-                                id = Convert.ToInt64(reader["id"]),
-                                patientNRIC = Convert.ToString(reader["patient_nric"]),
-                                creatorNRIC = Convert.ToString(reader["creator_nric"]),
-                                description = Convert.ToString(reader["description"]),
-                                type = RecordType.Get(Convert.ToString(reader["type"])),
-                                content = Convert.ToString(reader["content"]),
-                                title = Convert.ToString(reader["title"]),
-                                isEmergency = Convert.ToBoolean(reader["is_emergency"]),
-                                fileExtension = Convert.ToString(reader["file_extension"]),
-                                fileName = Convert.ToString(reader["file_name"]),
-                                //fileSize = Convert.ToInt32(reader["file_size"]),
-                                fileChecksum = Convert.ToString(reader["file_checksum"]),
-                                createTime = Convert.ToDateTime(reader["create_time"]),
-                                creatorFirstName = Convert.ToString(reader["creator_name_first"]),
-                                creatorLastName = Convert.ToString(reader["creator_name_last"]),
-                                status = Convert.ToInt16(reader["record_status"])
-                            };
-                            record.fileSize = reader["file_size"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["file_size"]);
-
-                            record.recordPermissionStatus = reader["record_permission_status"] == DBNull.Value ? null : (short?)Convert.ToInt16(reader["record_permission_status"]);
-                            result = record;
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Retrieve Records information attached to a note
         /// </summary>
         public List<Record> RetrieveRecords(long noteID, string patientNRIC, string therapistNRIC)
@@ -245,9 +182,71 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
+        /// Retrieve Records information with specific id owned by specific patient
+        /// </summary>
+        public Record RetrieveRecord(long recordID, string therapistNRIC)
+        {
+            Record result = new Record();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT DISTINCT r.id, r.patient_nric, r.creator_nric, r.description, r.type, r.content, r.title, 
+                    r.file_name, r.file_extension, r.file_checksum, r.file_size, r.create_time, r.is_emergency, r.file_extension, r.status as record_status,
+                    a.name_first as creator_name_first, a.name_last as creator_name_last,
+                    rp.status as record_permission_status
+                    FROM record r
+                    INNER JOIN account a ON a.nric = r.creator_nric
+                    INNER JOIN record_type_permission rtp ON rtp.patient_nric = r.patient_nric
+                    LEFT JOIN record_permission rp ON rp.record_id = r.id AND rp.therapist_nric = @therapistNRIC
+                    WHERE r.id = @id AND rtp.therapist_nric = @therapistNRIC
+                    ORDER BY r.create_time DESC;";
+
+                cmd.Parameters.AddWithValue("@id", recordID);
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            Record record = new Record
+                            {
+                                id = Convert.ToInt64(reader["id"]),
+                                patientNRIC = Convert.ToString(reader["patient_nric"]),
+                                creatorNRIC = Convert.ToString(reader["creator_nric"]),
+                                description = Convert.ToString(reader["description"]),
+                                type = RecordType.Get(Convert.ToString(reader["type"])),
+                                content = Convert.ToString(reader["content"]),
+                                title = Convert.ToString(reader["title"]),
+                                isEmergency = Convert.ToBoolean(reader["is_emergency"]),
+                                fileExtension = Convert.ToString(reader["file_extension"]),
+                                fileName = Convert.ToString(reader["file_name"]),
+                                fileChecksum = Convert.ToString(reader["file_checksum"]),
+                                createTime = Convert.ToDateTime(reader["create_time"]),
+                                creatorFirstName = Convert.ToString(reader["creator_name_first"]),
+                                creatorLastName = Convert.ToString(reader["creator_name_last"]),
+                                status = Convert.ToInt16(reader["record_status"])
+                            };
+                            record.fileSize = reader["file_size"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["file_size"]);
+
+                            record.recordPermissionStatus = reader["record_permission_status"] == DBNull.Value ? null : (short?)Convert.ToInt16(reader["record_permission_status"]);
+                            result = record;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Retrieve Record's associated file information owned by specific patient NRIC
         /// </summary>
-        public Record RetrieveRecord(string patientNRIC, int id)
+        public Record RetrieveRecord(string patientNRIC, long recordID)
         {
             Record result = new Record();
 
@@ -261,7 +260,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     WHERE r.patient_nric = @patientNRIC AND r.id = @id;";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
-                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@id", recordID);
 
                 using (cmd.Connection = connection)
                 {
@@ -341,7 +340,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve all the diagnoses attributed to a specific record
         /// </summary>
-        public List<RecordDiagnosis> RetrieveRecordDiagnoses(int recordID, string patientNRIC)
+        public List<RecordDiagnosis> RetrieveRecordDiagnoses(long recordID, string patientNRIC)
         {
             List<RecordDiagnosis> result = new List<RecordDiagnosis>();
 
@@ -399,7 +398,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve all the diagnoses attributed to a specific record of a specific patient
         /// </summary>
-        public List<RecordDiagnosis> RetrieveRecordDiagnoses(int recordID, string patientNRIC, string therapistNRIC)
+        public List<RecordDiagnosis> RetrieveRecordDiagnoses(long recordID, string patientNRIC, string therapistNRIC)
         {
             List<RecordDiagnosis> result = new List<RecordDiagnosis>();
 
@@ -461,14 +460,14 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Insert a Record Diagnosis
         /// </summary>
-        public void InsertRecordDiagnosis(string therapistNRIC, int id, string code)
+        public void InsertRecordDiagnosis(string therapistNRIC, long recordID, string code)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"INSERT INTO record_diagnosis (record_id, diagnosis_code, creator_nric)
                     VALUES (@id, @code, @creatorNRIC);";
 
-                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@id", recordID);
                 cmd.Parameters.AddWithValue("@code", code);
                 cmd.Parameters.AddWithValue("@creatorNRIC", therapistNRIC);
 
@@ -483,7 +482,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve Record's associated file information owned by specific patient NRIC
         /// </summary>
-        public Record RetrieveFileInformation(string patientNRIC, string therapistNRIC, int id)
+        public Record RetrieveFileInformation(string patientNRIC, string therapistNRIC, long recordID)
         {
             Record result = new Record();
 
@@ -500,7 +499,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
                 cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
-                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@id", recordID);
 
                 using (cmd.Connection = connection)
                 {
@@ -580,7 +579,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve owner of record
         /// </summary>
-        public bool RetrieveRecordOwner(string patientNRIC, int recordID)
+        public bool RetrieveRecordOwner(string patientNRIC, long recordID)
         {
             bool result = false;
 
@@ -614,7 +613,7 @@ namespace NUSMed_WebApp.Classes.DAL
         #endregion
 
         #region Updates
-        public void UpdateRecordEnable(int recordID, string patientNRIC)
+        public void UpdateRecordEnable(long recordID, string patientNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
@@ -632,7 +631,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
-        public void UpdateRecordDisable(int recordID, string patientNRIC)
+        public void UpdateRecordDisable(long recordID, string patientNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
@@ -716,7 +715,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
-        public void InsertRecordPermissionDisallow(int recordID, string therapistNRIC)
+        public void InsertRecordPermissionDisallow(long recordID, string therapistNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
@@ -737,7 +736,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
-        public void InsertRecordPermissionAllow(int recordID, string therapistNRIC)
+        public void InsertRecordPermissionAllow(long recordID, string therapistNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {

@@ -174,7 +174,7 @@ namespace NUSMed_WebApp.Classes.BLL
         public DateTime GetCreateTime(string nric)
         {
             if ((IsPatient() && nric.Equals(GetNRIC())) ||
-                IsTherapist())
+                IsTherapist() || IsResearcher())
             {
                 return accountDAL.RetrieveCreateTime(nric);
             }
@@ -363,7 +363,7 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (IsAdministrator())
             {
-                logBLL.LogEvent(GetNRIC(), "View List of Therapists", "Action on: " + patientNRIC + ", using term: " + term + ".");
+                logBLL.LogEvent(GetNRIC(), "View List of Therapists", "Action on: " + patientNRIC + ", using Term: \"" + term + "\".");
 
                 return accountDAL.RetrieveTherapists(patientNRIC, term);
             }
@@ -472,7 +472,7 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (IsAdministrator())
             {
-                logBLL.LogEvent(GetNRIC(), "Get All Accounts", "Term: " + term + ".");
+                logBLL.LogEvent(GetNRIC(), "Get All Accounts", "Term: \"" + term + "\".");
                 return accountDAL.RetrieveAllAccounts(term, GetNRIC());
             }
 

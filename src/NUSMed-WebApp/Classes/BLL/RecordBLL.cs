@@ -86,7 +86,8 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-        public Record GetRecord(int recordID)
+
+        public Record GetRecord(long recordID)
         {
             if (AccountBLL.IsPatient())
             {
@@ -109,8 +110,8 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-
-        public List<RecordDiagnosis> GetRecordDiagnoses(int recordID)
+       
+        public List<RecordDiagnosis> GetRecordDiagnoses(long recordID)
         {
             if (AccountBLL.IsPatient())
             {
@@ -132,7 +133,7 @@ namespace NUSMed_WebApp.Classes.BLL
             return null;
         }
 
-        public void AddRecordDiagnosis(string patientNRIC, int recordID, string code)
+        public void AddRecordDiagnosis(string patientNRIC, long recordID, string code)
         {
             if (AccountBLL.IsTherapist())
             {
@@ -233,7 +234,7 @@ namespace NUSMed_WebApp.Classes.BLL
         }
 
 
-        public void UpdateRecordEnable(int recordID)
+        public void UpdateRecordEnable(long recordID)
         {
             if (AccountBLL.IsPatient())
             {
@@ -241,7 +242,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Update Record Status Enable", "Record ID: " + recordID + ".");
             }
         }
-        public void UpdateRecordDisable(int recordID)
+        public void UpdateRecordDisable(long recordID)
         {
             if (AccountBLL.IsPatient())
             {
@@ -249,7 +250,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Update Record Status Disable", "Record ID: " + recordID + ".");
             }
         }
-        public void UpdateRecordTherapistDefault(int recordID, string therapistNRIC)
+        public void UpdateRecordTherapistDefault(long recordID, string therapistNRIC)
         {
             if (AccountBLL.IsPatient())
             {
@@ -261,7 +262,7 @@ namespace NUSMed_WebApp.Classes.BLL
             }
         }
 
-        public void UpdateRecordTherapistAllow(int recordID, string therapistNRIC)
+        public void UpdateRecordTherapistAllow(long recordID, string therapistNRIC)
         {
             if (AccountBLL.IsPatient())
             {
@@ -272,7 +273,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 }
             }
         }
-        public void UpdateRecordTherapistDisallow(int recordID, string therapistNRIC)
+        public void UpdateRecordTherapistDisallow(long recordID, string therapistNRIC)
         {
             if (AccountBLL.IsPatient())
             {

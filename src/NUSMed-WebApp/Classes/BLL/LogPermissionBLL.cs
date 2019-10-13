@@ -36,7 +36,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 {
                     if (actionsValidatedDictionary.ContainsKey(action))
                     {
-                        actionsValidated.Add(new Tuple<string, string>("@" + action.Replace(" ", String.Empty), action));
+                        actionsValidated.Add(new Tuple<string, string>("@" + action.Replace(" ", string.Empty), action));
                     }
                 }
 

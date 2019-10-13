@@ -26,7 +26,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 {
                     if (subjectNRICsValidatedDictionary.ContainsKey(subjectNRIC))
                     {
-                        subjectNRICsValidated.Add(new Tuple<string, string>("@" + subjectNRIC.Replace(" ", String.Empty), subjectNRIC));
+                        subjectNRICsValidated.Add(new Tuple<string, string>("@" + subjectNRIC.Replace(" ", string.Empty), subjectNRIC));
                     }
                 }
 
@@ -36,7 +36,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 {
                     if (actionsValidatedDictionary.ContainsKey(action))
                     {
-                        actionsValidated.Add(new Tuple<string, string>("@" + action.Replace(" ", String.Empty), action));
+                        actionsValidated.Add(new Tuple<string, string>("@" + action.Replace(" ", string.Empty), action));
                     }
                 }
 

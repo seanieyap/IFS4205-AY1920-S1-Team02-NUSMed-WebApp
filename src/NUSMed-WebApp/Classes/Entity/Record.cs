@@ -176,7 +176,6 @@ namespace NUSMed_WebApp.Classes.Entity
 
         public bool IsFileSafe()
         {
-            string test = GetMD5HashFromFile();
             if (fileNameHash.Contains("\\") || !File.Exists(fullpath)
                 || !GetMD5HashFromFile().Equals(fileChecksum)
                 || new FileInfo(fullpath).Length != (int)fileSize)

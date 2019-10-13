@@ -7,7 +7,7 @@ namespace NUSMed_WebApp.Classes.Entity
     [Serializable]
     public class PatientAnonymised
     {
-        public List<Record> record { get; set; }
+        public string recordIDs { get; set; }
         public string postal { get; set; }
         public string age { get; set; }
         private string _sex;

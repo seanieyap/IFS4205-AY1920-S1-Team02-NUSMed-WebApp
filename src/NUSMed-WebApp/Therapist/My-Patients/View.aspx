@@ -411,7 +411,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12">
-                                <asp:GridView ID="GridViewRecords" CssClass="table table-sm table-responsive-md small" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
+                                <asp:GridView ID="GridViewRecords" CssClass="table table-sm table-responsive-sm small" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
                                     AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" 
                                     OnRowDataBound="GridViewRecords_RowDataBound" OnRowCommand="GridViewRecords_RowCommand" ItemType="NUSMed_WebApp.Classes.Entity.Record"
                                     OnPageIndexChanging="GridViewRecords_PageIndexChanging" DataKeyNames="id" EmptyDataRowStyle-CssClass="empty-table" runat="server">

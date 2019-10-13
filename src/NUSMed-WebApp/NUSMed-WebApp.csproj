@@ -249,6 +249,7 @@
     <Content Include="Scripts\bootstrap-select.js.map" />
     <Content Include="Scripts\bootstrap-select.min.js.map" />
     <Content Include="Scripts\finance-charts-apple.txt" />
+    <Content Include="Researcher\Download.ashx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Images\ajax-loader.gif" />
     <Content Include="Images\favicon.ico" />
@@ -541,6 +542,9 @@
     </Compile>
     <Compile Include="Researcher\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Researcher\Download.ashx.cs">
+      <DependentUpon>Download.ashx</DependentUpon>
     </Compile>
     <Compile Include="Researcher\Search-Data.aspx.cs">
       <DependentUpon>Search-Data.aspx</DependentUpon>

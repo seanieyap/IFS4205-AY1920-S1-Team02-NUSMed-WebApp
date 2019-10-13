@@ -94,15 +94,6 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.WebControls.ListBox inputMaritalStatusLevel;
         
         /// <summary>
-        /// inputRecordType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox inputRecordType;
-        
-        /// <summary>
         /// inputDiagnosis control.
         /// </summary>
         /// <remarks>
@@ -112,13 +103,22 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.WebControls.ListBox inputDiagnosis;
         
         /// <summary>
-        /// labelTitleCreationDate control.
+        /// inputRecordType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelTitleCreationDate;
+        protected global::System.Web.UI.WebControls.ListBox inputRecordType;
+        
+        /// <summary>
+        /// inputRecordDiagnosis control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox inputRecordDiagnosis;
         
         /// <summary>
         /// inputCreationDate control.
@@ -130,15 +130,6 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.WebControls.ListBox inputCreationDate;
         
         /// <summary>
-        /// buttonFilter control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton buttonFilter;
-        
-        /// <summary>
         /// UpdatePanelPatientAnonymised control.
         /// </summary>
         /// <remarks>
@@ -148,6 +139,15 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.UpdatePanel UpdatePanelPatientAnonymised;
         
         /// <summary>
+        /// ButtonFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ButtonFilter;
+        
+        /// <summary>
         /// GridViewPatientAnonymised control.
         /// </summary>
         /// <remarks>
@@ -155,6 +155,204 @@ namespace NUSMed_WebApp.Researcher {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridViewPatientAnonymised;
+        
+        /// <summary>
+        /// LinkButton1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+        
+        /// <summary>
+        /// LinkButton2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButton2;
+        
+        /// <summary>
+        /// UpdatePanelRecords control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelRecords;
+        
+        /// <summary>
+        /// GridViewRecords control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewRecords;
+        
+        /// <summary>
+        /// UpdatePanelFileView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelFileView;
+        
+        /// <summary>
+        /// labelRecordName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelRecordName;
+        
+        /// <summary>
+        /// buttonCloseModalFileViewTop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonCloseModalFileViewTop;
+        
+        /// <summary>
+        /// modalFileViewImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image modalFileViewImage;
+        
+        /// <summary>
+        /// modalFileViewVideo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlVideo modalFileViewVideo;
+        
+        /// <summary>
+        /// modalFileViewVideoSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSource modalFileViewVideoSource;
+        
+        /// <summary>
+        /// modalFileViewPanelText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel modalFileViewPanelText;
+        
+        /// <summary>
+        /// FileDownloadLinkviaModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor FileDownloadLinkviaModal;
+        
+        /// <summary>
+        /// modalFileViewLabelFileName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label modalFileViewLabelFileName;
+        
+        /// <summary>
+        /// modalFileViewLabelFileSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label modalFileViewLabelFileSize;
+        
+        /// <summary>
+        /// buttonCloseModalFileViewBottom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonCloseModalFileViewBottom;
+        
+        /// <summary>
+        /// UpdatePanelDiagnosisView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelDiagnosisView;
+        
+        /// <summary>
+        /// GridViewPatientDiagnoses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewPatientDiagnoses;
+        
+        /// <summary>
+        /// UpdatePanelRecordDiagnosisView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelRecordDiagnosisView;
+        
+        /// <summary>
+        /// labelRecordNameDiagnosis control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelRecordNameDiagnosis;
+        
+        /// <summary>
+        /// buttonCloseModalRecordDiagnosisViewTop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonCloseModalRecordDiagnosisViewTop;
+        
+        /// <summary>
+        /// GridViewRecordDiagnoses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewRecordDiagnoses;
+        
+        /// <summary>
+        /// buttonCloseModalRecordDiagnosisViewBottom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton buttonCloseModalRecordDiagnosisViewBottom;
         
         /// <summary>
         /// Master property.

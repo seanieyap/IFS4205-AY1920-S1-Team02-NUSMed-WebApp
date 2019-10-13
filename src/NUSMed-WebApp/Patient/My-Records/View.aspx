@@ -20,7 +20,7 @@
         <ContentTemplate>
             <div class="row">
                 <div class="col-12">
-                    <asp:GridView ID="GridViewRecords" CssClass="table table-sm table-responsive-md" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
+                    <asp:GridView ID="GridViewRecords" CssClass="table table-sm table-responsive-sm" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" 
                         OnRowDataBound="GridViewRecords_RowDataBound" OnRowCommand="GridViewRecords_RowCommand" ItemType="NUSMed_WebApp.Classes.Entity.Record"
                         OnPageIndexChanging="GridViewRecords_PageIndexChanging" DataKeyNames="id" EmptyDataRowStyle-CssClass="empty-table" runat="server">
@@ -200,7 +200,7 @@
                                 </div>
 
                                 <div class="col-12 mt-3">
-                                    <asp:GridView ID="GridViewFineGrain" CssClass="table table-sm table-responsive-md small" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
+                                    <asp:GridView ID="GridViewFineGrain" CssClass="table table-sm table-responsive-sm small" AllowPaging="true" PageSize="10" PagerStyle-CssClass="pagination-gridview"
                                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
                                         ItemType="NUSMed_WebApp.Classes.Entity.Therapist" DataKeyNames="nric" OnRowCommand="GridViewFineGrain_RowCommand" OnRowDataBound="GridViewFineGrain_RowDataBound"
                                         OnPageIndexChanging="GridViewFineGrain_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
@@ -291,19 +291,16 @@
                                                         <%# Item.diagnosis.code %>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-
                                                 <asp:TemplateField HeaderText="Description">
                                                     <ItemTemplate>
                                                         <%# Item.diagnosis.descriptionShort %>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-
                                                 <asp:TemplateField HeaderText="Category">
                                                     <ItemTemplate>
                                                         <%# Item.diagnosis.categoryTitle %>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-
                                                 <asp:TemplateField HeaderText="Attributed By">
                                                     <ItemTemplate>
                                                         <%# Item.therapist.lastName + " " + Item.therapist.firstName %>

@@ -3,8 +3,10 @@ using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace NUSMed_WebApp.Researcher
@@ -80,15 +82,24 @@ namespace NUSMed_WebApp.Researcher
 
                 // Postal
                 DataTable postalCodeTable = dataBLL.GetPostal();
-                foreach (DataRow postalCode in postalCodeTable.Rows)
+                if (postalCodeTable.Rows.Contains("*"))
                 {
-                    if (Equals(postalCode["postal"].ToString(), "*"))
+                    inputPostal.Attributes.Add("disabled", "true");
+                }
+                else
+                {
+                    foreach (DataRow postalCode in postalCodeTable.Rows)
                     {
-                        inputPostal.Attributes.Add("disabled", "true");
-                        break;
+                        inputPostal.Items.Add(new ListItem(postalCode["postal"].ToString(), postalCode["postal"].ToString()));
                     }
+                }
 
-                    inputPostal.Items.Add(new ListItem(postalCode["postal"].ToString(), postalCode["postal"].ToString()));
+                // Diagnoses
+                DataTable diagnosesTable = dataBLL.GetDiagnoses();
+                foreach (DataRow diagnosis in diagnosesTable.Rows)
+                {
+                    string buffer = diagnosis["diagnosis_code"].ToString();
+                    inputDiagnosis.Items.Add(new ListItem(buffer + ": " + diagnosis["diagnosis_description_short"].ToString(), buffer));
                 }
 
                 // Record Type
@@ -100,24 +111,26 @@ namespace NUSMed_WebApp.Researcher
                 inputRecordType.Items.Add(new ListItem("Weight Measurement", "Weight Measurement"));
                 inputRecordType.Items.Add(new ListItem("X-ray", "X-ray"));
 
-                // Diagnoses
-                DataTable diagnosesTable = dataBLL.GetDiagnoses();
-                foreach (DataRow diagnosis in diagnosesTable.Rows)
+                // Record Diagnoses
+                DataTable recordDiagnosesTable = dataBLL.GetRecordDiagnoses();
+                foreach (DataRow diagnosis in recordDiagnosesTable.Rows)
                 {
-                    inputDiagnosis.Items.Add(new ListItem(diagnosis["diagnosis_description_short"].ToString(), diagnosis["diagnosis_code"].ToString()));
+                    string buffer = diagnosis["diagnosis_code"].ToString();
+                    inputRecordDiagnosis.Items.Add(new ListItem(buffer + ": " + diagnosis["diagnosis_description_short"].ToString(), buffer));
                 }
 
                 // Creation Date
-                inputCreationDate.Items.Clear();
                 DataTable creationDateTable = dataBLL.GetRecordCreationDate();
-                foreach (DataRow creationDate in creationDateTable.Rows)
+                if (creationDateTable.Rows.Contains("*"))
                 {
-                    if (Equals(creationDate["record_create_date"].ToString(), "*"))
+                    inputCreationDate.Attributes.Add("disabled", "true");
+                }
+                else
+                {
+                    foreach (DataRow creationDate in creationDateTable.Rows)
                     {
-                        inputCreationDate.Attributes.Add("disabled", "true");
-                        break;
+                        inputCreationDate.Items.Add(new ListItem(creationDate["record_create_date"].ToString(), creationDate["record_create_date"].ToString()));
                     }
-                    inputCreationDate.Items.Add(new ListItem(creationDate["record_create_date"].ToString(), creationDate["record_create_date"].ToString()));
                 }
 
                 GridViewPatientAnonymised.DataBind();
@@ -125,6 +138,7 @@ namespace NUSMed_WebApp.Researcher
             }
         }
 
+        #region GridViewPatientAnonymised Functions
         protected void GridViewPatientAnonymised_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             GridViewPatientAnonymised.PageIndex = e.NewPageIndex;
@@ -134,130 +148,55 @@ namespace NUSMed_WebApp.Researcher
 
         protected void GridViewPatientAnonymised_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            //    if (e.Row.RowType == DataControlRowType.DataRow)
-            //    {
-            //        string recordId = DataBinder.Eval(e.Row.DataItem, "id").ToString();
-            //        RecordType recordType = RecordType.Get(DataBinder.Eval(e.Row.DataItem, "record_type").ToString());
-            //        if (recordType.isContent)
-            //        {
-            //            Label LabelContent = (Label)e.Row.FindControl("LabelContent");
-            //            string content = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "content"));
-            //            string unit = recordType.prefix;
 
-            //            LabelContent.Text = content + unit;
-            //            LabelContent.Visible = true;
-            //        }
-            //        else if (!recordType.isContent)
-            //        {
-            //            LinkButton LinkbuttonFileView = (LinkButton)e.Row.FindControl("LinkbuttonFileView");
-            //            HtmlAnchor FileDownloadLink = (HtmlAnchor)e.Row.FindControl("FileDownloadLink");
-
-            //            //LinkbuttonFileView.CommandName = "FileView";
-            //            //LinkbuttonFileView.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
-            //            //LinkbuttonFileView.Visible = true;
-            //            //LinkbuttonFileView.Text = "<i class=\"fas fa-fw fa-eye\"></i></i><span class=\"d-none d-lg-inline-block\">View "
-            //            //    + DataBinder.Eval(e.Row.DataItem, "fileType") +
-            //            //    "</span>";
-
-            //            FileDownloadLink.HRef = "~/Patient/Download.ashx?record=" + DataBinder.Eval(e.Row.DataItem, "id").ToString();
-            //            FileDownloadLink.Visible = true;
-            //        }
-            //    }
         }
 
         protected void GridViewPatientAnonymised_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            //string id = e.CommandArgument.ToString();
-            //ViewState["GridViewGridViewMedicalNoteSelectedID"] = id;
+            if (e.CommandName.Equals("ViewRecords"))
+            {
+                try
+                {
+                    string recordIDsString = e.CommandArgument.ToString();
 
-            //if (e.CommandName.Equals("ViewPermission"))
-            //{
-            //    try
-            //    {
-            //        Update_UpdatePanelPermissions(nric);
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Permission Modal", "$('#modalPermissions').modal('show');", true);
-            //    }
-            //    catch
-            //    {
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Permission View.');", true);
-            //    }
-            //}
-            //else if (e.CommandName.Equals("ViewInformation"))
-            //{
-            //    try
-            //    {
-            //        // todo add additional permission checks.
-            //        Classes.Entity.Patient patient = therapistBLL.GetPatientInformation(nric);
+                    List<long> recordIDs = recordIDsString.Split(',').Select(long.Parse).ToList();
+                    List<Record> records = dataBLL.GetRecords(recordIDs);
 
-            //        // Personal Details
-            //        LabelInformationNRIC.Text = patient.nric;
-            //        inputNRIC.Value = patient.nric;
-            //        DateofBirth.Value = patient.dateOfBirth.ToString("MM/dd/yyyy");
-            //        FirstName.Value = patient.firstName;
-            //        LastName.Value = patient.lastName;
-            //        CountryofBirth.Value = patient.countryOfBirth;
-            //        Nationality.Value = patient.nationality;
-            //        Sex.Value = patient.sex;
-            //        Gender.Value = patient.gender;
-            //        MaritalStatus.Value = patient.maritalStatus;
+                    ViewState["GridViewRecords"] = records;
+                    GridViewRecords.DataSource = records;
+                    GridViewRecords.DataBind();
+                    UpdatePanelRecords.Update();
 
-            //        // Contact Details
-            //        Address.Value = patient.address;
-            //        PostalCode.Value = patient.addressPostalCode;
-            //        EmailAddress.Value = patient.email;
-            //        ContactNumber.Value = patient.contactNumber;
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Records Modal", "$('#modalRecords').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Records Modal.');", true);
+                }
+            }
+            else if (e.CommandName.Equals("ViewDiagnosis"))
+            {
+                try
+                {
+                    string recordIDsString = e.CommandArgument.ToString();
 
-            //        // Patient NOK Details
-            //        NOKName.Value = patient.nokName;
-            //        NOKContact.Value = patient.nokContact;
+                    List<long> recordIDs = recordIDsString.Split(',').Select(long.Parse).ToList();
+                    List<PatientDiagnosis> patientDiagnoses = dataBLL.GetPatientDiagnoses(recordIDs);
 
-            //        UpdatePanelInformation.Update();
+                    GridViewPatientDiagnoses.DataSource = patientDiagnoses;
+                    GridViewPatientDiagnoses.DataBind();
+                    UpdatePanelDiagnosisView.Update();
 
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Information Modal", "$('#modalInformation').modal('show');", true);
-            //    }
-            //    catch
-            //    {
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Information View.');", true);
-            //    }
-            //}
-            //else if (e.CommandName.Equals("ViewRecords"))
-            //{
-            //    try
-            //    {
-            //        List<Record> records = new RecordBLL().GetRecords(nric);
-            //        LabelRecordsNRIC.Text = nric;
-            //        modalRecordsHyperlinkNewRecord.NavigateUrl = "~/Therapist/My-Patients/New-Record?Patient-NRIC=" + nric;
-
-            //        ViewState["GridViewRecords"] = records;
-            //        GridViewRecords.DataSource = records;
-            //        GridViewRecords.DataBind();
-            //        UpdatePanelRecords.Update();
-
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "Open Select Records Modal", "$('#modalRecords').modal('show');", true);
-            //    }
-            //    catch
-            //    {
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Records Modal.');", true);
-            //    }
-            //}
-            //else if (e.CommandName.Equals("ViewDiagnosis"))
-            //{
-            //    try
-            //    {
-            //        TextboxSearchDiagnosis.Text = string.Empty;
-            //        Bind_GridViewPatientDiagnoses(nric);
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "Open Diagnosis Modal", "$('#modalDiagnosisView').modal('show');", true);
-            //    }
-            //    catch
-            //    {
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Diagnosis Modal.');", true);
-            //    }
-            //}
-
-            //Bind_GridViewMedicalNote();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open Diagnosis Modal", "$('#modalDiagnosisView').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error Opening Diagnosis Modal.');", true);
+                }
+            }
         }
 
-        protected void buttonFilter_ServerClick(object sender, EventArgs e)
+        protected void ButtonFilter_ServerClick(object sender, EventArgs e)
         {
             try
             {
@@ -315,6 +254,7 @@ namespace NUSMed_WebApp.Researcher
                     }
                 }
 
+                // Postal
                 DataTable postalTable = dataBLL.GetPostal();
                 foreach (ListItem item in inputPostal.Items)
                 {
@@ -327,6 +267,20 @@ namespace NUSMed_WebApp.Researcher
                     }
                 }
 
+                // Diagnosis
+                DataTable diagnosesTable = dataBLL.GetDiagnoses();
+                foreach (ListItem item in inputDiagnosis.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (diagnosesTable.AsEnumerable().Any(row => row.Field<string>("diagnosis_code").Equals(item.Value.Trim())))
+                        {
+                            filteredValues.diagnoses.Add(item.Value.Trim());
+                        }
+                    }
+                }
+
+
                 // Record Type
                 foreach (ListItem item in inputRecordType.Items)
                 {
@@ -336,15 +290,15 @@ namespace NUSMed_WebApp.Researcher
                     }
                 }
 
-                // Diagnosis
-                DataTable diagnosesTable = dataBLL.GetDiagnoses();
-                foreach (ListItem item in inputDiagnosis.Items)
+                // Record Diagnosis
+                DataTable recordDiagnosesTable = dataBLL.GetRecordDiagnoses();
+                foreach (ListItem item in inputRecordDiagnosis.Items)
                 {
                     if (item.Selected)
                     {
-                        if (diagnosesTable.AsEnumerable().Any(row => row.Field<string>("diagnosis_code").Equals(item.Value.Trim())))
+                        if (recordDiagnosesTable.AsEnumerable().Any(row => row.Field<string>("diagnosis_code").Equals(item.Value.Trim())))
                         {
-                            filteredValues.diagnosis.Add(item.Value.Trim());
+                            filteredValues.recordDiagnoses.Add(item.Value.Trim());
                         }
                     }
                 }
@@ -376,5 +330,188 @@ namespace NUSMed_WebApp.Researcher
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when displaying data.');", true);
             }
         }
+        #endregion
+
+        #region Patient Diagnosis Functions
+        protected void GridViewPatientDiagnoses_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewPatientDiagnoses.PageIndex = e.NewPageIndex;
+            GridViewPatientDiagnoses.DataSource = ViewState["GridViewPatientDiagnoses"];
+            GridViewPatientDiagnoses.DataBind();
+        }
+        #endregion
+
+        #region Record Functions
+        protected void GridViewRecords_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                RecordType recordType = (RecordType)DataBinder.Eval(e.Row.DataItem, "type");
+
+                if (recordType.isContent)
+                {
+                    Label LabelContent = (Label)e.Row.FindControl("LabelContent");
+                    string content = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "content"));
+
+                    LabelContent.Text = content + " " + recordType.prefix;
+                    LabelContent.Visible = true;
+                }
+                else if (!recordType.isContent)
+                {
+                    LinkButton LinkbuttonFileView = (LinkButton)e.Row.FindControl("LinkbuttonFileView");
+                    HtmlAnchor FileDownloadLink = (HtmlAnchor)e.Row.FindControl("FileDownloadLink");
+
+                    LinkbuttonFileView.CommandName = "FileView";
+                    LinkbuttonFileView.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
+                    LinkbuttonFileView.Visible = true;
+                    LinkbuttonFileView.Text = "<i class=\"fas fa-fw fa-eye\"></i></i><span class=\"d-none d-lg-inline-block\">View "
+                        + DataBinder.Eval(e.Row.DataItem, "fileType") +
+                        "</span>";
+
+                    FileDownloadLink.HRef = "~/Researcher/Download.ashx?record=" + DataBinder.Eval(e.Row.DataItem, "id").ToString();
+                    FileDownloadLink.Visible = true;
+                }
+
+                LinkButton LinkButtonRecordDiagnosisView = (LinkButton)e.Row.FindControl("LinkButtonRecordDiagnosisView");
+                LinkButtonRecordDiagnosisView.CommandName = "RecordDiagnosisView";
+                LinkButtonRecordDiagnosisView.CommandArgument = DataBinder.Eval(e.Row.DataItem, "id").ToString();
+                LinkButtonRecordDiagnosisView.Visible = true;
+                LinkButtonRecordDiagnosisView.Text = "<i class=\"fas fa-fw fa-eye\"></i></i><span class=\"d-none d-lg-inline-block\">View</span>";
+            }
+        }
+        protected void GridViewRecords_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewRecords.PageIndex = e.NewPageIndex;
+            GridViewRecords.DataSource = ViewState["GridViewRecords"];
+            GridViewRecords.DataBind();
+        }
+        protected void GridViewRecords_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName.Equals("FileView"))
+            {
+                try
+                {
+                    long recordID = Convert.ToInt64(e.CommandArgument);
+                    Record record = dataBLL.GetRecord(recordID);
+
+                    modalFileViewImage.Visible = false;
+                    modalFileViewVideo.Visible = false;
+                    modalFileViewPanelText.Visible = false;
+
+                    labelRecordName.Text = record.title;
+                    modalFileViewLabelFileName.Text = record.fileName + record.fileExtension;
+                    modalFileViewLabelFileSize.Text = record.fileSizeMegabytes;
+                    FileDownloadLinkviaModal.HRef = "~/Researcher/Download.ashx?record=" + record.id.ToString();
+
+                    if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
+                    {
+                        modalFileViewImage.Visible = true;
+                        modalFileViewImage.ImageUrl = "~/Researcher/Download.ashx?record=" + record.id;
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').modal('show');", true);
+                    }
+                    else if (record.fileExtension == ".txt")
+                    {
+                        modalFileViewPanelText.Visible = true;
+                        if (record.IsFileSafe())
+                        {
+                            string js = record.type.GetTextPlotJS(File.ReadAllText(record.fullpath));
+
+                            ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').on('shown.bs.modal', function (e) {  " + js + "}); $('#modalFileView').modal('show');", true);
+                        }
+                    }
+                    else if (record.fileExtension == ".mp4")
+                    {
+                        modalFileViewVideo.Visible = true;
+                        modalFileViewVideoSource.Attributes.Add("src", "~/Researcher/Download.ashx?record=" + record.id);
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').modal('show');", true);
+                    }
+
+                    UpdatePanelFileView.Update();
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
+                }
+            }
+            else if (e.CommandName.Equals("RecordDiagnosisView"))
+            {
+                try
+                {
+                    long recordID = Convert.ToInt64(e.CommandArgument);
+
+                    Record record = dataBLL.GetRecord(recordID);
+                    labelRecordNameDiagnosis.Text = record.title;
+
+                    List<RecordDiagnosis> recordDiagnoses = dataBLL.GetRecordDiagnoses(recordID);
+                    ViewState["GridViewRecordDiagnoses"] = recordDiagnoses;
+                    GridViewRecordDiagnoses.DataSource = recordDiagnoses;
+                    GridViewRecordDiagnoses.DataBind();
+
+                    UpdatePanelRecordDiagnosisView.Update();
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Open View Record Diagnosis Modal", "$('#modalRecords').modal('hide'); $('#modalRecordDiagnosisView').modal('show');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View Record Diagnosis Modal", "toastr['error']('Error Opening Record Diagnosis Modal.');", true);
+                }
+            }
+        }
+
+        protected void CloseModalFileView_ServerClick(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "Close View File Modal", " $('#modalFileView').modal('hide'); $('#modalRecords').modal('show');", true);
+        }
+        #endregion
+
+        #region Record Diagnosis Functions
+        protected void GridViewRecordDiagnoses_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewRecordDiagnoses.PageIndex = e.NewPageIndex;
+            GridViewRecordDiagnoses.DataSource = ViewState["GridViewRecordDiagnoses"];
+            GridViewRecordDiagnoses.DataBind();
+        }
+
+        //protected void GridViewRecordDiagnosesAdd_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        //{
+        //    GridViewRecordDiagnosesAdd.PageIndex = e.NewPageIndex;
+        //    GridViewRecordDiagnosesAdd.DataSource = ViewState["GridViewRecordDiagnosesAdd"];
+        //    GridViewRecordDiagnosesAdd.DataBind();
+        //}
+
+        //protected void GridViewRecordDiagnosesAdd_RowCommand(object sender, GridViewCommandEventArgs e)
+        //{
+        //    if (e.CommandName.Equals("AddRecordDiagnosis"))
+        //    {
+        //        try
+        //        {
+        //            string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
+        //            string code = e.CommandArgument.ToString();
+        //            int recordID = Convert.ToInt64(ViewState["GridViewRecordsSelectedRecord"]);
+
+        //            recordBLL.AddRecordDiagnosis(patientNRIC, recordID, code);
+
+        //            Bind_GridViewRecordDiagnoses();
+        //            ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Diagnosis has been Successfully Rttributed to Record.');", true);
+        //        }
+        //        catch
+        //        {
+        //            ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Attributing Diagnosis to Record.');", true);
+        //        }
+        //    }
+        //}
+
+        //protected void ButtonSearchDiagnosisForRecord_Click(object sender, EventArgs e)
+        //{
+        //    Bind_GridViewRecordDiagnoses();
+        //}
+
+        protected void CloseModalRecordDiagnosisView_ServerClick(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "Close View Record Diagnosis Modal", " $('#modalRecordDiagnosisView').modal('hide'); $('#modalRecords').modal('show');", true);
+        }
+        #endregion
     }
 }

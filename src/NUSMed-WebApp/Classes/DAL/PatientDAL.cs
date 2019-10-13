@@ -68,7 +68,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve all of therapist's existing patients
         /// </summary>
-        public List<Entity.Therapist> RetrieveCurrentTherapistsFineGrain(string term, int recordID, string patientNRIC)
+        public List<Entity.Therapist> RetrieveCurrentTherapistsFineGrain(string term, long recordID, string patientNRIC)
         {
             List<Entity.Therapist> result = new List<Entity.Therapist>();
 

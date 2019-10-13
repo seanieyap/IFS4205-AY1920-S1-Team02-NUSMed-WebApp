@@ -4,12 +4,12 @@ using System.Collections.ObjectModel;
 
 namespace NUSMed_WebApp.Classes.Entity
 {
-  [Serializable]
-  public class GeneralizedSetting
-  {
-    #region Age Values
-    private static readonly IList<Tuple<string, string>> ageOptionsLevel0 = new ReadOnlyCollection<Tuple<string, string>>(
-        new List<Tuple<string, string>> {
+    [Serializable]
+    public class GeneralizedSetting
+    {
+        #region Age Values
+        private static readonly IList<Tuple<string, string>> ageOptionsLevel0 = new ReadOnlyCollection<Tuple<string, string>>(
+            new List<Tuple<string, string>> {
                          Tuple.Create("0", "0"),
                          Tuple.Create("1", "1"),
                          Tuple.Create("2", "2"),
@@ -110,10 +110,10 @@ namespace NUSMed_WebApp.Classes.Entity
                          Tuple.Create("97", "97"),
                          Tuple.Create("98", "98"),
                          Tuple.Create("99", "99")
-        });
+            });
 
-    private static readonly IList<Tuple<string, string>> ageOptionsLevel1 = new ReadOnlyCollection<Tuple<string, string>>(
-            new List<Tuple<string, string>> {
+        private static readonly IList<Tuple<string, string>> ageOptionsLevel1 = new ReadOnlyCollection<Tuple<string, string>>(
+                new List<Tuple<string, string>> {
                         Tuple.Create("0-9", "0 - 9"),
                         Tuple.Create("10-19", "10 - 19"),
                         Tuple.Create("20-29", "20 - 29"),
@@ -124,142 +124,142 @@ namespace NUSMed_WebApp.Classes.Entity
                         Tuple.Create("70-79", "70 - 79"),
                         Tuple.Create("80-89", "80 - 89"),
                         Tuple.Create("90-99", "90 - 99")
-            });
+                });
 
-    private static readonly IList<Tuple<string, string>> ageOptionsLevel2 = new ReadOnlyCollection<Tuple<string, string>>(
-            new List<Tuple<string, string>> {
+        private static readonly IList<Tuple<string, string>> ageOptionsLevel2 = new ReadOnlyCollection<Tuple<string, string>>(
+                new List<Tuple<string, string>> {
                         Tuple.Create("0-19", "0 - 19"),
                         Tuple.Create("20-39", "20 - 39"),
                         Tuple.Create("40-59", "40 - 59"),
                         Tuple.Create("60-79", "60 - 79"),
                         Tuple.Create("80-99", "80 - 99"),
-            });
-    #endregion
+                });
+        #endregion
 
-    #region Marital Status Values
-    private static readonly IList<Tuple<string, string>> maritalStatusOptionsLevel0 = new ReadOnlyCollection<Tuple<string, string>>(
-            new List<Tuple<string, string>> {
+        #region Marital Status Values
+        private static readonly IList<Tuple<string, string>> maritalStatusOptionsLevel0 = new ReadOnlyCollection<Tuple<string, string>>(
+                new List<Tuple<string, string>> {
                         Tuple.Create("SINGLE", "Single"),
                         Tuple.Create("WIDOWED", "Widowed"),
                         Tuple.Create("DIVORCED", "Divorced"),
                         Tuple.Create("MARRIED", "Married"),
-            });
+                });
 
-    private static readonly IList<Tuple<string, string>> maritalStatusOptionsLevel1 = new ReadOnlyCollection<Tuple<string, string>>(
-            new List<Tuple<string, string>> {
+        private static readonly IList<Tuple<string, string>> maritalStatusOptionsLevel1 = new ReadOnlyCollection<Tuple<string, string>>(
+                new List<Tuple<string, string>> {
                         Tuple.Create("NEVER MARRIED", "Never married"),
                         Tuple.Create("BEEN MARRIED", "Been married"),
-            });
-    #endregion
+                });
+        #endregion
 
-    #region Gender Values
-    private static readonly IList<Tuple<string, string>> genderOptionsLevel0 = new ReadOnlyCollection<Tuple<string, string>>(
-            new List<Tuple<string, string>> {
+        #region Gender Values
+        private static readonly IList<Tuple<string, string>> genderOptionsLevel0 = new ReadOnlyCollection<Tuple<string, string>>(
+                new List<Tuple<string, string>> {
                         Tuple.Create("MALE", "Male"),
                         Tuple.Create("FEMALE", "Female"),
                         Tuple.Create("TRANS", "Trans"),
                         Tuple.Create("OTHERS", "Others"),
                         Tuple.Create("PREFER NOT TO SAY", "Prefer not to say"),
-            });
-    #endregion
+                });
+        #endregion
 
-    #region Sex Values
-    private static readonly IList<Tuple<string, string>> sexOptionsLevel0 = new ReadOnlyCollection<Tuple<string, string>>(
-            new List<Tuple<string, string>> {
+        #region Sex Values
+        private static readonly IList<Tuple<string, string>> sexOptionsLevel0 = new ReadOnlyCollection<Tuple<string, string>>(
+                new List<Tuple<string, string>> {
                         Tuple.Create("MALE", "Male"),
                         Tuple.Create("FEMALE", "Female"),
-            });
-    #endregion
+                });
+        #endregion
 
-    public int maritalStatus { get; set; } = -1;
+        public int maritalStatus { get; set; } = -1;
 
-    public IList<Tuple<string, string>> maritalStatusOptions
-    {
-      get
-      {
-        if (maritalStatus == 0)
+        public IList<Tuple<string, string>> maritalStatusOptions
         {
-          return maritalStatusOptionsLevel0;
+            get
+            {
+                if (maritalStatus == 0)
+                {
+                    return maritalStatusOptionsLevel0;
+                }
+                else if (maritalStatus == 1)
+                {
+                    return maritalStatusOptionsLevel1;
+                }
+
+                return null;
+            }
         }
-        else if (maritalStatus == 1)
+        public int gender { get; set; } = -1;
+
+        public IList<Tuple<string, string>> genderOptions
         {
-          return maritalStatusOptionsLevel1;
+            get
+            {
+                if (gender == 0)
+                {
+                    return genderOptionsLevel0;
+                }
+                return null;
+            }
         }
 
-        return null;
-      }
+        public int sex { get; set; } = -1;
+
+        public IList<Tuple<string, string>> sexOptions
+        {
+            get
+            {
+                if (sex == 0)
+                {
+                    return sexOptionsLevel0;
+                }
+
+                return null;
+            }
+        }
+
+        public int postal { get; set; } = -1;
+        // return list here
+        public int age { get; set; } = -1;
+        public IList<Tuple<string, string>> ageOptions
+        {
+            get
+            {
+                if (age == 0)
+                {
+                    return ageOptionsLevel0;
+                }
+                else if (age == 1)
+                {
+                    return ageOptionsLevel1;
+                }
+                else if (age == 2)
+                {
+                    return ageOptionsLevel2;
+                }
+
+                return null;
+            }
+        }
+
+        public int recordCreationDate { get; set; } = -1;
     }
-    public int gender { get; set; } = -1;
 
-    public IList<Tuple<string, string>> genderOptions
+    [Serializable]
+    public class FilteredValues
     {
-      get
-      {
-        if (gender == 0)
-        {
-          return genderOptionsLevel0;
-        }
-        return null;
-      }
+        // Patient
+        public List<string> sex { get; set; } = new List<string>();
+        public List<string> gender { get; set; } = new List<string>();
+        public List<string> maritalStatus { get; set; } = new List<string>();
+        public List<string> postal { get; set; } = new List<string>();
+        public List<string> diagnoses { get; set; } = new List<string>();
+
+        // Record
+        public List<string> recordType { get; set; } = new List<string>();
+        public List<string> recordDiagnoses { get; set; } = new List<string>();
+        public List<string> creationDate { get; set; } = new List<string>();
+        public List<string> age { get; set; } = new List<string>();
+
     }
-
-    public int sex { get; set; } = -1;
-
-    public IList<Tuple<string, string>> sexOptions
-    {
-      get
-      {
-        if (sex == 0)
-        {
-          return sexOptionsLevel0;
-        }
-
-        return null;
-      }
-    }
-
-    public int postal { get; set; } = -1;
-    // return list here
-    public int age { get; set; } = -1;
-    public IList<Tuple<string, string>> ageOptions
-    {
-      get
-      {
-        if (age == 0)
-        {
-          return ageOptionsLevel0;
-        }
-        else if (age == 1)
-        {
-          return ageOptionsLevel1;
-        }
-        else if (age == 2)
-        {
-          return ageOptionsLevel2;
-        }
-
-        return null;
-      }
-    }
-
-    public int recordCreationDate { get; set; } = -1;
-
-  }
-
-  [Serializable]
-  public class FilteredValues
-  {
-    // Patient
-    public List<string> sex { get; set; } = new List<string>();
-    public List<string> gender { get; set; } = new List<string>();
-    public List<string> maritalStatus { get; set; } = new List<string>();
-    public List<string> postal { get; set; } = new List<string>();
-
-    // Record
-    public List<string> recordType { get; set; } = new List<string>();
-    public List<string> diagnosis { get; set; } = new List<string>();
-    public List<string> creationDate { get; set; } = new List<string>();
-    public List<string> age { get; set; } = new List<string>();
-
-  }
 }

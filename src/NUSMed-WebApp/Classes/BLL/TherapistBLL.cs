@@ -43,7 +43,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     }
                 }
 
-                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Unrequested Patients", "Term: " + term + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Unrequested Patients", "Term: \"" + term + "\".");
                 return accountsAllPatients;
             }
 
@@ -64,7 +64,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     }
                 }
 
-                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Current Patients", "Term: " + term + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Current Patients", "Term: \"" + term + "\".");
                 return patients;
             }
 
@@ -72,8 +72,7 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public Entity.Patient GetPatient(string patientNRIC)
         {
-            if (AccountBLL.IsTherapist() &&
-                !patientNRIC.Equals(AccountBLL.GetNRIC()))
+            if (AccountBLL.IsTherapist() && !patientNRIC.Equals(AccountBLL.GetNRIC()))
             {
                 Entity.Patient result = therapistDAL.RetrievePatient(patientNRIC, AccountBLL.GetNRIC());
                 logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patients Permission", "Action on: " + patientNRIC + ".");
@@ -85,8 +84,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
         public Entity.Patient GetPatientPermissions(string patientNRIC)
         {
-            if (AccountBLL.IsTherapist() &&
-                !patientNRIC.Equals(AccountBLL.GetNRIC()))
+            if (AccountBLL.IsTherapist() && !patientNRIC.Equals(AccountBLL.GetNRIC()))
             {
                 Entity.Patient result = therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC());
                 logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patients Permission", "Action on: " + patientNRIC + ".");
@@ -110,8 +108,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
         public void SubmitRequest(string patientNRIC, short permission)
         {
-            if (AccountBLL.IsTherapist() &&
-                !patientNRIC.Equals(AccountBLL.GetNRIC()))
+            if (AccountBLL.IsTherapist() && !patientNRIC.Equals(AccountBLL.GetNRIC()))
             {
                 therapistDAL.InsertRecordTypeRequest(patientNRIC, AccountBLL.GetNRIC(), permission);
                 logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "Submit Request for Permissions", "Action on: " + patientNRIC + ", Permissions: " + permission + ".");
@@ -119,8 +116,7 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public void UpdateRequest(string patientNRIC, short permission)
         {
-            if (AccountBLL.IsTherapist() &&
-                !patientNRIC.Equals(AccountBLL.GetNRIC()))
+            if (AccountBLL.IsTherapist() && !patientNRIC.Equals(AccountBLL.GetNRIC()))
             {
                 therapistDAL.UpdateRecordTypeRequest(patientNRIC, AccountBLL.GetNRIC(), permission);
                 logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "Update Request for Permissions", "Action on: " + patientNRIC + ", Permissions: " + permission + ".");
@@ -128,8 +124,7 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public void RescindPermissions(string patientNRIC)
         {
-            if (AccountBLL.IsTherapist() &&
-                !patientNRIC.Equals(AccountBLL.GetNRIC()))
+            if (AccountBLL.IsTherapist() && !patientNRIC.Equals(AccountBLL.GetNRIC()))
             {
                 therapistDAL.UpdateRecordTypeRescind(patientNRIC, AccountBLL.GetNRIC());
                 logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "Delete Request for Permissions", "Action on: " + patientNRIC + ".");
@@ -138,12 +133,11 @@ namespace NUSMed_WebApp.Classes.BLL
 
         public List<PatientDiagnosis> GetPatientDiagnoses(string patientNRIC)
         {
-            if (AccountBLL.IsTherapist() &&
-                !patientNRIC.Equals(AccountBLL.GetNRIC()) &&
+            if (AccountBLL.IsTherapist() && !patientNRIC.Equals(AccountBLL.GetNRIC()) &&
                 therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
             {
                 List<PatientDiagnosis> result = therapistDAL.RetrievePatientDiagnoses(patientNRIC, AccountBLL.GetNRIC());
-                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "View Patient Diagnoses", "Action on: " + patientNRIC + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patient Diagnoses", "Action on: " + patientNRIC + ".");
                 return result;
             }
 
@@ -152,12 +146,11 @@ namespace NUSMed_WebApp.Classes.BLL
 
         public List<PatientDiagnosis> GetPatientDiagnoses(string patientNRIC, long id)
         {
-            if (AccountBLL.IsTherapist() &&
-                !patientNRIC.Equals(AccountBLL.GetNRIC()) &&
+            if (AccountBLL.IsTherapist() && !patientNRIC.Equals(AccountBLL.GetNRIC()) &&
                 therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
             {
                 List<PatientDiagnosis> result = therapistDAL.RetrievePatientDiagnoses(patientNRIC, AccountBLL.GetNRIC());
-                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "View Patient Diagnoses", "Action on: " + patientNRIC + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patient Diagnoses", "Action on: " + patientNRIC + ".");
                 return result;
             }
 
@@ -216,7 +209,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
             {
                 therapistDAL.InsertPatientDiagnosis(patientNRIC, AccountBLL.GetNRIC(), code);
-                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "Add Patient Diagnosis", "Action on: " + patientNRIC + ", Diagnosis Code: " + code + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "Add Patient Diagnosis", "Action on: " + patientNRIC + ", Diagnosis Code: " + code + ".");
             }
         }
 
@@ -228,7 +221,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     therapistDAL.RetrievePatientPermission(patientNRIC, AccountBLL.GetNRIC()).approvedTime != null)
                 {
                     therapistDAL.UpdatePatientDiagnosis(patientNRIC, AccountBLL.GetNRIC(), code);
-                    logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "Update Patient Diagnosis Ended", "Action on: " + patientNRIC + ", Diagnosis Code: " + code + ".");
+                    logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "Update Patient Diagnosis Ended", "Action on: " + patientNRIC + ", Diagnosis Code: " + code + ".");
                 }
             }
         }
@@ -248,7 +241,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     }
                 }
 
-                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "View Notes", "Term: " + term + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Notes", "Term: \"" + term + "\".");
                 return notes;
             }
 
@@ -266,7 +259,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     note.patient = therapistDAL.RetrievePatientInformation(note.patient.nric, AccountBLL.GetNRIC());
                 }
 
-                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "View Note", "Note ID: " + noteID + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Note", "Note ID: " + noteID + ".");
                 return note;
             }
 
@@ -298,7 +291,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     therapistDAL.InsertNoteRecord(note, record);
                 }
 
-                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "Add Note", "Note ID: " + note.id + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "Add Note", "Note ID: " + note.id + ".");
                 return true;
             }
             return false;
@@ -322,7 +315,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     }
                 }
 
-                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "Send Note", "Sent to: " + therapistsNRIC + ", Note ID: " + note.id + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "Send Note", "Sent to: " + therapistsNRIC + ", Note ID: " + note.id + ".");
             }
         }
         public List<Entity.Therapist> GetTherapists(string term)

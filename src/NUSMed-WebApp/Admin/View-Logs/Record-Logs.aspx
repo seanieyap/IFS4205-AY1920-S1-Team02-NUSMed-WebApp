@@ -25,7 +25,7 @@
         </div>
 
         <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-md-6 col-lg-5">
                 <div class="form-group row">
                     <label class="col-4" for="InputSubjectNRICs" runat="server">
                         Subject 
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="offset-1 col-4">
+            <div class="col-12 col-md-6 col-lg-5">
                 <div class="form-group row">
                     <label class="col-4" for="inputActions" runat="server">
                         Action 
@@ -48,7 +48,7 @@
         </div>
 
         <div class="row mb-4">
-            <div class="col-4">
+            <div class="col-12 col-md-6 col-lg-5">
                 <div class="form-group row">
                     <label class="col-4" for="inputDateTimeFrom" runat="server">
                         Date From 
@@ -61,7 +61,7 @@
                     </div>
                 </div>
             </div>
-            <div class="offset-1 col-4">
+            <div class="col-12 col-md-6 col-lg-5">
                 <div class="form-group row">
                     <label class="col-4" for="inputDateTimeTo" runat="server">
                         Date To 
@@ -75,7 +75,7 @@
                 </div>
             </div>
 
-            <div class="col-3">
+            <div class="col-12 col-lg-2">
                 <div class="input-group input-group-sm">
                     <asp:LinkButton ID="ButtonSearch" CssClass="btn btn-sm btn-outline-info ml-auto" OnClick="ButtonSearch_Click" runat="server">
                             <i class="fas fa-fw fa-search"></i> Search
@@ -87,7 +87,7 @@
         <asp:UpdatePanel ID="UpdatePanelLogs" class="row" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
                 <div class="col-12">
-                    <asp:GridView ID="GridViewLogs" CssClass="table table-sm table-responsive-md small text-truncate" AllowPaging="true" PageSize="20" PagerStyle-CssClass="pagination-gridview"
+                    <asp:GridView ID="GridViewLogs" CssClass="table table-sm table-responsive-sm small text-truncate" AllowPaging="true" PageSize="20" PagerStyle-CssClass="pagination-gridview"
                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" OnPageIndexChanging="GridViewAccounts_PageIndexChanging"
                         ItemType="NUSMed_WebApp.Classes.Entity.LogEvent" DataKeyNames="id" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                         <Columns>

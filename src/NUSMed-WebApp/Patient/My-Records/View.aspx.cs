@@ -179,7 +179,7 @@ namespace NUSMed_WebApp.Patient.My_Records
         #region FineGrainModal
         protected void Update_FineGrainModal()
         {
-            int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
+            long recordID = Convert.ToInt64(ViewState["GridViewRecordsSelected"]);
             Record record = recordBLL.GetRecord(recordID);
             modalLabelFineGrainRecordTitle.Text = record.title;
 
@@ -235,7 +235,7 @@ namespace NUSMed_WebApp.Patient.My_Records
         protected void GridViewFineGrain_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             string therapistNRIC = e.CommandArgument.ToString();
-            int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
+            long recordID = Convert.ToInt64(ViewState["GridViewRecordsSelected"]);
 
             if (e.CommandName.Equals("DefaultTherapist"))
             {
@@ -299,7 +299,7 @@ namespace NUSMed_WebApp.Patient.My_Records
         }
         protected void LinkButtonStatusDisable_Click(object sender, EventArgs e)
         {
-            int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
+            long recordID = Convert.ToInt64(ViewState["GridViewRecordsSelected"]);
             try
             {
                 recordBLL.UpdateRecordDisable(recordID);
@@ -313,7 +313,7 @@ namespace NUSMed_WebApp.Patient.My_Records
         }
         protected void LinkButtonStatusEnable_Click(object sender, EventArgs e)
         {
-            int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelected"]);
+            long recordID = Convert.ToInt64(ViewState["GridViewRecordsSelected"]);
             try
             {
                 recordBLL.UpdateRecordEnable(recordID);

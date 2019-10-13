@@ -17,18 +17,18 @@ namespace NUSMed_WebApp.Classes.BLL
             if (AccountBLL.IsPatient())
             {
                 List<Entity.Therapist> result = patientDAL.RetrieveCurrentTherapists(term, AccountBLL.GetNRIC());
-                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Current Therapists", "Term: " + term + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Current Therapists", "Term: \"" + term + "\".");
                 return result;
             }
 
             return null;
         }
-        public List<Entity.Therapist> GetCurrentTherapistsFineGrain(string term, int recordID)
+        public List<Entity.Therapist> GetCurrentTherapistsFineGrain(string term, long recordID)
         {
             if (AccountBLL.IsPatient())
             {
                 List<Entity.Therapist> result = patientDAL.RetrieveCurrentTherapistsFineGrain(term, recordID, AccountBLL.GetNRIC());
-                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "View Record Fine Grain Permissions", "Term: " + term + ", Record ID: " + recordID + ".");
+                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "View Record Fine Grain Permissions", "Term: \"" + term + "\", Record ID: " + recordID + ".");
                 return result;
             }
 
@@ -40,7 +40,7 @@ namespace NUSMed_WebApp.Classes.BLL
             if (AccountBLL.IsPatient())
             {
                 List<Entity.Therapist> result = patientDAL.RetrievePermissionsDisallow(recordID, term, AccountBLL.GetNRIC());
-                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "View Disallowed Therapists", "Term: " + term + ", Record ID: " + recordID + ".");
+                logPermissionBLL.LogEvent(AccountBLL.GetNRIC(), "View Disallowed Therapists", "Term: \"" + term + "\", Record ID: " + recordID + ".");
                 return result;
             }
 

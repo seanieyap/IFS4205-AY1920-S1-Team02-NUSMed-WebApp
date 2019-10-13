@@ -498,7 +498,6 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     ViewState["GridViewRecordsSelectedRecord"] = id;
                     Bind_GridViewRecordDiagnoses();
 
-                    UpdatePanelRecordDiagnosisView.Update();
                     ScriptManager.RegisterStartupScript(this, GetType(), "Open View Record Diagnosis Modal", "$('#modalRecords').modal('hide'); $('#modalRecordDiagnosisView').modal('show');", true);
                 }
                 catch
@@ -618,7 +617,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
         #region Record Diagnosis Functions
         protected void Bind_GridViewRecordDiagnoses()
         {
-            int recordID = Convert.ToInt32( ViewState["GridViewRecordsSelectedRecord"]);
+            long recordID = Convert.ToInt64( ViewState["GridViewRecordsSelectedRecord"]);
             Record record = recordBLL.GetRecord(recordID);
             labelRecordNameDiagnosis.Text = record.title;
 
@@ -659,7 +658,7 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                 {
                     string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
                     string code = e.CommandArgument.ToString();
-                    int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelectedRecord"]);
+                    long recordID = Convert.ToInt64(ViewState["GridViewRecordsSelectedRecord"]);
 
                     recordBLL.AddRecordDiagnosis(patientNRIC, recordID, code);
 

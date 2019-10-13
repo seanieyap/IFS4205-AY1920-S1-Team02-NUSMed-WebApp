@@ -13,6 +13,8 @@ namespace NUSMed_WebApp.Classes.BLL
     public class DataBLL
     {
         private readonly DataDAL dataDAL = new DataDAL();
+        private readonly LogAccountBLL logAccountBLL = new LogAccountBLL();
+        private readonly LogRecordBLL logRecordBLL = new LogRecordBLL();
 
         public void InsertAnonymizedTableToDb()
         {
@@ -73,8 +75,12 @@ namespace NUSMed_WebApp.Classes.BLL
             if (AccountBLL.IsResearcher())
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append(@"SELECT ra.record_id, ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
-                    FROM records_anonymized ra INNER JOIN record r ON ra.record_id = r.id INNER JOIN record_diagnosis rd ON r.id = rd.record_id");
+                stringBuilder.Append(@"SELECT ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date, 
+                    GROUP_CONCAT(DISTINCT ra.record_id SEPARATOR ',') as record_ids
+                FROM records_anonymized ra 
+                INNER JOIN record r ON ra.record_id = r.id 
+                INNER JOIN record_diagnosis rd ON r.id = rd.record_id 
+				LEFT JOIN patient_diagnosis pd ON pd.patient_nric = r.patient_nric ");
 
                 List<Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>>();
                 if (filteredValues.sex.Count > 0)
@@ -97,14 +103,19 @@ namespace NUSMed_WebApp.Classes.BLL
                     columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.postal", filteredValues.postal));
                 }
 
+                if (filteredValues.diagnoses.Count > 0)
+                {
+                    columnsAndValuesList.Add(new Tuple<string, List<string>>("pd.diagnosis_code", filteredValues.recordDiagnoses));
+                }
+
                 if (filteredValues.recordType.Count > 0)
                 {
                     columnsAndValuesList.Add(new Tuple<string, List<string>>("r.type", filteredValues.recordType));
                 }
 
-                if (filteredValues.diagnosis.Count > 0)
+                if (filteredValues.recordDiagnoses.Count > 0)
                 {
-                    columnsAndValuesList.Add(new Tuple<string, List<string>>("rd.diagnosis_code", filteredValues.diagnosis));
+                    columnsAndValuesList.Add(new Tuple<string, List<string>>("rd.diagnosis_code", filteredValues.recordDiagnoses));
                 }
 
                 if (filteredValues.creationDate.Count > 0)
@@ -136,6 +147,55 @@ namespace NUSMed_WebApp.Classes.BLL
             return null;
         }
 
+        public List<PatientDiagnosis> GetPatientDiagnoses(List<long> recordIDs)
+        {
+            if (AccountBLL.IsResearcher())
+            {
+                IEnumerable<Tuple<string, long>> recordIDsParameterized = from recordID in recordIDs
+                    select (new Tuple<string, long>("@" + recordID.ToString().Replace(" ", string.Empty), recordID));
+
+                List<PatientDiagnosis> result = dataDAL.RetrievePatientDiagnoses(recordIDsParameterized);
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patient Diagnoses", "Record IDs: " + string.Join(", ", recordIDs) + ".");
+                return result;
+            }
+
+            return null;
+        }
+
+        public List<Record> GetRecords(List<long> recordIDs)
+        {
+            if (AccountBLL.IsResearcher())
+            {
+                IEnumerable<Tuple<string, long>> recordIDsParameterized = from recordID in recordIDs
+                    select(new Tuple<string, long>("@" + recordID.ToString().Replace(" ", string.Empty), recordID));
+
+                List<Record> result = dataDAL.RetrieveRecords(recordIDsParameterized);
+
+                logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "View Records", "Record IDs: " + string.Join(", ", recordIDs) + ".");
+                return result;
+            }
+
+            return null;
+        }
+        public Record GetRecord(long recordID)
+        {
+            if (AccountBLL.IsResearcher())
+            {
+                return dataDAL.RetrieveRecord(recordID);
+            }
+            return null;
+        }
+
+        public List<RecordDiagnosis> GetRecordDiagnoses(long recordID)
+        {
+            if (AccountBLL.IsResearcher())
+            {
+                return dataDAL.RetrieveRecordDiagnoses(recordID);
+            }
+
+            return null;
+        }
+
         private string JoinMultipleSelectedValues(string columnName, List<string> valuesList)
         {
             StringBuilder sb = new StringBuilder();
@@ -158,6 +218,16 @@ namespace NUSMed_WebApp.Classes.BLL
             if (AccountBLL.IsResearcher())
             {
                 return dataDAL.RetrieveDiagnoses();
+            }
+
+            return null;
+        }
+
+        public DataTable GetRecordDiagnoses()
+        {
+            if (AccountBLL.IsResearcher())
+            {
+                return dataDAL.RetrieveRecordDiagnoses();
             }
 
             return null;

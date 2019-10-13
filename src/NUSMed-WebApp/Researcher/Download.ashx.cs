@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Web;
 
-namespace NUSMed_WebApp.Patient
+namespace NUSMed_WebApp.Researcher
 {
     /// <summary>
     /// Handle download of files from file server
@@ -26,7 +26,7 @@ namespace NUSMed_WebApp.Patient
 
             long recordID = Convert.ToInt64(HttpContext.Current.Request.QueryString["record"]);
 
-            Record record = new RecordBLL().GetRecord(recordID);
+            Record record = new DataBLL().GetRecord(recordID);
 
             if (record == null || !record.IsFileSafe())
             {
@@ -54,7 +54,7 @@ namespace NUSMed_WebApp.Patient
                 {
                     response.ContentType = "video/mp4";
                 }
-                response.AddHeader("Content-Disposition", "attachment; filename=\"" + record.fileName + record.fileExtension + "\"");
+                response.AddHeader("Content-Disposition", "attachment; filename=\"" + record.id + record.fileExtension + "\"");
                 response.WriteFile(record.fullpath);
             }
 

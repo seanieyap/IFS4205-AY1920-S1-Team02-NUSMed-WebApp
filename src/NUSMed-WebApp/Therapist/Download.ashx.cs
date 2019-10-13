@@ -25,7 +25,7 @@ namespace NUSMed_WebApp.Therapist
                 return;
             }
 
-            int recordID = Convert.ToInt32(HttpContext.Current.Request.QueryString["record"]);
+            long recordID = Convert.ToInt64(HttpContext.Current.Request.QueryString["record"]);
 
             Record record = new RecordBLL().GetRecord(recordID);
 

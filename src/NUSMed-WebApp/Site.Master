@@ -103,7 +103,7 @@
 
                     <%-- Researcher Links--%>
                     <a id="navLinksResearcherDashboard" class="nav-link" href="~/Researcher/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>Dashboard</a>
-                    <a id="navLinksResearcherSearchData" class="nav-link" href="~/Researcher/Search-Data" runat="server" visible="false"><i class="fas fa-fw fa-search"></i>Record Search</a>
+                    <a id="navLinksResearcherSearchData" class="nav-link" href="~/Researcher/Search-Data" runat="server" visible="false"><i class="fas fa-fw fa-search"></i>Search Data</a>
 
                     <%-- Admin Links --%>
                     <a id="navLinksAdminDashboard" class="nav-link" href="~/Admin/Dashboard" runat="server" visible="false"><i class="fas fa-fw fa-tachometer-alt"></i>

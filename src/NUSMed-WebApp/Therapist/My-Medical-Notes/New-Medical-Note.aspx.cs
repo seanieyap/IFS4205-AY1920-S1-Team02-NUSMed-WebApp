@@ -313,7 +313,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
             {
                 try
                 {
-                    int id = Convert.ToInt32(e.CommandArgument);
+                    long id = Convert.ToInt64(e.CommandArgument);
                     Record record = recordBLL.GetRecord(id);
 
                     modalFileViewImage.Visible = false;
@@ -409,7 +409,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
             {
                 try
                 {
-                    int id = Convert.ToInt32(e.CommandArgument);
+                    long id = Convert.ToInt64(e.CommandArgument);
 
                     ViewState["GridViewRecordsSelectedRecord"] = id;
                     Bind_GridViewRecordDiagnoses();
@@ -426,7 +426,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
             {
                 try
                 {
-                    int id = Convert.ToInt32(e.CommandArgument);
+                    long id = Convert.ToInt64(e.CommandArgument);
 
                     if (ViewState["GridViewRecordSelectedIDs"] != null)
                     {
@@ -452,7 +452,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
             {
                 try
                 {
-                    int id = Convert.ToInt32(e.CommandArgument);
+                    long id = Convert.ToInt64(e.CommandArgument);
 
                     if (ViewState["GridViewRecordSelectedIDs"] != null)
                     {
@@ -483,7 +483,7 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
         #region Record Diagnosis Functions
         protected void Bind_GridViewRecordDiagnoses()
         {
-            int recordID = Convert.ToInt32(ViewState["GridViewRecordsSelectedRecord"]);
+            long recordID = Convert.ToInt64(ViewState["GridViewRecordsSelectedRecord"]);
             Record record = recordBLL.GetRecord(recordID);
             labelRecordNameDiagnosis.Text = record.title;
 

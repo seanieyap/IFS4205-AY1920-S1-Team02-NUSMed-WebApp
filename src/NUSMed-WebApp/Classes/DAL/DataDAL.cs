@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Linq;
 using MySql.Data.MySqlClient;
 using NUSMed_WebApp.Classes.Entity;
 
@@ -21,8 +22,8 @@ namespace NUSMed_WebApp.Classes.DAL
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandText = @"SELECT account.marital_status AS marital_status, account.gender AS gender, account.date_of_birth AS dob, 
-        account.address_postal_code AS postal, account.sex AS sex, record.id AS record_id, record.create_time AS record_created_time
-        FROM account RIGHT JOIN record ON account.nric = record.patient_nric WHERE EXISTS (SELECT 1 FROM account_patient WHERE account_patient.nric = account.nric);";
+                    account.address_postal_code AS postal, account.sex AS sex, record.id AS record_id, record.create_time AS record_created_time
+                    FROM account RIGHT JOIN record ON account.nric = record.patient_nric WHERE EXISTS (SELECT 1 FROM account_patient WHERE account_patient.nric = account.nric);";
 
                 using (cmd.Connection = connection)
                 {
@@ -291,7 +292,8 @@ namespace NUSMed_WebApp.Classes.DAL
                                 gender = Convert.ToString(reader["gender"]),
                                 sex = Convert.ToString(reader["sex"]),
                                 age = Convert.ToString(reader["age"]),
-                                postal = Convert.ToString(reader["postal"])
+                                postal = Convert.ToString(reader["postal"]),
+                                recordIDs = Convert.ToString(reader["record_ids"])
                             };
 
                             patientsList.Add(patientAnonymised);
@@ -302,23 +304,284 @@ namespace NUSMed_WebApp.Classes.DAL
             return patientsList;
         }
 
-        public DataTable RetrieveDiagnoses()
+        /// <summary>
+        /// Retrieve all the diagnoses information of a specific patient
+        /// </summary>
+        public List<PatientDiagnosis> RetrievePatientDiagnoses(IEnumerable<Tuple<string, long>> recordIDsParameterized)
         {
-            DataTable diagnosesTable = new DataTable();
+            if (recordIDsParameterized.Count() == 0)
+            {
+                return null;
+            }
+
+            List<PatientDiagnosis> result = new List<PatientDiagnosis>();
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                //cmd.CommandText = @"SELECT DISTINCT rd.diagnosis_code, diagnosis_description_short FROM records_anonymized ra
-                //                    INNER JOIN record_diagnosis rd ON rd.record_id = ra.record_id INNER JOIN diagnosis d ON d.diagnosis_code = rd.diagnosis_code  ORDER BY diagnosis_description_short ASC;";
-                cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short FROM diagnosis d;";
+                cmd.CommandText = @" ";
+
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append(@"SELECT pd.diagnosis_code, pd.start, pd.end, 
+                    d.diagnosis_description_short, d.category_title 
+                    FROM patient_diagnosis pd 
+                    INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
+					WHERE pd.patient_nric = 
+                        (SELECT r.patient_nric 
+						    FROM records_anonymized ra 
+                            INNER JOIN record r ON ra.record_id = r.id
+                            WHERE ");
+                stringBuilder.Append(string.Join(" OR ", recordIDsParameterized.Select(r => " ra.record_id = " + r.Item1)));
+                stringBuilder.Append(@" GROUP BY r.patient_nric LIMIT 1);");
+
+                cmd.CommandText = stringBuilder.ToString();
+
+                foreach (Tuple<string, long> r in recordIDsParameterized)
+                {
+                    cmd.Parameters.AddWithValue(r.Item1, r.Item2);
+                }
 
                 using (cmd.Connection = connection)
                 {
                     cmd.Connection.Open();
                     cmd.ExecuteNonQuery();
 
-                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-                    da.Fill(diagnosesTable);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Diagnosis diagnosis = new Diagnosis
+                            {
+                                code = Convert.ToString(reader["diagnosis_code"]),
+                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
+                                categoryTitle = Convert.ToString(reader["category_title"])
+                            };
+
+                            PatientDiagnosis patientDiagnosis = new PatientDiagnosis
+                            {
+                                therapist = new Entity.Therapist(),
+                                diagnosis = diagnosis,
+                                start = Convert.ToDateTime(reader["start"]),
+                            };
+                            patientDiagnosis.end = reader["end"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["end"]);
+
+                            result.Add(patientDiagnosis);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve Records information via a list of record IDs
+        /// </summary>
+        public List<Record> RetrieveRecords(IEnumerable<Tuple<string, long>> recordIDsParameterized)
+        {
+            if (recordIDsParameterized.Count() == 0)
+            {
+                return null;
+            }
+
+            List<Record> result = new List<Record>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, 
+                    r.create_time, r.file_extension
+                    FROM record r
+                    INNER JOIN records_anonymized ra ON ra.record_id = r.id 
+                    INNER JOIN account a ON a.nric = r.creator_nric
+                    WHERE ");
+                stringBuilder.Append(string.Join(" OR ", recordIDsParameterized.Select(r => " r.id = " + r.Item1)));
+                stringBuilder.Append(@";");
+
+                cmd.CommandText = stringBuilder.ToString();
+
+                foreach (Tuple<string, long> r in recordIDsParameterized)
+                {
+                    cmd.Parameters.AddWithValue(r.Item1, r.Item2);
+                }
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Record record = new Record
+                            {
+                                id = Convert.ToInt64(reader["id"]),
+                                description = Convert.ToString(reader["description"]),
+                                type = RecordType.Get(Convert.ToString(reader["type"])),
+                                content = Convert.ToString(reader["content"]),
+                                title = Convert.ToString(reader["title"]),
+                                createTime = Convert.ToDateTime(reader["create_time"]),
+                                fileExtension = Convert.ToString(reader["file_extension"])
+                            };
+                            result.Add(record);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve Records information with specific id owned by specific patient
+        /// </summary>
+        public Record RetrieveRecord(long recordID)
+        {
+            Record result = new Record();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT DISTINCT r.id, r.patient_nric, r.description, r.type, r.content, r.title, 
+                    r.file_name, r.file_checksum, r.file_extension, r.file_size, r.create_time
+                    FROM record r
+                    INNER JOIN account a ON a.nric = r.creator_nric
+                    WHERE r.id = @id 
+                    ORDER BY r.create_time DESC;";
+
+                cmd.Parameters.AddWithValue("@id", recordID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            Record record = new Record
+                            {
+                                id = Convert.ToInt64(reader["id"]),
+                                patientNRIC = Convert.ToString(reader["patient_nric"]),
+                                description = Convert.ToString(reader["description"]),
+                                type = RecordType.Get(Convert.ToString(reader["type"])),
+                                content = Convert.ToString(reader["content"]),
+                                title = Convert.ToString(reader["title"]),
+                                fileName = Convert.ToString(reader["file_name"]),
+                                fileChecksum = Convert.ToString(reader["file_checksum"]),
+                                fileExtension = Convert.ToString(reader["file_extension"]),
+                                createTime = Convert.ToDateTime(reader["create_time"])
+                            };
+                            record.fileSize = reader["file_size"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["file_size"]);
+
+                            result = record;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve all the diagnoses attributed to a specific record
+        /// </summary>
+        public List<RecordDiagnosis> RetrieveRecordDiagnoses(long recordID)
+        {
+            List<RecordDiagnosis> result = new List<RecordDiagnosis>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short, d.category_title
+                    FROM record_diagnosis rd 
+                    INNER JOIN record r ON r.id = rd.record_id
+                    INNER JOIN account_patient ap ON ap.nric = r.patient_nric
+                    INNER JOIN diagnosis d ON rd.diagnosis_code = d.diagnosis_Code
+                    INNER JOIN account a ON a.nric = rd.creator_nric
+                    WHERE r.id = @recordID
+                    ORDER BY rd.create_time DESC;";
+
+                cmd.Parameters.AddWithValue("@recordID", recordID);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Diagnosis diagnosis = new Diagnosis
+                            {
+                                code = Convert.ToString(reader["diagnosis_code"]),
+                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
+                                categoryTitle = Convert.ToString(reader["category_title"])
+                            };
+
+                            RecordDiagnosis recordDiagnosis = new RecordDiagnosis
+                            {
+                                therapist = new Entity.Therapist(),
+                                diagnosis = diagnosis,
+                            };
+
+                            result.Add(recordDiagnosis);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public DataTable RetrieveDiagnoses()
+        {
+            DataTable diagnosesTable = new DataTable();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short 
+                    FROM diagnosis d
+                    INNER JOIN patient_diagnosis pd ON pd.diagnosis_code = d.diagnosis_code
+                    INNER JOIN account_patient ap ON ap.nric = pd.patient_nric
+                    INNER JOIN record r ON r.patient_nric = pd.patient_nric
+                    INNER JOIN records_anonymized ra ON ra.record_id = r.id 
+                    GROUP BY d.diagnosis_code
+                    ORDER BY diagnosis_code;";
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(cmd);
+                    mySqlDataAdapter.Fill(diagnosesTable);
+                }
+            }
+            return diagnosesTable;
+        }
+
+        public DataTable RetrieveRecordDiagnoses()
+        {
+            DataTable diagnosesTable = new DataTable();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short, d.category_title 
+                    FROM records_anonymized ra
+                    INNER JOIN record r ON r.id = ra.record_id
+                    INNER JOIN record_diagnosis rd ON rd.record_id = r.id
+                    INNER JOIN diagnosis d ON rd.diagnosis_code = d.diagnosis_Code
+                    ORDER BY d.diagnosis_code;";
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(cmd);
+                    mySqlDataAdapter.Fill(diagnosesTable);
                 }
             }
             return diagnosesTable;
@@ -330,17 +593,20 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT DISTINCT ra.postal FROM records_anonymized ra ORDER BY ra.postal ASC;";
+                cmd.CommandText = @"SELECT DISTINCT postal FROM records_anonymized ORDER BY postal ASC;";
 
                 using (cmd.Connection = connection)
                 {
                     cmd.Connection.Open();
                     cmd.ExecuteNonQuery();
 
-                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-                    da.Fill(postalCodeTable);
+                    MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(cmd);
+                    mySqlDataAdapter.Fill(postalCodeTable);
                 }
             }
+            DataColumn[] keyColumns = new DataColumn[1];
+            keyColumns[0] = postalCodeTable.Columns["postal"];
+            postalCodeTable.PrimaryKey = keyColumns;
             return postalCodeTable;
         }
 
@@ -350,17 +616,20 @@ namespace NUSMed_WebApp.Classes.DAL
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT DISTINCT ra.record_create_date FROM records_anonymized ra ORDER BY ra.record_create_date ASC;";
+                cmd.CommandText = @"SELECT DISTINCT record_create_date FROM records_anonymized ORDER BY record_create_date ASC;";
 
                 using (cmd.Connection = connection)
                 {
                     cmd.Connection.Open();
                     cmd.ExecuteNonQuery();
 
-                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-                    da.Fill(recordCreationDateTable);
+                    MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(cmd);
+                    mySqlDataAdapter.Fill(recordCreationDateTable);
                 }
             }
+            DataColumn[] keyColumns = new DataColumn[1];
+            keyColumns[0] = recordCreationDateTable.Columns["record_create_date"];
+            recordCreationDateTable.PrimaryKey = keyColumns;
             return recordCreationDateTable;
         }
     }

@@ -1808,13 +1808,13 @@ pre code {
 }
 
 @media (max-width: 767.98px) {
-  .table-responsive-md {
+  .table-responsive-sm {
     display: block;
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .table-responsive-md > .table-bordered {
+  .table-responsive-sm > .table-bordered {
     border: 0;
   }
 }
