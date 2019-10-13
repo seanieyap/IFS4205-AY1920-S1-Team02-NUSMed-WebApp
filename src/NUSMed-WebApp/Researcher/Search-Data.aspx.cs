@@ -145,12 +145,6 @@ namespace NUSMed_WebApp.Researcher
             GridViewPatientAnonymised.DataSource = ViewState["GridViewPatientAnonymised"];
             GridViewPatientAnonymised.DataBind();
         }
-
-        protected void GridViewPatientAnonymised_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-
-        }
-
         protected void GridViewPatientAnonymised_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName.Equals("ViewRecords"))
@@ -195,7 +189,6 @@ namespace NUSMed_WebApp.Researcher
                 }
             }
         }
-
         protected void ButtonFilter_ServerClick(object sender, EventArgs e)
         {
             try
@@ -473,41 +466,6 @@ namespace NUSMed_WebApp.Researcher
             GridViewRecordDiagnoses.DataSource = ViewState["GridViewRecordDiagnoses"];
             GridViewRecordDiagnoses.DataBind();
         }
-
-        //protected void GridViewRecordDiagnosesAdd_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        //{
-        //    GridViewRecordDiagnosesAdd.PageIndex = e.NewPageIndex;
-        //    GridViewRecordDiagnosesAdd.DataSource = ViewState["GridViewRecordDiagnosesAdd"];
-        //    GridViewRecordDiagnosesAdd.DataBind();
-        //}
-
-        //protected void GridViewRecordDiagnosesAdd_RowCommand(object sender, GridViewCommandEventArgs e)
-        //{
-        //    if (e.CommandName.Equals("AddRecordDiagnosis"))
-        //    {
-        //        try
-        //        {
-        //            string patientNRIC = ViewState["GridViewPatientSelectedNRIC"].ToString();
-        //            string code = e.CommandArgument.ToString();
-        //            int recordID = Convert.ToInt64(ViewState["GridViewRecordsSelectedRecord"]);
-
-        //            recordBLL.AddRecordDiagnosis(patientNRIC, recordID, code);
-
-        //            Bind_GridViewRecordDiagnoses();
-        //            ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Diagnosis has been Successfully Rttributed to Record.');", true);
-        //        }
-        //        catch
-        //        {
-        //            ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Attributing Diagnosis to Record.');", true);
-        //        }
-        //    }
-        //}
-
-        //protected void ButtonSearchDiagnosisForRecord_Click(object sender, EventArgs e)
-        //{
-        //    Bind_GridViewRecordDiagnoses();
-        //}
-
         protected void CloseModalRecordDiagnosisView_ServerClick(object sender, EventArgs e)
         {
             ScriptManager.RegisterStartupScript(this, GetType(), "Close View Record Diagnosis Modal", " $('#modalRecordDiagnosisView').modal('hide'); $('#modalRecords').modal('show');", true);

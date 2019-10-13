@@ -285,25 +285,25 @@ namespace NUSMed_WebApp.Classes.BLL
             }
         }
 
-        public void DeleteRecords(string nric)
-        {
-            if (AccountBLL.IsAdministrator())
-            {
-                List<Record> records = recordDAL.RetrieveAssociatedRecords(nric);
+        //public void DeleteRecords(string nric)
+        //{
+        //    if (AccountBLL.IsAdministrator())
+        //    {
+        //        List<Record> records = recordDAL.RetrieveAssociatedRecords(nric);
 
-                foreach (Record record in records)
-                {
-                    // delete all record diagnosis first
-                    recordDAL.DeleteRecordDiagnosis(record.id);
+        //        foreach (Record record in records)
+        //        {
+        //            // delete all record diagnosis first
+        //            recordDAL.DeleteRecordDiagnosis(record.id);
 
-                    // delete all permissions
-                    recordDAL.DeleteRecordPermission(record.id);
+        //            // delete all permissions
+        //            recordDAL.DeleteRecordPermission(record.id);
 
-                    // delete record
-                    recordDAL.DeleteRecord(record.id);
-                }
-            }
-        }
+        //            // delete record
+        //            recordDAL.DeleteRecord(record.id);
+        //        }
+        //    }
+        //}
 
         public bool VerifyRecord(Record record)
         {

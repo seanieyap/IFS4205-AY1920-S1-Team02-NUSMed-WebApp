@@ -760,57 +760,57 @@ namespace NUSMed_WebApp.Classes.DAL
         #endregion
 
         #region Deletions
-        public void DeleteRecord(long id)
-        {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"
-                    DELETE FROM record_permission
-                        WHERE record_id = @recordID;
-                    DELETE FROM record
-                        WHERE record_id = @recordID;";
+        //public void DeleteRecord(long id)
+        //{
+        //    using (MySqlCommand cmd = new MySqlCommand())
+        //    {
+        //        cmd.CommandText = @"
+        //            DELETE FROM record_permission
+        //                WHERE record_id = @recordID;
+        //            DELETE FROM record
+        //                WHERE record_id = @recordID;";
 
-                cmd.Parameters.AddWithValue("@recordID", id);
+        //        cmd.Parameters.AddWithValue("@recordID", id);
 
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-        public void DeleteRecordDiagnosis(long id)
-        {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"DELETE FROM record_diagnosis 
-                        WHERE record_id = @recordID;";
+        //        using (cmd.Connection = connection)
+        //        {
+        //            cmd.Connection.Open();
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
+        //public void DeleteRecordDiagnosis(long id)
+        //{
+        //    using (MySqlCommand cmd = new MySqlCommand())
+        //    {
+        //        cmd.CommandText = @"DELETE FROM record_diagnosis 
+        //                WHERE record_id = @recordID;";
 
-                cmd.Parameters.AddWithValue("@recordID", id);
+        //        cmd.Parameters.AddWithValue("@recordID", id);
 
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-        public void DeleteRecordPermission(long recordID)
-        {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"DELETE FROM record_permission 
-                        WHERE record_id = @recordID;";
+        //        using (cmd.Connection = connection)
+        //        {
+        //            cmd.Connection.Open();
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
+        //public void DeleteRecordPermission(long recordID)
+        //{
+        //    using (MySqlCommand cmd = new MySqlCommand())
+        //    {
+        //        cmd.CommandText = @"DELETE FROM record_permission 
+        //                WHERE record_id = @recordID;";
 
-                cmd.Parameters.AddWithValue("@recordID", recordID);
+        //        cmd.Parameters.AddWithValue("@recordID", recordID);
 
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
+        //        using (cmd.Connection = connection)
+        //        {
+        //            cmd.Connection.Open();
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
         public void DeleteRecordPermission(long recordID, string therapistNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
@@ -828,7 +828,6 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
-
         #endregion
     }
 }

@@ -888,40 +888,40 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Delete all database records related to specific Account
         /// </summary>
-        public void Delete(string nric)
-        {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"
-                    DELETE FROM patient_diagnosis 
-                        WHERE patient_nric = @nric;
-                    DELETE FROM patient_emergency
-                        WHERE patient_nric = @nric OR therapist_nric = @nric;
-                    DELETE FROM record_type_permission
-                        WHERE patient_nric = @nric OR therapist_nric = @nric;
-                    DELETE FROM record
-                        WHERE patient_nric = @nric OR creator_nric = @nric;
+        //public void Delete(string nric)
+        //{
+        //    using (MySqlCommand cmd = new MySqlCommand())
+        //    {
+        //        cmd.CommandText = @"
+        //            DELETE FROM patient_diagnosis 
+        //                WHERE patient_nric = @nric;
+        //            DELETE FROM patient_emergency
+        //                WHERE patient_nric = @nric OR therapist_nric = @nric;
+        //            DELETE FROM record_type_permission
+        //                WHERE patient_nric = @nric OR therapist_nric = @nric;
+        //            DELETE FROM record
+        //                WHERE patient_nric = @nric OR creator_nric = @nric;
 
-                    DELETE FROM account_patient 
-                        WHERE nric = @nric;
-                    DELETE FROM account_therapist 
-                        WHERE nric = @nric;
-                    DELETE FROM account_researcher
-                        WHERE nric = @nric;
-                    DELETE FROM account_admin
-                        WHERE nric = @nric;
-                    DELETE FROM account 
-                        WHERE nric = @nric;";
+        //            DELETE FROM account_patient 
+        //                WHERE nric = @nric;
+        //            DELETE FROM account_therapist 
+        //                WHERE nric = @nric;
+        //            DELETE FROM account_researcher
+        //                WHERE nric = @nric;
+        //            DELETE FROM account_admin
+        //                WHERE nric = @nric;
+        //            DELETE FROM account 
+        //                WHERE nric = @nric;";
 
-                cmd.Parameters.AddWithValue("@nric", nric);
+        //        cmd.Parameters.AddWithValue("@nric", nric);
 
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
+        //        using (cmd.Connection = connection)
+        //        {
+        //            cmd.Connection.Open();
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Delete a Emergency relationship between Patient and Therapist

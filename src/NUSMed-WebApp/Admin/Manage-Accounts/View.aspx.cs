@@ -31,26 +31,26 @@ namespace NUSMed_WebApp.Admin.Account
             GridViewAccounts.DataSource = accounts;
             GridViewAccounts.DataBind();
         }
-        protected void GridViewAccounts_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        {
-            string nric = GridViewAccounts.DataKeys[e.RowIndex].Values["nric"].ToString();
+        //protected void GridViewAccounts_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        //{
+        //    string nric = GridViewAccounts.DataKeys[e.RowIndex].Values["nric"].ToString();
 
-            try
-            {
-                accountBLL.DeleteAccount(nric);
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account, \"" + nric + "\", was Deleted successfully');", true);
-            }
-            catch
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Deleting an Account');", true);
-            }
+        //    try
+        //    {
+        //        accountBLL.DeleteAccount(nric);
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account, \"" + nric + "\", was Deleted successfully');", true);
+        //    }
+        //    catch
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Deleting an Account');", true);
+        //    }
 
-            GridViewAccounts.EditIndex = -1;
+        //    GridViewAccounts.EditIndex = -1;
 
-            string term = TextboxSearch.Text.Trim().ToLower();
+        //    string term = TextboxSearch.Text.Trim().ToLower();
 
-            Bind_GridViewAccounts(term);
-        }
+        //    Bind_GridViewAccounts(term);
+        //}
         protected void GridViewAccounts_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             string nric = e.CommandArgument.ToString();

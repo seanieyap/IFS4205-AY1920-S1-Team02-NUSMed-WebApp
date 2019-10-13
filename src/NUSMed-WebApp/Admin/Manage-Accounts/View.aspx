@@ -37,9 +37,8 @@
             <div class="row">
                 <div class="col-12">
                     <asp:GridView ID="GridViewAccounts" CssClass="table table-sm table-responsive-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
-                        ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowDeleting="GridViewAccounts_RowDeleting" OnRowCommand="GridViewAccounts_RowCommand"
-                        OnPageIndexChanging="GridViewAccounts_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
+                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" ItemType="NUSMed_WebApp.Classes.Entity.Account"
+                        DataKeyNames="nric" OnRowCommand="GridViewAccounts_RowCommand" OnPageIndexChanging="GridViewAccounts_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                         <Columns>
                             <asp:TemplateField HeaderText="NRIC">
                                 <ItemTemplate>
@@ -115,13 +114,13 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
+                            <%--<asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:LinkButton CssClass="btn btn-danger btn-sm" runat="server" CommandName="Delete" data-toggle="confirmation" data-title="Confirm Deletion?">
                                         <i class="fas fa-fw fa-trash"></i></i><span class="d-none d-lg-inline-block">Delete</span>
                                     </asp:LinkButton>
                                 </ItemTemplate>
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
                         </Columns>
 
                         <EmptyDataTemplate>

@@ -153,7 +153,7 @@
                     <asp:GridView ID="GridViewPatientAnonymised" CssClass="table table-sm table-responsive-sm small" AllowPaging="true" PageSize="20" PagerStyle-CssClass="pagination-gridview"
                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" ItemType="NUSMed_WebApp.Classes.Entity.PatientAnonymised"
                         OnRowCommand="GridViewPatientAnonymised_RowCommand" OnPageIndexChanging="GridViewPatientAnonymised_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table"
-                        runat="server" OnRowDataBound="GridViewPatientAnonymised_RowDataBound">
+                        runat="server">
                         <Columns>
                             <asp:TemplateField HeaderText="Age">
                                 <ItemTemplate>

@@ -209,7 +209,7 @@ a.aspNetDisabled.btn.btn-secondary.disabled {
     }
 
         .pagination-gridview table > tbody > tr > td {
-            display: inline;
+            display: inline-table;
             border-top: none;
         }
 
