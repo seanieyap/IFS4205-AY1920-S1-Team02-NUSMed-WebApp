@@ -91,7 +91,7 @@ namespace NUSMed_WebApp.API
 
                                     Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
 
-                                    File.WriteAllBytes(record.fullpath, Encoding.ASCII.GetBytes(Convert.ToString(credentials.fileContent)));
+                                    File.WriteAllBytes(record.fullpath, System.Convert.FromBase64String(credentials.fileContent));
                                 }
 
                                 recordBLL.AddRecord(record);
