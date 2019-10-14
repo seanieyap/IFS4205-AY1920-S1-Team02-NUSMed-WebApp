@@ -153,7 +153,7 @@ namespace NUSMed_WebApp.API
                                 string names = "";
                                 for (int i = 0; i < patients.Count; i++)
                                 {
-                                    names += patients[i].nric + "\r" + patients[i].firstName + "\r" + patients[i].lastName;
+                                    names += patients[i].nric + "  " + patients[i].firstName + " " + patients[i].lastName;
 
                                     if (i != patients.Count - 1)
                                     {
