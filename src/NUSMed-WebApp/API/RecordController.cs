@@ -114,5 +114,56 @@ namespace NUSMed_WebApp.API
 
             return response;
         }
+
+        // POST api/record/therapist/getPatients
+        // Therapist get all associated patients
+        [Route("therapist/getPatients")]
+        [HttpPost]
+        public HttpResponseMessage TherapistGetPatients([FromBody]dynamic credentials)
+        {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            string deviceID = credentials.deviceID;
+            string jwt = credentials.jwt;
+
+            AccountBLL accountBLL = new AccountBLL();
+            JWTBLL jwtBll = new JWTBLL();
+
+            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                if (jwtBll.ValidateJWT(jwt))
+                {
+                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+
+                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
+                    {
+                        List<string> userData = new List<string>();
+                        userData.Add("Therapist");
+                        GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
+                        HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());
+                        Account account = accountBLL.GetStatus(retrievedNRIC);
+
+                        if (account.status == 1)
+                        {
+                            try
+                            {
+                                TherapistBLL therapistBLL = new TherapistBLL();
+                                List<Classes.Entity.Patient> patients = therapistBLL.GetCurrentPatients("");
+
+                                response = Request.CreateResponse(HttpStatusCode.OK, patients[0].firstName);
+                            }
+                            catch
+                            {
+                                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                            }
+
+                            return response;
+                        }
+                    }
+                }
+            }
+
+            return response;
+        }
     }
 }
