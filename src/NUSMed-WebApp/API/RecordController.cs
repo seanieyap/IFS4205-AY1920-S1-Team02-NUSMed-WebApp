@@ -150,7 +150,18 @@ namespace NUSMed_WebApp.API
                                 TherapistBLL therapistBLL = new TherapistBLL();
                                 List<Classes.Entity.Patient> patients = therapistBLL.GetCurrentPatients("");
 
-                                response = Request.CreateResponse(HttpStatusCode.OK, patients[0].firstName);
+                                string names = "";
+                                for (int i = 0; i < patients.Count; i++)
+                                {
+                                    names += patients[i].nric + "\r" + patients[i].firstName + "\r" + patients[i].lastName;
+
+                                    if (i != patients.Count - 1)
+                                    {
+                                        names += "\r";
+                                    }
+                                }
+
+                                response = Request.CreateResponse(HttpStatusCode.OK, System.Convert.ToBase64String(Encoding.ASCII.GetBytes(names)));
                             }
                             catch
                             {
