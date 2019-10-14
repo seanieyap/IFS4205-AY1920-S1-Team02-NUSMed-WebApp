@@ -50,7 +50,7 @@ namespace NUSMed_WebApp.API
                             try
                             {
                                 Record record = new Record();
-                                record.patientNRIC = credentials.patientNRIC;
+                                record.patientNRIC = retrievedNRIC;
                                 record.creatorNRIC = retrievedNRIC;
                                 record.title = credentials.title;
                                 record.description = credentials.description;
@@ -69,13 +69,11 @@ namespace NUSMed_WebApp.API
 
                                 if (record.type.isContent)
                                 {
+                                    record.content = credentials.content;
+
                                     if (!record.IsContentValid())
                                     {
                                         return Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid record content");
-                                    }
-                                    else
-                                    {
-                                        record.content = credentials.content;
                                     }
                                 }
                                 else
@@ -96,17 +94,10 @@ namespace NUSMed_WebApp.API
                                     File.WriteAllBytes(record.fullpath, Encoding.ASCII.GetBytes(Convert.ToString(credentials.fileContent)));
                                 }
 
+                                recordBLL.AddRecord(record);
+
                                 string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
                                 string newJwt = jwtBll.GetJWT(retrievedNRIC, role);
-
-                                //JWT jwtEntity = new JWT
-                                //{
-                                //    nric = retrievedNRIC,
-                                //    Roles = role,
-                                //};
-
-                                //recordBLL.AddRecord(record, jwtEntity);
-                                recordBLL.AddRecord(record);
 
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                             }
