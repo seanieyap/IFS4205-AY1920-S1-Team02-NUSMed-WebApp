@@ -735,7 +735,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     INNER JOIN account a ON a.nric = pd.therapist_nric
                     INNER JOIN record_type_permission rtp ON rtp.patient_nric = pd.patient_nric
                     WHERE rtp.patient_nric = @patientNRIC AND rtp.therapist_nric = @therapistNRIC AND rtp.approved_time IS NOT NULL
-                    ORDER BY pd.start DESC;";
+                    ORDER BY pd.end DESC, pd.start DESC;";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
                 cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
@@ -795,7 +795,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     WHERE rtp.patient_nric = @patientNRIC AND rtp.therapist_nric = @therapistNRIC AND rtp.approved_time IS NOT NULL AND 
                     pd.end IS NOT NULL AND
                     (d.diagnosis_code LIKE @term OR d.diagnosis_description_long = @term OR d.category_title LIKE @term)
-                    ORDER BY pd.start DESC;";
+                    ORDER BY pd.end DESC, pd.start DESC;";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
                 cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
@@ -837,7 +837,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 cmd.CommandText = @"SELECT diagnosis_code, diagnosis_description_short, category_title
                     FROM diagnosis 
                     WHERE diagnosis_code LIKE @term OR diagnosis_description_long = @term OR category_title LIKE @term
-                    ORDER BY diagnosis_code desc 
+                    ORDER BY diagnosis_code DESC 
                     LIMIT 25;";
 
                 cmd.Parameters.AddWithValue("@term", "%" + term + "%");

@@ -139,6 +139,15 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.UpdatePanel UpdatePanelPatientAnonymised;
         
         /// <summary>
+        /// ButtonDownload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ButtonDownload;
+        
+        /// <summary>
         /// ButtonFilter control.
         /// </summary>
         /// <remarks>
@@ -148,6 +157,24 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.WebControls.LinkButton ButtonFilter;
         
         /// <summary>
+        /// PanelViewHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelViewHeader;
+        
+        /// <summary>
+        /// PanelView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelView;
+        
+        /// <summary>
         /// GridViewPatientAnonymised control.
         /// </summary>
         /// <remarks>
@@ -155,24 +182,6 @@ namespace NUSMed_WebApp.Researcher {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridViewPatientAnonymised;
-        
-        /// <summary>
-        /// LinkButton1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
-        
-        /// <summary>
-        /// LinkButton2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton2;
         
         /// <summary>
         /// UpdatePanelRecords control.

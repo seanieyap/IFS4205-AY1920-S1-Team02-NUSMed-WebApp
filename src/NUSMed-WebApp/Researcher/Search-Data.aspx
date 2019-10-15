@@ -144,13 +144,14 @@
         <asp:UpdatePanel ID="UpdatePanelPatientAnonymised" class="row" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
                 <div class="col-12 mb-4 text-center">
-                    <asp:LinkButton ID="ButtonFilter" OnClick="ButtonFilter_ServerClick" CssClass="btn btn-success" runat="server"><i class="fas fa-fw fa-filter"></i>Filter</asp:LinkButton>
+                    <asp:LinkButton ID="ButtonDownload" OnClick="ButtonDownload_Click" CssClass="btn btn-warning" runat="server"><i class="fas fa-fw fa-cloud-download-alt"></i>Download</asp:LinkButton>
+                    <asp:LinkButton ID="ButtonFilter" OnClick="ButtonFilter_ServerClick" CssClass="btn btn-info" runat="server"><i class="fas fa-fw fa-filter"></i>View</asp:LinkButton>
                 </div>
-                <div class="col-12">
+                <asp:Panel ID="PanelViewHeader" CssClass="col-12" runat="server" Visible="false">
                     <h2>View Anonymised Patients and their Records</h2>
-                </div>
-                <div class="col-12">
-                    <asp:GridView ID="GridViewPatientAnonymised" CssClass="table table-sm table-responsive-sm small" AllowPaging="true" PageSize="20" PagerStyle-CssClass="pagination-gridview"
+                </asp:Panel>
+                <asp:Panel ID="PanelView" CssClass="col-12" runat="server" Visible="false">
+                    <asp:GridView ID="GridViewPatientAnonymised" CssClass="table table-sm small" AllowPaging="true" PageSize="20" PagerStyle-CssClass="pagination-gridview"
                         AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None" ItemType="NUSMed_WebApp.Classes.Entity.PatientAnonymised"
                         OnRowCommand="GridViewPatientAnonymised_RowCommand" OnPageIndexChanging="GridViewPatientAnonymised_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table"
                         runat="server">
@@ -201,16 +202,7 @@
                             </div>
                         </EmptyDataTemplate>
                     </asp:GridView>
-
-                </div>
-                <div class="col-12 mb-3">
-                    <h2>Download Data</h2>
-                </div>
-                <div class="col-12 text-center">
-                    <asp:LinkButton ID="LinkButton1" CssClass="btn btn-success" runat="server"><i class="fas fa-fw fa-cloud-download-alt"></i>Download Patient Data</asp:LinkButton>
-                    <asp:LinkButton ID="LinkButton2" CssClass="btn btn-success" runat="server"><i class="fas fa-fw fa-cloud-download-alt"></i>Download Record Data</asp:LinkButton>
-                </div>
-
+                </asp:Panel>
             </ContentTemplate>
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="ButtonFilter" />

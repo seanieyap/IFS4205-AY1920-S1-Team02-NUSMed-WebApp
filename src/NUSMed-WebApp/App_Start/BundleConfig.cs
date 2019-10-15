@@ -37,6 +37,9 @@ namespace NUSMed_WebApp
                     "~/Scripts/moment.min.js",
                     "~/Scripts/tempusdominus-bootstrap-4.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/SearchJs").Include(
+                    "~/Scripts/plotly-latest.min.js",
+                    "~/Scripts/bootstrap-select.min.js"));
         }
     }
 }

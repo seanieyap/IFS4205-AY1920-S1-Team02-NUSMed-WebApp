@@ -330,7 +330,8 @@ namespace NUSMed_WebApp.Classes.DAL
                             INNER JOIN record r ON ra.record_id = r.id
                             WHERE ");
                 stringBuilder.Append(string.Join(" OR ", recordIDsParameterized.Select(r => " ra.record_id = " + r.Item1)));
-                stringBuilder.Append(@" GROUP BY r.patient_nric LIMIT 1);");
+                stringBuilder.Append(@" GROUP BY r.patient_nric LIMIT 1)
+                    ORDER BY pd.end DESC, pd.start DESC;");
 
                 cmd.CommandText = stringBuilder.ToString();
 
@@ -544,7 +545,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     INNER JOIN record r ON r.patient_nric = pd.patient_nric
                     INNER JOIN records_anonymized ra ON ra.record_id = r.id 
                     GROUP BY d.diagnosis_code
-                    ORDER BY diagnosis_code;";
+                    ORDER BY diagnosis_code ASC;";
 
                 using (cmd.Connection = connection)
                 {
@@ -569,7 +570,8 @@ namespace NUSMed_WebApp.Classes.DAL
                     INNER JOIN record r ON r.id = ra.record_id
                     INNER JOIN record_diagnosis rd ON rd.record_id = r.id
                     INNER JOIN diagnosis d ON rd.diagnosis_code = d.diagnosis_Code
-                    ORDER BY d.diagnosis_code;";
+                    GROUP BY d.diagnosis_code
+                    ORDER BY d.diagnosis_code ASC;";
 
                 using (cmd.Connection = connection)
                 {

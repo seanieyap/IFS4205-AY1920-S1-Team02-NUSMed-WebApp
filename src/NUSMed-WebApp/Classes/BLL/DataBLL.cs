@@ -79,7 +79,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     GROUP_CONCAT(DISTINCT ra.record_id SEPARATOR ',') as record_ids
                 FROM records_anonymized ra 
                 INNER JOIN record r ON ra.record_id = r.id 
-                INNER JOIN record_diagnosis rd ON r.id = rd.record_id 
+                LEFT JOIN record_diagnosis rd ON r.id = rd.record_id 
 				LEFT JOIN patient_diagnosis pd ON pd.patient_nric = r.patient_nric ");
 
                 List<Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>>();

@@ -325,7 +325,8 @@ namespace NUSMed_WebApp.Classes.DAL
                     FROM patient_diagnosis pd 
                     INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
                     INNER JOIN account a ON a.nric = pd.therapist_nric
-                    WHERE pd.patient_nric = @patientNRIC;";
+                    WHERE pd.patient_nric = @patientNRIC
+                    ORDER BY pd.end DESC, pd.start DESC;";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
 

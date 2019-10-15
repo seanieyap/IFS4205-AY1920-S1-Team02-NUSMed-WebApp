@@ -314,6 +314,8 @@ namespace NUSMed_WebApp.Researcher
                 ViewState["GridViewPatientAnonymised"] = recordAnonymised;
                 GridViewPatientAnonymised.DataSource = recordAnonymised;
                 GridViewPatientAnonymised.DataBind();
+                PanelViewHeader.Visible = true;
+                PanelView.Visible = true;
                 UpdatePanelPatientAnonymised.Update();
 
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Data successfully displayed.');", true);
@@ -321,6 +323,136 @@ namespace NUSMed_WebApp.Researcher
             catch
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when displaying data.');", true);
+            }
+        }
+        protected void ButtonDownload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Retrieve gen settings
+                GeneralizedSetting generalizedSetting = dataBLL.GetGeneralizedSettingFromDb();
+
+                #region Validation: Match and Get only valid inputs
+                FilteredValues filteredValues = new FilteredValues();
+
+                // Marital Status
+                foreach (ListItem item in inputMaritalStatusLevel.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (generalizedSetting.maritalStatusOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                        {
+                            filteredValues.maritalStatus.Add(item.Value.Trim());
+                        }
+                    }
+                }
+
+                // Sex
+                foreach (ListItem item in inputSexLevel.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (generalizedSetting.sexOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                        {
+                            filteredValues.sex.Add(item.Value.Trim());
+                        }
+                    }
+                }
+
+                // Gender
+                foreach (ListItem item in inputGenderLevel.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (generalizedSetting.genderOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                        {
+                            filteredValues.gender.Add(item.Value.Trim());
+                        }
+                    }
+                }
+
+                // Age
+                foreach (ListItem item in inputAgeLevel.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (generalizedSetting.ageOptions.Any(t => t.Item1.Equals(item.Value.Trim())))
+                        {
+                            filteredValues.age.Add(item.Value.Trim());
+                        }
+                    }
+                }
+
+                // Postal
+                DataTable postalTable = dataBLL.GetPostal();
+                foreach (ListItem item in inputPostal.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (postalTable.AsEnumerable().Any(row => row.Field<string>("postal").Equals(item.Value.Trim())))
+                        {
+                            filteredValues.postal.Add(item.Value.Trim());
+                        }
+                    }
+                }
+
+                // Diagnosis
+                DataTable diagnosesTable = dataBLL.GetDiagnoses();
+                foreach (ListItem item in inputDiagnosis.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (diagnosesTable.AsEnumerable().Any(row => row.Field<string>("diagnosis_code").Equals(item.Value.Trim())))
+                        {
+                            filteredValues.diagnoses.Add(item.Value.Trim());
+                        }
+                    }
+                }
+
+
+                // Record Type
+                foreach (ListItem item in inputRecordType.Items)
+                {
+                    if (item.Selected)
+                    {
+                        filteredValues.recordType.Add(item.Value.Trim());
+                    }
+                }
+
+                // Record Diagnosis
+                DataTable recordDiagnosesTable = dataBLL.GetRecordDiagnoses();
+                foreach (ListItem item in inputRecordDiagnosis.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (recordDiagnosesTable.AsEnumerable().Any(row => row.Field<string>("diagnosis_code").Equals(item.Value.Trim())))
+                        {
+                            filteredValues.recordDiagnoses.Add(item.Value.Trim());
+                        }
+                    }
+                }
+
+                // Creation Date
+                DataTable creationDateTable = dataBLL.GetRecordCreationDate();
+                foreach (ListItem item in inputCreationDate.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (creationDateTable.AsEnumerable().Any(row => row.Field<string>("record_create_date").Equals(item.Value.Trim())))
+                        {
+                            filteredValues.creationDate.Add(item.Value.Trim());
+                        }
+                    }
+                }
+                #endregion
+
+                //List<PatientAnonymised> recordAnonymised = dataBLL.GetPatients(filteredValues);
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Data download has been successfully initiated.');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when intiating data download.');", true);
             }
         }
         #endregion
