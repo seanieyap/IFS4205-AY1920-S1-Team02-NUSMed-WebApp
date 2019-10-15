@@ -447,6 +447,12 @@ namespace NUSMed_WebApp.Researcher
                 #endregion
 
                 //List<PatientAnonymised> recordAnonymised = dataBLL.GetPatients(filteredValues);
+                ViewState["GridViewPatientAnonymised"] = null;
+                GridViewPatientAnonymised.DataSource = null;
+                GridViewPatientAnonymised.DataBind();
+                PanelViewHeader.Visible = false;
+                PanelView.Visible = false;
+                UpdatePanelPatientAnonymised.Update();
 
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Data download has been successfully initiated.');", true);
             }
