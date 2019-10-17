@@ -1,8 +1,10 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
@@ -221,18 +223,24 @@ namespace NUSMed_WebApp.API
 
                         if (account.status == 1)
                         {
+                            List<string> userData = new List<string>();                            
+                            
                             if (newJwtRole.Equals("10") && account.patientStatus == 1)
                             {
                                 string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-                                return response;
+                                userData.Add("Patient");
                             }
                             else if (newJwtRole.Equals("01") && account.therapistStatus == 1)
                             {
                                 string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-                                return response;
+                                userData.Add("Therapist");
                             }
+
+                            GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
+                            HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());
+                            return response;
                         }
                     }
                 }

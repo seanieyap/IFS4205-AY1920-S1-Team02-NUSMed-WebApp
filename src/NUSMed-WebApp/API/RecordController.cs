@@ -39,10 +39,10 @@ namespace NUSMed_WebApp.API
 
                     if (accountBLL.IsValid(retrievedNRIC, deviceID))
                     {
-                        List<string> userData = new List<string>();
+                        /*List<string> userData = new List<string>();
                         userData.Add("Patient");
                         GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
-                        HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());
+                        HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());*/
                         Account account = accountBLL.GetStatus(retrievedNRIC);
 
                         if (account.status == 1)
@@ -137,10 +137,10 @@ namespace NUSMed_WebApp.API
 
                     if (accountBLL.IsValid(retrievedNRIC, deviceID))
                     {
-                        List<string> userData = new List<string>();
+                        /*List<string> userData = new List<string>();
                         userData.Add("Therapist");
                         GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
-                        HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());
+                        HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());*/
                         Account account = accountBLL.GetStatus(retrievedNRIC);
 
                         if (account.status == 1)
