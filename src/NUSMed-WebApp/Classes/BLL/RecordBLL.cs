@@ -110,7 +110,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return null;
         }
-       
+
         public List<RecordDiagnosis> GetRecordDiagnoses(long recordID)
         {
             if (AccountBLL.IsPatient())
@@ -190,49 +190,6 @@ namespace NUSMed_WebApp.Classes.BLL
                 }
             }
         }
-
-        public void AddRecord(Record record, JWT jwt)
-        {
-            if (jwt.Equals("10") && record.patientNRIC.Equals(jwt.nric))
-            {
-                if (record.type.isContent)
-                {
-                    recordDAL.InsertContent(record, jwt.nric);
-                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
-                }
-                else if (!record.type.isContent)
-                {
-                    record.fileChecksum = record.GetMD5HashFromFile();
-
-                    recordDAL.InsertFile(record, jwt.nric);
-                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
-                }
-            }
-            else if (jwt.Equals("01"))
-            {
-                Entity.Patient patient = new TherapistBLL().GetPatientPermissions(record.patientNRIC, jwt);
-
-                if (patient.permissionApproved == 0 || ((patient.permissionApproved & record.type.permissionFlag) == 0) ||
-                    record.patientNRIC.Equals(record.patientNRIC))
-                {
-                    return;
-                }
-
-                if (record.type.isContent)
-                {
-                    recordDAL.InsertContent(record, jwt.nric);
-                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
-                }
-                else if (!record.type.isContent)
-                {
-                    record.fileChecksum = record.GetMD5HashFromFile();
-
-                    recordDAL.InsertFile(record, jwt.nric);
-                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
-                }
-            }
-        }
-
 
         public void UpdateRecordEnable(long recordID)
         {
