@@ -91,12 +91,7 @@ namespace NUSMed_WebApp.API
                                 }
 
                                 recordBLL.AddRecord(record);
-
-                                string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
-                                string newJwt = jwtBll.GetJWT(retrievedNRIC, role);
-
-                                //response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-                                response = Request.CreateResponse(HttpStatusCode.OK, HttpContext.Current.User.Identity.Name.ToUpper());
+                                response = Request.CreateResponse(HttpStatusCode.OK, jwtBll.UpdateJWT(jwt));
                             }
                             catch
                             {
