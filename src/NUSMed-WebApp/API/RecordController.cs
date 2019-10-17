@@ -43,6 +43,7 @@ namespace NUSMed_WebApp.API
                         userData.Add("Patient");
                         GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
                         HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());*/
+                        accountBLL.SetRole(retrievedNRIC, "Patient");
                         Account account = accountBLL.GetStatus(retrievedNRIC);
 
                         if (account.status == 1)
@@ -142,6 +143,7 @@ namespace NUSMed_WebApp.API
                         userData.Add("Therapist");
                         GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
                         HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());*/
+                        accountBLL.SetRole(retrievedNRIC, "Therapist");
                         Account account = accountBLL.GetStatus(retrievedNRIC);
 
                         if (account.status == 1)

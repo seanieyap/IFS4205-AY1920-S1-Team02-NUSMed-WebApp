@@ -222,25 +222,18 @@ namespace NUSMed_WebApp.API
                         Account account = accountBLL.GetStatus(retrievedNRIC);
 
                         if (account.status == 1)
-                        {
-                            List<string> userData = new List<string>();                            
-                            
+                        {     
                             if (newJwtRole.Equals("10") && account.patientStatus == 1)
                             {
                                 string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-                                userData.Add("Patient");
                             }
                             else if (newJwtRole.Equals("01") && account.therapistStatus == 1)
                             {
                                 string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-                                userData.Add("Therapist");
                             }
 
-                            GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
-                            HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());
-                            response = Request.CreateResponse(HttpStatusCode.OK, HttpContext.Current.User.Identity.Name.ToUpper());
                             return response;
                         }
                     }
