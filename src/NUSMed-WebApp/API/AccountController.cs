@@ -1,14 +1,11 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Security.Principal;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
-using System.Web.Security;
 
 namespace NUSMed_WebApp.API
 {
