@@ -17,11 +17,11 @@
                 <asp:Panel CssClass="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4" runat="server" DefaultButton="ButtonLogin">
                     <div class="form-group">
                         <label for="inputNRIC">NRIC</label>
-                        <input id="inputNRIC" type="text" class="form-control" placeholder="NRIC" runat="server">
+                        <input id="inputNRIC" type="text" class="form-control" placeholder="NRIC" runat="server" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label for="inputPassword">Password</label>
-                        <input id="inputPassword" type="password" class="form-control" placeholder="Password" runat="server">
+                        <input id="inputPassword" type="password" class="form-control" placeholder="Password" runat="server" autocomplete="off">
                         <small id="passwordHelp" class="form-text text-muted">Please approach help-desk to reset forgotten passwords.</small>
                     </div>
                     <asp:LinkButton ID="ButtonLogin" CssClass="btn btn-success" runat="server" OnClick="ButtonLogin_ServerClick">Login</asp:LinkButton>
