@@ -205,6 +205,7 @@
                 </asp:Panel>
             </ContentTemplate>
             <Triggers>
+                <asp:PostBackTrigger ControlID="ButtonDownload" />
                 <asp:AsyncPostBackTrigger ControlID="ButtonFilter" />
             </Triggers>
         </asp:UpdatePanel>
