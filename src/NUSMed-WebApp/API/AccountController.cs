@@ -240,6 +240,7 @@ namespace NUSMed_WebApp.API
 
                             GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
                             HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());
+                            response = Request.CreateResponse(HttpStatusCode.OK, HttpContext.Current.User.Identity.Name.ToUpper());
                             return response;
                         }
                     }
