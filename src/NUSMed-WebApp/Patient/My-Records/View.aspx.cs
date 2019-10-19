@@ -118,9 +118,16 @@ namespace NUSMed_WebApp.Patient.My_Records
                         modalFileViewPanelText.Visible = true;
                         if (record.IsFileSafe())
                         {
-                            string js = record.type.GetTextPlotJS(File.ReadAllText(record.fullpath));
-
-                            ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').on('shown.bs.modal', function (e) {  "+js+ "}); $('#modalFileView').modal('show');", true);
+                            string js = string.Empty;
+                            try
+                            {
+                                js = record.type.GetTextPlotJS(File.ReadAllText(record.fullpath));
+                                ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalFileView').on('shown.bs.modal', function (e) {  " + js + "}); $('#modalFileView').modal('show');", true);
+                            }
+                            catch
+                            {
+                                ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Text file is not formatted incorrectly to be plotted. To view file, please download it.');", true);
+                            }
                         }
                     }
                     else if (record.fileIsVideo)

@@ -457,24 +457,32 @@ namespace NUSMed_WebApp.Therapist.My_Patients
                     modalFileViewLabelFileSize.Text = record.fileSizeMegabytes;
                     FileDownloadLinkviaModal.HRef = "~/Therapist/Download.ashx?record=" + record.id.ToString();
 
-                    if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
+                    if (record.fileIsImage)
                     {
                         modalFileViewImage.Visible = true;
                         modalFileViewImage.ImageUrl = "~/Therapist/Download.ashx?record=" + record.id;
 
                         ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').modal('show');", true);
                     }
-                    else if (record.fileExtension == ".txt")
+                    else if (record.fileIsText)
                     {
                         modalFileViewPanelText.Visible = true;
                         if (record.IsFileSafe())
                         {
-                            string js = record.type.GetTextPlotJS(File.ReadAllText(record.fullpath));
+                            string js = string.Empty;
+                            try
+                            {
+                                js = record.type.GetTextPlotJS(File.ReadAllText(record.fullpath));
+                                ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').on('shown.bs.modal', function (e) {  " + js + "}); $('#modalFileView').modal('show');", true);
+                            }
+                            catch
+                            {
+                                ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Text file is not formatted incorrectly to be plotted. To view file, please download it.');", true);
+                            }
 
-                            ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').on('shown.bs.modal', function (e) {  " + js + "}); $('#modalFileView').modal('show');", true);
                         }
                     }
-                    else if (record.fileExtension == ".mp4")
+                    else if (record.fileIsVideo)
                     {
                         modalFileViewVideo.Visible = true;
                         modalFileViewVideoSource.Attributes.Add("src", "~/Therapist/Download.ashx?record=" + record.id);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 namespace NUSMed_WebApp.Classes.Entity
 {
@@ -221,6 +222,11 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         public override string GetTextPlotJS(string data)
         {
+            if (data.Contains("\n"))
+            {
+                throw new Exception();
+            }
+
             string[] dataArray = data.Split(',');
             List<string> timeList = new List<string>();
 
@@ -332,26 +338,39 @@ namespace NUSMed_WebApp.Classes.Entity
             List<string> gy = new List<string>();
             List<string> gz = new List<string>();
 
-            using (StringReader reader = new StringReader(data))
+            try
             {
-                string line = string.Empty;
-
-                do
+                using (StringReader reader = new StringReader(data))
                 {
-                    line = reader.ReadLine();
-                    if (line != null)
-                    {
-                        string[] tokens = line.Split(',');
-                        time.Add((Convert.ToDouble(tokens[0]) / 1000).ToString());
-                        ax.Add(tokens[1]);
-                        ay.Add(tokens[2]);
-                        az.Add(tokens[3]);
-                        gx.Add(tokens[4]);
-                        gy.Add(tokens[5]);
-                        gz.Add(tokens[6]);
-                    }
+                    string line = string.Empty;
 
-                } while (line != null);
+                    do
+                    {
+                        line = reader.ReadLine();
+                        if (line != null)
+                        {
+                            string[] tokens = line.Split(',');
+                            time.Add((Convert.ToDouble(tokens[0]) / 1000).ToString());
+                            ax.Add(tokens[1]);
+                            ay.Add(tokens[2]);
+                            az.Add(tokens[3]);
+                            gx.Add(tokens[4]);
+                            gy.Add(tokens[5]);
+                            gz.Add(tokens[6]);
+                        }
+
+                    } while (line != null);
+                }
+            }
+            catch
+            {
+                throw new Exception();
+            }
+
+            List<int> check = new List<int> { ax.Count, ay.Count, az.Count, gx.Count, gy.Count, gz.Count };
+            if (!data.Contains("\n") || check[0] == 1 || check.Any(o => o != check[0]))
+            {
+                throw new Exception();
             }
 
             string seconds = string.Join(", ", time.ToArray());
