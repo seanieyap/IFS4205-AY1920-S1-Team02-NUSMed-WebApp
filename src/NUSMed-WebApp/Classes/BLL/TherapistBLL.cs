@@ -332,10 +332,24 @@ namespace NUSMed_WebApp.Classes.BLL
         {
             if (AccountBLL.IsTherapist())
             {
-                return therapistDAL.RetrieveNoteExist(noteID, AccountBLL.GetNRIC());
+                return therapistDAL.DoesNoteExist(noteID, AccountBLL.GetNRIC());
             }
 
             return false;
         }
+
+        private bool AcceptEmergencyPatient(string patientNRIC)
+        {
+            if (AccountBLL.IsTherapist() && therapistDAL.IsEmergencyPatient(patientNRIC, AccountBLL.GetNRIC()) 
+                && !patientNRIC.Equals(AccountBLL.GetNRIC()))
+            {
+                therapistDAL.AcceptEmergencyTherapist(patientNRIC, AccountBLL.GetNRIC());
+
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }

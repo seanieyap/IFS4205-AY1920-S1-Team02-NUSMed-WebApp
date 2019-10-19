@@ -613,6 +613,9 @@ namespace NUSMed_WebApp.Classes.DAL
         #endregion
 
         #region Updates
+        /// <summary>
+        /// Update record to allow status globally
+        /// </summary>
         public void UpdateRecordEnable(long recordID, string patientNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
@@ -631,6 +634,10 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
+
+        /// <summary>
+        /// Update record to disable status globally
+        /// </summary>
         public void UpdateRecordDisable(long recordID, string patientNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
@@ -680,6 +687,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
+
         /// <summary>
         /// Insert new record
         /// </summary>
@@ -715,6 +723,10 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
+
+        /// <summary>
+        /// Insert / Update on duplicate, Record Permission set to disallow for specific therapist
+        /// </summary>
         public void InsertRecordPermissionDisallow(long recordID, string therapistNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())
@@ -736,6 +748,10 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
+
+        /// <summary>
+        /// Insert / Update on duplicate, Record Permission set to allow for specific therapist
+        /// </summary>
         public void InsertRecordPermissionAllow(long recordID, string therapistNRIC)
         {
             using (MySqlCommand cmd = new MySqlCommand())

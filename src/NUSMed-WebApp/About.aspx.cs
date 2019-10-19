@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Web.UI;
-using System.IO;
-using System.Configuration;
 
 namespace NUSMed_WebApp
 {

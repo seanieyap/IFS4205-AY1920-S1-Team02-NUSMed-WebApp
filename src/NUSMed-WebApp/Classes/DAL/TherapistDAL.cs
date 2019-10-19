@@ -8,6 +8,8 @@ namespace NUSMed_WebApp.Classes.DAL
     public class TherapistDAL : DAL
     {
         public TherapistDAL() : base() { }
+
+        #region Retrievals
         /// <summary>
         /// Retrieve all Accounts who are patients
         /// </summary>
@@ -507,7 +509,7 @@ namespace NUSMed_WebApp.Classes.DAL
         /// <summary>
         /// Retrieve existance of note of therapist
         /// </summary>
-        public bool RetrieveNoteExist(long id, string therapistNRIC)
+        public bool DoesNoteExist(long id, string therapistNRIC)
         {
             bool result = false;
 
@@ -540,6 +542,196 @@ namespace NUSMed_WebApp.Classes.DAL
             return result;
         }
 
+        /// <summary>
+        /// Retrieve all the diagnoses information of a specific patient
+        /// </summary>
+        public List<PatientDiagnosis> RetrievePatientDiagnoses(string patientNRIC, string therapistNRIC)
+        {
+            List<PatientDiagnosis> result = new List<PatientDiagnosis>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT a.name_first, a.name_last, 
+                    pd.diagnosis_code, pd.start, pd.end, 
+                    d.diagnosis_description_short, d.category_title 
+                    FROM patient_diagnosis pd 
+                    INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
+                    INNER JOIN account a ON a.nric = pd.therapist_nric
+                    INNER JOIN record_type_permission rtp ON rtp.patient_nric = pd.patient_nric
+                    WHERE rtp.patient_nric = @patientNRIC AND rtp.therapist_nric = @therapistNRIC AND rtp.approved_time IS NOT NULL
+                    ORDER BY pd.end DESC, pd.start DESC;";
+
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Entity.Therapist therapist = new Entity.Therapist
+                            {
+                                firstName = Convert.ToString(reader["name_first"]),
+                                lastName = Convert.ToString(reader["name_last"])
+                            };
+
+                            Diagnosis diagnosis = new Diagnosis
+                            {
+                                code = Convert.ToString(reader["diagnosis_code"]),
+                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
+                                categoryTitle = Convert.ToString(reader["category_title"])
+                            };
+
+                            PatientDiagnosis patientDiagnosis = new PatientDiagnosis
+                            {
+                                therapist = therapist,
+                                diagnosis = diagnosis,
+                                start = Convert.ToDateTime(reader["start"]),
+                            };
+                            patientDiagnosis.end = reader["end"] == DBNull.Value ? null :
+                               (DateTime?)Convert.ToDateTime(reader["end"]);
+
+                            result.Add(patientDiagnosis);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve a Patient's current diagnoses
+        /// </summary>
+        public List<Diagnosis> RetrievePatientCurrentDiagnoses(string patientNRIC, string therapistNRIC, string term)
+        {
+            List<Diagnosis> result = new List<Diagnosis>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT d.diagnosis_code, 
+                    d.diagnosis_description_short, d.category_title 
+                    FROM patient_diagnosis pd 
+                    INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
+                    INNER JOIN account a ON a.nric = pd.therapist_nric
+                    INNER JOIN record_type_permission rtp ON rtp.patient_nric = pd.patient_nric
+                    WHERE rtp.patient_nric = @patientNRIC AND rtp.therapist_nric = @therapistNRIC AND rtp.approved_time IS NOT NULL AND 
+                    pd.end IS NOT NULL AND
+                    (d.diagnosis_code LIKE @term OR d.diagnosis_description_long = @term OR d.category_title LIKE @term)
+                    ORDER BY pd.end DESC, pd.start DESC;";
+
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Diagnosis diagnosis = new Diagnosis
+                            {
+                                code = Convert.ToString(reader["diagnosis_code"]),
+                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
+                                categoryTitle = Convert.ToString(reader["category_title"])
+                            };
+                            result.Add(diagnosis);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieve list of diagnosis based on a keyword
+        /// </summary>
+        public List<Diagnosis> RetrieveDiagnoses(string term)
+        {
+            List<Diagnosis> result = new List<Diagnosis>();
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT diagnosis_code, diagnosis_description_short, category_title
+                    FROM diagnosis 
+                    WHERE diagnosis_code LIKE @term OR diagnosis_description_long = @term OR category_title LIKE @term
+                    ORDER BY diagnosis_code DESC 
+                    LIMIT 25;";
+
+                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Diagnosis diagnosis = new Diagnosis
+                            {
+                                code = Convert.ToString(reader["diagnosis_code"]),
+                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
+                                categoryTitle = Convert.ToString(reader["category_title"])
+                            };
+
+                            result.Add(diagnosis);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Check if patient is a valid Emergency Patient
+        /// </summary>
+        public bool IsEmergencyPatient(string patientNRIC, string therapistNRIC)
+        {
+            bool result = false;
+
+            if (patientNRIC == therapistNRIC)
+                return result;
+
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandText = @"SELECT EXISTS (SELECT patient_nric FROM patient_emergency 
+                    WHERE therapist_nric = @therapistNRIC AND patient_nric = @patientNRIC)
+                    as result;";
+
+                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
+                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+
+                using (cmd.Connection = connection)
+                {
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            result = Convert.ToBoolean(reader["result"]);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        #endregion
+
+        #region Insertions
         /// <summary>
         /// Insert a Request for Permissions relationship between Therapist and Patient
         /// </summary>
@@ -634,7 +826,9 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
+        #endregion
 
+        #region Updates
         /// <summary>
         /// Update a Patient's diagnosis's end datetime
         /// </summary>
@@ -674,7 +868,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"UPDATE record_type_permission
                     SET permission_unapproved = @permissionUnapproved, 
-                    request_time = NOW() 
+                    request_time = NOW(), is_emergency = false 
                     WHERE patient_nric = @patientNRIC AND therapist_nric = @therapistNRIC;";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
@@ -717,25 +911,30 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
+        #endregion 
 
         /// <summary>
-        /// Retrieve all the diagnoses information of a specific patient
+        /// Accept a Patient as Emergency Patient. 
         /// </summary>
-        public List<PatientDiagnosis> RetrievePatientDiagnoses(string patientNRIC, string therapistNRIC)
+        public void AcceptEmergencyTherapist(string patientNRIC, string therapistNRIC)
         {
-            List<PatientDiagnosis> result = new List<PatientDiagnosis>();
+            if (patientNRIC == therapistNRIC)
+                return;
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT a.name_first, a.name_last, 
-                    pd.diagnosis_code, pd.start, pd.end, 
-                    d.diagnosis_description_short, d.category_title 
-                    FROM patient_diagnosis pd 
-                    INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
-                    INNER JOIN account a ON a.nric = pd.therapist_nric
-                    INNER JOIN record_type_permission rtp ON rtp.patient_nric = pd.patient_nric
-                    WHERE rtp.patient_nric = @patientNRIC AND rtp.therapist_nric = @therapistNRIC AND rtp.approved_time IS NOT NULL
-                    ORDER BY pd.end DESC, pd.start DESC;";
+                cmd.CommandText = @"DELETE FROM patient_emergency 
+                        WHERE patient_nric = @patientNRIC AND therapist_nric = @therapistNRIC;
+
+                    INSERT INTO record_type_permission
+                    (patient_nric, therapist_nric, permission_unapproved, request_time, permission_approved, approved_time)
+                    VALUES (@patientNRIC, @therapistNRIC, 255, NOW(), 255, NOW())
+                    ON DUPLICATE KEY UPDATE 
+                        is_emergency = 1,
+                        permission_unapproved = 255,
+                        request_time = NOW(),
+                        permission_approved = 255,
+                        approved_time = NOW();";
 
                 cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
                 cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
@@ -744,128 +943,8 @@ namespace NUSMed_WebApp.Classes.DAL
                 {
                     cmd.Connection.Open();
                     cmd.ExecuteNonQuery();
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Entity.Therapist therapist = new Entity.Therapist
-                            {
-                                firstName = Convert.ToString(reader["name_first"]),
-                                lastName = Convert.ToString(reader["name_last"])
-                            };
-
-                            Diagnosis diagnosis = new Diagnosis
-                            {
-                                code = Convert.ToString(reader["diagnosis_code"]),
-                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
-                                categoryTitle = Convert.ToString(reader["category_title"])
-                            };
-
-                            PatientDiagnosis patientDiagnosis = new PatientDiagnosis
-                            {
-                                therapist = therapist,
-                                diagnosis = diagnosis,
-                                start = Convert.ToDateTime(reader["start"]),
-                            };
-                            patientDiagnosis.end = reader["end"] == DBNull.Value ? null :
-                               (DateTime?)Convert.ToDateTime(reader["end"]);
-
-                            result.Add(patientDiagnosis);
-                        }
-                    }
                 }
             }
-
-            return result;
         }
-
-        public List<Diagnosis> RetrievePatientCurrentDiagnoses(string patientNRIC, string therapistNRIC, string term)
-        {
-            List<Diagnosis> result = new List<Diagnosis>();
-
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"SELECT d.diagnosis_code, 
-                    d.diagnosis_description_short, d.category_title 
-                    FROM patient_diagnosis pd 
-                    INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
-                    INNER JOIN account a ON a.nric = pd.therapist_nric
-                    INNER JOIN record_type_permission rtp ON rtp.patient_nric = pd.patient_nric
-                    WHERE rtp.patient_nric = @patientNRIC AND rtp.therapist_nric = @therapistNRIC AND rtp.approved_time IS NOT NULL AND 
-                    pd.end IS NOT NULL AND
-                    (d.diagnosis_code LIKE @term OR d.diagnosis_description_long = @term OR d.category_title LIKE @term)
-                    ORDER BY pd.end DESC, pd.start DESC;";
-
-                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
-                cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
-                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
-
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Diagnosis diagnosis = new Diagnosis
-                            {
-                                code = Convert.ToString(reader["diagnosis_code"]),
-                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
-                                categoryTitle = Convert.ToString(reader["category_title"])
-                            };
-                            result.Add(diagnosis);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Retrieve list of diagnosis based on a keyword
-        /// </summary>
-        public List<Diagnosis> RetrieveDiagnoses(string term)
-        {
-            List<Diagnosis> result = new List<Diagnosis>();
-
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"SELECT diagnosis_code, diagnosis_description_short, category_title
-                    FROM diagnosis 
-                    WHERE diagnosis_code LIKE @term OR diagnosis_description_long = @term OR category_title LIKE @term
-                    ORDER BY diagnosis_code DESC 
-                    LIMIT 25;";
-
-                cmd.Parameters.AddWithValue("@term", "%" + term + "%");
-
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Diagnosis diagnosis = new Diagnosis
-                            {
-                                code = Convert.ToString(reader["diagnosis_code"]),
-                                descriptionShort = Convert.ToString(reader["diagnosis_description_short"]),
-                                categoryTitle = Convert.ToString(reader["category_title"])
-                            };
-
-                            result.Add(diagnosis);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
     }
 }
