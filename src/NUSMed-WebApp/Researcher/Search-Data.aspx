@@ -67,6 +67,7 @@
                 <div class="form-group row">
                     <label class="col-4" for="inputPostal" runat="server">
                         Postal Code
+                        <span id="labelTitlePostalCode" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                     </label>
 
                     <div class="col-8">
@@ -132,6 +133,7 @@
                 <div class="form-group row">
                     <label class="col-4" for="inputCreationDate" runat="server">
                         Creation Date
+                        <span id="labelTitleCreationDate" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
                     </label>
 
                     <div class="col-8">

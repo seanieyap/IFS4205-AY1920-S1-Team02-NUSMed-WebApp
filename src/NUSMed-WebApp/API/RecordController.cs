@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Security.Principal;
 using System.Text;
 using System.Web;
 using System.Web.Http;
@@ -39,10 +38,7 @@ namespace NUSMed_WebApp.API
 
                     if (accountBLL.IsValid(retrievedNRIC, deviceID))
                     {
-                        List<string> userData = new List<string>();
-                        userData.Add("Patient");
-                        GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
-                        HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());
+                        accountBLL.SetRole(retrievedNRIC, "Patient");
                         Account account = accountBLL.GetStatus(retrievedNRIC);
 
                         if (account.status == 1)
@@ -95,11 +91,7 @@ namespace NUSMed_WebApp.API
                                 }
 
                                 recordBLL.AddRecord(record);
-
-                                string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
-                                string newJwt = jwtBll.GetJWT(retrievedNRIC, role);
-
-                                response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                                response = Request.CreateResponse(HttpStatusCode.OK, jwtBll.UpdateJWT(jwt));
                             }
                             catch (Exception ex)
                             {
@@ -139,10 +131,7 @@ namespace NUSMed_WebApp.API
 
                     if (accountBLL.IsValid(retrievedNRIC, deviceID))
                     {
-                        List<string> userData = new List<string>();
-                        userData.Add("Therapist");
-                        GenericIdentity genericIdentity = new GenericIdentity(retrievedNRIC, "JWT");
-                        HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());
+                        accountBLL.SetRole(retrievedNRIC, "Therapist");
                         Account account = accountBLL.GetStatus(retrievedNRIC);
 
                         if (account.status == 1)

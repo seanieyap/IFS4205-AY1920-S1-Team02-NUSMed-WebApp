@@ -339,6 +339,7 @@ namespace NUSMed_WebApp.Classes.DAL
         if (!string.Equals(patientNric, currentNric))
         {
           index++;
+          patientNric = currentNric;
         }
         row["patient_nric"] = index.ToString();
       }

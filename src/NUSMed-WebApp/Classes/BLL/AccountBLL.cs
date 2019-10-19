@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Mail;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
@@ -135,6 +136,14 @@ namespace NUSMed_WebApp.Classes.BLL
             Lockout(nric, account);
 
             return account;
+        }
+
+        public void SetRole(string nric, string role)
+        {
+            List<string> userData = new List<string>();
+            userData.Add(role);
+            GenericIdentity genericIdentity = new GenericIdentity(nric, "JWT");
+            HttpContext.Current.User = new GenericPrincipal(genericIdentity, userData.ToArray());
         }
 
         private void Lockout(string nric, Account account)

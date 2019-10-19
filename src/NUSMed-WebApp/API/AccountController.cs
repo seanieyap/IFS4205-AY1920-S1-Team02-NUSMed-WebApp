@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
-using System.Web.Security;
 
 namespace NUSMed_WebApp.API
 {
@@ -220,19 +219,19 @@ namespace NUSMed_WebApp.API
                         Account account = accountBLL.GetStatus(retrievedNRIC);
 
                         if (account.status == 1)
-                        {
+                        {     
                             if (newJwtRole.Equals("10") && account.patientStatus == 1)
                             {
                                 string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-                                return response;
                             }
                             else if (newJwtRole.Equals("01") && account.therapistStatus == 1)
                             {
                                 string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-                                return response;
                             }
+
+                            return response;
                         }
                     }
                 }

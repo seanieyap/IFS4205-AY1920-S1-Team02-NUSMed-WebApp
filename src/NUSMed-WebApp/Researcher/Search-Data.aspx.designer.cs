@@ -67,6 +67,15 @@ namespace NUSMed_WebApp.Researcher {
         protected global::System.Web.UI.WebControls.ListBox inputGenderLevel;
         
         /// <summary>
+        /// labelTitlePostalCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelTitlePostalCode;
+        
+        /// <summary>
         /// inputPostal control.
         /// </summary>
         /// <remarks>
@@ -119,6 +128,15 @@ namespace NUSMed_WebApp.Researcher {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox inputRecordDiagnosis;
+        
+        /// <summary>
+        /// labelTitleCreationDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelTitleCreationDate;
         
         /// <summary>
         /// inputCreationDate control.
