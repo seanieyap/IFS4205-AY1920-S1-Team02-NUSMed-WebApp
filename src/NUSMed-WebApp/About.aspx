@@ -3,9 +3,9 @@
 <%@ MasterType VirtualPath="~/site.Master" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="BodyContent" runat="server">
-    <asp:Panel ID="modalFileViewPanelText" runat="server" ClientIDMode="Static"></asp:Panel>
+    <%--<asp:Panel ID="modalFileViewPanelText" runat="server" ClientIDMode="Static"></asp:Panel>--%>
 
-    <script src="/Scripts/plotly-latest.min.js" type="text/javascript"></script>
+    <%--<script src="/Scripts/plotly-latest.min.js" type="text/javascript"></script>--%>
 
 
 </asp:Content>

@@ -101,9 +101,11 @@ namespace NUSMed_WebApp.API
 
                                 response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
                             }
-                            catch
+                            catch (Exception ex)
                             {
-                                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                                HttpResponseMessage r = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                                r.Content = new StringContent(ex.ToString());
+                                response = Request.CreateResponse(r);
                             }
 
                             return response;
