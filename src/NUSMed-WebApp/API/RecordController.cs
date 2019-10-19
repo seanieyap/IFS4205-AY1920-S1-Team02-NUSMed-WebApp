@@ -93,11 +93,9 @@ namespace NUSMed_WebApp.API
                                 recordBLL.AddRecord(record);
                                 response = Request.CreateResponse(HttpStatusCode.OK, jwtBll.UpdateJWT(jwt));
                             }
-                            catch (Exception ex)
+                            catch
                             {
-                                HttpResponseMessage r = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                                r.Content = new StringContent(ex.ToString());
-                                response = Request.CreateResponse(r);
+                                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
                             }
 
                             return response;
