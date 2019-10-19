@@ -147,7 +147,7 @@ namespace NUSMed_WebApp.Classes.Entity
                 {
                     return "Image";
                 }
-                else if (fileExtension == ".txt")
+                else if (fileExtension == ".txt" || fileExtension == ".csv")
                 {
                     return "Timeseries";
                 }

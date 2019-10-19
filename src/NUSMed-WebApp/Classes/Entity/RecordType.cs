@@ -213,7 +213,7 @@ namespace NUSMed_WebApp.Classes.Entity
         public override bool isContent { get { return false; } }
         public override bool IsFileValid(string extension, int? size)
         {
-            if (extension.Equals(".txt") && size <= maxTextSize)
+            if ((extension.Equals(".txt")|| extension.Equals(".csv")) && size <= maxTextSize)
             {
                 return true;
             }
@@ -316,7 +316,7 @@ namespace NUSMed_WebApp.Classes.Entity
         public override bool IsFileValid(string extension, int? size)
         {
             if (((extension.Equals(".mp4")) && size <= maxVideoSize) ||
-                ((extension.Equals(".txt")) && size <= maxTextSize))
+                ((extension.Equals(".txt") || extension.Equals(".csv")) && size <= maxTextSize))
             {
                 return true;
             }

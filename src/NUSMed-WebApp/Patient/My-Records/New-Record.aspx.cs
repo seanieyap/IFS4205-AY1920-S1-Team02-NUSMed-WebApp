@@ -116,7 +116,7 @@ namespace NUSMed_WebApp.Patient.My_Records
                 {
                     validate[2] = false;
                     LabelFileError.Visible = true;
-                    LabelFileError.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>Chosen file is of incorrect format for this type of record.";
+                    LabelFileError.Text = "<i class=\"fas fa-fw fa-exclamation-circle\"></i>Chosen file is of incorrect format or exceeding size for this type of record.";
                 }
                 else
                 {
@@ -192,8 +192,8 @@ namespace NUSMed_WebApp.Patient.My_Records
             {
                 IsContent = false;
                 LabelFile.Text = "ECG Reading";
-                LabelFileHelper.Text = "(File type: Timeseries, Format: .txt)";
-                inputFile.Attributes.Add("accept", ".txt");
+                LabelFileHelper.Text = "(File type: Timeseries, Format: .txt, .csv)";
+                inputFile.Attributes.Add("accept", ".txt, .csv");
             }
             else if (RadioButtonTypeMRI.Checked)
             {
@@ -213,8 +213,8 @@ namespace NUSMed_WebApp.Patient.My_Records
             {
                 IsContent = false;
                 LabelFile.Text = "Gait";
-                LabelFileHelper.Text = "(File type: Timeseries or Movie. Accepted formats: .txt, .mp4)";
-                inputFile.Attributes.Add("accept", ".txt, .mp4");
+                LabelFileHelper.Text = "(File type: Timeseries or Movie. Accepted formats: .txt, .csv, .mp4)";
+                inputFile.Attributes.Add("accept", ".txt, .csv, .mp4");
             }
 
             if (IsContent)

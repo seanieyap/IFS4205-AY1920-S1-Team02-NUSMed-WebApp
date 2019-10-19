@@ -500,12 +500,9 @@ namespace NUSMed_WebApp.Researcher
         UpdatePanelPatientAnonymised.Update();
         Response.Flush();
         Response.Close();
-
-        //ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Data download has been successfully initiated.');", true);
       }
       catch
       {
-        //ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when intiating data download.');", true);
       }
     }
     #endregion
