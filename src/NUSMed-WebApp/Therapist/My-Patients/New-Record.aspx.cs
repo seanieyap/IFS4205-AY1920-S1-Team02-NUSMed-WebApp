@@ -180,6 +180,16 @@ namespace NUSMed_WebApp.Therapist.My_Records
                         Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
 
                         inputFile.SaveAs(record.fullpath);
+
+                        if (!record.IsFileSafe())
+                        {
+                            if (Master.IsLocalUrl(Request.RawUrl))
+                            {
+                                Session["NewRecordSuccess"] = "error";
+                                Response.Redirect(Request.RawUrl);
+                                return;
+                            }
+                        }
                     }
 
                     recordBLL.AddRecord(record);
@@ -190,7 +200,11 @@ namespace NUSMed_WebApp.Therapist.My_Records
                 {
                     Session["NewRecordSuccess"] = "error";
                 }
-                Response.Redirect(Request.RawUrl);
+
+                if (Master.IsLocalUrl(Request.RawUrl))
+                {
+                    Response.Redirect(Request.RawUrl);
+                }
             }
         }
 

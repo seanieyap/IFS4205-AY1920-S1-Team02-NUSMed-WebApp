@@ -324,7 +324,6 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         public override string GetTextPlotJS(string data)
         {
-
             List<string> time = new List<string>();
             List<string> ax = new List<string>();
             List<string> ay = new List<string>();

@@ -106,8 +106,6 @@ namespace NUSMed_WebApp.Patient.My_Records
                 record.fileExtension = Path.GetExtension(inputFile.FileName);
                 record.fileSize = inputFile.PostedFile.ContentLength;
 
-                //record.fileMimeType = inputFile.PostedFile.ContentType;
-
                 if (!inputFile.HasFile)
                 {
                     validate[2] = false;
@@ -145,6 +143,16 @@ namespace NUSMed_WebApp.Patient.My_Records
                         Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
 
                         inputFile.SaveAs(record.fullpath);
+
+                        if (!record.IsFileSafe())
+                        {
+                            if (Master.IsLocalUrl(Request.RawUrl))
+                            {
+                                Session["NewRecordSuccess"] = "error";
+                                Response.Redirect(Request.RawUrl);
+                                return;
+                            }
+                        }
                     }
 
                     recordBLL.AddRecord(record);
@@ -152,10 +160,10 @@ namespace NUSMed_WebApp.Patient.My_Records
                     Session["NewRecordSuccess"] = "success";
                 }
                 catch
-            {
-                Session["NewRecordSuccess"] = "error";
-            }
-            Response.Redirect(Request.RawUrl);
+                {
+                    Session["NewRecordSuccess"] = "error";
+                }
+                Response.Redirect(Request.RawUrl);
             }
         }
 

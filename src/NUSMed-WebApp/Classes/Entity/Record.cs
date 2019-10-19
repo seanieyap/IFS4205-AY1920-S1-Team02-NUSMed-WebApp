@@ -179,7 +179,8 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             if (fileNameHash.Contains("\\") || !File.Exists(fullpath)
                 || !GetMD5HashFromFile().Equals(fileChecksum)
-                || new FileInfo(fullpath).Length != (int)fileSize)
+                || new FileInfo(fullpath).Length != (int)fileSize
+                || !IsFileValid())
             {
                 return false;
             }
