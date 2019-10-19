@@ -178,18 +178,7 @@ namespace NUSMed_WebApp.Therapist.My_Records
                         record.createTime = DateTime.Now;
 
                         Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
-
                         inputFile.SaveAs(record.fullpath);
-
-                        if (!record.IsFileSafe())
-                        {
-                            if (Master.IsLocalUrl(Request.RawUrl))
-                            {
-                                Session["NewRecordSuccess"] = "error";
-                                Response.Redirect(Request.RawUrl);
-                                return;
-                            }
-                        }
                     }
 
                     recordBLL.AddRecord(record);

@@ -1,5 +1,6 @@
 ﻿using NUSMed_WebApp.Classes.DAL;
 using NUSMed_WebApp.Classes.Entity;
+using System;
 using System.Collections.Generic;
 
 namespace NUSMed_WebApp.Classes.BLL
@@ -161,6 +162,11 @@ namespace NUSMed_WebApp.Classes.BLL
                 else if (!record.type.isContent)
                 {
                     record.fileChecksum = record.GetMD5HashFromFile();
+
+                    if (!record.IsFileSafe())
+                    {
+                        throw new Exception();
+                    }
 
                     recordDAL.InsertFile(record, AccountBLL.GetNRIC());
                     logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
