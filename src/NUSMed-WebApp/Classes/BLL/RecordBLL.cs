@@ -163,15 +163,16 @@ namespace NUSMed_WebApp.Classes.BLL
                 {
                     record.fileChecksum = record.GetMD5HashFromFile();
 
-                    //if (!record.IsFileSafe())
-                    //{
-                    //    throw new Exception();
-                    //}
-                    //else
-                    //{
+                    if (record.IsFileSafe())
+                    {
                         recordDAL.InsertFile(record, AccountBLL.GetNRIC());
-                        logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
-                    //}
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
+                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
                 }
             }
             else if (AccountBLL.IsTherapist())
@@ -193,7 +194,15 @@ namespace NUSMed_WebApp.Classes.BLL
                 {
                     record.fileChecksum = record.GetMD5HashFromFile();
 
-                    recordDAL.InsertFile(record, AccountBLL.GetNRIC());
+                    if (record.IsFileSafe())
+                    {
+                        recordDAL.InsertFile(record, AccountBLL.GetNRIC());
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
                     logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
                 }
             }
