@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace NUSMed_WebApp.Therapist.My_Records
 {
@@ -22,7 +21,7 @@ namespace NUSMed_WebApp.Therapist.My_Records
                 return;
             }
 
-            Classes.Entity.Patient patient = new TherapistBLL().GetPatientPermissions(Convert.ToString(HttpContext.Current.Request.QueryString["Patient-NRIC"]));
+            Classes.Entity.Patient patient = new TherapistBLL().GetPatient(Convert.ToString(HttpContext.Current.Request.QueryString["Patient-NRIC"]));
 
             if (!AccountBLL.IsNRICValid(patient.nric) || patient.permissionApproved == 0)
             {
@@ -50,20 +49,6 @@ namespace NUSMed_WebApp.Therapist.My_Records
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Submitting a Record');", true);
                     Session.Remove("NewRecordSuccess");
                 }
-            }
-
-            // store FileUpload object in Session to enable persistence between postbacks. 
-            if (Session["inputFile"] == null && inputFile.HasFile)
-            {
-                Session["inputFile"] = inputFile;
-            }
-            else if (Session["inputFile"] != null && (!inputFile.HasFile))
-            {
-                inputFile = (FileUpload)Session["inputFile"];
-            }
-            else if (inputFile.HasFile)
-            {
-                Session["inputFile"] = inputFile;
             }
 
             if (!IsPostBack)

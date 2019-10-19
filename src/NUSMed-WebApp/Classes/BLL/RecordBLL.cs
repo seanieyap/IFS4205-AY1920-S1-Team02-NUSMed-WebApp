@@ -163,13 +163,15 @@ namespace NUSMed_WebApp.Classes.BLL
                 {
                     record.fileChecksum = record.GetMD5HashFromFile();
 
-                    if (!record.IsFileSafe())
-                    {
-                        throw new Exception();
-                    }
-
-                    recordDAL.InsertFile(record, AccountBLL.GetNRIC());
-                    logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
+                    //if (!record.IsFileSafe())
+                    //{
+                    //    throw new Exception();
+                    //}
+                    //else
+                    //{
+                        recordDAL.InsertFile(record, AccountBLL.GetNRIC());
+                        logRecordBLL.LogEvent(AccountBLL.GetNRIC(), "Insert Record", "Action on: " + record.patientNRIC + ", Record ID: " + record.id + ".");
+                    //}
                 }
             }
             else if (AccountBLL.IsTherapist())

@@ -213,7 +213,7 @@ namespace NUSMed_WebApp.Classes.Entity
         public override bool isContent { get { return false; } }
         public override bool IsFileValid(string extension, int? size)
         {
-            if ((extension.Equals(".txt")|| extension.Equals(".csv")) && size <= maxTextSize)
+            if ((extension.Equals(".txt") || extension.Equals(".csv")) && size <= maxTextSize)
             {
                 return true;
             }
@@ -332,10 +332,9 @@ namespace NUSMed_WebApp.Classes.Entity
             List<string> gy = new List<string>();
             List<string> gz = new List<string>();
 
-            string line = string.Empty;
             using (StringReader reader = new StringReader(data))
             {
-                line = string.Empty;
+                string line = string.Empty;
 
                 do
                 {

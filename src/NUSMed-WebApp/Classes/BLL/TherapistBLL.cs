@@ -75,7 +75,7 @@ namespace NUSMed_WebApp.Classes.BLL
             if (AccountBLL.IsTherapist() && !patientNRIC.Equals(AccountBLL.GetNRIC()))
             {
                 Entity.Patient result = therapistDAL.RetrievePatient(patientNRIC, AccountBLL.GetNRIC());
-                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patients Permission", "Action on: " + patientNRIC + ".");
+                logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patients Permission and General Information", "Action on: " + patientNRIC + ".");
                 return result;
             }
 
