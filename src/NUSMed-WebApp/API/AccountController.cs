@@ -1,7 +1,6 @@
 ﻿using NUSMed_WebApp.Classes.BLL;
 using NUSMed_WebApp.Classes.Entity;
 using System;
-using System.Text;
 using System.Net;
 using System.Net.Http;
 using System.Web;
@@ -301,54 +300,6 @@ namespace NUSMed_WebApp.API
                         {
                             string newJwt = jwtBll.UpdateJWT(jwt);
                             response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-
-                            return response;
-                        }
-                    }
-                }
-            }
-
-            return response;
-        }
-
-        // POST api/account/getprofile
-        [Route("getprofile")]
-        [HttpPost]
-        public HttpResponseMessage GetProfile([FromBody]dynamic credentials)
-        {
-            var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
-            string deviceID = credentials.deviceID;
-            string jwt = credentials.jwt;
-
-            JWTBLL jwtBll = new JWTBLL();
-
-            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
-            {
-                if (jwtBll.ValidateJWT(jwt))
-                {
-                    string retrievedNRIC = jwtBll.getNRIC(jwt);
-
-                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
-                    {
-                        Account account = accountBLL.GetStatus(retrievedNRIC);
-
-                        if (account.status == 1)
-                        {
-                            string profile = "NRIC: " + account.nric + "\r"
-                                + "First Name: " + account.firstName + "\r"
-                                + "Last Name: " + account.lastName + "\r"
-                                + "Date of Birth: " + account.dateOfBirth.ToString("MM/dd/yyyy") + "\r"
-                                + "Country of Birth: " + account.countryOfBirth + "\r"
-                                + "Nationality: " + account.nationality + "\r"
-                                + "Sex: " + account.sex + "\r"
-                                + "Gender: " + account.gender + "\r"
-                                + "Marital Status: " + account.maritalStatus + "\r"
-                                + "Contact Number: " + account.contactNumber + "\r"
-                                + "Email: " + account.email + "\r"
-                                + "Address: " + account.address + "\r"
-                                + "Postal Code: " + account.addressPostalCode;
-
-                            response = Request.CreateResponse(HttpStatusCode.OK, Convert.ToBase64String(Encoding.ASCII.GetBytes(profile)));
 
                             return response;
                         }
