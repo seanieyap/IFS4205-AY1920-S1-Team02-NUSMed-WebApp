@@ -76,7 +76,13 @@ namespace NUSMed_WebApp.API
                                 {
                                     record.fileName = credentials.fileName;
                                     record.fileExtension = credentials.fileExtension;
-                                    record.fileSize = credentials.fileSize;
+                                    byte[] fileContent = Convert.FromBase64String(Convert.ToString(credentials.fileContent));
+                                    record.fileSize = fileContent.Length;
+
+                                    if (record.fileSize > credentials.fileSize)
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.Forbidden, "Record file size mismatch");
+                                    }
 
                                     if (!record.IsFileValid())
                                     {
@@ -87,7 +93,7 @@ namespace NUSMed_WebApp.API
 
                                     Directory.CreateDirectory(record.GetFileServerPath() + "\\" + record.GetFileDirectoryNameHash());
 
-                                    File.WriteAllBytes(record.fullpath, Convert.FromBase64String(Convert.ToString(credentials.fileContent)));
+                                    File.WriteAllBytes(record.fullpath, fileContent);
                                 }
 
                                 recordBLL.AddRecord(record);
