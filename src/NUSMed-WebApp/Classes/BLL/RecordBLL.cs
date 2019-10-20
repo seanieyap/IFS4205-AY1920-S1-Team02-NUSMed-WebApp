@@ -179,7 +179,7 @@ namespace NUSMed_WebApp.Classes.BLL
             {
                 Entity.Patient patient = new TherapistBLL().GetPatientPermissions(record.patientNRIC);
 
-                if (patient.permissionApproved == 0 || ((patient.permissionApproved & record.type.permissionFlag) == 0) ||
+                if (!patient.hasPermissionsApproved(record) ||
                     AccountBLL.GetNRIC().Equals(record.patientNRIC))
                 {
                     return;
