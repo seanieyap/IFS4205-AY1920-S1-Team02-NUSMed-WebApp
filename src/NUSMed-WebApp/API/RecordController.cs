@@ -256,7 +256,7 @@ namespace NUSMed_WebApp.API
                                     File.WriteAllBytes(record.fullpath, fileContent);
                                 }
 
-                                // recordBLL.AddRecord(record);
+                                recordBLL.AddRecord(record);
 
                                 response = Request.CreateResponse(HttpStatusCode.OK, jwtBll.UpdateJWT(jwt));
                             }
