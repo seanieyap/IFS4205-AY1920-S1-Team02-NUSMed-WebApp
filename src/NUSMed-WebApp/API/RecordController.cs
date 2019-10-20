@@ -239,7 +239,7 @@ namespace NUSMed_WebApp.API
                                     byte[] fileContent = Convert.FromBase64String(Convert.ToString(credentials.fileContent));
                                     record.fileSize = fileContent.Length;
 
-                                    if (record.fileSize > credentials.fileSize)
+                                    if (Convert.ToInt64(record.fileSize) > Convert.ToInt64(credentials.fileSize))
                                     {
                                         return Request.CreateResponse(HttpStatusCode.Forbidden, "Record file size mismatch");
                                     }
