@@ -275,5 +275,40 @@ namespace NUSMed_WebApp.API
             return response;
         }
 
+        // POST api/account/updatejwt
+        [Route("updatejwt")]
+        [HttpPost]
+        public HttpResponseMessage UpdateJWT([FromBody]dynamic credentials)
+        {
+            var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+            string deviceID = credentials.deviceID;
+            string jwt = credentials.jwt;
+
+            JWTBLL jwtBll = new JWTBLL();
+
+            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                if (jwtBll.ValidateJWT(jwt))
+                {
+                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+
+                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
+                    {
+                        Account account = accountBLL.GetStatus(retrievedNRIC);
+
+                        if (account.status == 1)
+                        {
+                            string newJwt = jwtBll.UpdateJWT(jwt);
+                            response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+
+                            return response;
+                        }
+                    }
+                }
+            }
+
+            return response;
+        }
+
     }
 }
