@@ -338,7 +338,7 @@ namespace NUSMed_WebApp.Classes.BLL
             return false;
         }
 
-        private bool AcceptEmergencyPatient(string patientNRIC)
+        public bool AcceptEmergencyPatient(string patientNRIC)
         {
             if (AccountBLL.IsTherapist() && therapistDAL.IsEmergencyPatient(patientNRIC, AccountBLL.GetNRIC()) 
                 && !patientNRIC.Equals(AccountBLL.GetNRIC()))

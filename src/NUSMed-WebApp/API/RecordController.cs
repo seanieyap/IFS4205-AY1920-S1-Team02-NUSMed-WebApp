@@ -173,6 +173,63 @@ namespace NUSMed_WebApp.API
             return response;
         }
 
+        // POST api/record/therapist/scanPatient
+        // Therapist scan NFC for emergancy patient
+        [Route("therapist/scanPatient")]
+        [HttpPost]
+        public HttpResponseMessage TherapistScanPatient([FromBody]dynamic credentials)
+        {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            string deviceID = credentials.deviceID;
+            string jwt = credentials.jwt;
+
+            string tokenID = credentials.tokenID;
+
+            AccountBLL accountBLL = new AccountBLL();
+            JWTBLL jwtBll = new JWTBLL();
+
+            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                if (jwtBll.ValidateJWT(jwt))
+                {
+                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+
+                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
+                    {
+                        accountBLL.SetRole(retrievedNRIC, "Therapist");
+                        Account account = accountBLL.GetStatus(retrievedNRIC);
+
+                        if (account.status == 1)
+                        {
+                            try
+                            {
+                                TherapistBLL therapistBLL = new TherapistBLL();
+                                bool check = therapistBLL.AcceptEmergencyPatient(tokenID);
+
+                                if (check)
+                                {
+                                    response = Request.CreateResponse(HttpStatusCode.OK, jwtBll.UpdateJWT(jwt));
+                                }
+                                else
+                                {
+                                    response = Request.CreateResponse(HttpStatusCode.Forbidden);
+                                }
+                            }
+                            catch
+                            {
+                                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                            }
+
+                            return response;
+                        }
+                    }
+                }
+            }
+
+            return response;
+        }
+
         // POST api/record/therapist/upload
         // Therapist uploads a record for his patient
         [Route("therapist/upload")]
