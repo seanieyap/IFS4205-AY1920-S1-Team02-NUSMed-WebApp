@@ -173,6 +173,53 @@ namespace NUSMed_WebApp.API
             return response;
         }
 
+        // POST api/record/therapist/getPermissions
+        // Therapist get record type permissions of a patient
+        [Route("therapist/getPermissions")]
+        [HttpPost]
+        public HttpResponseMessage TherapistGetPermissions([FromBody]dynamic credentials)
+        {
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            string deviceID = credentials.deviceID;
+            string jwt = credentials.jwt;
+
+            AccountBLL accountBLL = new AccountBLL();
+            JWTBLL jwtBll = new JWTBLL();
+
+            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                if (jwtBll.ValidateJWT(jwt))
+                {
+                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+
+                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
+                    {
+                        accountBLL.SetRole(retrievedNRIC, "Therapist");
+                        Account account = accountBLL.GetStatus(retrievedNRIC);
+
+                        if (account.status == 1)
+                        {
+                            try
+                            {
+                                Classes.Entity.Patient patient = new TherapistBLL().GetPatientPermissions(Convert.ToString(credentials.patientNRIC));
+
+                                response = Request.CreateResponse(HttpStatusCode.OK, System.Convert.ToBase64String(Encoding.ASCII.GetBytes(patient.permissionApproved.ToString())));
+                            }
+                            catch
+                            {
+                                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                            }
+
+                            return response;
+                        }
+                    }
+                }
+            }
+
+            return response;
+        }
+
         // POST api/record/therapist/scanPatient
         // Therapist scan NFC for emergancy patient
         [Route("therapist/scanPatient")]
