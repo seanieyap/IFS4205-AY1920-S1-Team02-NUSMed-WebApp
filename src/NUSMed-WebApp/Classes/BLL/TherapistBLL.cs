@@ -338,11 +338,17 @@ namespace NUSMed_WebApp.Classes.BLL
             return false;
         }
 
-        public bool AcceptEmergencyPatient(string patientNRIC)
+        public bool AcceptEmergencyPatient(string tokenID)
         {
-            if (AccountBLL.IsTherapist() && therapistDAL.IsEmergencyPatient(patientNRIC, AccountBLL.GetNRIC()) 
-                && !patientNRIC.Equals(AccountBLL.GetNRIC()))
+            if (AccountBLL.IsTherapist())
             {
+                string patientNRIC = therapistDAL.RetrieveEmergencyPatient(tokenID, AccountBLL.GetNRIC());
+
+                if (string.Equals(patientNRIC, AccountBLL.GetNRIC()))
+                {
+                    return false;
+                }
+
                 therapistDAL.AcceptEmergencyTherapist(patientNRIC, AccountBLL.GetNRIC());
 
                 return true;

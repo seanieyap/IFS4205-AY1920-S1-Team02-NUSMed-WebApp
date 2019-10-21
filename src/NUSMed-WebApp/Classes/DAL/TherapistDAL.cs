@@ -695,23 +695,20 @@ namespace NUSMed_WebApp.Classes.DAL
         }
 
         /// <summary>
-        /// Check if patient is a valid Emergency Patient
+        /// Retrieve patient with tokenID if patient is a valid Emergency Patient
         /// </summary>
-        public bool IsEmergencyPatient(string patientNRIC, string therapistNRIC)
+        public string RetrieveEmergencyPatient(string tokenID, string therapistNRIC)
         {
-            bool result = false;
-
-            if (patientNRIC == therapistNRIC)
-                return result;
+            string result = string.Empty;
 
             using (MySqlCommand cmd = new MySqlCommand())
             {
-                cmd.CommandText = @"SELECT EXISTS (SELECT patient_nric FROM patient_emergency 
-                    WHERE therapist_nric = @therapistNRIC AND patient_nric = @patientNRIC)
-                    as result;";
+                cmd.CommandText = @"SELECT pe.patient_nric FROM patient_emergency pe
+                    INNER JOIN account a ON a.nric = pe.patient_nric
+                    WHERE a.associated_token_id = @tokenID AND pe.therapist_nric = @therapistNRIC;";
 
                 cmd.Parameters.AddWithValue("@therapistNRIC", therapistNRIC);
-                cmd.Parameters.AddWithValue("@patientNRIC", patientNRIC);
+                cmd.Parameters.AddWithValue("@tokenID", tokenID);
 
                 using (cmd.Connection = connection)
                 {
@@ -722,7 +719,7 @@ namespace NUSMed_WebApp.Classes.DAL
                     {
                         if (reader.Read())
                         {
-                            result = Convert.ToBoolean(reader["result"]);
+                            result = Convert.ToString(reader["patient_nric"]);
                         }
                     }
                 }
@@ -927,8 +924,8 @@ namespace NUSMed_WebApp.Classes.DAL
                         WHERE patient_nric = @patientNRIC AND therapist_nric = @therapistNRIC;
 
                     INSERT INTO record_type_permission
-                    (patient_nric, therapist_nric, permission_unapproved, request_time, permission_approved, approved_time)
-                    VALUES (@patientNRIC, @therapistNRIC, 255, NOW(), 255, NOW())
+                    (patient_nric, therapist_nric, permission_unapproved, request_time, permission_approved, approved_time, is_emergency)
+                    VALUES (@patientNRIC, @therapistNRIC, 255, NOW(), 255, NOW(), 1)
                     ON DUPLICATE KEY UPDATE 
                         is_emergency = 1,
                         permission_unapproved = 255,
