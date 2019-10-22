@@ -48,8 +48,8 @@ namespace NUSMed_WebApp.API
                                 Record record = new Record();
                                 record.patientNRIC = retrievedNRIC;
                                 record.creatorNRIC = retrievedNRIC;
-                                record.title = credentials.title;
-                                record.description = credentials.description;
+                                record.title = System.Text.Encoding.Default.GetString(Convert.FromBase64String(Convert.ToString(credentials.title)));
+                                record.description = System.Text.Encoding.Default.GetString(Convert.FromBase64String(Convert.ToString(credentials.description)));
                                 record.type = RecordType.Get(Convert.ToString(credentials.type));
                                 record.content = string.Empty;
 
@@ -74,8 +74,8 @@ namespace NUSMed_WebApp.API
                                 }
                                 else
                                 {
-                                    record.fileName = credentials.fileName;
-                                    record.fileExtension = credentials.fileExtension;
+                                    record.fileName = System.Text.Encoding.Default.GetString(Convert.FromBase64String(Convert.ToString(credentials.fileName)));
+                                    record.fileExtension = System.Text.Encoding.Default.GetString(Convert.FromBase64String(Convert.ToString(credentials.fileExtension)));
                                     byte[] fileContent = Convert.FromBase64String(Convert.ToString(credentials.fileContent));
                                     record.fileSize = fileContent.Length;
 
@@ -311,8 +311,8 @@ namespace NUSMed_WebApp.API
                                 Record record = new Record();
                                 record.patientNRIC = credentials.patientNRIC;
                                 record.creatorNRIC = retrievedNRIC;
-                                record.title = credentials.title;
-                                record.description = credentials.description;
+                                record.title = System.Text.Encoding.Default.GetString(Convert.FromBase64String(Convert.ToString(credentials.title)));
+                                record.description = System.Text.Encoding.Default.GetString(Convert.FromBase64String(Convert.ToString(credentials.description)));
                                 record.type = RecordType.Get(Convert.ToString(credentials.type));
                                 record.isEmergency = patient.isEmergency;
                                 record.content = string.Empty;
@@ -338,8 +338,8 @@ namespace NUSMed_WebApp.API
                                 }
                                 else
                                 {
-                                    record.fileName = credentials.fileName;
-                                    record.fileExtension = credentials.fileExtension;
+                                    record.fileName = System.Text.Encoding.Default.GetString(Convert.FromBase64String(Convert.ToString(credentials.fileName)));
+                                    record.fileExtension = System.Text.Encoding.Default.GetString(Convert.FromBase64String(Convert.ToString(credentials.fileExtension)));
                                     byte[] fileContent = Convert.FromBase64String(Convert.ToString(credentials.fileContent));
                                     record.fileSize = fileContent.Length;
 
