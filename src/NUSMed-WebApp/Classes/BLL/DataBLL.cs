@@ -30,40 +30,6 @@ namespace NUSMed_WebApp.Classes.BLL
                 dataDAL.UpdateGeneralizationLevel(genLevel);
             }
         }
-        //public List<PatientAnonymised> GetPatients(List<Tuple<string, string>> selectItems)
-        //{
-        //  if (AccountBLL.IsResearcher())
-        //  {
-        //    StringBuilder stringBuilder = new StringBuilder();
-        //    stringBuilder.Append(@"SELECT ra.record_id, ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date
-        //    FROM records_anonymized ra INNER JOIN record r ON ra.record_id = r.id");
-
-        //    List<string> tempList = new List<string>();
-        //    List<Tuple<string, string>> paraList = new List<Tuple<string, string>>();
-
-        //    if (selectItems.Any())
-        //    {
-        //      tempList.Add(" (" + string.Join(" AND ", selectItems.Select(tuple => tuple.Item1 + " = @" + tuple.Item1 + tuple.Item2)) + ")");
-        //    }
-
-        //    foreach (Tuple<string, string> selectItem in selectItems)
-        //    {
-        //      paraList.Add(new Tuple<string, string>("@" + selectItem.Item1 + selectItem.Item2, selectItem.Item2));
-        //    }
-
-        //    if (tempList.Count > 0)
-        //    {
-        //      stringBuilder.Append(" WHERE " + string.Join(" AND ", tempList));
-        //    }
-
-        //    stringBuilder.Append(" GROUP BY r.patient_nric;");
-
-        //    string query = stringBuilder.ToString();
-        //    return dataDAL.RetrievePatients(query, paraList);
-        //  }
-
-        //  return null;
-        //}
 
         /// <summary>
         /// Retrieve patients that fit the filters set
@@ -226,6 +192,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 anonPatientsTable.Columns.Add("data", typeof(string));
 
+                string domain = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
                 foreach (DataRow row in anonPatientsTable.Rows)
                 {
                     long recordId = Convert.ToInt64(row["record_id"]);
@@ -237,7 +204,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     }
                     else
                     {
-                        row["data"] = "~/Researcher/Download.ashx?record=" + recordId.ToString();
+                        row["data"] = domain + "/Researcher/Download.ashx?record=" + recordId.ToString();
                     }
                 }
                 anonPatientsTable.Columns.Remove("content");
@@ -249,7 +216,6 @@ namespace NUSMed_WebApp.Classes.BLL
                 anonPatientsTable.Columns["type"].ColumnName = "record type";
                 anonPatientsTable.Columns["description"].ColumnName = "record description";
                 anonPatientsTable.Columns["record_diagnoses_codes"].ColumnName = "record diagnoses";
-                // anonPatientsTable.Columns["record_id"].ColumnName = "record id";
                 anonPatientsTable.Columns["record_create_date"].ColumnName = "record creation date";
 
                 return anonPatientsTable;
