@@ -20,6 +20,7 @@ namespace NUSMed_WebApp.Classes.BLL
     {
       if (AccountBLL.IsAdministrator())
       {
+        dataDAL.ResetGeneralizationLevel();
         DataTable dt = dataDAL.RetrieveColumns();
         Anonymizer anonymizer = new Anonymizer();
         Tuple<DataTable, Dictionary<string, int>> anonDtAndGenLevel = anonymizer.anonymize(dt, 3, 0.05);
@@ -29,6 +30,18 @@ namespace NUSMed_WebApp.Classes.BLL
         dataDAL.InsertIntoAnonymizedTable(anonymizedDataTable);
         dataDAL.UpdateGeneralizationLevel(genLevel);
       }
+    }
+
+    public bool IsGeneralizedSettingInvalid()
+    {
+      GeneralizedSetting generalizedSetting = dataDAL.RetrieveGeneralizationLevel();
+      int marital_status = generalizedSetting.maritalStatus;
+      int gender = generalizedSetting.gender;
+      int sex = generalizedSetting.sex;
+      int postal = generalizedSetting.postal;
+      int age = generalizedSetting.age;
+      int recordCreationDate = generalizedSetting.recordCreationDate;
+      return (marital_status == -1 || gender == -1 || sex == -1 || postal == -1 || age == -1 || recordCreationDate == -1);
     }
 
     /// <summary>
