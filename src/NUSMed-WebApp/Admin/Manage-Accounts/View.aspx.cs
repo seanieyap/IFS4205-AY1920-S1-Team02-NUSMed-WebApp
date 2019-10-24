@@ -417,21 +417,22 @@ namespace NUSMed_WebApp.Admin.Account
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating Account status.');", true);
             }
         }
-        //protected void LinkButtonStatusEnableWoMFA_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+        //TODO: For Dev Only
+        protected void LinkButtonStatusEnableWoMFA_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
 
-        //        accountBLL.StatusEnableWithoutMFA(nric);
-        //        RefreshStatusModal(nric);
-        //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account Status of " + nric + " has been updated to \"Enabled, Omitted from MFA\".');", true);
-        //    }
-        //    catch
-        //    {
-        //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating Account status.');", true);
-        //    }
-        //}
+                accountBLL.StatusEnableWithoutMFA(nric);
+                RefreshStatusModal(nric);
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account Status of " + nric + " has been updated to \"Enabled, Omitted from MFA\".');", true);
+            }
+            catch
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating Account status.');", true);
+            }
+        }
         protected void LinkButtonTokenIDUpdate_Click(object sender, EventArgs e)
         {
             try
