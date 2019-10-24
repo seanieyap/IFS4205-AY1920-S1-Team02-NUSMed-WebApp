@@ -87,6 +87,80 @@ namespace NUSMed_WebApp.API
             return response;
         }
 
+        [Route("authenticatetest")]
+        [HttpPost]
+        public HttpResponseMessage AuthenticateTest([FromBody]dynamic credentials)
+        {
+            HttpContext httpContext = HttpContext.Current;
+            string authHeader = httpContext.Request.Headers["Authorization"];
+            var response = Request.CreateResponse(HttpStatusCode.OK, authHeader);
+
+            /*string nric = credentials.nric;
+            string password = credentials.password;
+            string deviceID = credentials.deviceID;
+            string jwt = credentials.jwt;
+            //string guid = credentials.guid;
+
+            JWTBLL jwtBll = new JWTBLL();
+
+            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                if (jwtBll.ValidateJWT(jwt))
+                {
+                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+
+                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
+                    {
+                        string newJwt = jwtBll.UpdateJWT(jwt);
+                        response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                        return response;
+                    }
+                }
+            }
+            else if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                Account account = accountBLL.GetStatus(nric, password, deviceID);
+
+                if (account.status == 1)
+                {
+                    string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
+                    string newJwt = accountBLL.LoginDevice(nric, role);
+                    response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                    return response;
+                }
+
+            }
+
+            /*if (!string.IsNullOrEmpty(guid) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                if (HttpContext.Current.Cache[guid] != null)
+                {
+                    string retrievedNRIC = HttpContext.Current.Cache[guid].ToString();
+
+                    // check valid device id for a guid
+                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
+                    {
+                        response = Request.CreateResponse(HttpStatusCode.OK);
+                        return response;
+                    }
+                }
+            }
+            else if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
+            {
+                Account account = accountBLL.GetStatus(nric, password, deviceID);
+
+                if (account.status == 1)
+                {
+                    string newGuid = accountBLL.LoginDevice(nric, "Multiple");
+                    response = Request.CreateResponse(HttpStatusCode.OK, newGuid);
+                    return response;
+                }
+
+            }*/
+
+            return response;
+        }
+
         // POST api/account/register
         // Registers device for a user
         [Route("register")]
