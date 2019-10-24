@@ -344,7 +344,7 @@ namespace NUSMed_WebApp.Classes.BLL
             {
                 string patientNRIC = therapistDAL.RetrieveEmergencyPatient(tokenID, AccountBLL.GetNRIC());
 
-                if (string.Equals(patientNRIC, AccountBLL.GetNRIC()))
+                if (string.IsNullOrEmpty(patientNRIC) || string.Equals(patientNRIC, AccountBLL.GetNRIC()))
                 {
                     return false;
                 }

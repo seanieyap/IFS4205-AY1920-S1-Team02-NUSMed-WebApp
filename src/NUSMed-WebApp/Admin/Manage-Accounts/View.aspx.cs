@@ -417,6 +417,7 @@ namespace NUSMed_WebApp.Admin.Account
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating Account status.');", true);
             }
         }
+        //TODO: For Dev Only
         protected void LinkButtonStatusEnableWoMFA_Click(object sender, EventArgs e)
         {
             try
@@ -594,18 +595,21 @@ namespace NUSMed_WebApp.Admin.Account
             {
                 LinkButtonStatusDisable.CssClass = ("btn disabled");
                 LinkButtonStatusEnable.CssClass = ("btn btn-success");
+                //TODO: For Dev Only
                 LinkButtonStatusEnableWoMFA.CssClass = ("btn btn-warning");
             }
             else if (account.status == 1)
             {
                 LinkButtonStatusDisable.CssClass = ("btn btn-danger");
                 LinkButtonStatusEnable.CssClass = ("btn disabled");
+                //TODO: For Dev Only
                 LinkButtonStatusEnableWoMFA.CssClass = ("btn btn-warning");
             }
             else if (account.status == 2)
             {
                 LinkButtonStatusDisable.CssClass = ("btn btn-danger");
                 LinkButtonStatusEnable.CssClass = ("btn btn-success");
+                //TODO: For Dev Only
                 LinkButtonStatusEnableWoMFA.CssClass = ("btn disabled");
             }
             LabelMFATokenStatus.Text = account.MFATokenStatus;

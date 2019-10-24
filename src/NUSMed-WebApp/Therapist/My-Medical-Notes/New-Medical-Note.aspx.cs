@@ -363,55 +363,6 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
                     ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
                 }
             }
-
-            //if (e.CommandName.Equals("FileView"))
-            //{
-            //    try
-            //    {
-            //        int id = Convert.ToInt32(e.CommandArgument);
-            //        Record record = recordBLL.GetRecord(id);
-
-            //        modalFileViewImage.Visible = false;
-            //        modalFileViewVideo.Visible = false;
-            //        modalFileViewLabelText.Visible = false;
-
-            //        if (record.fileExtension == ".png" || record.fileExtension == ".jpg" || record.fileExtension == ".jpeg")
-            //        {
-            //            modalFileViewImage.Visible = true;
-            //            modalFileViewImage.ImageUrl = "~/Therapist/Download.ashx?record=" + record.id;
-            //        }
-            //        else if (record.fileExtension == ".txt")
-            //        {
-            //            // todo, create timeseries
-            //            modalFileViewLabelText.Visible = true;
-            //            if (record.IsFileSafe())
-            //            {
-            //                modalFileViewLabelText.Text = File.ReadAllText(record.fullpath);
-            //            }
-            //            else
-            //            {
-            //                modalFileViewLabelText.Text = "File Corrupted";
-            //            }
-            //        }
-            //        else if (record.fileExtension == ".mp4")
-            //        {
-            //            modalFileViewVideo.Visible = true;
-            //            modalFileViewVideoSource.Attributes.Add("src", "~/Therapist/Download.ashx?record=" + record.id);
-            //        }
-
-            //        labelRecordName.Text = record.title;
-            //        modalFileViewLabelFileName.Text = record.fileName + record.fileExtension;
-            //        modalFileViewLabelFileSize.Text = record.fileSizeMegabytes;
-            //        //FileDownloadLinkviaModal.HRef = "~/Therapist/Download.ashx?record=" + record.id.ToString();
-
-            //        UpdatePanelFileView.Update();
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "Open View File Modal", "$('#modalRecords').modal('hide'); $('#modalFileView').modal('show');", true);
-            //    }
-            //    catch
-            //    {
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Opening File Modal.');", true);
-            //    }
-            //}
             else if (e.CommandName.Equals("RecordDiagnosisView"))
             {
                 try

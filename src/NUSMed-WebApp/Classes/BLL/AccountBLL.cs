@@ -552,6 +552,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 accountDAL.UpdateStatusEnable(nric);
             }
         }
+        //TODO: For Dev Only
         public void StatusEnableWithoutMFA(string nric)
         {
             if (IsAdministrator() && !nric.Equals(GetNRIC()))
