@@ -50,6 +50,10 @@ namespace NUSMed_WebApp.Researcher
                 {
                     response.ContentType = "text/plain";
                 }
+                else if (record.fileExtension.Equals(".csv"))
+                {
+                    response.ContentType = "text/csv";
+                }
                 else if (record.fileExtension.Equals(".mp4"))
                 {
                     response.ContentType = "video/mp4";
