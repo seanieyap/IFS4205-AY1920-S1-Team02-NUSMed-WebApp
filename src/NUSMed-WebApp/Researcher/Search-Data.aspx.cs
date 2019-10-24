@@ -507,40 +507,6 @@ namespace NUSMed_WebApp.Researcher
         }
         #endregion
 
-        private MemoryStream GetStream(DataTable dt)
-        {
-            MemoryStream memoryStream = new MemoryStream();
-            if (dt.Rows.Count > 0)
-            {
-                StreamWriter streamWriter = new StreamWriter(memoryStream);
-                streamWriter.AutoFlush = true;
-                streamWriter.WriteLine();
-                streamWriter.WriteLine();
-                foreach (DataColumn col in dt.Columns)
-                {
-                    streamWriter.Write(col.ColumnName.ToString() + ",");
-                }
-                streamWriter.WriteLine();
-                streamWriter.WriteLine();
-                foreach (DataRow row in dt.Rows)
-                {
-                    for (int i = 0; i < dt.Columns.Count; i++)
-                    {
-                        if (row[i].ToString().IndexOf(",") > -1)
-                        {
-                            streamWriter.Write("\"" + row[i].ToString() + "\"");
-                        }
-                        else
-                        {
-                            streamWriter.Write(row[i].ToString() + ",");
-                        }
-                    }
-                    streamWriter.WriteLine();
-                }
-            }
-            return memoryStream;
-        }
-
         #region Patient Diagnosis Functions
         protected void GridViewPatientDiagnoses_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {

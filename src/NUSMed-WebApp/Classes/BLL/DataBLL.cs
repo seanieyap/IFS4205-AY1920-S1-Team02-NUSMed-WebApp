@@ -108,7 +108,15 @@ namespace NUSMed_WebApp.Classes.BLL
 
                 stringBuilder.Append(" GROUP BY r.patient_nric LIMIT 200;");
 
-                return dataDAL.RetrievePatients(stringBuilder.ToString());
+                List<PatientAnonymised> patientAnonymised = dataDAL.RetrievePatients(stringBuilder.ToString());
+
+                // ignore if less or equal 3 patients
+                if (patientAnonymised.Count >= 3)
+                {
+                    dataDAL.RetrievePatients(stringBuilder.ToString());
+                }
+
+                return new List<PatientAnonymised>();
             }
             return null;
         }
@@ -228,7 +236,7 @@ namespace NUSMed_WebApp.Classes.BLL
             if (AccountBLL.IsResearcher())
             {
                 IEnumerable<Tuple<string, long>> recordIDsParameterized = from recordID in recordIDs
-                                                                          select (new Tuple<string, long>("@" + recordID.ToString().Replace(" ", string.Empty), recordID));
+                    select (new Tuple<string, long>("@" + recordID.ToString().Replace(" ", string.Empty), recordID));
 
                 List<PatientDiagnosis> result = dataDAL.RetrievePatientDiagnoses(recordIDsParameterized);
                 logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patient Diagnoses", "Record IDs: " + string.Join(", ", recordIDs) + ".");
@@ -243,7 +251,7 @@ namespace NUSMed_WebApp.Classes.BLL
             if (AccountBLL.IsResearcher())
             {
                 IEnumerable<Tuple<string, long>> recordIDsParameterized = from recordID in recordIDs
-                                                                          select (new Tuple<string, long>("@" + recordID.ToString().Replace(" ", string.Empty), recordID));
+                    select (new Tuple<string, long>("@" + recordID.ToString().Replace(" ", string.Empty), recordID));
 
                 List<Record> result = dataDAL.RetrieveRecords(recordIDsParameterized);
 
@@ -607,7 +615,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
         private class Tree
         {
-
             public Dictionary<string, Tuple<string, int>> root;
 
             public Tree()
