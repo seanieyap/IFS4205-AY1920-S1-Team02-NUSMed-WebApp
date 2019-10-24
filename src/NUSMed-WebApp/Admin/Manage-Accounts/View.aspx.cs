@@ -417,21 +417,21 @@ namespace NUSMed_WebApp.Admin.Account
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating Account status.');", true);
             }
         }
-        protected void LinkButtonStatusEnableWoMFA_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
+        //protected void LinkButtonStatusEnableWoMFA_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        string nric = ViewState["GridViewAccountsSelectedNRIC"].ToString();
 
-                accountBLL.StatusEnableWithoutMFA(nric);
-                RefreshStatusModal(nric);
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account Status of " + nric + " has been updated to \"Enabled, Omitted from MFA\".');", true);
-            }
-            catch
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating Account status.');", true);
-            }
-        }
+        //        accountBLL.StatusEnableWithoutMFA(nric);
+        //        RefreshStatusModal(nric);
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['success']('Account Status of " + nric + " has been updated to \"Enabled, Omitted from MFA\".');", true);
+        //    }
+        //    catch
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when updating Account status.');", true);
+        //    }
+        //}
         protected void LinkButtonTokenIDUpdate_Click(object sender, EventArgs e)
         {
             try
@@ -594,19 +594,19 @@ namespace NUSMed_WebApp.Admin.Account
             {
                 LinkButtonStatusDisable.CssClass = ("btn disabled");
                 LinkButtonStatusEnable.CssClass = ("btn btn-success");
-                LinkButtonStatusEnableWoMFA.CssClass = ("btn btn-warning");
+                //LinkButtonStatusEnableWoMFA.CssClass = ("btn btn-warning");
             }
             else if (account.status == 1)
             {
                 LinkButtonStatusDisable.CssClass = ("btn btn-danger");
                 LinkButtonStatusEnable.CssClass = ("btn disabled");
-                LinkButtonStatusEnableWoMFA.CssClass = ("btn btn-warning");
+                //LinkButtonStatusEnableWoMFA.CssClass = ("btn btn-warning");
             }
             else if (account.status == 2)
             {
                 LinkButtonStatusDisable.CssClass = ("btn btn-danger");
                 LinkButtonStatusEnable.CssClass = ("btn btn-success");
-                LinkButtonStatusEnableWoMFA.CssClass = ("btn disabled");
+                //LinkButtonStatusEnableWoMFA.CssClass = ("btn disabled");
             }
             LabelMFATokenStatus.Text = account.MFATokenStatus;
             LabelMFADeviceStatus.Text = account.MFADeviceStatus;

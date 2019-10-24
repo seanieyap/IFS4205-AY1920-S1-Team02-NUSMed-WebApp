@@ -581,9 +581,9 @@
                                             <asp:LinkButton ID="LinkButtonStatusEnable" runat="server" CommandName="StatusEnable" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonStatusEnable_Click">
                                                 <i class="fas fa-fw fa-unlock-alt"></i> Enable Account
                                             </asp:LinkButton>
-                                            <asp:LinkButton ID="LinkButtonStatusEnableWoMFA" runat="server" CommandName="StatusEnableWoMFA" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonStatusEnableWoMFA_Click">
+                                            <%--<asp:LinkButton ID="LinkButtonStatusEnableWoMFA" runat="server" CommandName="StatusEnableWoMFA" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonStatusEnableWoMFA_Click">
                                                 <i class="fas fa-fw fa-unlock"></i> Enable Account and Omit from MFA 
-                                            </asp:LinkButton>
+                                            </asp:LinkButton>--%>
                                         </div>
                                     </div>
                                 </div>

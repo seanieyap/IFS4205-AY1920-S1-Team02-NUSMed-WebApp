@@ -552,15 +552,15 @@ namespace NUSMed_WebApp.Classes.BLL
                 accountDAL.UpdateStatusEnable(nric);
             }
         }
-        public void StatusEnableWithoutMFA(string nric)
-        {
-            if (IsAdministrator() && !nric.Equals(GetNRIC()))
-            {
-                logBLL.LogEvent(GetNRIC(), "Status Enable Without MFA", "Action on: " + nric + ".");
+        //public void StatusEnableWithoutMFA(string nric)
+        //{
+        //    if (IsAdministrator() && !nric.Equals(GetNRIC()))
+        //    {
+        //        logBLL.LogEvent(GetNRIC(), "Status Enable Without MFA", "Action on: " + nric + ".");
 
-                accountDAL.UpdateStatusEnableWithoutMFA(nric);
-            }
-        }
+        //        accountDAL.UpdateStatusEnableWithoutMFA(nric);
+        //    }
+        //}
         #endregion
 
         #region Roles
