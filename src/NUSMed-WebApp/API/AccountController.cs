@@ -3,6 +3,7 @@ using NUSMed_WebApp.Classes.Entity;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
@@ -91,16 +92,38 @@ namespace NUSMed_WebApp.API
         [HttpPost]
         public HttpResponseMessage AuthenticateTest([FromBody]dynamic credentials)
         {
+            var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+
             HttpContext httpContext = HttpContext.Current;
             string authHeader = httpContext.Request.Headers["Authorization"];
-            var response = Request.CreateResponse(HttpStatusCode.OK, authHeader);
+            
+            if (authHeader != null && authHeader.StartsWith("Bearer"))
+            {
+                string authHeaderValue = authHeader.Substring("Bearer ".Length).Trim();
+                string[] authHeaderParts = authHeaderValue.Split(':');
+                string jwt = authHeaderParts[0];
+                string deviceID = Encoding.UTF8.GetString(Convert.FromBase64String(authHeaderParts[1]));
 
-            /*string nric = credentials.nric;
-            string password = credentials.password;
-            string deviceID = credentials.deviceID;
-            string jwt = credentials.jwt;
-            //string guid = credentials.guid;
+                response = handleJwtAuth(jwt, deviceID);
+            }
+            else if (authHeader != null && authHeader.StartsWith("Basic"))
+            {
+                string authHeaderValue = authHeader.Substring("Basic ".Length).Trim();
+                string authHeaderValueDecoded = Encoding.UTF8.GetString(Convert.FromBase64String(authHeaderValue));
+                string[] authHeaderParts = authHeaderValueDecoded.Split(':');
+                string nric = authHeaderParts[0];
+                string password = authHeaderParts[1];
+                string deviceID = authHeaderParts[2];
 
+                response = handleBasicAuth(nric, password, deviceID);
+            }
+
+            return response;
+        }
+
+        private HttpResponseMessage handleJwtAuth(string jwt, string deviceID)
+        {
+            var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
             JWTBLL jwtBll = new JWTBLL();
 
             if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
@@ -112,12 +135,22 @@ namespace NUSMed_WebApp.API
                     if (accountBLL.IsValid(retrievedNRIC, deviceID))
                     {
                         string newJwt = jwtBll.UpdateJWT(jwt);
-                        response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                        response = Request.CreateResponse(HttpStatusCode.OK);
+                        response.Headers.Add("Authorization", newJwt);
                         return response;
                     }
                 }
             }
-            else if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
+
+            return response;
+        }
+
+        private HttpResponseMessage handleBasicAuth(string nric, string password, string deviceID)
+        {
+            var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+            JWTBLL jwtBll = new JWTBLL();
+
+            if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
             {
                 Account account = accountBLL.GetStatus(nric, password, deviceID);
 
@@ -125,38 +158,11 @@ namespace NUSMed_WebApp.API
                 {
                     string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
                     string newJwt = accountBLL.LoginDevice(nric, role);
-                    response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+                    response = Request.CreateResponse(HttpStatusCode.OK);
+                    response.Headers.Add("Authorization", newJwt);
                     return response;
                 }
-
             }
-
-            /*if (!string.IsNullOrEmpty(guid) && AccountBLL.IsDeviceIDValid(deviceID))
-            {
-                if (HttpContext.Current.Cache[guid] != null)
-                {
-                    string retrievedNRIC = HttpContext.Current.Cache[guid].ToString();
-
-                    // check valid device id for a guid
-                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
-                    {
-                        response = Request.CreateResponse(HttpStatusCode.OK);
-                        return response;
-                    }
-                }
-            }
-            else if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && AccountBLL.IsDeviceIDValid(deviceID))
-            {
-                Account account = accountBLL.GetStatus(nric, password, deviceID);
-
-                if (account.status == 1)
-                {
-                    string newGuid = accountBLL.LoginDevice(nric, "Multiple");
-                    response = Request.CreateResponse(HttpStatusCode.OK, newGuid);
-                    return response;
-                }
-
-            }*/
 
             return response;
         }
