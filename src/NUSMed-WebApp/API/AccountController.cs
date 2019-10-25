@@ -90,7 +90,7 @@ namespace NUSMed_WebApp.API
 
         [Route("authenticatetest")]
         [HttpPost]
-        public HttpResponseMessage AuthenticateTest([FromBody]dynamic credentials)
+        public HttpResponseMessage AuthenticateTest()
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
 
@@ -179,7 +179,7 @@ namespace NUSMed_WebApp.API
             string deviceID = credentials.deviceID;
             string tokenID = credentials.tokenID;
 
-            if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) && 
+            if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) &&
                 AccountBLL.IsDeviceIDValid(deviceID) && AccountBLL.IsTokenIDValid(tokenID))
             {
                 Account account = accountBLL.GetStatus(nric, password, deviceID, tokenID);
@@ -199,6 +199,53 @@ namespace NUSMed_WebApp.API
                     }
                 }
 
+            }
+
+            return response;
+        }
+
+        // POST api/account/register
+        // Registers device for a user
+        [Route("registertest")]
+        [HttpPost]
+        public HttpResponseMessage RegisterDevicetest()
+        {
+            var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            HttpContext httpContext = HttpContext.Current;
+            string authHeader = httpContext.Request.Headers["Authorization"];
+
+            if (authHeader != null && authHeader.StartsWith("Basic"))
+            {
+                string authHeaderValue = authHeader.Substring("Basic ".Length).Trim();
+                string authHeaderValueDecoded = Encoding.UTF8.GetString(Convert.FromBase64String(authHeaderValue));
+                string[] authHeaderParts = authHeaderValueDecoded.Split(':');
+                string nric = authHeaderParts[0];
+                string password = authHeaderParts[1];
+                string deviceID = authHeaderParts[2];
+                string tokenID = authHeaderParts[3];
+
+                if (AccountBLL.IsNRICValid(nric) && AccountBLL.IsPasswordValid(password) &&
+                AccountBLL.IsDeviceIDValid(deviceID) && AccountBLL.IsTokenIDValid(tokenID))
+                {
+                    Account account = accountBLL.GetStatus(nric, password, deviceID, tokenID);
+
+                    if (account.status == 1)
+                    {
+                        try
+                        {
+                            accountBLL.MFADeviceIDUpdateFromPhone(nric, tokenID, deviceID);
+                            string responseString = "Registration successful";
+                            response = Request.CreateResponse(HttpStatusCode.OK, responseString);
+                        }
+                        catch
+                        {
+                            string responseString = "An error occured during registration.";
+                            response = Request.CreateResponse(HttpStatusCode.InternalServerError, responseString);
+                        }
+                    }
+
+                }
             }
 
             return response;
