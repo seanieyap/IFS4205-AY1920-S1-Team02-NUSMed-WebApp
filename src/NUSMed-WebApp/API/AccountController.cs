@@ -201,8 +201,7 @@ namespace NUSMed_WebApp.API
 
             }
 
-            string test = AccountBLL.IsNRICValid(nric).ToString() + AccountBLL.IsPasswordValid(password).ToString() +
-                AccountBLL.IsDeviceIDValid(deviceID).ToString() + AccountBLL.IsTokenIDValid(tokenID).ToString();
+            string test = nric + password + deviceID + tokenID;
             response = Request.CreateResponse(HttpStatusCode.Unauthorized, test);
             return response;
         }
