@@ -100,9 +100,10 @@ namespace NUSMed_WebApp.API
             if (authHeader != null && authHeader.StartsWith("Bearer"))
             {
                 string authHeaderValue = authHeader.Substring("Bearer ".Length).Trim();
-                string[] authHeaderParts = authHeaderValue.Split(':');
+                string authHeaderValueDecoded = Encoding.UTF8.GetString(Convert.FromBase64String(authHeaderValue));
+                string[] authHeaderParts = authHeaderValueDecoded.Split(':');
                 string jwt = authHeaderParts[0];
-                string deviceID = Encoding.UTF8.GetString(Convert.FromBase64String(authHeaderParts[1]));
+                string deviceID = authHeaderParts[1];
 
                 response = handleJwtAuth(jwt, deviceID);
             }
@@ -319,6 +320,68 @@ namespace NUSMed_WebApp.API
                     }
                 }
             }*/
+
+            return response;
+        }
+
+        [Route("weblogintest")]
+        [HttpPost]
+        public HttpResponseMessage WebLogintest()
+        {
+            var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
+            string jwt;
+            string deviceID;
+            string tokenID;
+
+            HttpContext httpContext = HttpContext.Current;
+            string authHeader = httpContext.Request.Headers["Authorization"];
+
+            if (authHeader != null && authHeader.StartsWith("Bearer"))
+            {
+                string authHeaderValue = authHeader.Substring("Basic ".Length).Trim();
+                string authHeaderValueDecoded = Encoding.UTF8.GetString(Convert.FromBase64String(authHeaderValue));
+                string[] authHeaderParts = authHeaderValueDecoded.Split(':');
+                jwt = authHeaderParts[0];
+                deviceID = authHeaderParts[1];
+                tokenID = authHeaderParts[2];
+            }
+            else
+            {
+                return response;
+            }
+
+            JWTBLL jwtBll = new JWTBLL();
+
+            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID) && AccountBLL.IsTokenIDValid(tokenID))
+            {
+                if (jwtBll.ValidateJWT(jwt))
+                {
+                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+
+                    // validate deviceID and tokenID for a nric
+                    if (accountBLL.IsValid(retrievedNRIC, tokenID, deviceID))
+                    {
+                        if (HttpContext.Current.Cache[retrievedNRIC + "_MFAAttempt"] != null &&
+                            HttpContext.Current.Cache.Get(retrievedNRIC + "_MFAAttempt").ToString().Equals("Awaiting"))
+                        {
+                            // MFA login was triggered, cache inserted
+                            Account account = new Account();
+                            account.associatedDeviceID = deviceID;
+                            account.associatedTokenID = tokenID;
+                            HttpContext.Current.Cache.Insert(retrievedNRIC + "_MFAAttempt", account, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
+
+                            string newJwt = jwtBll.UpdateJWT(jwt);
+                            response = Request.CreateResponse(HttpStatusCode.OK);
+                            response.Headers.Add("Authorization", "Bearer " + newJwt);
+                        }
+                        else
+                        {
+                            // MFA login was not trigger before this request, cache not inserted
+                            response = Request.CreateResponse(HttpStatusCode.NotFound);
+                        }
+                    }
+                }
+            }
 
             return response;
         }
