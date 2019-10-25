@@ -136,7 +136,7 @@ namespace NUSMed_WebApp.API
                     {
                         string newJwt = jwtBll.UpdateJWT(jwt);
                         response = Request.CreateResponse(HttpStatusCode.OK);
-                        response.Headers.Add("Authorization", newJwt);
+                        response.Headers.Add("Authorization", "Bearer " + newJwt);
                         return response;
                     }
                 }
@@ -159,7 +159,7 @@ namespace NUSMed_WebApp.API
                     string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
                     string newJwt = accountBLL.LoginDevice(nric, role);
                     response = Request.CreateResponse(HttpStatusCode.OK);
-                    response.Headers.Add("Authorization", newJwt);
+                    response.Headers.Add("Authorization", "Bearer " + newJwt);
                     return response;
                 }
             }
