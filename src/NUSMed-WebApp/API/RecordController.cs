@@ -264,7 +264,7 @@ namespace NUSMed_WebApp.API
             }
 
             // Ensure jwt, deviceID, patientNRIC exists
-            if (!(!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID) && AccountBLL.IsTokenIDValid(patientNRIC)))
+            if (!(!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID) && !string.IsNullOrEmpty(patientNRIC)))
             {
                 return response;
             }
