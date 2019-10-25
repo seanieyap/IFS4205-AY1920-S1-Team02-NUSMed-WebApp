@@ -151,57 +151,21 @@ namespace NUSMed_WebApp.Classes.DAL
       }
     }
 
-    /// <summary>
-    /// Retrieve all the anonymised records
-    /// </summary>
-    //public List<PatientAnonymised> RetrieveAnonymised()
-    //{
-    //  List<PatientAnonymised> result = new List<PatientAnonymised>();
-
-    //  using (MySqlCommand cmd = new MySqlCommand())
-    //  {
-    //    cmd.CommandText = @"SELECT ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal
-    //      FROM records_anonymized ra
-    //      INNER JOIN record r ON ra.record_id = r.id
-    //      GROUP BY r.patient_nric
-    //            LIMIT 100;";
-
-    //    using (cmd.Connection = connection)
-    //    {
-    //      cmd.Connection.Open();
-    //      cmd.ExecuteNonQuery();
-
-    //      using (MySqlDataReader reader = cmd.ExecuteReader())
-    //      {
-    //        while (reader.Read())
-    //        {
-    //          //Record record = new Record
-    //          //{
-    //          //    patientNRIC = Convert.ToString(reader["patient_nric"]),
-    //          //    content = Convert.ToString(reader["content"]),
-    //          //    fileExtension = Convert.ToString(reader["file_extension"]),
-    //          //};
-    //          //record.type = RecordType.Get(Convert.ToString(reader["type"]));
-
-    //          PatientAnonymised recordAnonymised = new PatientAnonymised
-    //          {
-    //            maritalStatus = Convert.ToString(reader["marital_status"]),
-    //            gender = Convert.ToString(reader["gender"]),
-    //            sex = Convert.ToString(reader["sex"]),
-    //            age = Convert.ToString(reader["age"]),
-    //            postal = Convert.ToString(reader["postal"]),
-    //            //createDate = Convert.ToString(reader["record_create_date"])
-    //          };
-
-    //          result.Add(recordAnonymised);
-    //        }
-
-    //      }
-    //    }
-    //  }
-
-    //  return result;
-    //}
+    public void ResetGeneralizationLevel()
+    {
+      using (MySqlCommand cmd = new MySqlCommand())
+      {
+        cmd.CommandText = @"UPDATE generalization_level 
+                            SET marital_status = -1, gender = -1,
+                            sex = -1, postal = -1, age = -1, record_create_date = -1
+                            WHERE id = 1;";
+        using (cmd.Connection = connection)
+        {
+          cmd.Connection.Open();
+          cmd.ExecuteNonQuery();
+        }
+      }
+    }
 
     public GeneralizedSetting RetrieveGeneralizationLevel()
     {
@@ -231,43 +195,6 @@ namespace NUSMed_WebApp.Classes.DAL
       }
       return generalizedSetting;
     }
-
-    //public List<PatientAnonymised> RetrievePatients(string query, List<Tuple<string, string>> paraList)
-    //{
-    //  List<PatientAnonymised> patientsList = new List<PatientAnonymised>();
-
-    //  using (MySqlCommand cmd = new MySqlCommand())
-    //  {
-    //    cmd.CommandText = query;
-
-    //    foreach (Tuple<string, string> para in paraList)
-    //    {
-    //      cmd.Parameters.AddWithValue(para.Item1, para.Item2);
-    //    }
-
-    //    using (cmd.Connection = connection)
-    //    {
-    //      cmd.Connection.Open();
-    //      cmd.ExecuteNonQuery();
-
-    //      using (MySqlDataReader reader = cmd.ExecuteReader())
-    //      {
-    //        while (reader.Read())
-    //        {
-    //          PatientAnonymised patientAnonymised = new PatientAnonymised();
-    //          patientAnonymised.maritalStatus = Convert.ToString(reader["marital_status"]);
-    //          patientAnonymised.gender = Convert.ToString(reader["gender"]);
-    //          patientAnonymised.sex = Convert.ToString(reader["sex"]);
-    //          patientAnonymised.age = Convert.ToString(reader["age"]);
-    //          patientAnonymised.postal = Convert.ToString(reader["postal"]);
-
-    //          patientsList.Add(patientAnonymised);
-    //        }
-    //      }
-    //    }
-    //  }
-    //  return patientsList;
-    //}
 
     public List<PatientAnonymised> RetrievePatients(string query)
     {
