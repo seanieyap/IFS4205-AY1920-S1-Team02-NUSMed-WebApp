@@ -113,7 +113,7 @@ namespace NUSMed_WebApp.API
         }
 
         // POST api/account/register
-        // Registers device for a user
+        // Registers device for a client
         [Route("register")]
         [HttpPost]
         public HttpResponseMessage RegisterDevice()
@@ -245,114 +245,208 @@ namespace NUSMed_WebApp.API
         }
 
         // POST api/account/selectrole
+        // Returns new JWT with client's selected role
         [Route("selectrole")]
         [HttpPost]
-        public HttpResponseMessage SelectRole([FromBody]dynamic credentials)
+        public HttpResponseMessage SelectRole()
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
-            string newJwtRole = credentials.newJwtRole;
-            string deviceID = credentials.deviceID;
-            string jwt = credentials.jwt;
+            string jwt;
+            string deviceID;
+            string newJwtRole;
+            string retrievedNRIC;
 
             JWTBLL jwtBll = new JWTBLL();
 
-            if (!string.IsNullOrEmpty(newJwtRole) && !string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            HttpContext httpContext = HttpContext.Current;
+            string authHeader = httpContext.Request.Headers["Authorization"];
+
+            // Ensure Authorization Header exists
+            if (authHeader != null && authHeader.StartsWith("Bearer"))
             {
-                if (jwtBll.ValidateJWT(jwt))
+                string authHeaderValue = authHeader.Substring("Bearer ".Length).Trim();
+                string authHeaderValueDecoded = Encoding.UTF8.GetString(Convert.FromBase64String(authHeaderValue));
+                string[] authHeaderParts = authHeaderValueDecoded.Split(':');
+                jwt = authHeaderParts[0];
+                deviceID = authHeaderParts[1];
+                newJwtRole = authHeaderParts[2];
+            }
+            else
+            {
+                return response;
+            }
+
+            // Ensure jwt, deviceID, newJwtRole exists
+            if (!(!string.IsNullOrEmpty(newJwtRole) && !string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID)))
+            {
+                return response;
+            }
+
+            // Validate jwt
+            if (!jwtBll.ValidateJWT(jwt))
+            {
+                return response;
+            }
+            else
+            {
+                retrievedNRIC = jwtBll.getNRIC(jwt);
+            }
+
+            // Validate deviceID for retrievedNRIC
+            if (!(accountBLL.IsValid(retrievedNRIC, deviceID)))
+            {
+                return response;
+            }
+
+            // Issue new JWT with client's selected role
+            Account account = accountBLL.GetStatus(retrievedNRIC);
+            if (account.status == 1)
+            {
+                if (newJwtRole.Equals("10") && account.patientStatus == 1)
                 {
-                    string retrievedNRIC = jwtBll.getNRIC(jwt);
-
-                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
-                    {
-                        Account account = accountBLL.GetStatus(retrievedNRIC);
-
-                        if (account.status == 1)
-                        {     
-                            if (newJwtRole.Equals("10") && account.patientStatus == 1)
-                            {
-                                string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
-                                response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-                            }
-                            else if (newJwtRole.Equals("01") && account.therapistStatus == 1)
-                            {
-                                string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
-                                response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-                            }
-
-                            return response;
-                        }
-                    }
+                    string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
+                    response = Request.CreateResponse(HttpStatusCode.OK);
+                    response.Headers.Add("Authorization", "Bearer " + newJwt);
                 }
+                else if (newJwtRole.Equals("01") && account.therapistStatus == 1)
+                {
+                    string newJwt = jwtBll.GetJWT(retrievedNRIC, newJwtRole);
+                    response = Request.CreateResponse(HttpStatusCode.OK);
+                    response.Headers.Add("Authorization", "Bearer " + newJwt);
+                }
+
+                return response;
             }
 
             return response;
         }
 
         // POST api/account/getallroles
+        // Returns JWT with all roles for a client
         [Route("getallroles")]
         [HttpPost]
-        public HttpResponseMessage GetAllRoles([FromBody]dynamic credentials)
+        public HttpResponseMessage GetAllRoles()
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
-            string deviceID = credentials.deviceID;
-            string jwt = credentials.jwt;
+            string jwt;
+            string deviceID;
+            string retrievedNRIC;
 
             JWTBLL jwtBll = new JWTBLL();
 
-            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            HttpContext httpContext = HttpContext.Current;
+            string authHeader = httpContext.Request.Headers["Authorization"];
+
+            // Ensure Authorization Header exists
+            if (authHeader != null && authHeader.StartsWith("Bearer"))
             {
-                if (jwtBll.ValidateJWT(jwt))
-                {
-                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+                string authHeaderValue = authHeader.Substring("Bearer ".Length).Trim();
+                string authHeaderValueDecoded = Encoding.UTF8.GetString(Convert.FromBase64String(authHeaderValue));
+                string[] authHeaderParts = authHeaderValueDecoded.Split(':');
+                jwt = authHeaderParts[0];
+                deviceID = authHeaderParts[1];
+            }
+            else
+            {
+                return response;
+            }
 
-                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
-                    {
-                        Account account = accountBLL.GetStatus(retrievedNRIC);
+            // Ensure jwt, deviceID exists
+            if (!(!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID)))
+            {
+                return response;
+            }
 
-                        if (account.status == 1)
-                        {
-                            string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
-                            string newJwt = jwtBll.GetJWT(retrievedNRIC, role);
-                            response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
-                            return response;
-                        }
-                    }
-                }
+            // Validate jwt
+            if (!jwtBll.ValidateJWT(jwt))
+            {
+                return response;
+            }
+            else
+            {
+                retrievedNRIC = jwtBll.getNRIC(jwt);
+            }
+
+            // Validate deviceID for retrievedNRIC
+            if (!(accountBLL.IsValid(retrievedNRIC, deviceID)))
+            {
+                return response;
+            }
+
+            // Issue new JWT with all roles for the client
+            Account account = accountBLL.GetStatus(retrievedNRIC);
+            if (account.status == 1)
+            {
+                string role = account.patientStatus.ToString() + account.therapistStatus.ToString();
+                string newJwt = jwtBll.GetJWT(retrievedNRIC, role);
+                response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Headers.Add("Authorization", "Bearer " + newJwt);
+                return response;
             }
 
             return response;
         }
 
         // POST api/account/updatejwt
+        // Returns updated JWT for a client
         [Route("updatejwt")]
         [HttpPost]
-        public HttpResponseMessage UpdateJWT([FromBody]dynamic credentials)
+        public HttpResponseMessage UpdateJWT()
         {
             var response = Request.CreateResponse(HttpStatusCode.Unauthorized);
-            string deviceID = credentials.deviceID;
-            string jwt = credentials.jwt;
+            string jwt;
+            string deviceID;
+            string retrievedNRIC;
 
             JWTBLL jwtBll = new JWTBLL();
 
-            if (!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID))
+            HttpContext httpContext = HttpContext.Current;
+            string authHeader = httpContext.Request.Headers["Authorization"];
+
+            // Ensure Authorization Header exists
+            if (authHeader != null && authHeader.StartsWith("Bearer"))
             {
-                if (jwtBll.ValidateJWT(jwt))
-                {
-                    string retrievedNRIC = jwtBll.getNRIC(jwt);
+                string authHeaderValue = authHeader.Substring("Bearer ".Length).Trim();
+                string authHeaderValueDecoded = Encoding.UTF8.GetString(Convert.FromBase64String(authHeaderValue));
+                string[] authHeaderParts = authHeaderValueDecoded.Split(':');
+                jwt = authHeaderParts[0];
+                deviceID = authHeaderParts[1];
+            }
+            else
+            {
+                return response;
+            }
 
-                    if (accountBLL.IsValid(retrievedNRIC, deviceID))
-                    {
-                        Account account = accountBLL.GetStatus(retrievedNRIC);
+            // Ensure jwt, deviceID exists
+            if (!(!string.IsNullOrEmpty(jwt) && AccountBLL.IsDeviceIDValid(deviceID)))
+            {
+                return response;
+            }
 
-                        if (account.status == 1)
-                        {
-                            string newJwt = jwtBll.UpdateJWT(jwt);
-                            response = Request.CreateResponse(HttpStatusCode.OK, newJwt);
+            // Validate jwt
+            if (!jwtBll.ValidateJWT(jwt))
+            {
+                return response;
+            }
+            else
+            {
+                retrievedNRIC = jwtBll.getNRIC(jwt);
+            }
 
-                            return response;
-                        }
-                    }
-                }
+            // Validate deviceID for retrievedNRIC
+            if (!(accountBLL.IsValid(retrievedNRIC, deviceID)))
+            {
+                return response;
+            }
+
+            // Issue updated JWT for the client
+            Account account = accountBLL.GetStatus(retrievedNRIC);
+            if (account.status == 1)
+            {
+                string newJwt = jwtBll.UpdateJWT(jwt);
+                response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Headers.Add("Authorization", "Bearer " + newJwt);
+                return response;
             }
 
             return response;
