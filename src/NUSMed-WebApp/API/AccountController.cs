@@ -201,8 +201,6 @@ namespace NUSMed_WebApp.API
 
             }
 
-            string test = nric + password + deviceID + tokenID;
-            response = Request.CreateResponse(HttpStatusCode.Unauthorized, test);
             return response;
         }
 
