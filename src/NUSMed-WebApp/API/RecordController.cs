@@ -508,7 +508,8 @@ namespace NUSMed_WebApp.API
 
                     recordBLL.AddRecord(record);
 
-                    response = Request.CreateResponse(HttpStatusCode.OK, jwtBll.UpdateJWT(jwt));
+                    response = Request.CreateResponse(HttpStatusCode.OK);
+                    response.Headers.Add("Authorization", "Bearer " + jwtBll.UpdateJWT(jwt));
                 }
                 catch
                 {
