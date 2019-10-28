@@ -17,6 +17,7 @@
                 Selected Patient:
                 <asp:Label ID="LabelPatientNRIC" runat="server"></asp:Label>
             </p>
+            <p class="text-muted">Max Text size: 1 MB, Image size: 5 MB, Video size: 50 MB.</p>
         </div>
     </div>
 

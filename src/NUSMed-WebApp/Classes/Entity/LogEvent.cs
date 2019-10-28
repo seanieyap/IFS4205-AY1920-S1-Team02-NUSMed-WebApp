@@ -11,10 +11,6 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_creatorNRIC))
-                {
-                    return _creatorNRIC;
-                }
                 return _creatorNRIC.ToUpper();
             }
             set
@@ -27,10 +23,6 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_subjectNRIC))
-                {
-                    return _subjectNRIC;
-                }
                 return _subjectNRIC.ToUpper();
             }
             set
@@ -38,8 +30,32 @@ namespace NUSMed_WebApp.Classes.Entity
                 _subjectNRIC = value.ToUpper();
             }
         }
-        public string action { get; set; }
-        public string description { get; set; }
+        private string _action;
+        public string action
+        {
+            get
+            {
+                return _action.ToUpper();
+            }
+            set
+            {
+                _action = value.ToUpper();
+            }
+        }
+        private string _description;
+        public string description
+        {
+            get
+            {
+                return _description.ToUpper();
+            }
+            set
+            {
+                _description = value.ToUpper();
+            }
+        }
+
+
         public DateTime createTime { get; set; }
     }
 }

@@ -70,14 +70,6 @@ namespace NUSMed_WebApp.Classes.BLL
             logBLL.LogEvent(nric, "Device Login", "Into role, " + role + ".");
 
             return jwt;
-
-            /*Guid guid = Guid.NewGuid();
-
-            HttpContext.Current.Cache.Insert(guid.ToString(), nric, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
-
-            new LogAccountDAL().Insert(nric, nric, "Device Login", "Using role, " + role + ".");
-
-            return guid.ToString();*/
         }
 
         public void Logout()

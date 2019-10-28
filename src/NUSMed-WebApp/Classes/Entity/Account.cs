@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Web.Security.AntiXss;
 
 namespace NUSMed_WebApp.Classes.Entity
 {
@@ -12,11 +13,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_nric))
-                {
-                    return _nric;
-                }
-                return _nric.ToUpper();
+                return AntiXssEncoder.HtmlEncode(_nric.ToUpper(), true);
             }
             set
             {
@@ -30,11 +27,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_firstName))
-                {
-                    return _firstName;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_firstName.ToLower());
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(AntiXssEncoder.HtmlEncode(_firstName.ToLower(), true));
             }
             set
             {
@@ -46,33 +39,49 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_lastName))
-                {
-                    return _lastName;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_lastName.ToLower());
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(AntiXssEncoder.HtmlEncode(_lastName.ToLower(), true));
             }
             set
             {
                 _lastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
             }
         }
-        public string countryOfBirth { get; set; }
-        public string nationality { get; set; }
+        private string _countryOfBirth;
+        public string countryOfBirth
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_countryOfBirth, true);
+            }
+            set
+            {
+                _countryOfBirth = value;
+            }
+        }
+
+        private string _nationality;
+        public string nationality
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_nationality, true);
+            }
+            set
+            {
+                _nationality = value;
+            }
+        }
+
         private string _maritalStatus;
         public string maritalStatus
         {
             get
             {
-                if (string.IsNullOrEmpty(_maritalStatus))
-                {
-                    return _maritalStatus;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_maritalStatus.ToLower());
+                return AntiXssEncoder.HtmlEncode(_maritalStatus, true);
             }
             set
             {
-                _maritalStatus = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _maritalStatus = value;
             }
         }
 
@@ -80,16 +89,12 @@ namespace NUSMed_WebApp.Classes.Entity
         public string sex
         {
             get
-            {
-                if (string.IsNullOrEmpty(_sex))
-                {
-                    return _sex;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_sex.ToLower());
+            { 
+                return AntiXssEncoder.HtmlEncode(_sex, true);
             }
             set
             {
-                _sex = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _sex = value;
             }
         }
         private string _gender;
@@ -97,15 +102,11 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_gender))
-                {
-                    return _gender;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_gender.ToLower());
+                return AntiXssEncoder.HtmlEncode(_gender, true);
             }
             set
             {
-                _gender = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _gender = value;
             }
         }
         private string _address;
@@ -113,11 +114,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_address))
-                {
-                    return _address;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_address.ToLower());
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(AntiXssEncoder.HtmlEncode(_address, true).ToLower());
             }
             set
             {
@@ -125,39 +122,49 @@ namespace NUSMed_WebApp.Classes.Entity
             }
         }
 
-        public string addressPostalCode { get; set; }
-        public string email { get; set; }
-        public string contactNumber { get; set; }
+        private string _addressPostalCode;
+        public string addressPostalCode
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_addressPostalCode, true);
+            }
+            set
+            {
+                _addressPostalCode = value.ToLower();
+            }
+        }
+
+
+        private string _email;
+        public string email
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_email, true);
+            }
+            set
+            {
+                _email = value.ToLower();
+            }
+        }
+
+        private string _contactNumber;
+        public string contactNumber
+    {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_contactNumber, true);
+            }
+            set
+            {
+                _contactNumber = value.ToLower();
+            }
+        }
+
         public DateTime dateOfBirth { get; set; }
         public DateTime createTime { get; set; }
         public DateTime? lastFullLogin { get; set; } = null;
-
-        //public string accountStatus
-        //{
-        //    get
-        //    {
-        //        if (status == 0)
-        //            return "Disabled/Lock";
-        //        else if (status == 1)
-        //            return "Enabled";
-        //        else if (status == 2)
-        //            return "Enabled, Omitted from MFA";
-        //        else
-        //            return "Unknown";
-        //    }
-        //}
-
-        //public int age
-        //{
-        //    get
-        //    {
-        //        DateTime today = DateTime.Today;
-        //        int age = today.Year - dateOfBirth.Date.Year;
-        //        if (dateOfBirth.Date > today.AddYears(-age))
-        //            age--;
-        //        return age;
-        //    }
-        //}
 
         #region Patient
         private string _nokName;
@@ -165,18 +172,26 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_nokName))
-                {
-                    return _nokName;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_nokName.ToLower());
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(AntiXssEncoder.HtmlEncode(_nokName, true).ToLower());
             }
             set
             {
                 _nokName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
             }
         }
-        public string nokContact { get; set; }
+        private string _nokContact;
+        public string nokContact
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_nokContact, true);
+            }
+            set
+            {
+                _nokContact = value.ToLower();
+            }
+        }
+
         #endregion
         #region Therapist
         private string _therapistJobTitle;
@@ -184,19 +199,30 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_therapistJobTitle))
-                {
-                    return _therapistJobTitle;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_therapistJobTitle.ToLower());
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(AntiXssEncoder.HtmlEncode(_therapistJobTitle, true).ToLower());
             }
             set
             {
                 _therapistJobTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
             }
         }
+        private string _therapistDepartment;
+        public string therapistDepartment
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_therapistDepartment))
+                {
+                    return _therapistDepartment;
+                }
+                return AntiXssEncoder.HtmlEncode(_therapistDepartment, true);
+            }
+            set
+            {
+                _therapistDepartment = value;
+            }
+        }
 
-        public string therapistDepartment { get; set; }
         #endregion
         #region Researcher
         private string _researcherJobTitle;
@@ -204,10 +230,6 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_researcherJobTitle))
-                {
-                    return _therapistJobTitle;
-                }
                 return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_researcherJobTitle.ToLower());
             }
             set

@@ -12,11 +12,12 @@ namespace NUSMed_WebApp
 {
     public partial class _Default : Page
     {
+        private readonly AccountBLL accountBLL = new AccountBLL();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             Master.LiActiveHome();
 
-            AccountBLL accountBLL = new AccountBLL();
             if (AccountBLL.IsAuthenticated())
             {
                 if (AccountBLL.IsMultiple())
@@ -62,8 +63,6 @@ namespace NUSMed_WebApp
         {
             string nric = inputNRIC.Value.Trim().ToUpper();
             string password = inputPassword.Value;
-
-            AccountBLL accountBLL = new AccountBLL();
 
             if (!string.IsNullOrEmpty(nric) && !string.IsNullOrEmpty(password.ToString()))
             {
@@ -164,7 +163,6 @@ namespace NUSMed_WebApp
                 {
 
                     string password = HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password").ToString();
-                    AccountBLL accountBLL = new AccountBLL();
                     Account account = (Account)HttpContext.Current.Cache.Get(nric + "_MFAAttempt");
                     account = accountBLL.GetStatus(nric, password, account.associatedDeviceID, account.associatedTokenID);
 

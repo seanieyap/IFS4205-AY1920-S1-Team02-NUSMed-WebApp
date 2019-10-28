@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web.Security.AntiXss;
 
 namespace NUSMed_WebApp.Classes.Entity
 {
@@ -19,10 +20,6 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_patientNRIC))
-                {
-                    return _patientNRIC;
-                }
                 return _patientNRIC.ToUpper();
             }
             set
@@ -36,11 +33,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_creatorFirstName))
-                {
-                    return _creatorFirstName;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_creatorFirstName.ToLower());
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(AntiXssEncoder.HtmlEncode(_creatorFirstName.ToLower(), true));
             }
             set
             {
@@ -52,19 +45,39 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_creatorLastName))
-                {
-                    return _creatorLastName;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_creatorLastName.ToLower());
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(AntiXssEncoder.HtmlEncode(_creatorLastName.ToLower(), true));
             }
             set
             {
                 _creatorLastName = value;
             }
         }
-        public string title { get; set; }
-        public string description { get; set; }
+        private string _title;
+        public string title
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_title, true);
+            }
+            set
+            {
+                _title = value;
+            }
+        }
+
+        private string _description;
+        public string description
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_description, true);
+            }
+            set
+            {
+                _description = value;
+            }
+        }
+
         public DateTime createTime { get; set; }
         public string createTimeAnon { get; set; }
         public string fileName { get; set; }
