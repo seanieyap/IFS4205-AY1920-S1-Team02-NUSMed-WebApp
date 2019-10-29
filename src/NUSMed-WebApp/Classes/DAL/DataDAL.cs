@@ -238,7 +238,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
           MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(cmd);
           mySqlDataAdapter.Fill(anonPatientsTable);
-          anonPatientsTable = ChangeNricToIndex(anonPatientsTable);
+          //anonPatientsTable = ChangeNricToIndex(anonPatientsTable);
         }
       }
 

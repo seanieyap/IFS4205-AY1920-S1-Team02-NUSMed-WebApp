@@ -125,34 +125,34 @@ namespace NUSMed_WebApp.Classes.BLL
       if (AccountBLL.IsResearcher())
       {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append(@"SELECT r.patient_nric, ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, 
-															(SELECT GROUP_CONCAT(DISTINCT pd.diagnosis_code SEPARATOR ',') 
-															FROM patient_diagnosis pd
-															WHERE pd.patient_nric = r.patient_nric) as patient_diagnosis_code,
-															r.title, r.type, r.description, ra.record_create_date, r.content, GROUP_CONCAT(DISTINCT rd.diagnosis_code SEPARATOR ',') as record_diagnoses_codes, ra.record_id
-															FROM records_anonymized ra 
-															INNER JOIN record r ON ra.record_id = r.id 
-															LEFT JOIN record_diagnosis rd ON r.id = rd.record_id ");
+        stringBuilder.Append(@"SELECT pa.id, pa.marital_status, pa.gender, pa.sex, pa.age, pa.postal, 
+                              (SELECT GROUP_CONCAT(DISTINCT pd.diagnosis_code SEPARATOR ',') 
+                              FROM patient_diagnosis pd
+                              WHERE pd.patient_nric = pa.nric) as patient_diagnosis_code,
+                              r.title, r.type, r.description, r.content, GROUP_CONCAT(DISTINCT rd.diagnosis_code SEPARATOR ',') as record_diagnoses_codes, r.id AS record_id
+                              FROM patients_anonymized pa 
+                              INNER JOIN record r ON pa.nric = r.patient_nric
+                              LEFT JOIN record_diagnosis rd ON r.id = rd.record_id ");
 
         List<Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>>();
         if (filteredValues.sex.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.sex", filteredValues.sex));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.sex", filteredValues.sex));
         }
 
         if (filteredValues.gender.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.gender", filteredValues.gender));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.gender", filteredValues.gender));
         }
 
         if (filteredValues.maritalStatus.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.marital_status", filteredValues.maritalStatus));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.marital_status", filteredValues.maritalStatus));
         }
 
         if (filteredValues.postal.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.postal", filteredValues.postal));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.postal", filteredValues.postal));
         }
 
         if (filteredValues.diagnoses.Count > 0)
@@ -170,14 +170,9 @@ namespace NUSMed_WebApp.Classes.BLL
           columnsAndValuesList.Add(new Tuple<string, List<string>>("rd.diagnosis_code", filteredValues.recordDiagnoses));
         }
 
-        if (filteredValues.creationDate.Count > 0)
-        {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.record_create_date", filteredValues.creationDate));
-        }
-
         if (filteredValues.age.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.age", filteredValues.age));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.age", filteredValues.age));
         }
 
         List<string> tempList = new List<string>();
@@ -193,7 +188,7 @@ namespace NUSMed_WebApp.Classes.BLL
         }
 
         stringBuilder.Append(" GROUP BY r.id");
-        stringBuilder.Append(" ORDER BY r.patient_nric;");
+        stringBuilder.Append(" ORDER BY pa.id;");
 
         DataTable anonPatientsTable = dataDAL.RetrieveAnonPatients(stringBuilder.ToString());
 
@@ -218,12 +213,11 @@ namespace NUSMed_WebApp.Classes.BLL
         anonPatientsTable.Columns.Remove("record_id");
 
         // Renaming the columns in the datatable
-        anonPatientsTable.Columns["patient_nric"].ColumnName = "patient id";
+        anonPatientsTable.Columns["id"].ColumnName = "patient id";
         anonPatientsTable.Columns["patient_diagnosis_code"].ColumnName = "patient diagnoses";
         anonPatientsTable.Columns["type"].ColumnName = "record type";
         anonPatientsTable.Columns["description"].ColumnName = "record description";
         anonPatientsTable.Columns["record_diagnoses_codes"].ColumnName = "record diagnoses";
-        anonPatientsTable.Columns["record_create_date"].ColumnName = "record creation date";
 
         return anonPatientsTable;
       }
