@@ -129,18 +129,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6">
-                <div class="form-group row">
-                    <label class="col-4" for="inputCreationDate" runat="server">
-                        Creation Date
-                        <span id="labelTitleCreationDate" class="text-info" tabindex="0" data-toggle="tooltip" runat="server"><i class="fas fa-fw fa-info-circle"></i></span>
-                    </label>
-
-                    <div class="col-8">
-                        <asp:ListBox ID="inputCreationDate" CssClass="selectpicker form-control form-control-sm" multiple="multiple" data-live-search="true" SelectionMode="Multiple" data-none-selected-text="All" runat="server" ClientIDMode="Static"></asp:ListBox>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <asp:UpdatePanel ID="UpdatePanelPatientAnonymised" class="row" runat="server" UpdateMode="Conditional">

@@ -238,31 +238,10 @@ namespace NUSMed_WebApp.Classes.DAL
 
           MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(cmd);
           mySqlDataAdapter.Fill(anonPatientsTable);
-          //anonPatientsTable = ChangeNricToIndex(anonPatientsTable);
         }
       }
 
       return anonPatientsTable;
-    }
-
-    /// <summary>
-    /// Change patient nric in anonymised datatable to an index
-    /// </summary>
-    private DataTable ChangeNricToIndex(DataTable dt)
-    {
-      string patientNric = "";
-      int index = 0;
-      foreach (DataRow row in dt.Rows)
-      {
-        string currentNric = row["patient_nric"].ToString();
-        if (!string.Equals(patientNric, currentNric))
-        {
-          index++;
-          patientNric = currentNric;
-        }
-        row["patient_nric"] = index.ToString();
-      }
-      return dt;
     }
 
     /// <summary>
@@ -489,9 +468,7 @@ namespace NUSMed_WebApp.Classes.DAL
         cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short 
                     FROM diagnosis d
                     INNER JOIN patient_diagnosis pd ON pd.diagnosis_code = d.diagnosis_code
-                    INNER JOIN account_patient ap ON ap.nric = pd.patient_nric
-                    INNER JOIN record r ON r.patient_nric = pd.patient_nric
-                    INNER JOIN records_anonymized ra ON ra.record_id = r.id 
+                    INNER JOIN patients_anonymized pa ON pa.nric = pd.patient_nric
                     GROUP BY d.diagnosis_code
                     ORDER BY diagnosis_code ASC;";
 
@@ -514,8 +491,8 @@ namespace NUSMed_WebApp.Classes.DAL
       using (MySqlCommand cmd = new MySqlCommand())
       {
         cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short, d.category_title 
-                    FROM records_anonymized ra
-                    INNER JOIN record r ON r.id = ra.record_id
+                    FROM patients_anonymized pa
+                    INNER JOIN record r ON r.patient_nric = pa.nric
                     INNER JOIN record_diagnosis rd ON rd.record_id = r.id
                     INNER JOIN diagnosis d ON rd.diagnosis_code = d.diagnosis_Code
                     GROUP BY d.diagnosis_code

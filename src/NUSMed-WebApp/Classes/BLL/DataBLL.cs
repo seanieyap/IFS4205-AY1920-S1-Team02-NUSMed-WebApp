@@ -81,7 +81,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
         if (filteredValues.diagnoses.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("pd.diagnosis_code", filteredValues.recordDiagnoses));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pd.diagnosis_code", filteredValues.diagnoses));
         }
 
         if (filteredValues.recordType.Count > 0)
@@ -132,6 +132,7 @@ namespace NUSMed_WebApp.Classes.BLL
                               r.title, r.type, r.description, r.content, GROUP_CONCAT(DISTINCT rd.diagnosis_code SEPARATOR ',') as record_diagnoses_codes, r.id AS record_id
                               FROM patients_anonymized pa 
                               INNER JOIN record r ON pa.nric = r.patient_nric
+                              INNER JOIN patient_diagnosis pd ON pd.patient_nric = pa.nric
                               LEFT JOIN record_diagnosis rd ON r.id = rd.record_id ");
 
         List<Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>>();
@@ -157,7 +158,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
         if (filteredValues.diagnoses.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("pd.diagnosis_code", filteredValues.recordDiagnoses));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pd.diagnosis_code", filteredValues.diagnoses));
         }
 
         if (filteredValues.recordType.Count > 0)
