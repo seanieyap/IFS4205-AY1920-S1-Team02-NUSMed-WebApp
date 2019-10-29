@@ -23,7 +23,7 @@ namespace NUSMed_WebApp.Classes.BLL
         dataDAL.ResetGeneralizationLevel();
         DataTable dt = dataDAL.RetrieveColumns();
         Anonymizer anonymizer = new Anonymizer();
-        Tuple<DataTable, Dictionary<string, int>> anonDtAndGenLevel = anonymizer.anonymize(dt, 3, 0.05);
+        Tuple<DataTable, Dictionary<string, int>> anonDtAndGenLevel = anonymizer.anonymize(dt, 3, 0.10);
         DataTable anonymizedDataTable = anonDtAndGenLevel.Item1;
         Dictionary<string, int> genLevel = anonDtAndGenLevel.Item2;
         dataDAL.ClearAnonymizedTable();
@@ -41,7 +41,7 @@ namespace NUSMed_WebApp.Classes.BLL
       int postal = generalizedSetting.postal;
       int age = generalizedSetting.age;
       int recordCreationDate = generalizedSetting.recordCreationDate;
-      return (marital_status == -1 || gender == -1 || sex == -1 || postal == -1 || age == -1 || recordCreationDate == -1);
+      return (marital_status == -1 || gender == -1 || sex == -1 || postal == -1 || age == -1);
     }
 
     /// <summary>
@@ -369,7 +369,7 @@ namespace NUSMed_WebApp.Classes.BLL
       private Dictionary<string, HashSet<string>> valuesInTableForEachQuasi;
       private Dictionary<string, int> generalizationLevel;
 
-      private IList<string> quasiIdentifiers = new List<string>(new string[] { "Age", "Sex", "Gender", "Marital Status", "Postal", "Record Creation Date" });
+      private IList<string> quasiIdentifiers = new List<string>(new string[] { "Age", "Sex", "Gender", "Marital Status", "Postal" });
       private readonly List<string> quasiIdentifiersFilePaths;
 
       private readonly string FILE_AGE_HIERARCHY = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/age_hierarchy.csv");
@@ -386,22 +386,17 @@ namespace NUSMed_WebApp.Classes.BLL
         sequencesFrequency = new Dictionary<List<string>, List<Tuple<string>>>(seqListEqualityComparer);
         valuesInTableForEachQuasi = new Dictionary<string, HashSet<string>>();
         generalizationLevel = new Dictionary<string, int>();
-        quasiIdentifiersFilePaths = new List<string>(new string[] { FILE_AGE_HIERARCHY, FILE_SEX_HIERARCHY, FILE_GENDER_HIERARCHY, FILE_MARITAL_STATUS_HIERARCHY, FILE_POSTAL_HIERARCHY, FILE_RECORD_DATE_HIERARCHY });
+        quasiIdentifiersFilePaths = new List<string>(new string[] { FILE_AGE_HIERARCHY, FILE_SEX_HIERARCHY, FILE_GENDER_HIERARCHY, FILE_MARITAL_STATUS_HIERARCHY, FILE_POSTAL_HIERARCHY });
       }
 
-      private int GetAge(DateTime dob, DateTime recordDate)
+      private int GetAge(DateTime dob)
       {
         DateTime zeroTime = new DateTime(1, 1, 1);
-        TimeSpan timespan = recordDate.Subtract(dob);
+        DateTime today = DateTime.Now;
+        TimeSpan timespan = today.Subtract(dob);
         int age = (zeroTime + timespan).Year - 1;
 
         return age;
-      }
-
-      private string GetDate(DateTime createdDateTime)
-      {
-        string createdDate = createdDateTime.ToString("yyyy-M-d");
-        return createdDate;
       }
 
       private void InitializeAnonymizer()
@@ -439,22 +434,20 @@ namespace NUSMed_WebApp.Classes.BLL
           string maritalStatus = row["marital_status"].ToString();
           string dob = row["dob"].ToString();
           string postal = row["postal"].ToString();
-          string createdDateTime = row["record_created_time"].ToString();
-          string recordId = row["record_id"].ToString();
+          string nric = row["nric"].ToString();
 
-          string recordCreatedDate = GetDate(DateTime.ParseExact(createdDateTime, "MM/dd/yyyy HH:mm:ss", null));
-          string age = GetAge(Convert.ToDateTime(DateTime.ParseExact(dob, "MM/dd/yyyy", null)), Convert.ToDateTime(recordCreatedDate)).ToString();
+          string age = GetAge(Convert.ToDateTime(DateTime.ParseExact(dob, "MM/dd/yyyy", null))).ToString();
 
-          List<string> quasiList = new List<string>(new string[] { age, sex, gender, maritalStatus, postal, recordCreatedDate });
+          List<string> quasiList = new List<string>(new string[] { age, sex, gender, maritalStatus, postal });
 
           if (sequencesFrequency.ContainsKey(quasiList))
           {
-            sequencesFrequency[quasiList].Add(new Tuple<string>(recordId));
+            sequencesFrequency[quasiList].Add(new Tuple<string>(nric));
           }
           else
           {
             sequencesFrequency[quasiList] = new List<Tuple<string>>();
-            sequencesFrequency[quasiList].Add(new Tuple<string>(recordId));
+            sequencesFrequency[quasiList].Add(new Tuple<string>(nric));
           }
 
           for (int i = 0; i < quasiIdentifiers.Count; i++)
@@ -484,7 +477,7 @@ namespace NUSMed_WebApp.Classes.BLL
           if (totalCountLessThanK > maxRecordsToSuppress)
           {
             string quasiToGeneralize = "";
-            int maxQuasiCount = 0;
+            int maxQuasiCount = 1;
             foreach (KeyValuePair<string, HashSet<string>> quasiAndValuesEntry in valuesInTableForEachQuasi)
             {
               string quasi = quasiAndValuesEntry.Key;
@@ -500,7 +493,7 @@ namespace NUSMed_WebApp.Classes.BLL
             }
 
             // if unable to generalize anymore, move on to suppression
-            if (maxQuasiCount == 0)
+            if (maxQuasiCount == 1)
             {
               break;
             }
@@ -568,10 +561,11 @@ namespace NUSMed_WebApp.Classes.BLL
         anonymizedDataTable.Columns.Add("Gender", typeof(string));
         anonymizedDataTable.Columns.Add("Marital Status", typeof(string));
         anonymizedDataTable.Columns.Add("Postal", typeof(string));
-        anonymizedDataTable.Columns.Add("Created Date", typeof(string));
 
-        anonymizedDataTable.Columns.Add("Record ID", typeof(string));
+        anonymizedDataTable.Columns.Add("Nric", typeof(string));
+        anonymizedDataTable.Columns.Add("Id", typeof(string));
 
+        int patientIndex = 1;
 
         foreach (KeyValuePair<List<string>, List<Tuple<string>>> entry in sequencesFrequency)
         {
@@ -585,10 +579,12 @@ namespace NUSMed_WebApp.Classes.BLL
               anonymisedRow["Gender"] = entry.Key[2];
               anonymisedRow["Marital Status"] = entry.Key[3];
               anonymisedRow["Postal"] = entry.Key[4];
-              anonymisedRow["Created Date"] = entry.Key[5];
-              anonymisedRow["Record ID"] = entry.Value[i].Item1;
+              anonymisedRow["Nric"] = entry.Value[i].Item1;
+              anonymisedRow["Id"] = patientIndex;
 
               anonymizedDataTable.Rows.Add(anonymisedRow);
+
+              patientIndex++;
             }
           }
           else
