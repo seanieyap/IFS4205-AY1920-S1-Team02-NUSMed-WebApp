@@ -68,7 +68,7 @@ namespace NUSMed_WebApp
                     AccountBLL accountBLL = new AccountBLL();
                     Account account = accountBLL.GetStatus(nric);
 
-                    if(account.status == 0 || !((account.roles.Count() > 0 && userData[0] == "Multiple") || account.roles.Contains(userData[0])) || formAuthenticationTicket.IssueDate < account.lastFullLogin)
+                    if (account.status == 0 || !((account.roles.Count() > 0 && userData[0] == "Multiple") || account.roles.Contains(userData[0])) || formAuthenticationTicket.IssueDate < account.lastFullLogin)
                     {                        
                         // Must be fradulent request
                         FormsAuthentication.SignOut();

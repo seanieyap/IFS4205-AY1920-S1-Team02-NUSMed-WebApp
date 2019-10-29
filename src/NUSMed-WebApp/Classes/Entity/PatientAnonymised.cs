@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Web.Security.AntiXss;
 
 namespace NUSMed_WebApp.Classes.Entity
 {
@@ -8,22 +8,41 @@ namespace NUSMed_WebApp.Classes.Entity
     public class PatientAnonymised
     {
         public string recordIDs { get; set; }
-        public string postal { get; set; }
-        public string age { get; set; }
+        private string _postal;
+        public string postal
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_postal, true);
+            }
+            set
+            {
+                _postal = value;
+            }
+        }
+
+        private string _age;
+        public string age
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_age, true);
+            }
+            set
+            {
+                _age = value;
+            }
+        }
         private string _sex;
         public string sex
         {
             get
             {
-                if (string.IsNullOrEmpty(_sex))
-                {
-                    return _sex;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_sex.ToLower());
+                return AntiXssEncoder.HtmlEncode(_sex, true);
             }
             set
             {
-                _sex = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _sex = value;
             }
         }
         private string _gender;
@@ -31,15 +50,11 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_gender))
-                {
-                    return _gender;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_gender.ToLower());
+                return AntiXssEncoder.HtmlEncode(_gender, true);
             }
             set
             {
-                _gender = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _gender = value;
             }
         }
         private string _maritalStatus;
@@ -47,15 +62,11 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_maritalStatus))
-                {
-                    return _maritalStatus;
-                }
-                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_maritalStatus.ToLower());
+                return AntiXssEncoder.HtmlEncode(_maritalStatus, true);
             }
             set
             {
-                _maritalStatus = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _maritalStatus = value;
             }
         }
     }

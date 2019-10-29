@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Security.AntiXss;
 
 namespace NUSMed_WebApp.Classes.Entity
 {
@@ -11,8 +12,32 @@ namespace NUSMed_WebApp.Classes.Entity
         public Therapist therapist { get; set; } = new Therapist();
         public Therapist creator { get; set; } = new Therapist();
         public List<Record> records { get; set; } = new List<Record>();
-        public string title { get; set; }
-        public string content { get; set; }
+        private string _title;
+        public string title
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_title, true);
+            }
+            set
+            {
+                _title = value;
+            }
+        }
+
+        private string _content;
+        public string content
+        {
+            get
+            {
+                return AntiXssEncoder.HtmlEncode(_content, true);
+            }
+            set
+            {
+                _content = value;
+            }
+        }
+
         public DateTime createTime { get; set; }
 
         #region Validation Helpers

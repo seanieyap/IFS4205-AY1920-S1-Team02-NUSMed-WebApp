@@ -9,10 +9,6 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_nric))
-                {
-                    return _nric;
-                }
                 return _nric.ToUpper();
             }
             set
