@@ -176,10 +176,9 @@ namespace NUSMed_WebApp.Researcher
             {
                 try
                 {
-                    string recordIDsString = e.CommandArgument.ToString();
+                    string patientId = e.CommandArgument.ToString();
 
-                    List<long> recordIDs = recordIDsString.Split(',').Select(long.Parse).ToList();
-                    List<PatientDiagnosis> patientDiagnoses = dataBLL.GetPatientDiagnoses(recordIDs);
+                    List<PatientDiagnosis> patientDiagnoses = dataBLL.GetPatientDiagnoses(patientId);
 
                     GridViewPatientDiagnoses.DataSource = patientDiagnoses;
                     GridViewPatientDiagnoses.DataBind();

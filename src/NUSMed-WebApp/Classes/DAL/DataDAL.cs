@@ -206,6 +206,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
               PatientAnonymised patientAnonymised = new PatientAnonymised
               {
+                id = Convert.ToString(reader["id"]),
                 maritalStatus = Convert.ToString(reader["marital_status"]),
                 gender = Convert.ToString(reader["gender"]),
                 sex = Convert.ToString(reader["sex"]),
@@ -267,13 +268,8 @@ namespace NUSMed_WebApp.Classes.DAL
     /// <summary>
     /// Retrieve all the diagnoses information of a specific patient
     /// </summary>
-    public List<PatientDiagnosis> RetrievePatientDiagnoses(IEnumerable<Tuple<string, long>> recordIDsParameterized)
+    public List<PatientDiagnosis> RetrievePatientDiagnoses(string patientId)
     {
-      if (recordIDsParameterized.Count() == 0)
-      {
-        return null;
-      }
-
       List<PatientDiagnosis> result = new List<PatientDiagnosis>();
 
       using (MySqlCommand cmd = new MySqlCommand())
@@ -282,23 +278,14 @@ namespace NUSMed_WebApp.Classes.DAL
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.Append(@"SELECT pd.diagnosis_code, d.diagnosis_description_short, d.category_title 
-                    FROM patient_diagnosis pd 
-                    INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
-					WHERE pd.patient_nric = 
-                        (SELECT r.patient_nric 
-						    FROM records_anonymized ra 
-                            INNER JOIN record r ON ra.record_id = r.id
-                            WHERE ");
-        stringBuilder.Append(string.Join(" OR ", recordIDsParameterized.Select(r => " ra.record_id = " + r.Item1)));
-        stringBuilder.Append(@" GROUP BY r.patient_nric LIMIT 1)
-                    ORDER BY pd.end DESC, pd.start DESC;");
+                               FROM patient_diagnosis pd 
+                               LEFT JOIN patients_anonymized pa ON pa.nric = pd.patient_nric INNER JOIN
+                               diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
+					                    WHERE pa.id = ");
+        stringBuilder.Append(patientId);
+        stringBuilder.Append(" ORDER BY pd.end DESC, pd.start DESC;");
 
         cmd.CommandText = stringBuilder.ToString();
-
-        foreach (Tuple<string, long> r in recordIDsParameterized)
-        {
-          cmd.Parameters.AddWithValue(r.Item1, r.Item2);
-        }
 
         using (cmd.Connection = connection)
         {
@@ -328,6 +315,11 @@ namespace NUSMed_WebApp.Classes.DAL
         }
       }
 
+      if (result.Count == 0)
+      {
+        return null;
+      }
+
       return result;
     }
 
@@ -346,10 +338,7 @@ namespace NUSMed_WebApp.Classes.DAL
       using (MySqlCommand cmd = new MySqlCommand())
       {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, r.file_extension,
-                    ra.record_create_date
-                    FROM record r
-                    INNER JOIN records_anonymized ra ON ra.record_id = r.id 
+        stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, r.file_extension FROM record r
                     INNER JOIN account a ON a.nric = r.creator_nric
                     WHERE ");
         stringBuilder.Append(string.Join(" OR ", recordIDsParameterized.Select(r => " r.id = " + r.Item1)));
@@ -378,7 +367,6 @@ namespace NUSMed_WebApp.Classes.DAL
                 type = RecordType.Get(Convert.ToString(reader["type"])),
                 content = Convert.ToString(reader["content"]),
                 title = Convert.ToString(reader["title"]),
-                createTimeAnon = Convert.ToString(reader["record_create_date"]),
                 fileExtension = Convert.ToString(reader["file_extension"])
               };
               result.Add(record);
@@ -551,7 +539,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
       using (MySqlCommand cmd = new MySqlCommand())
       {
-        cmd.CommandText = @"SELECT DISTINCT postal FROM records_anonymized ORDER BY postal ASC;";
+        cmd.CommandText = @"SELECT DISTINCT postal FROM patients_anonymized ORDER BY postal ASC;";
 
         using (cmd.Connection = connection)
         {

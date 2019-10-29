@@ -173,7 +173,7 @@
                                     <%# Item.gender %>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Martial Status">
+                            <asp:TemplateField HeaderText="Marital Status">
                                 <ItemTemplate>
                                     <%# Item.maritalStatus %>
                                 </ItemTemplate>
@@ -185,7 +185,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Diagnoses" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="LinkButtonViewDiagnosis" CssClass="btn btn-info btn-sm" CommandArgument="<%# Item.recordIDs %>" CommandName="ViewDiagnosis" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButtonViewDiagnosis" CssClass="btn btn-info btn-sm" CommandArgument="<%# Item.id %>" CommandName="ViewDiagnosis" runat="server"><i class="fas fa-fw fa-eye"></i><span class="d-none d-lg-inline-block">View</span></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Records" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
@@ -249,11 +249,6 @@
                                         <asp:TemplateField HeaderText="Description">
                                             <ItemTemplate>
                                                 <%# Item.description %>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Creation Time">
-                                            <ItemTemplate>
-                                                <%# Item.createTimeAnon %>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Diagnosis" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">

@@ -54,32 +54,29 @@ namespace NUSMed_WebApp.Classes.BLL
       if (AccountBLL.IsResearcher())
       {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append(@"SELECT ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date, 
-										GROUP_CONCAT(DISTINCT ra.record_id SEPARATOR ',') as record_ids
-								FROM records_anonymized ra 
-								INNER JOIN record r ON ra.record_id = r.id 
-								LEFT JOIN record_diagnosis rd ON r.id = rd.record_id 
-				LEFT JOIN patient_diagnosis pd ON pd.patient_nric = r.patient_nric ");
+        stringBuilder.Append(@"SELECT pa.id, pa.marital_status, pa.gender, pa.sex, pa.age, pa.postal, GROUP_CONCAT(DISTINCT r.id SEPARATOR ',') as record_ids
+                              FROM patients_anonymized pa RIGHT JOIN record r ON pa.nric = r.patient_nric LEFT JOIN record_diagnosis rd ON r.id = rd.record_id
+                              LEFT JOIN patient_diagnosis pd ON pd.patient_nric = r.patient_nric");
 
         List<Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>>();
         if (filteredValues.sex.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.sex", filteredValues.sex));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.sex", filteredValues.sex));
         }
 
         if (filteredValues.gender.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.gender", filteredValues.gender));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.gender", filteredValues.gender));
         }
 
         if (filteredValues.maritalStatus.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.marital_status", filteredValues.maritalStatus));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.marital_status", filteredValues.maritalStatus));
         }
 
         if (filteredValues.postal.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.postal", filteredValues.postal));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.postal", filteredValues.postal));
         }
 
         if (filteredValues.diagnoses.Count > 0)
@@ -97,14 +94,9 @@ namespace NUSMed_WebApp.Classes.BLL
           columnsAndValuesList.Add(new Tuple<string, List<string>>("rd.diagnosis_code", filteredValues.recordDiagnoses));
         }
 
-        if (filteredValues.creationDate.Count > 0)
-        {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.record_create_date", filteredValues.creationDate));
-        }
-
         if (filteredValues.age.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.age", filteredValues.age));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.age", filteredValues.age));
         }
 
         List<string> tempList = new List<string>();
@@ -119,17 +111,11 @@ namespace NUSMed_WebApp.Classes.BLL
           stringBuilder.Append(" WHERE " + string.Join(" AND ", tempList));
         }
 
-        stringBuilder.Append(" GROUP BY r.patient_nric LIMIT 200;");
+        stringBuilder.Append(" GROUP BY pa.nric LIMIT 200;");
 
         List<PatientAnonymised> patientAnonymised = dataDAL.RetrievePatients(stringBuilder.ToString());
 
-        // ignore if less or equal 3 patients
-        if (patientAnonymised.Count > 3)
-        {
-          return patientAnonymised;
-        }
-
-        return new List<PatientAnonymised>();
+        return patientAnonymised;
       }
       return null;
     }
@@ -244,15 +230,12 @@ namespace NUSMed_WebApp.Classes.BLL
       return null;
     }
 
-    public List<PatientDiagnosis> GetPatientDiagnoses(List<long> recordIDs)
+    public List<PatientDiagnosis> GetPatientDiagnoses(string id)
     {
       if (AccountBLL.IsResearcher())
       {
-        IEnumerable<Tuple<string, long>> recordIDsParameterized = from recordID in recordIDs
-                                                                  select (new Tuple<string, long>("@" + recordID.ToString().Replace(" ", string.Empty), recordID));
-
-        List<PatientDiagnosis> result = dataDAL.RetrievePatientDiagnoses(recordIDsParameterized);
-        logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patient Diagnoses", "Record IDs: " + string.Join(", ", recordIDs) + ".");
+        List<PatientDiagnosis> result = dataDAL.RetrievePatientDiagnoses(id);
+        logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patient Diagnoses", "View Patient Diagnoses");
         return result;
       }
 
