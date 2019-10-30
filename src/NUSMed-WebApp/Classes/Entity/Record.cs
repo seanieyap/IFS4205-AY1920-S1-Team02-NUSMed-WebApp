@@ -33,6 +33,10 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
+                if (string.IsNullOrEmpty(_creatorFirstName))
+                {
+                    return string.Empty;
+                }
                 return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(AntiXssEncoder.HtmlEncode(_creatorFirstName.ToLower(), true));
             }
             set
@@ -45,6 +49,10 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
+                if (string.IsNullOrEmpty(_creatorLastName))
+                {
+                    return string.Empty;
+                }
                 return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(AntiXssEncoder.HtmlEncode(_creatorLastName.ToLower(), true));
             }
             set

@@ -130,7 +130,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
                 cmd.CommandText = @"SELECT distinct action
                     FROM permission
-                    ORDER BY creator_nric DESC;";
+                    ORDER BY action DESC;";
 
                 using (cmd.Connection = connection)
                 {
