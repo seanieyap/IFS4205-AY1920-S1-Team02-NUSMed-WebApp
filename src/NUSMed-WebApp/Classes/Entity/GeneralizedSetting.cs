@@ -242,7 +242,6 @@ namespace NUSMed_WebApp.Classes.Entity
             }
         }
 
-        public int recordCreationDate { get; set; } = -1;
     }
 
     [Serializable]
@@ -258,7 +257,6 @@ namespace NUSMed_WebApp.Classes.Entity
         // Record
         public List<string> recordType { get; set; } = new List<string>();
         public List<string> recordDiagnoses { get; set; } = new List<string>();
-        public List<string> creationDate { get; set; } = new List<string>();
         public List<string> age { get; set; } = new List<string>();
 
     }
