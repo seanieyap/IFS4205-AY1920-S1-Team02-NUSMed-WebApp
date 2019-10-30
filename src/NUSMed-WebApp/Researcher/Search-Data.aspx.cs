@@ -106,7 +106,7 @@ namespace NUSMed_WebApp.Researcher
 
                 // Record Type
                 inputRecordType.Items.Add(new ListItem("Blood Pressure Reading", "Blood Pressure Reading"));
-                inputRecordType.Items.Add(new ListItem("ECG", "ECG"));
+                inputRecordType.Items.Add(new ListItem("ECG Reading", "ECG Reading"));
                 inputRecordType.Items.Add(new ListItem("Gait", "Gait"));
                 inputRecordType.Items.Add(new ListItem("Height Measurement", "Height Measurement"));
                 inputRecordType.Items.Add(new ListItem("MRI", "MRI"));
