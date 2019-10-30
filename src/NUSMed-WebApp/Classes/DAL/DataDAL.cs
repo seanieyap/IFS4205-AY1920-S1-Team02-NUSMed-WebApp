@@ -22,8 +22,9 @@ namespace NUSMed_WebApp.Classes.DAL
 
       using (MySqlCommand cmd = new MySqlCommand())
       {
-        cmd.CommandText = @"SELECT account.nric, account.marital_status, account.gender, account.date_of_birth AS dob, account.address_postal_code AS postal, account.sex
-                    FROM account INNER JOIN account_patient ON account.nric = account_patient.nric WHERE EXISTS (SELECT 1 FROM record WHERE record.patient_nric = account.nric);";
+        cmd.CommandText = @"SELECT a.nric, a.marital_status, a.gender, a.date_of_birth AS dob, a.address_postal_code AS postal, a.sex
+                            FROM account a INNER JOIN account_patient ap ON a.nric = ap.nric WHERE a.date_of_birth >= 1920-01-01 AND
+                            EXISTS (SELECT 1 FROM record r WHERE r.patient_nric = a.nric);";
 
         using (cmd.Connection = connection)
         {
