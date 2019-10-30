@@ -55,7 +55,7 @@ namespace NUSMed_WebApp.Classes.BLL
       {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.Append(@"SELECT pa.id, pa.marital_status, pa.gender, pa.sex, pa.age, pa.postal, GROUP_CONCAT(DISTINCT r.id SEPARATOR ',') as record_ids
-                              FROM patients_anonymized pa RIGHT JOIN record r ON pa.nric = r.patient_nric LEFT JOIN record_diagnosis rd ON r.id = rd.record_id
+                              FROM patients_anonymized pa INNER JOIN record r ON pa.nric = r.patient_nric LEFT JOIN record_diagnosis rd ON r.id = rd.record_id
                               LEFT JOIN patient_diagnosis pd ON pd.patient_nric = r.patient_nric");
 
         List<Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>>();
