@@ -40,7 +40,6 @@ namespace NUSMed_WebApp.Classes.BLL
       int sex = generalizedSetting.sex;
       int postal = generalizedSetting.postal;
       int age = generalizedSetting.age;
-      int recordCreationDate = generalizedSetting.recordCreationDate;
       return (marital_status == -1 || gender == -1 || sex == -1 || postal == -1 || age == -1);
     }
 
@@ -318,16 +317,6 @@ namespace NUSMed_WebApp.Classes.BLL
       return null;
     }
 
-    public DataTable GetRecordCreationDate()
-    {
-      if (AccountBLL.IsResearcher())
-      {
-        return dataDAL.RetrieveCreationDate();
-      }
-
-      return null;
-    }
-
     public GeneralizedSetting GetGeneralizedSettingFromDb()
     {
       if (AccountBLL.IsResearcher())
@@ -355,7 +344,6 @@ namespace NUSMed_WebApp.Classes.BLL
       private readonly string FILE_GENDER_HIERARCHY = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/gender_hierarchy.csv");
       private readonly string FILE_MARITAL_STATUS_HIERARCHY = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/marital_status_hierarchy.csv");
       private readonly string FILE_POSTAL_HIERARCHY = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/postal_hierarchy.csv");
-      private readonly string FILE_RECORD_DATE_HIERARCHY = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/record_date_hierarchy.csv");
 
       public Anonymizer()
       {

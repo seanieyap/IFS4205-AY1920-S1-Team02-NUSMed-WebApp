@@ -532,28 +532,5 @@ namespace NUSMed_WebApp.Classes.DAL
       postalCodeTable.PrimaryKey = keyColumns;
       return postalCodeTable;
     }
-
-    public DataTable RetrieveCreationDate()
-    {
-      DataTable recordCreationDateTable = new DataTable();
-
-      using (MySqlCommand cmd = new MySqlCommand())
-      {
-        cmd.CommandText = @"SELECT DISTINCT record_create_date FROM records_anonymized ORDER BY record_create_date ASC;";
-
-        using (cmd.Connection = connection)
-        {
-          cmd.Connection.Open();
-          cmd.ExecuteNonQuery();
-
-          MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(cmd);
-          mySqlDataAdapter.Fill(recordCreationDateTable);
-        }
-      }
-      DataColumn[] keyColumns = new DataColumn[1];
-      keyColumns[0] = recordCreationDateTable.Columns["record_create_date"];
-      recordCreationDateTable.PrimaryKey = keyColumns;
-      return recordCreationDateTable;
-    }
   }
 }
