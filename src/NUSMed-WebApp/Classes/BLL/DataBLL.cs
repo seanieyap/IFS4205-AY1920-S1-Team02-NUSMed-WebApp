@@ -128,7 +128,7 @@ namespace NUSMed_WebApp.Classes.BLL
                               (SELECT GROUP_CONCAT(DISTINCT pd.diagnosis_code SEPARATOR ',') 
                               FROM patient_diagnosis pd
                               WHERE pd.patient_nric = pa.nric) as patient_diagnosis_code,
-                              r.title, r.type, r.description, r.content, GROUP_CONCAT(DISTINCT rd.diagnosis_code SEPARATOR ',') as record_diagnoses_codes, r.id AS record_id
+                              r.title, r.type, r.description, r.content, GROUP_CONCAT(DISTINCT rd.diagnosis_code SEPARATOR ',') as record_diagnoses_codes, r.id AS record_id, r.create_time
                               FROM patients_anonymized pa 
                               INNER JOIN record r ON pa.nric = r.patient_nric
                               INNER JOIN patient_diagnosis pd ON pd.patient_nric = pa.nric
@@ -214,8 +214,10 @@ namespace NUSMed_WebApp.Classes.BLL
 
         // Renaming the columns in the datatable
         anonPatientsTable.Columns["id"].ColumnName = "patient id";
+        anonPatientsTable.Columns["marital_status"].ColumnName = "marital status";
         anonPatientsTable.Columns["patient_diagnosis_code"].ColumnName = "patient diagnoses";
         anonPatientsTable.Columns["type"].ColumnName = "record type";
+        anonPatientsTable.Columns["create_time"].ColumnName = "record creation time";
         anonPatientsTable.Columns["description"].ColumnName = "record description";
         anonPatientsTable.Columns["record_diagnoses_codes"].ColumnName = "record diagnoses";
 

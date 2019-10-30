@@ -318,7 +318,7 @@ namespace NUSMed_WebApp.Classes.DAL
       using (MySqlCommand cmd = new MySqlCommand())
       {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, r.file_extension FROM record r
+        stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, r.file_extension, r.create_time FROM record r
                     INNER JOIN account a ON a.nric = r.creator_nric
                     WHERE ");
         stringBuilder.Append(string.Join(" OR ", recordIDsParameterized.Select(r => " r.id = " + r.Item1)));
@@ -347,7 +347,8 @@ namespace NUSMed_WebApp.Classes.DAL
                 type = RecordType.Get(Convert.ToString(reader["type"])),
                 content = Convert.ToString(reader["content"]),
                 title = Convert.ToString(reader["title"]),
-                fileExtension = Convert.ToString(reader["file_extension"])
+                fileExtension = Convert.ToString(reader["file_extension"]),
+                createTime = Convert.ToDateTime(reader["create_time"])
               };
               result.Add(record);
             }
