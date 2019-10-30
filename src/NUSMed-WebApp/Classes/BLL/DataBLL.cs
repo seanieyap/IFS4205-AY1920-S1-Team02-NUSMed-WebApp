@@ -40,7 +40,6 @@ namespace NUSMed_WebApp.Classes.BLL
       int sex = generalizedSetting.sex;
       int postal = generalizedSetting.postal;
       int age = generalizedSetting.age;
-      int recordCreationDate = generalizedSetting.recordCreationDate;
       return (marital_status == -1 || gender == -1 || sex == -1 || postal == -1 || age == -1);
     }
 
@@ -129,7 +128,7 @@ namespace NUSMed_WebApp.Classes.BLL
                               (SELECT GROUP_CONCAT(DISTINCT pd.diagnosis_code SEPARATOR ',') 
                               FROM patient_diagnosis pd
                               WHERE pd.patient_nric = pa.nric) as patient_diagnosis_code,
-                              r.title, r.type, r.description, r.content, GROUP_CONCAT(DISTINCT rd.diagnosis_code SEPARATOR ',') as record_diagnoses_codes, r.id AS record_id
+                              r.title, r.type, r.description, r.content, GROUP_CONCAT(DISTINCT rd.diagnosis_code SEPARATOR ',') as record_diagnoses_codes, r.id AS record_id, r.create_time
                               FROM patients_anonymized pa 
                               INNER JOIN record r ON pa.nric = r.patient_nric
                               INNER JOIN patient_diagnosis pd ON pd.patient_nric = pa.nric
@@ -215,8 +214,10 @@ namespace NUSMed_WebApp.Classes.BLL
 
         // Renaming the columns in the datatable
         anonPatientsTable.Columns["id"].ColumnName = "patient id";
+        anonPatientsTable.Columns["marital_status"].ColumnName = "marital status";
         anonPatientsTable.Columns["patient_diagnosis_code"].ColumnName = "patient diagnoses";
         anonPatientsTable.Columns["type"].ColumnName = "record type";
+        anonPatientsTable.Columns["create_time"].ColumnName = "record creation time";
         anonPatientsTable.Columns["description"].ColumnName = "record description";
         anonPatientsTable.Columns["record_diagnoses_codes"].ColumnName = "record diagnoses";
 
@@ -318,16 +319,6 @@ namespace NUSMed_WebApp.Classes.BLL
       return null;
     }
 
-    public DataTable GetRecordCreationDate()
-    {
-      if (AccountBLL.IsResearcher())
-      {
-        return dataDAL.RetrieveCreationDate();
-      }
-
-      return null;
-    }
-
     public GeneralizedSetting GetGeneralizedSettingFromDb()
     {
       if (AccountBLL.IsResearcher())
@@ -355,7 +346,6 @@ namespace NUSMed_WebApp.Classes.BLL
       private readonly string FILE_GENDER_HIERARCHY = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/gender_hierarchy.csv");
       private readonly string FILE_MARITAL_STATUS_HIERARCHY = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/marital_status_hierarchy.csv");
       private readonly string FILE_POSTAL_HIERARCHY = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/postal_hierarchy.csv");
-      private readonly string FILE_RECORD_DATE_HIERARCHY = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/record_date_hierarchy.csv");
 
       public Anonymizer()
       {

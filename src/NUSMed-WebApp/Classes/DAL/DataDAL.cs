@@ -22,8 +22,9 @@ namespace NUSMed_WebApp.Classes.DAL
 
       using (MySqlCommand cmd = new MySqlCommand())
       {
-        cmd.CommandText = @"SELECT account.nric, account.marital_status, account.gender, account.date_of_birth AS dob, account.address_postal_code AS postal, account.sex
-                    FROM account INNER JOIN account_patient ON account.nric = account_patient.nric WHERE EXISTS (SELECT 1 FROM record WHERE record.patient_nric = account.nric);";
+        cmd.CommandText = @"SELECT a.nric, a.marital_status, a.gender, a.date_of_birth AS dob, a.address_postal_code AS postal, a.sex
+                            FROM account a INNER JOIN account_patient ap ON a.nric = ap.nric WHERE a.date_of_birth >= 1920-01-01 AND
+                            EXISTS (SELECT 1 FROM record r WHERE r.patient_nric = a.nric);";
 
         using (cmd.Connection = connection)
         {
@@ -317,7 +318,7 @@ namespace NUSMed_WebApp.Classes.DAL
       using (MySqlCommand cmd = new MySqlCommand())
       {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, r.file_extension FROM record r
+        stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, r.file_extension, r.create_time FROM record r
                     INNER JOIN account a ON a.nric = r.creator_nric
                     WHERE ");
         stringBuilder.Append(string.Join(" OR ", recordIDsParameterized.Select(r => " r.id = " + r.Item1)));
@@ -346,7 +347,8 @@ namespace NUSMed_WebApp.Classes.DAL
                 type = RecordType.Get(Convert.ToString(reader["type"])),
                 content = Convert.ToString(reader["content"]),
                 title = Convert.ToString(reader["title"]),
-                fileExtension = Convert.ToString(reader["file_extension"])
+                fileExtension = Convert.ToString(reader["file_extension"]),
+                createTime = Convert.ToDateTime(reader["create_time"])
               };
               result.Add(record);
             }
@@ -531,29 +533,6 @@ namespace NUSMed_WebApp.Classes.DAL
       keyColumns[0] = postalCodeTable.Columns["postal"];
       postalCodeTable.PrimaryKey = keyColumns;
       return postalCodeTable;
-    }
-
-    public DataTable RetrieveCreationDate()
-    {
-      DataTable recordCreationDateTable = new DataTable();
-
-      using (MySqlCommand cmd = new MySqlCommand())
-      {
-        cmd.CommandText = @"SELECT DISTINCT record_create_date FROM records_anonymized ORDER BY record_create_date ASC;";
-
-        using (cmd.Connection = connection)
-        {
-          cmd.Connection.Open();
-          cmd.ExecuteNonQuery();
-
-          MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(cmd);
-          mySqlDataAdapter.Fill(recordCreationDateTable);
-        }
-      }
-      DataColumn[] keyColumns = new DataColumn[1];
-      keyColumns[0] = recordCreationDateTable.Columns["record_create_date"];
-      recordCreationDateTable.PrimaryKey = keyColumns;
-      return recordCreationDateTable;
     }
   }
 }
