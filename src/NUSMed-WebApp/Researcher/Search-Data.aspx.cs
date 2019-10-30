@@ -121,21 +121,6 @@ namespace NUSMed_WebApp.Researcher
                     inputRecordDiagnosis.Items.Add(new ListItem(buffer + ": " + diagnosis["diagnosis_description_short"].ToString(), buffer));
                 }
 
-                // Creation Date
-                labelTitleCreationDate.Attributes.Add("title", "This quasi-identifier has been generalized to Level " + generalizedSetting.recordCreationDate);
-                DataTable creationDateTable = dataBLL.GetRecordCreationDate();
-                if (creationDateTable.Rows.Contains("*"))
-                {
-                    inputCreationDate.Attributes.Add("disabled", "true");
-                }
-                else
-                {
-                    foreach (DataRow creationDate in creationDateTable.Rows)
-                    {
-                        inputCreationDate.Items.Add(new ListItem(creationDate["record_create_date"].ToString(), creationDate["record_create_date"].ToString()));
-                    }
-                }
-
                 GridViewPatientAnonymised.DataBind();
                 #endregion
             }
@@ -176,10 +161,9 @@ namespace NUSMed_WebApp.Researcher
             {
                 try
                 {
-                    string recordIDsString = e.CommandArgument.ToString();
+                    string patientId = e.CommandArgument.ToString();
 
-                    List<long> recordIDs = recordIDsString.Split(',').Select(long.Parse).ToList();
-                    List<PatientDiagnosis> patientDiagnoses = dataBLL.GetPatientDiagnoses(recordIDs);
+                    List<PatientDiagnosis> patientDiagnoses = dataBLL.GetPatientDiagnoses(patientId);
 
                     GridViewPatientDiagnoses.DataSource = patientDiagnoses;
                     GridViewPatientDiagnoses.DataBind();
@@ -296,19 +280,6 @@ namespace NUSMed_WebApp.Researcher
                         if (recordDiagnosesTable.AsEnumerable().Any(row => row.Field<string>("diagnosis_code").Equals(item.Value.Trim())))
                         {
                             filteredValues.recordDiagnoses.Add(item.Value.Trim());
-                        }
-                    }
-                }
-
-                // Creation Date
-                DataTable creationDateTable = dataBLL.GetRecordCreationDate();
-                foreach (ListItem item in inputCreationDate.Items)
-                {
-                    if (item.Selected)
-                    {
-                        if (creationDateTable.AsEnumerable().Any(row => row.Field<string>("record_create_date").Equals(item.Value.Trim())))
-                        {
-                            filteredValues.creationDate.Add(item.Value.Trim());
                         }
                     }
                 }
@@ -436,18 +407,6 @@ namespace NUSMed_WebApp.Researcher
                     }
                 }
 
-                // Creation Date
-                DataTable creationDateTable = dataBLL.GetRecordCreationDate();
-                foreach (ListItem item in inputCreationDate.Items)
-                {
-                    if (item.Selected)
-                    {
-                        if (creationDateTable.AsEnumerable().Any(row => row.Field<string>("record_create_date").Equals(item.Value.Trim())))
-                        {
-                            filteredValues.creationDate.Add(item.Value.Trim());
-                        }
-                    }
-                }
                 #endregion
 
                 DataTable anonPatientsTable = dataBLL.GetPatientsForDownload(filteredValues);

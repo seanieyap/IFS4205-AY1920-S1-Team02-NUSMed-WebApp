@@ -1,4 +1,4 @@
-﻿using NUSMed_WebApp.Classes.BLL;
+using NUSMed_WebApp.Classes.BLL;
 using System;
 using System.Configuration;
 using System.Globalization;
@@ -79,7 +79,6 @@ namespace NUSMed_WebApp.Classes.Entity
         }
 
         public DateTime createTime { get; set; }
-        public string createTimeAnon { get; set; }
         public string fileName { get; set; }
         public string fileNameHash
         {

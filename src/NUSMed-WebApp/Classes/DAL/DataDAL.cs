@@ -15,15 +15,15 @@ namespace NUSMed_WebApp.Classes.DAL
     /// <summary>
     /// Create a Data Table for storing the required data for anonymization
     /// </summary>
+    /// UPDATED
     public DataTable RetrieveColumns()
     {
       DataTable result = new DataTable();
 
       using (MySqlCommand cmd = new MySqlCommand())
       {
-        cmd.CommandText = @"SELECT account.marital_status AS marital_status, account.gender AS gender, account.date_of_birth AS dob, 
-                    account.address_postal_code AS postal, account.sex AS sex, record.id AS record_id, record.create_time AS record_created_time
-                    FROM account RIGHT JOIN record ON account.nric = record.patient_nric WHERE EXISTS (SELECT 1 FROM account_patient WHERE account_patient.nric = account.nric);";
+        cmd.CommandText = @"SELECT account.nric, account.marital_status, account.gender, account.date_of_birth AS dob, account.address_postal_code AS postal, account.sex
+                    FROM account INNER JOIN account_patient ON account.nric = account_patient.nric WHERE EXISTS (SELECT 1 FROM record WHERE record.patient_nric = account.nric);";
 
         using (cmd.Connection = connection)
         {
@@ -46,7 +46,7 @@ namespace NUSMed_WebApp.Classes.DAL
       using (MySqlCommand cmd = new MySqlCommand())
       {
         cmd.CommandText = @"SET SQL_SAFE_UPDATES = 0;
-                            DELETE FROM records_anonymized;
+                            DELETE FROM patients_anonymized;
                             SET SQL_SAFE_UPDATES = 1;";
 
         using (cmd.Connection = connection)
@@ -65,16 +65,16 @@ namespace NUSMed_WebApp.Classes.DAL
         // to change to record type
         foreach (DataRow row in dt.Rows)
         {
-          StringBuilder sb = new StringBuilder("INSERT INTO records_anonymized(marital_status, gender, sex, age, postal, record_create_date, record_id) VALUES (");
+          StringBuilder sb = new StringBuilder("INSERT INTO patients_anonymized(marital_status, gender, sex, age, postal, nric, id) VALUES (");
           string formatString = "'{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6});";
           string marital_status = row["Marital Status"].ToString();
           string gender = row["Gender"].ToString();
           string sex = row["Sex"].ToString();
           string age = row["Age"].ToString();
           string postal = row["Postal"].ToString();
-          string createdDate = row["Created Date"].ToString();
-          string recordId = row["Record ID"].ToString();
-          sb.AppendFormat(formatString, marital_status, gender, sex, age, postal, createdDate, recordId);
+          string nric = row["Nric"].ToString();
+          string patientId = row["Id"].ToString();
+          sb.AppendFormat(formatString, marital_status, gender, sex, age, postal, nric, patientId);
           entireStringBuilder.Append(sb.ToString());
         }
         cmd.CommandText = entireStringBuilder.ToString();
@@ -98,14 +98,12 @@ namespace NUSMed_WebApp.Classes.DAL
       {
         cmd.CommandText = @"UPDATE generalization_level 
                             SET marital_status = @maritalStatus, gender = @gender,
-                            sex = @sex, postal = @postal, age = @age, record_create_date = @recordCreateDate
-                            WHERE id = 1;";
+                            sex = @sex, postal = @postal, age = @age WHERE id = 1;";
         int maritalStatusLevel = 0;
         int genderLevel = 0;
         int sexLevel = 0;
         int postalLevel = 0;
         int ageLevel = 0;
-        int recordCreationDateLevel = 0;
 
         foreach (KeyValuePair<string, int> entry in generlizationLevel)
         {
@@ -132,17 +130,12 @@ namespace NUSMed_WebApp.Classes.DAL
           {
             postalLevel = level;
           }
-          else if (string.Equals(quasiIdentifier, "Record Creation Date"))
-          {
-            recordCreationDateLevel = level;
-          }
         }
         cmd.Parameters.AddWithValue("@maritalStatus", maritalStatusLevel);
         cmd.Parameters.AddWithValue("@gender", genderLevel);
         cmd.Parameters.AddWithValue("@sex", sexLevel);
         cmd.Parameters.AddWithValue("@age", ageLevel);
         cmd.Parameters.AddWithValue("@postal", postalLevel);
-        cmd.Parameters.AddWithValue("@recordCreateDate", recordCreationDateLevel);
         using (cmd.Connection = connection)
         {
           cmd.Connection.Open();
@@ -157,8 +150,7 @@ namespace NUSMed_WebApp.Classes.DAL
       {
         cmd.CommandText = @"UPDATE generalization_level 
                             SET marital_status = -1, gender = -1,
-                            sex = -1, postal = -1, age = -1, record_create_date = -1
-                            WHERE id = 1;";
+                            sex = -1, postal = -1, age = -1 WHERE id = 1;";
         using (cmd.Connection = connection)
         {
           cmd.Connection.Open();
@@ -172,7 +164,7 @@ namespace NUSMed_WebApp.Classes.DAL
       GeneralizedSetting generalizedSetting = new GeneralizedSetting();
       using (MySqlCommand cmd = new MySqlCommand())
       {
-        cmd.CommandText = @"SELECT marital_status, gender, sex, postal, age, record_create_date FROM generalization_level;";
+        cmd.CommandText = @"SELECT marital_status, gender, sex, postal, age FROM generalization_level;";
 
         using (cmd.Connection = connection)
         {
@@ -188,7 +180,6 @@ namespace NUSMed_WebApp.Classes.DAL
               generalizedSetting.sex = Convert.ToInt32(reader["sex"]);
               generalizedSetting.age = Convert.ToInt32(reader["age"]);
               generalizedSetting.postal = Convert.ToInt32(reader["postal"]);
-              generalizedSetting.recordCreationDate = Convert.ToInt32(reader["record_create_date"]);
             }
           }
         }
@@ -215,6 +206,7 @@ namespace NUSMed_WebApp.Classes.DAL
             {
               PatientAnonymised patientAnonymised = new PatientAnonymised
               {
+                id = Convert.ToString(reader["id"]),
                 maritalStatus = Convert.ToString(reader["marital_status"]),
                 gender = Convert.ToString(reader["gender"]),
                 sex = Convert.ToString(reader["sex"]),
@@ -246,7 +238,6 @@ namespace NUSMed_WebApp.Classes.DAL
 
           MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(cmd);
           mySqlDataAdapter.Fill(anonPatientsTable);
-          anonPatientsTable = ChangeNricToIndex(anonPatientsTable);
         }
       }
 
@@ -254,35 +245,10 @@ namespace NUSMed_WebApp.Classes.DAL
     }
 
     /// <summary>
-    /// Change patient nric in anonymised datatable to an index
-    /// </summary>
-    private DataTable ChangeNricToIndex(DataTable dt)
-    {
-      string patientNric = "";
-      int index = 0;
-      foreach (DataRow row in dt.Rows)
-      {
-        string currentNric = row["patient_nric"].ToString();
-        if (!string.Equals(patientNric, currentNric))
-        {
-          index++;
-          patientNric = currentNric;
-        }
-        row["patient_nric"] = index.ToString();
-      }
-      return dt;
-    }
-
-    /// <summary>
     /// Retrieve all the diagnoses information of a specific patient
     /// </summary>
-    public List<PatientDiagnosis> RetrievePatientDiagnoses(IEnumerable<Tuple<string, long>> recordIDsParameterized)
+    public List<PatientDiagnosis> RetrievePatientDiagnoses(string patientId)
     {
-      if (recordIDsParameterized.Count() == 0)
-      {
-        return null;
-      }
-
       List<PatientDiagnosis> result = new List<PatientDiagnosis>();
 
       using (MySqlCommand cmd = new MySqlCommand())
@@ -291,23 +257,14 @@ namespace NUSMed_WebApp.Classes.DAL
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.Append(@"SELECT pd.diagnosis_code, d.diagnosis_description_short, d.category_title 
-                    FROM patient_diagnosis pd 
-                    INNER JOIN diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
-					WHERE pd.patient_nric = 
-                        (SELECT r.patient_nric 
-						    FROM records_anonymized ra 
-                            INNER JOIN record r ON ra.record_id = r.id
-                            WHERE ");
-        stringBuilder.Append(string.Join(" OR ", recordIDsParameterized.Select(r => " ra.record_id = " + r.Item1)));
-        stringBuilder.Append(@" GROUP BY r.patient_nric LIMIT 1)
-                    ORDER BY pd.end DESC, pd.start DESC;");
+                               FROM patient_diagnosis pd 
+                               LEFT JOIN patients_anonymized pa ON pa.nric = pd.patient_nric INNER JOIN
+                               diagnosis d ON pd.diagnosis_code = d.diagnosis_Code
+					                    WHERE pa.id = ");
+        stringBuilder.Append(patientId);
+        stringBuilder.Append(" ORDER BY pd.end DESC, pd.start DESC;");
 
         cmd.CommandText = stringBuilder.ToString();
-
-        foreach (Tuple<string, long> r in recordIDsParameterized)
-        {
-          cmd.Parameters.AddWithValue(r.Item1, r.Item2);
-        }
 
         using (cmd.Connection = connection)
         {
@@ -337,6 +294,11 @@ namespace NUSMed_WebApp.Classes.DAL
         }
       }
 
+      if (result.Count == 0)
+      {
+        return null;
+      }
+
       return result;
     }
 
@@ -355,10 +317,7 @@ namespace NUSMed_WebApp.Classes.DAL
       using (MySqlCommand cmd = new MySqlCommand())
       {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, r.file_extension,
-                    ra.record_create_date
-                    FROM record r
-                    INNER JOIN records_anonymized ra ON ra.record_id = r.id 
+        stringBuilder.Append(@"SELECT r.id, r.description, r.type, r.content, r.title, r.file_extension FROM record r
                     INNER JOIN account a ON a.nric = r.creator_nric
                     WHERE ");
         stringBuilder.Append(string.Join(" OR ", recordIDsParameterized.Select(r => " r.id = " + r.Item1)));
@@ -387,7 +346,6 @@ namespace NUSMed_WebApp.Classes.DAL
                 type = RecordType.Get(Convert.ToString(reader["type"])),
                 content = Convert.ToString(reader["content"]),
                 title = Convert.ToString(reader["title"]),
-                createTimeAnon = Convert.ToString(reader["record_create_date"]),
                 fileExtension = Convert.ToString(reader["file_extension"])
               };
               result.Add(record);
@@ -510,9 +468,7 @@ namespace NUSMed_WebApp.Classes.DAL
         cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short 
                     FROM diagnosis d
                     INNER JOIN patient_diagnosis pd ON pd.diagnosis_code = d.diagnosis_code
-                    INNER JOIN account_patient ap ON ap.nric = pd.patient_nric
-                    INNER JOIN record r ON r.patient_nric = pd.patient_nric
-                    INNER JOIN records_anonymized ra ON ra.record_id = r.id 
+                    INNER JOIN patients_anonymized pa ON pa.nric = pd.patient_nric
                     GROUP BY d.diagnosis_code
                     ORDER BY diagnosis_code ASC;";
 
@@ -535,8 +491,8 @@ namespace NUSMed_WebApp.Classes.DAL
       using (MySqlCommand cmd = new MySqlCommand())
       {
         cmd.CommandText = @"SELECT d.diagnosis_code, d.diagnosis_description_short, d.category_title 
-                    FROM records_anonymized ra
-                    INNER JOIN record r ON r.id = ra.record_id
+                    FROM patients_anonymized pa
+                    INNER JOIN record r ON r.patient_nric = pa.nric
                     INNER JOIN record_diagnosis rd ON rd.record_id = r.id
                     INNER JOIN diagnosis d ON rd.diagnosis_code = d.diagnosis_Code
                     GROUP BY d.diagnosis_code
@@ -560,7 +516,7 @@ namespace NUSMed_WebApp.Classes.DAL
 
       using (MySqlCommand cmd = new MySqlCommand())
       {
-        cmd.CommandText = @"SELECT DISTINCT postal FROM records_anonymized ORDER BY postal ASC;";
+        cmd.CommandText = @"SELECT DISTINCT postal FROM patients_anonymized ORDER BY postal ASC;";
 
         using (cmd.Connection = connection)
         {

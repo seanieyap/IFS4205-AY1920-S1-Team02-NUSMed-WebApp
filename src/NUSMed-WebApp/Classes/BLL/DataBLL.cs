@@ -23,7 +23,7 @@ namespace NUSMed_WebApp.Classes.BLL
         dataDAL.ResetGeneralizationLevel();
         DataTable dt = dataDAL.RetrieveColumns();
         Anonymizer anonymizer = new Anonymizer();
-        Tuple<DataTable, Dictionary<string, int>> anonDtAndGenLevel = anonymizer.anonymize(dt, 3, 0.05);
+        Tuple<DataTable, Dictionary<string, int>> anonDtAndGenLevel = anonymizer.anonymize(dt, 3, 0.10);
         DataTable anonymizedDataTable = anonDtAndGenLevel.Item1;
         Dictionary<string, int> genLevel = anonDtAndGenLevel.Item2;
         dataDAL.ClearAnonymizedTable();
@@ -41,7 +41,7 @@ namespace NUSMed_WebApp.Classes.BLL
       int postal = generalizedSetting.postal;
       int age = generalizedSetting.age;
       int recordCreationDate = generalizedSetting.recordCreationDate;
-      return (marital_status == -1 || gender == -1 || sex == -1 || postal == -1 || age == -1 || recordCreationDate == -1);
+      return (marital_status == -1 || gender == -1 || sex == -1 || postal == -1 || age == -1);
     }
 
     /// <summary>
@@ -54,37 +54,34 @@ namespace NUSMed_WebApp.Classes.BLL
       if (AccountBLL.IsResearcher())
       {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append(@"SELECT ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, ra.record_create_date, 
-										GROUP_CONCAT(DISTINCT ra.record_id SEPARATOR ',') as record_ids
-								FROM records_anonymized ra 
-								INNER JOIN record r ON ra.record_id = r.id 
-								LEFT JOIN record_diagnosis rd ON r.id = rd.record_id 
-				LEFT JOIN patient_diagnosis pd ON pd.patient_nric = r.patient_nric ");
+        stringBuilder.Append(@"SELECT pa.id, pa.marital_status, pa.gender, pa.sex, pa.age, pa.postal, GROUP_CONCAT(DISTINCT r.id SEPARATOR ',') as record_ids
+                              FROM patients_anonymized pa INNER JOIN record r ON pa.nric = r.patient_nric LEFT JOIN record_diagnosis rd ON r.id = rd.record_id
+                              LEFT JOIN patient_diagnosis pd ON pd.patient_nric = r.patient_nric");
 
         List<Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>>();
         if (filteredValues.sex.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.sex", filteredValues.sex));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.sex", filteredValues.sex));
         }
 
         if (filteredValues.gender.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.gender", filteredValues.gender));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.gender", filteredValues.gender));
         }
 
         if (filteredValues.maritalStatus.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.marital_status", filteredValues.maritalStatus));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.marital_status", filteredValues.maritalStatus));
         }
 
         if (filteredValues.postal.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.postal", filteredValues.postal));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.postal", filteredValues.postal));
         }
 
         if (filteredValues.diagnoses.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("pd.diagnosis_code", filteredValues.recordDiagnoses));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pd.diagnosis_code", filteredValues.diagnoses));
         }
 
         if (filteredValues.recordType.Count > 0)
@@ -97,14 +94,9 @@ namespace NUSMed_WebApp.Classes.BLL
           columnsAndValuesList.Add(new Tuple<string, List<string>>("rd.diagnosis_code", filteredValues.recordDiagnoses));
         }
 
-        if (filteredValues.creationDate.Count > 0)
-        {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.record_create_date", filteredValues.creationDate));
-        }
-
         if (filteredValues.age.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.age", filteredValues.age));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.age", filteredValues.age));
         }
 
         List<string> tempList = new List<string>();
@@ -119,17 +111,11 @@ namespace NUSMed_WebApp.Classes.BLL
           stringBuilder.Append(" WHERE " + string.Join(" AND ", tempList));
         }
 
-        stringBuilder.Append(" GROUP BY r.patient_nric LIMIT 200;");
+        stringBuilder.Append(" GROUP BY pa.nric LIMIT 200;");
 
         List<PatientAnonymised> patientAnonymised = dataDAL.RetrievePatients(stringBuilder.ToString());
 
-        // ignore if less or equal 3 patients
-        if (patientAnonymised.Count > 3)
-        {
-          return patientAnonymised;
-        }
-
-        return new List<PatientAnonymised>();
+        return patientAnonymised;
       }
       return null;
     }
@@ -139,39 +125,40 @@ namespace NUSMed_WebApp.Classes.BLL
       if (AccountBLL.IsResearcher())
       {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.Append(@"SELECT r.patient_nric, ra.marital_status, ra.gender, ra.sex, ra.age, ra.postal, 
-															(SELECT GROUP_CONCAT(DISTINCT pd.diagnosis_code SEPARATOR ',') 
-															FROM patient_diagnosis pd
-															WHERE pd.patient_nric = r.patient_nric) as patient_diagnosis_code,
-															r.title, r.type, r.description, ra.record_create_date, r.content, GROUP_CONCAT(DISTINCT rd.diagnosis_code SEPARATOR ',') as record_diagnoses_codes, ra.record_id
-															FROM records_anonymized ra 
-															INNER JOIN record r ON ra.record_id = r.id 
-															LEFT JOIN record_diagnosis rd ON r.id = rd.record_id ");
+        stringBuilder.Append(@"SELECT pa.id, pa.marital_status, pa.gender, pa.sex, pa.age, pa.postal, 
+                              (SELECT GROUP_CONCAT(DISTINCT pd.diagnosis_code SEPARATOR ',') 
+                              FROM patient_diagnosis pd
+                              WHERE pd.patient_nric = pa.nric) as patient_diagnosis_code,
+                              r.title, r.type, r.description, r.content, GROUP_CONCAT(DISTINCT rd.diagnosis_code SEPARATOR ',') as record_diagnoses_codes, r.id AS record_id
+                              FROM patients_anonymized pa 
+                              INNER JOIN record r ON pa.nric = r.patient_nric
+                              INNER JOIN patient_diagnosis pd ON pd.patient_nric = pa.nric
+                              LEFT JOIN record_diagnosis rd ON r.id = rd.record_id ");
 
         List<Tuple<string, List<string>>> columnsAndValuesList = new List<Tuple<string, List<string>>>();
         if (filteredValues.sex.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.sex", filteredValues.sex));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.sex", filteredValues.sex));
         }
 
         if (filteredValues.gender.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.gender", filteredValues.gender));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.gender", filteredValues.gender));
         }
 
         if (filteredValues.maritalStatus.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.marital_status", filteredValues.maritalStatus));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.marital_status", filteredValues.maritalStatus));
         }
 
         if (filteredValues.postal.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.postal", filteredValues.postal));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.postal", filteredValues.postal));
         }
 
         if (filteredValues.diagnoses.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("pd.diagnosis_code", filteredValues.recordDiagnoses));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pd.diagnosis_code", filteredValues.diagnoses));
         }
 
         if (filteredValues.recordType.Count > 0)
@@ -184,14 +171,9 @@ namespace NUSMed_WebApp.Classes.BLL
           columnsAndValuesList.Add(new Tuple<string, List<string>>("rd.diagnosis_code", filteredValues.recordDiagnoses));
         }
 
-        if (filteredValues.creationDate.Count > 0)
-        {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.record_create_date", filteredValues.creationDate));
-        }
-
         if (filteredValues.age.Count > 0)
         {
-          columnsAndValuesList.Add(new Tuple<string, List<string>>("ra.age", filteredValues.age));
+          columnsAndValuesList.Add(new Tuple<string, List<string>>("pa.age", filteredValues.age));
         }
 
         List<string> tempList = new List<string>();
@@ -207,7 +189,7 @@ namespace NUSMed_WebApp.Classes.BLL
         }
 
         stringBuilder.Append(" GROUP BY r.id");
-        stringBuilder.Append(" ORDER BY r.patient_nric;");
+        stringBuilder.Append(" ORDER BY pa.id;");
 
         DataTable anonPatientsTable = dataDAL.RetrieveAnonPatients(stringBuilder.ToString());
 
@@ -232,27 +214,23 @@ namespace NUSMed_WebApp.Classes.BLL
         anonPatientsTable.Columns.Remove("record_id");
 
         // Renaming the columns in the datatable
-        anonPatientsTable.Columns["patient_nric"].ColumnName = "patient id";
+        anonPatientsTable.Columns["id"].ColumnName = "patient id";
         anonPatientsTable.Columns["patient_diagnosis_code"].ColumnName = "patient diagnoses";
         anonPatientsTable.Columns["type"].ColumnName = "record type";
         anonPatientsTable.Columns["description"].ColumnName = "record description";
         anonPatientsTable.Columns["record_diagnoses_codes"].ColumnName = "record diagnoses";
-        anonPatientsTable.Columns["record_create_date"].ColumnName = "record creation date";
 
         return anonPatientsTable;
       }
       return null;
     }
 
-    public List<PatientDiagnosis> GetPatientDiagnoses(List<long> recordIDs)
+    public List<PatientDiagnosis> GetPatientDiagnoses(string id)
     {
       if (AccountBLL.IsResearcher())
       {
-        IEnumerable<Tuple<string, long>> recordIDsParameterized = from recordID in recordIDs
-                                                                  select (new Tuple<string, long>("@" + recordID.ToString().Replace(" ", string.Empty), recordID));
-
-        List<PatientDiagnosis> result = dataDAL.RetrievePatientDiagnoses(recordIDsParameterized);
-        logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patient Diagnoses", "Record IDs: " + string.Join(", ", recordIDs) + ".");
+        List<PatientDiagnosis> result = dataDAL.RetrievePatientDiagnoses(id);
+        logAccountBLL.LogEvent(AccountBLL.GetNRIC(), "View Patient Diagnoses", "View Patient Diagnoses");
         return result;
       }
 
@@ -369,7 +347,7 @@ namespace NUSMed_WebApp.Classes.BLL
       private Dictionary<string, HashSet<string>> valuesInTableForEachQuasi;
       private Dictionary<string, int> generalizationLevel;
 
-      private IList<string> quasiIdentifiers = new List<string>(new string[] { "Age", "Sex", "Gender", "Marital Status", "Postal", "Record Creation Date" });
+      private IList<string> quasiIdentifiers = new List<string>(new string[] { "Age", "Sex", "Gender", "Marital Status", "Postal" });
       private readonly List<string> quasiIdentifiersFilePaths;
 
       private readonly string FILE_AGE_HIERARCHY = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/age_hierarchy.csv");
@@ -386,22 +364,17 @@ namespace NUSMed_WebApp.Classes.BLL
         sequencesFrequency = new Dictionary<List<string>, List<Tuple<string>>>(seqListEqualityComparer);
         valuesInTableForEachQuasi = new Dictionary<string, HashSet<string>>();
         generalizationLevel = new Dictionary<string, int>();
-        quasiIdentifiersFilePaths = new List<string>(new string[] { FILE_AGE_HIERARCHY, FILE_SEX_HIERARCHY, FILE_GENDER_HIERARCHY, FILE_MARITAL_STATUS_HIERARCHY, FILE_POSTAL_HIERARCHY, FILE_RECORD_DATE_HIERARCHY });
+        quasiIdentifiersFilePaths = new List<string>(new string[] { FILE_AGE_HIERARCHY, FILE_SEX_HIERARCHY, FILE_GENDER_HIERARCHY, FILE_MARITAL_STATUS_HIERARCHY, FILE_POSTAL_HIERARCHY });
       }
 
-      private int GetAge(DateTime dob, DateTime recordDate)
+      private int GetAge(DateTime dob)
       {
         DateTime zeroTime = new DateTime(1, 1, 1);
-        TimeSpan timespan = recordDate.Subtract(dob);
+        DateTime today = DateTime.Now;
+        TimeSpan timespan = today.Subtract(dob);
         int age = (zeroTime + timespan).Year - 1;
 
         return age;
-      }
-
-      private string GetDate(DateTime createdDateTime)
-      {
-        string createdDate = createdDateTime.ToString("yyyy-M-d");
-        return createdDate;
       }
 
       private void InitializeAnonymizer()
@@ -439,22 +412,20 @@ namespace NUSMed_WebApp.Classes.BLL
           string maritalStatus = row["marital_status"].ToString();
           string dob = row["dob"].ToString();
           string postal = row["postal"].ToString();
-          string createdDateTime = row["record_created_time"].ToString();
-          string recordId = row["record_id"].ToString();
+          string nric = row["nric"].ToString();
 
-          string recordCreatedDate = GetDate(DateTime.ParseExact(createdDateTime, "MM/dd/yyyy HH:mm:ss", null));
-          string age = GetAge(Convert.ToDateTime(DateTime.ParseExact(dob, "MM/dd/yyyy", null)), Convert.ToDateTime(recordCreatedDate)).ToString();
+          string age = GetAge(Convert.ToDateTime(DateTime.ParseExact(dob, "MM/dd/yyyy", null))).ToString();
 
-          List<string> quasiList = new List<string>(new string[] { age, sex, gender, maritalStatus, postal, recordCreatedDate });
+          List<string> quasiList = new List<string>(new string[] { age, sex, gender, maritalStatus, postal });
 
           if (sequencesFrequency.ContainsKey(quasiList))
           {
-            sequencesFrequency[quasiList].Add(new Tuple<string>(recordId));
+            sequencesFrequency[quasiList].Add(new Tuple<string>(nric));
           }
           else
           {
             sequencesFrequency[quasiList] = new List<Tuple<string>>();
-            sequencesFrequency[quasiList].Add(new Tuple<string>(recordId));
+            sequencesFrequency[quasiList].Add(new Tuple<string>(nric));
           }
 
           for (int i = 0; i < quasiIdentifiers.Count; i++)
@@ -484,7 +455,7 @@ namespace NUSMed_WebApp.Classes.BLL
           if (totalCountLessThanK > maxRecordsToSuppress)
           {
             string quasiToGeneralize = "";
-            int maxQuasiCount = 0;
+            int maxQuasiCount = 1;
             foreach (KeyValuePair<string, HashSet<string>> quasiAndValuesEntry in valuesInTableForEachQuasi)
             {
               string quasi = quasiAndValuesEntry.Key;
@@ -500,7 +471,7 @@ namespace NUSMed_WebApp.Classes.BLL
             }
 
             // if unable to generalize anymore, move on to suppression
-            if (maxQuasiCount == 0)
+            if (maxQuasiCount == 1)
             {
               break;
             }
@@ -568,10 +539,11 @@ namespace NUSMed_WebApp.Classes.BLL
         anonymizedDataTable.Columns.Add("Gender", typeof(string));
         anonymizedDataTable.Columns.Add("Marital Status", typeof(string));
         anonymizedDataTable.Columns.Add("Postal", typeof(string));
-        anonymizedDataTable.Columns.Add("Created Date", typeof(string));
 
-        anonymizedDataTable.Columns.Add("Record ID", typeof(string));
+        anonymizedDataTable.Columns.Add("Nric", typeof(string));
+        anonymizedDataTable.Columns.Add("Id", typeof(string));
 
+        int patientIndex = 1;
 
         foreach (KeyValuePair<List<string>, List<Tuple<string>>> entry in sequencesFrequency)
         {
@@ -585,10 +557,12 @@ namespace NUSMed_WebApp.Classes.BLL
               anonymisedRow["Gender"] = entry.Key[2];
               anonymisedRow["Marital Status"] = entry.Key[3];
               anonymisedRow["Postal"] = entry.Key[4];
-              anonymisedRow["Created Date"] = entry.Key[5];
-              anonymisedRow["Record ID"] = entry.Value[i].Item1;
+              anonymisedRow["Nric"] = entry.Value[i].Item1;
+              anonymisedRow["Id"] = patientIndex;
 
               anonymizedDataTable.Rows.Add(anonymisedRow);
+
+              patientIndex++;
             }
           }
           else
