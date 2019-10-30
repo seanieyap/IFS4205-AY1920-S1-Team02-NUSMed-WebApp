@@ -17,10 +17,6 @@
             <div class="row">
                 <div class="col-12 text-center">
                     <asp:LinkButton ID="LinkbuttonDataGenerate" CssClass="btn btn-success" runat="server" OnClick="LinkbuttonDataGenerate_Click"><i class="fas fa-fw fa-redo"></i>Re-Generate Data</asp:LinkButton>
-                    <br />
-                    <asp:Label ID="tempLabel" runat="server">
-
-                    </asp:Label>
                 </div>
             </div>
         </ContentTemplate>
