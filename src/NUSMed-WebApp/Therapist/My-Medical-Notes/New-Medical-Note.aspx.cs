@@ -347,6 +347,10 @@ namespace NUSMed_WebApp.Therapist.My_Medical_Notes
                                 ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Text file is not formatted incorrectly to be plotted. To view file, please download it.');", true);
                             }
                         }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this, GetType(), "Error Opening View File Modal", "toastr['error']('Error Occured in retrieving text file and opening File Modal.');", true);
+                        }
                     }
                     else if (record.fileIsVideo)
                     {

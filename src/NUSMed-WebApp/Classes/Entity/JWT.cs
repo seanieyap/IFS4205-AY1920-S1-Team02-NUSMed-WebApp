@@ -9,7 +9,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                return _nric.ToUpper();
+                return _nric;
             }
             set
             {

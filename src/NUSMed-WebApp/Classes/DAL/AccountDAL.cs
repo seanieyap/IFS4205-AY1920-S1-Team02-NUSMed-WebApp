@@ -1158,24 +1158,25 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
-        public void UpdateStatusEnableWithoutMFA(string nric)
-        {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandText = @"UPDATE account 
-                            SET status = @status
-                            WHERE nric= @nric;";
+        //TODO: For Dev Only
+        //public void UpdateStatusEnableWithoutMFA(string nric)
+        //{
+        //    using (MySqlCommand cmd = new MySqlCommand())
+        //    {
+        //        cmd.CommandText = @"UPDATE account 
+        //                    SET status = @status
+        //                    WHERE nric= @nric;";
 
-                cmd.Parameters.AddWithValue("@nric", nric);
-                cmd.Parameters.AddWithValue("@status", 2);
+        //        cmd.Parameters.AddWithValue("@nric", nric);
+        //        cmd.Parameters.AddWithValue("@status", 2);
 
-                using (cmd.Connection = connection)
-                {
-                    cmd.Connection.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
+        //        using (cmd.Connection = connection)
+        //        {
+        //            cmd.Connection.Open();
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
         #endregion
 
         #region Role
