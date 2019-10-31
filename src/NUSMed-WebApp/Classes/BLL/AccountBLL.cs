@@ -770,7 +770,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 return false;
             }
 
-            Regex regex = new Regex(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+            Regex regex = new Regex(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$");
             return regex.IsMatch(password);
         }
         public static bool IsPasswordValid(string password)

@@ -222,7 +222,7 @@ namespace NUSMed_WebApp.Classes.Entity
         }
         public override string GetTextPlotJS(string data)
         {
-            if (data.Contains("\n"))
+            if (data.Trim().Contains("\n"))
             {
                 throw new Exception();
             }
@@ -368,7 +368,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
 
             List<int> check = new List<int> { ax.Count, ay.Count, az.Count, gx.Count, gy.Count, gz.Count };
-            if (!data.Contains("\n") || check[0] == 1 || check.Any(o => o != check[0]))
+            if (!data.Trim().Contains("\n") || check[0] == 1 || check.Any(o => o != check[0]))
             {
                 throw new Exception();
             }
