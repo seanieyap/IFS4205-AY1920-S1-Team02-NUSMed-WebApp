@@ -449,9 +449,7 @@ namespace NUSMed_WebApp.Classes.BLL
             foreach (KeyValuePair<string, HashSet<string>> quasiAndValuesEntry in valuesInTableForEachQuasi)
             {
               string quasi = quasiAndValuesEntry.Key;
-              Console.WriteLine("quasi:" + quasi);
               int currentCount = quasiAndValuesEntry.Value.Count;
-              Console.WriteLine("count:" + string.Join(", ", quasiAndValuesEntry.Value));
 
               if (currentCount > maxQuasiCount)
               {
@@ -468,8 +466,6 @@ namespace NUSMed_WebApp.Classes.BLL
 
             generalizationLevel[quasiToGeneralize] = generalizationLevel[quasiToGeneralize] + 1;
             valuesInTableForEachQuasi[quasiToGeneralize] = new HashSet<string>();
-            Console.WriteLine("quasi to generalize: " + quasiToGeneralize);
-            Console.WriteLine("max quasi count: " + maxQuasiCount);
             List<List<string>> sequencesKeysList = new List<List<string>>(sequencesFrequency.Keys);
             // Generalize the quasi-identifier with the most number of distinct values
             foreach (List<string> sequence in sequencesKeysList)
