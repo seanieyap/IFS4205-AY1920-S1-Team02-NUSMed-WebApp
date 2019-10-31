@@ -436,15 +436,6 @@ namespace NUSMed_WebApp.Admin.Account {
         protected global::System.Web.UI.WebControls.LinkButton LinkButtonStatusEnable;
         
         /// <summary>
-        /// LinkButtonStatusEnableWoMFA control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButtonStatusEnableWoMFA;
-        
-        /// <summary>
         /// LabelMFATokenStatus control.
         /// </summary>
         /// <remarks>
