@@ -43,7 +43,7 @@ namespace NUSMed_WebApp.Classes.BLL
             cookie.Domain = FormsAuthentication.CookieDomain;
             cookie.Expires = formsAuthenticationTicket.Expiration;
 
-            HttpContext.Current.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes));
+            HttpContext.Current.Cache.Insert(nric, guid, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(FormsAuthentication.Timeout.TotalMinutes), CacheItemPriority.NotRemovable, null);
             HttpContext.Current.Response.Cookies.Add(cookie);
 
             logBLL.LogEvent(nric, "Login", "Into role, " + role + ".");
@@ -144,7 +144,7 @@ namespace NUSMed_WebApp.Classes.BLL
             {
                 if (HttpContext.Current == null || HttpContext.Current.Cache[nric + "_LoginAttempt"] == null)
                 {
-                    HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+                    HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
                     logBLL.LogEvent(nric, "Account Login Failed Attempt", "Attempt 1.");
                 }
                 else
@@ -159,7 +159,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     }
                     else
                     {
-                        HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", count + 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration);
+                        HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", count + 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
 
                         logBLL.LogEvent(nric, "Account Login Failed Attempt", "Attempt " + count + 1 + ".");
                     }
