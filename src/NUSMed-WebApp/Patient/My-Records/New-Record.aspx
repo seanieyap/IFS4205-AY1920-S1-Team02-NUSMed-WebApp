@@ -11,7 +11,7 @@
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-file-medical"></i>New Record</h1>
-            <p class="lead">Create a New Record for yourself!</p>
+            <p class="lead mb-0">Create a New Record for yourself!</p>
             <p class="text-muted">Max Text size: 1 MB, Image size: 5 MB, Video size: 50 MB.</p>
         </div>
     </div>

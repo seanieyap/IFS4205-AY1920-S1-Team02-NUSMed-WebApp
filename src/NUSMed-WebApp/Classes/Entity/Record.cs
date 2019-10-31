@@ -24,7 +24,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _patientNRIC = value.ToUpper();
+                _patientNRIC = value;
             }
         }
         public string creatorNRIC { get; set; }

@@ -11,7 +11,7 @@
     <div class="container">
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-file-medical"></i>New Record</h1>
-            <p class="lead">
+            <p class="lead mb-0">
                 Create a New Record for your Patient!
                 <br />
                 Selected Patient:

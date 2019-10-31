@@ -15,7 +15,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _creatorNRIC = value.ToUpper();
+                _creatorNRIC = value;
             }
         }
         private string _subjectNRIC;
@@ -27,7 +27,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _subjectNRIC = value.ToUpper();
+                _subjectNRIC = value;
             }
         }
         private string _action;
@@ -39,7 +39,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _action = value.ToUpper();
+                _action = value;
             }
         }
         private string _description;
@@ -51,7 +51,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _description = value.ToUpper();
+                _description = value;
             }
         }
 

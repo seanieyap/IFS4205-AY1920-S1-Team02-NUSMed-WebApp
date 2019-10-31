@@ -13,11 +13,7 @@ namespace NUSMed_WebApp.Classes.Entity
         {
             get
             {
-                if (string.IsNullOrEmpty(_nric))
-                {
-                    return string.Empty;
-                }
-                return AntiXssEncoder.HtmlEncode(_nric.ToUpper(), true);
+                return _nric;
             }
             set
             {
@@ -39,7 +35,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _firstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _firstName = value;
             }
         }
         private string _lastName;
@@ -55,7 +51,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _lastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _lastName = value;
             }
         }
         private string _countryOfBirth;
@@ -134,7 +130,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _address = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _address = value;
             }
         }
 
@@ -196,7 +192,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _nokName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _nokName = value;
             }
         }
         private string _nokContact;
@@ -258,7 +254,7 @@ namespace NUSMed_WebApp.Classes.Entity
             }
             set
             {
-                _researcherJobTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
+                _researcherJobTitle = value;
             }
         }
 

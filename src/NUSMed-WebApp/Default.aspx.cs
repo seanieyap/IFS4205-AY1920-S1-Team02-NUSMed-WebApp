@@ -97,34 +97,34 @@ namespace NUSMed_WebApp
 
                     //TODO: For Dev Only
                     // If omitted from mfa
-                    else if (account.status == 2)
-                    {
-                        try
-                        {
-                            // Check roles
-                            int numberOfRoles = account.roles.Count();
-                            if (numberOfRoles == 0)
-                            {
-                                NoRoleModal.Visible = true;
-                                ScriptManager.RegisterStartupScript(this, GetType(), "No roles", "$('#NoRoleModal').modal('show');", true);
-                                return;
-                            }
-                            else if (numberOfRoles == 1)
-                            {
-                                accountBLL.Login(nric, account.roles[0]);
-                                Session["toastr"] = "login";
-                            }
-                            else
-                            {
-                                accountBLL.Login(nric, "Multiple");
-                            }
-                            Response.Redirect("~/");
-                        }
-                        catch
-                        {
-                            ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when attempting to Login');", true);
-                        }
-                    }
+                    //else if (account.status == 2)
+                    //{
+                    //    try
+                    //    {
+                    //        // Check roles
+                    //        int numberOfRoles = account.roles.Count();
+                    //        if (numberOfRoles == 0)
+                    //        {
+                    //            NoRoleModal.Visible = true;
+                    //            ScriptManager.RegisterStartupScript(this, GetType(), "No roles", "$('#NoRoleModal').modal('show');", true);
+                    //            return;
+                    //        }
+                    //        else if (numberOfRoles == 1)
+                    //        {
+                    //            accountBLL.Login(nric, account.roles[0]);
+                    //            Session["toastr"] = "login";
+                    //        }
+                    //        else
+                    //        {
+                    //            accountBLL.Login(nric, "Multiple");
+                    //        }
+                    //        Response.Redirect("~/");
+                    //    }
+                    //    catch
+                    //    {
+                    //        ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when attempting to Login');", true);
+                    //    }
+                    //}
                 }
             }
             else
