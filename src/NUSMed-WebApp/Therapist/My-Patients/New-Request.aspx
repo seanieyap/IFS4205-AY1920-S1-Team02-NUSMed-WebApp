@@ -15,7 +15,7 @@
         <ContentTemplate>
             <div class="row mb-4">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
-                    <div class="input-group input-group-sm">
+                    <asp:Panel CssClass="input-group input-group-sm" runat="server" DefaultButton="ButtonSearch">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Search</span>
                         </div>
@@ -25,14 +25,14 @@
                                         <i class="fas fa-fw fa-search"></i> Go
                             </asp:LinkButton>
                         </div>
-                    </div>
+                    </asp:Panel>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12 offset-lg-3 col-lg-6">
                     <asp:GridView ID="GridViewPatient" CssClass="table table-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
+                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"
                         ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowCommand="GridViewPatient_RowCommand"
                         OnPageIndexChanging="GridViewPatient_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server" OnRowDataBound="GridViewPatient_RowDataBound">
                         <Columns>
