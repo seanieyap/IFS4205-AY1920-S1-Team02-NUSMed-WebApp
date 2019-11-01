@@ -110,7 +110,9 @@ namespace NUSMed_WebApp.Classes.BLL
           stringBuilder.Append(" WHERE " + string.Join(" AND ", tempList));
         }
 
-        stringBuilder.Append(" GROUP BY pa.nric LIMIT 200;");
+        stringBuilder.Append(" GROUP BY pa.nric");
+        stringBuilder.Append(" ORDER BY pa.id ");
+        stringBuilder.Append("LIMIT 200;");
 
         List<PatientAnonymised> patientAnonymised = dataDAL.RetrievePatients(stringBuilder.ToString());
 
