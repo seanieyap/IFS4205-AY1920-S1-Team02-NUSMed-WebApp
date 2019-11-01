@@ -8,7 +8,7 @@
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4">Welcome to NUSMed</h1>
             <p class="lead mb-0">Start your journey by logging in, remember to keep your token on standby !</p>
-            <p class="text-muted">Caution: 3 Attempts within 5 minutes will result in Account Lockout.</p>
+            <p class="text-muted">Caution: 3 Failed Attempts within 5 minutes will result in Account Lockout.</p>
         </div>
     </div>
 

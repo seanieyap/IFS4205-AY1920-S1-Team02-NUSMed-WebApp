@@ -82,8 +82,8 @@ namespace NUSMed_WebApp
                     {
                         try
                         {
-                            HttpContext.Current.Cache.Insert(nric + "_MFAAttempt", "Awaiting", null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
-                            HttpContext.Current.Cache.Insert(nric + "_MFAAttempt_Password", password, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
+                            HttpContext.Current.Cache.Insert(nric + "_MFAAttempt", "Awaiting", null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
+                            HttpContext.Current.Cache.Insert(nric + "_MFAAttempt_Password", password, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
                             Session["nric_MFAAttempt"] = nric;
                             Session["countdown"] = 30;
                             TimerMFA.Enabled = true;
@@ -161,7 +161,6 @@ namespace NUSMed_WebApp
 
                 try
                 {
-
                     string password = HttpContext.Current.Cache.Get(nric + "_MFAAttempt_Password").ToString();
                     Account account = (Account)HttpContext.Current.Cache.Get(nric + "_MFAAttempt");
                     account = accountBLL.GetStatus(nric, password, account.associatedDeviceID, account.associatedTokenID);

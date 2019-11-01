@@ -20,14 +20,13 @@
             <div class="row mb-4">
                 <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 mx-auto">
                     <asp:Panel CssClass="input-group input-group-sm" runat="server" DefaultButton="ButtonSearch">
-
                         <div class="input-group-prepend">
                             <span class="input-group-text">Search</span>
                         </div>
                         <asp:TextBox ID="TextboxSearch" CssClass="form-control form-control-sm" placeholder="NRIC" runat="server"></asp:TextBox>
                         <div class="input-group-append">
                             <asp:LinkButton ID="ButtonSearch" CssClass="btn btn-outline-info" OnClick="ButtonSearch_Click" runat="server">
-                                        <i class="fas fa-fw fa-search"></i> Go
+                                <i class="fas fa-fw fa-search"></i> Go
                             </asp:LinkButton>
                         </div>
                     </asp:Panel>
@@ -325,7 +324,7 @@
                                 </div>
                                 <div class="col-12 mt-3">
                                     <asp:GridView ID="GridViewTherapists2" CssClass="table table-sm table-responsive-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
+                                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"
                                         ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowCommand="GridViewTherapists2_RowCommand"
                                         OnPageIndexChanging="GridViewTherapists2_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
                                         <Columns>
@@ -378,7 +377,7 @@
                                     <p class="text-muted">Note: Search is set to return maximum results of 25.</p>
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8 mx-auto">
-                                    <div class="input-group input-group-sm">
+                                    <asp:Panel CssClass="input-group input-group-sm" runat="server" DefaultButton="ButtonSearchTherapist">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Search</span>
                                         </div>
@@ -388,59 +387,59 @@
                                                 <i class="fas fa-fw fa-search"></i> Go
                                             </asp:LinkButton>
                                         </div>
-                                    </div>
+                                    </asp:Panel>
                                 </div>
 
-                                <div class="col-12 mt-3">
-                                    <asp:GridView ID="GridViewTherapists" CssClass="table table-sm table-responsive-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
-                                        AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"  
-                                        ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowCommand="GridViewTherapists_RowCommand"
-                                        OnPageIndexChanging="GridViewTherapists_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
-                                        <Columns>
-                                            <asp:TemplateField HeaderText="NRIC">
-                                                <ItemTemplate>
-                                                    <%# Item.nric %>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="First Name">
-                                                <ItemTemplate>
-                                                    <%# Item.firstName %>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Last Name">
-                                                <ItemTemplate>
-                                                    <%# Item.lastName %>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Job Title">
-                                                <ItemTemplate>
-                                                    <%# Item.therapistJobTitle == string.Empty ?  "Nil" : Item.therapistJobTitle %>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Department">
-                                                <ItemTemplate>
-                                                    <%# Item.therapistDepartment == string.Empty ?  "Nil" : Item.therapistDepartment %>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Action">
-                                                <ItemTemplate>
-                                                    <asp:LinkButton CssClass="btn btn-sm btn-success" CommandName="AddEmergencyTherapist" CommandArgument='<%# Item.nric %>' runat="server">
+                            <div class="col-12 mt-3">
+                                <asp:GridView ID="GridViewTherapists" CssClass="table table-sm table-responsive-sm" AllowPaging="true" PageSize="5" PagerStyle-CssClass="pagination-gridview"
+                                    AutoGenerateColumns="false" CellPadding="0" EnableTheming="False" GridLines="None"
+                                    ItemType="NUSMed_WebApp.Classes.Entity.Account" DataKeyNames="nric" OnRowCommand="GridViewTherapists_RowCommand"
+                                    OnPageIndexChanging="GridViewTherapists_PageIndexChanging" EmptyDataRowStyle-CssClass="empty-table" runat="server">
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="NRIC">
+                                            <ItemTemplate>
+                                                <%# Item.nric %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="First Name">
+                                            <ItemTemplate>
+                                                <%# Item.firstName %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Last Name">
+                                            <ItemTemplate>
+                                                <%# Item.lastName %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Job Title">
+                                            <ItemTemplate>
+                                                <%# Item.therapistJobTitle == string.Empty ?  "Nil" : Item.therapistJobTitle %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Department">
+                                            <ItemTemplate>
+                                                <%# Item.therapistDepartment == string.Empty ?  "Nil" : Item.therapistDepartment %>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Action">
+                                            <ItemTemplate>
+                                                <asp:LinkButton CssClass="btn btn-sm btn-success" CommandName="AddEmergencyTherapist" CommandArgument='<%# Item.nric %>' runat="server">
                                                         <i class="fas fa-fw fa-plus-square"></i> Add
-                                                    </asp:LinkButton>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                        </Columns>
-                                        <EmptyDataTemplate>
-                                            <div class="alert alert-info text-center py-4 small" role="alert">
-                                                <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search has no results.
-                                                </h4>
-                                                <p>Do try widening your search parameter.</p>
-                                                <hr>
-                                                <p class="mb-0">use the textbox above to search for a Therapist to attend to the patient!</p>
-                                            </div>
-                                        </EmptyDataTemplate>
-                                    </asp:GridView>
-                                </div>
+                                                </asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                    <EmptyDataTemplate>
+                                        <div class="alert alert-info text-center py-4 small" role="alert">
+                                            <h4 class="alert-heading"><i class="fas fa-fw fa-info-circle mr-2"></i>Search has no results.
+                                            </h4>
+                                            <p>Do try widening your search parameter.</p>
+                                            <hr>
+                                            <p class="mb-0">use the textbox above to search for a Therapist to attend to the patient!</p>
+                                        </div>
+                                    </EmptyDataTemplate>
+                                </asp:GridView>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -582,7 +581,7 @@
                                                 <i class="fas fa-fw fa-unlock-alt"></i> Enable Account
                                             </asp:LinkButton>
                                             <%--TODO: For Dev Only--%>
-<%--                                            <asp:LinkButton ID="LinkButtonStatusEnableWoMFA" runat="server" CommandName="StatusEnableWoMFA" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonStatusEnableWoMFA_Click">
+                                            <%--                                            <asp:LinkButton ID="LinkButtonStatusEnableWoMFA" runat="server" CommandName="StatusEnableWoMFA" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonStatusEnableWoMFA_Click">
                                                 <i class="fas fa-fw fa-unlock"></i> Enable Account and Omit from MFA 
                                             </asp:LinkButton>--%>
                                         </div>
@@ -631,11 +630,11 @@
                                         <label>
                                             <i class="fas fa-fw fa-user-injured"></i>Patient:
                                             <asp:Label ID="LabelRolePatient" runat="server"></asp:Label></label>
-                                        <asp:LinkButton ID="LinkButtonRolePatientDisable" CssClass="" 
+                                        <asp:LinkButton ID="LinkButtonRolePatientDisable" CssClass=""
                                             runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonRoleDisablePatient_Click">
                                             Disable
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="LinkButtonRolePatientEnable" CssClass="btn btn-sm btn-success mr-2 float-right" 
+                                        <asp:LinkButton ID="LinkButtonRolePatientEnable" CssClass="btn btn-sm btn-success mr-2 float-right"
                                             runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonRoleEnablePatient_Click">
                                             Enable
                                         </asp:LinkButton>
@@ -646,11 +645,11 @@
                                         <label>
                                             <i class="fas fa-fw fa-user-md"></i>Therapist:
                                             <asp:Label ID="LabelRoleTherapist" runat="server"></asp:Label></label>
-                                        <asp:LinkButton ID="LinkButtonRoleTherapistDisable" CssClass="btn btn-sm btn-danger float-right" 
+                                        <asp:LinkButton ID="LinkButtonRoleTherapistDisable" CssClass="btn btn-sm btn-danger float-right"
                                             runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonRoleDisableTherapist_Click">
                                             Disable
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="LinkButtonRoleTherapistEnable" CssClass="btn btn-sm btn-success mr-2 float-right" 
+                                        <asp:LinkButton ID="LinkButtonRoleTherapistEnable" CssClass="btn btn-sm btn-success mr-2 float-right"
                                             runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonRoleEnableTherapist_Click">
                                             Enable
                                         </asp:LinkButton>
@@ -661,11 +660,11 @@
                                         <label>
                                             <i class="fas fa-fw fa-user-graduate"></i>Researcher:
                                             <asp:Label ID="LabelRoleResearcher" runat="server"></asp:Label></label>
-                                        <asp:LinkButton ID="LinkButtonRoleResearcherDisable" CssClass="btn btn-sm btn-danger float-right" 
+                                        <asp:LinkButton ID="LinkButtonRoleResearcherDisable" CssClass="btn btn-sm btn-danger float-right"
                                             runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonRoleDisableResearcher_Click">
                                             Disable
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="LinkButtonRoleResearcherEnable" CssClass="btn btn-sm btn-success mr-2 float-right" 
+                                        <asp:LinkButton ID="LinkButtonRoleResearcherEnable" CssClass="btn btn-sm btn-success mr-2 float-right"
                                             runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonRoleEnableResearcher_Click">
                                             Enable
                                         </asp:LinkButton>
@@ -676,11 +675,11 @@
                                         <label>
                                             <i class="fas fa-fw fa-user-secret"></i>Administrator:
                                             <asp:Label ID="LabelRoleAdmin" runat="server"></asp:Label></label>
-                                        <asp:LinkButton ID="LinkButtonRoleAdminDisable" CssClass="btn btn-sm btn-danger float-right" 
+                                        <asp:LinkButton ID="LinkButtonRoleAdminDisable" CssClass="btn btn-sm btn-danger float-right"
                                             runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonRoleRoleDisableAdmin_Click">
                                             Disable
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="LinkButtonRoleAdminEnable" CssClass="btn btn-sm btn-success mr-2 float-right" 
+                                        <asp:LinkButton ID="LinkButtonRoleAdminEnable" CssClass="btn btn-sm btn-success mr-2 float-right"
                                             runat="server" data-toggle="confirmation" data-title="Confirm?" OnClick="LinkButtonRoleRoleEnableAdmin_Click">
                                             Enable
                                         </asp:LinkButton>

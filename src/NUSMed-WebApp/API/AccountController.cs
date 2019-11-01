@@ -228,7 +228,7 @@ namespace NUSMed_WebApp.API
                     Account account = new Account();
                     account.associatedDeviceID = deviceID;
                     account.associatedTokenID = tokenID;
-                    HttpContext.Current.Cache.Insert(retrievedNRIC + "_MFAAttempt", account, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration);
+                    HttpContext.Current.Cache.Insert(retrievedNRIC + "_MFAAttempt", account, null, DateTime.Now.AddSeconds(30), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
 
                     string newJwt = jwtBll.UpdateJWT(jwt);
                     response = Request.CreateResponse(HttpStatusCode.OK);

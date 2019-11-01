@@ -9,6 +9,7 @@
         <div class="py-5 mx-auto text-center">
             <h1 class="display-4"><i class="fas fa-fw fa-key"></i>Change Password</h1>
             <p class="lead mb-1">Change your password here! Remember to keep it safe and try not to forget it!</p>
+            <p class="text-muted">Has to contain upper and lower case characters, symbols, digits and be at least 12 characters in length.</p>
         </div>
     </div>
 
@@ -26,7 +27,6 @@
                     </div>
                     <div class="form-group">
                         <input id="inputPasswordNewRepeat" type="password" class="form-control form-control-sm" placeholder="Verify New Password" runat="server">
-                        <small id="" class="form-text text-muted">Has to contain symbols, digits and 12 characters in length.</small>
                     </div>
                     <button type="button" id="buttonChangePassword" class="btn btn-sm btn-success" runat="server" onserverclick="buttonChangePassword_ServerClick"><i class="fas fa-fw fa-edit"></i>Update</button>
                     <span id="spanMessage" class="small text-danger d-block d-sm-inline-block mt-2 mt-sm-0 ml-0 ml-sm-2" runat="server" visible="false"><i class="fas fa-exclamation-circle fa-fw"></i>
@@ -49,7 +49,8 @@
                 </div>
                 <div class="modal-body text-success">
                     <p class="mt-2"><i class="fas fa-check-circle fa-8x"></i></p>
-                    <p class="text-muted">You have been Logged out.<br />Please use your new password to Login.</p>
+                    <p class="text-muted">You have been Logged out.<br />
+                        Please use your new password to Login.</p>
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-secondary mx-auto" href="~/" role="button" runat="server">Return to Login Page</a>
