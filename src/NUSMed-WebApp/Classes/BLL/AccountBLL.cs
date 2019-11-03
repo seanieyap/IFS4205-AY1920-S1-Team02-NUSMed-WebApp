@@ -161,7 +161,7 @@ namespace NUSMed_WebApp.Classes.BLL
                     {
                         HttpContext.Current.Cache.Insert(nric + "_LoginAttempt", count + 1, null, DateTime.Now.AddMinutes(5), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
 
-                        logBLL.LogEvent(nric, "Account Login Failed Attempt", "Attempt " + count + 1 + ".");
+                        logBLL.LogEvent(nric, "Account Login Failed Attempt", "Attempt " + (count + 1) + ".");
                     }
                 }
             }
