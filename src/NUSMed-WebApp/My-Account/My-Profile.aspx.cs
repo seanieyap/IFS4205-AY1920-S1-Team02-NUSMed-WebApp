@@ -147,7 +147,7 @@ namespace NUSMed_WebApp
                 }
                 catch
                 {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Registering an Account');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "toastr['error']('Error occured when Updating Contact Details');", true);
                 }
             }
         }
