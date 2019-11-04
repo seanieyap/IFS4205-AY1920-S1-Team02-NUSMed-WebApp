@@ -156,7 +156,7 @@ namespace NUSMed_WebApp.API
             {
                 try
                 {
-                    accountBLL.MFADeviceIDUpdateFromPhone(nric, tokenID, deviceID);
+                    accountBLL.MFADeviceIDCheckFromPhone(nric, tokenID, deviceID);
                     string responseString = "Registration successful";
                     response = Request.CreateResponse(HttpStatusCode.OK, responseString);
                 }

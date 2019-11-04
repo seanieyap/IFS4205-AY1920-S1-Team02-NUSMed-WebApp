@@ -644,10 +644,10 @@ namespace NUSMed_WebApp.Classes.BLL
                 logBLL.LogEvent(GetNRIC(), "MFA Device ID Update", "Action on: " + nric + ".");
             }
         }
-        public void MFADeviceIDUpdateFromPhone(string nric, string tokenID, string deviceID)
+        public void MFADeviceIDCheckFromPhone(string nric, string tokenID, string deviceID)
         {
-            accountDAL.UpdateMFADeviceIDFromPhone(nric, tokenID, deviceID);
-            logBLL.LogEvent("nil", "MFA Device ID Update From Phone", "Action on: " + nric + ".");
+            accountDAL.CheckMFADeviceIDFromPhone(nric, tokenID, deviceID);
+            logBLL.LogEvent(nric, "MFA Device ID Update From Phone", "Self.");
         }
         #endregion
         #endregion

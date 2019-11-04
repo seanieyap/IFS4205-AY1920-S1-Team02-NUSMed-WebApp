@@ -1379,7 +1379,7 @@ namespace NUSMed_WebApp.Classes.DAL
                 }
             }
         }
-        public void UpdateMFADeviceIDFromPhone(string nric, string tokenID, string deviceID)
+        public void CheckMFADeviceIDFromPhone(string nric, string tokenID, string deviceID)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
