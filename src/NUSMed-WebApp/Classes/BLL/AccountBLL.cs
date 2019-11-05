@@ -729,6 +729,15 @@ namespace NUSMed_WebApp.Classes.BLL
                 return false;
             }
         }
+        public static bool IsAddress(string address)
+        {
+            if (string.IsNullOrEmpty(address))
+            {
+                return false;
+            }
+
+            return address.Length == 90;
+        }
         public static bool IsAddressPostalCode(string code)
         {
             if (string.IsNullOrEmpty(code))

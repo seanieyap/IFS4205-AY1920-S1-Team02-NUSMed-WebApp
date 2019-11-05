@@ -120,7 +120,7 @@ namespace NUSMed_WebApp
             else
                 inputNationality.Attributes.Add("class", "form-control form-control-sm is-valid");
 
-            if (string.IsNullOrEmpty(address))
+            if (!AccountBLL.IsAddress(address))
             {
                 validate[5] = false;
                 inputAddress.Attributes.Add("class", "form-control form-control-sm is-invalid");

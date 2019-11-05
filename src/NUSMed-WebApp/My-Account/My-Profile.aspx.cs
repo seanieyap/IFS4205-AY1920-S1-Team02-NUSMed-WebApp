@@ -99,7 +99,7 @@ namespace NUSMed_WebApp
             bool[] validate = Enumerable.Repeat(true, 4).ToArray();
 
             // If any fields are empty
-            if (string.IsNullOrEmpty(address))
+            if (!AccountBLL.IsAddress(address))
             {
                 validate[0] = false;
                 AddressEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
@@ -107,7 +107,7 @@ namespace NUSMed_WebApp
             else
                 AddressEdit.Attributes.Add("class", "form-control form-control-sm is-valid");
 
-            if (string.IsNullOrEmpty(addressPostalCode) || !AccountBLL.IsAddressPostalCode(addressPostalCode))
+            if (!AccountBLL.IsAddressPostalCode(addressPostalCode))
             {
                 validate[1] = false;
                 PostalCodeEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
@@ -115,7 +115,7 @@ namespace NUSMed_WebApp
             else
                 PostalCodeEdit.Attributes.Add("class", "form-control form-control-sm is-valid");
 
-            if (string.IsNullOrEmpty(email) || !AccountBLL.IsEmailAddress(email))
+            if (!AccountBLL.IsEmailAddress(email))
             {
                 validate[2] = false;
                 EmailAddressEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
@@ -123,7 +123,7 @@ namespace NUSMed_WebApp
             else
                 EmailAddressEdit.Attributes.Add("class", "form-control form-control-sm is-valid");
 
-            if (string.IsNullOrEmpty(contactNumber) || !AccountBLL.IsContactNumber(contactNumber))
+            if (!AccountBLL.IsContactNumber(contactNumber))
             {
                 validate[3] = false;
                 ContactNumberEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
@@ -184,7 +184,7 @@ namespace NUSMed_WebApp
             else
                 NOKNameEdit.Attributes.Add("class", "form-control form-control-sm is-valid");
 
-            if (string.IsNullOrEmpty(nokContact) || !AccountBLL.IsContactNumber(nokContact))
+            if (!AccountBLL.IsContactNumber(nokContact))
             {
                 validate[1] = false;
                 NOKContactEdit.Attributes.Add("class", "form-control form-control-sm is-invalid");
