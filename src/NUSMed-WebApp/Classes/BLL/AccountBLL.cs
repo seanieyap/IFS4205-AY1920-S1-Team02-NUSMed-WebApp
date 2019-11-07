@@ -740,7 +740,7 @@ namespace NUSMed_WebApp.Classes.BLL
         }
         public static bool IsAddressPostalCode(string code)
         {
-            if (string.IsNullOrEmpty(code))
+            if (string.IsNullOrEmpty(code) || code.Equals("000000"))
             {
                 return false;
             }
