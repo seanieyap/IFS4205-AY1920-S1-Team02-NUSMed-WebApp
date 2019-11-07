@@ -736,11 +736,23 @@ namespace NUSMed_WebApp.Classes.BLL
                 return false;
             }
 
-            return address.Length == 90;
+            return address.Length <= 90;
         }
         public static bool IsAddressPostalCode(string code)
         {
-            if (string.IsNullOrEmpty(code) || code.Equals("000000"))
+            string FILE_POSTAL_RAW = HttpContext.Current.Server.MapPath("~/Data-Hierarchy/postal_raw.csv");
+            HashSet<string> HashSetPostalCode = new HashSet<string>();
+
+            using (System.IO.StreamReader file = new System.IO.StreamReader(FILE_POSTAL_RAW))
+            {
+                string line;
+                while ((line = file.ReadLine()) != null)
+                {
+                    HashSetPostalCode.Add(line);
+                }
+            }
+
+            if (string.IsNullOrEmpty(code) || !HashSetPostalCode.Contains(code))
             {
                 return false;
             }
@@ -753,6 +765,7 @@ namespace NUSMed_WebApp.Classes.BLL
 
             return code.Length == 6;
         }
+
         public static bool IsContactNumber(string contactNumber)
         {
             if (string.IsNullOrEmpty(contactNumber))

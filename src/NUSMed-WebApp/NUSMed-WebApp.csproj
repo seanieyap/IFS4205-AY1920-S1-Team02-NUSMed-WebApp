@@ -239,6 +239,7 @@
     <Content Include="Data-Hierarchy\record_date_hierarchy.csv" />
     <Content Include="Data-Hierarchy\sex_hierarchy.csv" />
     <Content Include="Content\bootstrap-select.css.map" />
+    <Content Include="Data-Hierarchy\postal_raw.csv" />
     <None Include="NWebsecConfig\HttpHeaderSecurityModuleConfig.xsd">
       <SubType>Designer</SubType>
     </None>

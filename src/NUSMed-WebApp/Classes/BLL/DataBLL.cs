@@ -20,7 +20,7 @@ namespace NUSMed_WebApp.Classes.BLL
     {
       if (AccountBLL.IsAdministrator())
       {
-        dataDAL.ResetGeneralizationLevel();
+        //dataDAL.ResetGeneralizationLevel();
         DataTable dt = dataDAL.RetrieveColumns();
         Anonymizer anonymizer = new Anonymizer();
         Tuple<DataTable, Dictionary<string, int>> anonDtAndGenLevel = anonymizer.anonymize(dt, 3, 0.10);

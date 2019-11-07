@@ -446,6 +446,5 @@ namespace NUSMed_WebApp.Classes.Entity
 
                 Plotly.newPlot('modalFileViewPanelText', [trace1, trace2, trace3, trace4, trace5, trace6], layout);";
         }
-
     }
 }
