@@ -235,7 +235,7 @@ namespace NUSMed_WebApp.Classes.Entity
             double timeBuffer = 0;
             foreach (string value in dataArray)
             {
-                if (!Regex.IsMatch(value, @"^[1-9]\d*(\.\d+)?$"))
+                if (!Regex.IsMatch(value, @"\d*\.?\d+e[+-]?\d+"))
                 {
                     throw new Exception();
                 }
@@ -362,7 +362,7 @@ namespace NUSMed_WebApp.Classes.Entity
                             az.Add(tokens[3]);
                             gx.Add(tokens[4]);
                             gy.Add(tokens[5]);
-                            gz.Add(tokens[6]);
+                            gz.Add(tokens[6].Replace("\n", ""));
                         }
 
                     } while (line != null);
@@ -379,9 +379,9 @@ namespace NUSMed_WebApp.Classes.Entity
                 throw new Exception();
             }
 
-            Regex regex = new Regex(@"^[1-9]\d*(\.\d+)?$");
-            if (ax.Any(x => !regex.IsMatch(x)) || ay.Any(x => !regex.IsMatch(x)) || az.Any(x => !regex.IsMatch(x)) ||
-                gx.Any(x => !regex.IsMatch(x)) || gy.Any(x => !regex.IsMatch(x)) || gz.Any(x => !regex.IsMatch(x)))
+            Regex regex = new Regex(@"^-?[1-9]\d*(\.\d+)?$");
+            if (!ax.Any(x => regex.IsMatch(x)) || !ay.Any(x => regex.IsMatch(x)) || !az.Any(x => regex.IsMatch(x)) ||
+                !gx.Any(x => regex.IsMatch(x)) || !gy.Any(x => regex.IsMatch(x)) || !gz.Any(x => regex.IsMatch(x)))
             {
                 throw new Exception();
             }
