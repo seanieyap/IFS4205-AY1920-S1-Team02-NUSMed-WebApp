@@ -39,7 +39,7 @@ namespace NUSMed_WebApp.Classes.BLL
                 DateTime endTime = DateTime.Now;
                 TimeSpan span = endTime.Subtract(startTime);
 
-                if (span.Minutes >= 15)
+                if (span.TotalMinutes >= 15)
                 {
                     return validated;
                 }
