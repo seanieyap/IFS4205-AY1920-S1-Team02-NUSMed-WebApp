@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web.Security.AntiXss;
 
 namespace NUSMed_WebApp.Classes.Entity
 {
@@ -233,6 +235,10 @@ namespace NUSMed_WebApp.Classes.Entity
             double timeBuffer = 0;
             foreach (string value in dataArray)
             {
+                if (!Regex.IsMatch(value, @"^[1-9]\d*(\.\d+)?$"))
+                {
+                    throw new Exception();
+                }
                 timeList.Add(timeBuffer.ToString());
                 timeBuffer += 0.008;
             }
@@ -258,7 +264,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         type: 'scatter',
                         mode: 'lines',
                         name: 'ECG',
-                        y: [" + data + @"],
+                        y: [" + AntiXssEncoder.HtmlEncode(data, true) + @"],
                         x: [" + times + @"],
                         line: { color: '#17BECF' }
                 };
@@ -373,6 +379,13 @@ namespace NUSMed_WebApp.Classes.Entity
                 throw new Exception();
             }
 
+            Regex regex = new Regex(@"^[1-9]\d*(\.\d+)?$");
+            if (ax.Any(x => !regex.IsMatch(x)) || ay.Any(x => !regex.IsMatch(x)) || az.Any(x => !regex.IsMatch(x)) ||
+                gx.Any(x => !regex.IsMatch(x)) || gy.Any(x => !regex.IsMatch(x)) || gz.Any(x => !regex.IsMatch(x)))
+            {
+                throw new Exception();
+            }
+
             string seconds = string.Join(", ", time.ToArray());
 
             return @"
@@ -394,7 +407,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         type: 'scatter',
                         mode: 'lines',
                         name: 'ax',
-                        y: [" + string.Join(", ", ax.ToArray()) + @"],
+                        y: [" + AntiXssEncoder.HtmlEncode(string.Join(", ", ax.ToArray()), true) + @"],
                         x: [" + seconds + @"],
                         line: { color: '#d53e4f' }
                 }
@@ -403,7 +416,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         type: 'scatter',
                         mode: 'lines',
                         name: 'ay',
-                        y: [" + string.Join(", ", ay.ToArray()) + @"],
+                        y: [" + AntiXssEncoder.HtmlEncode(string.Join(", ", ay.ToArray()), true) + @"],
                         x: [" + seconds + @"],
                         line: { color: '#fc8d59' }
                 }
@@ -412,7 +425,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         type: 'scatter',
                         mode: 'lines',
                         name: 'az',
-                        y: [" + string.Join(", ", az.ToArray()) + @"],
+                        y: [" + AntiXssEncoder.HtmlEncode(string.Join(", ", az.ToArray()), true) + @"],
                         x: [" + seconds + @"],
                         line: { color: '#fee08b' }
                 }
@@ -421,7 +434,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         type: 'scatter',
                         mode: 'lines',
                         name: 'gx',
-                        y: [" + string.Join(", ", gx.ToArray()) + @"],
+                        y: [" + AntiXssEncoder.HtmlEncode(string.Join(", ", gx.ToArray()), true) + @"],
                         x: [" + seconds + @"],
                         line: { color: '#e6f598' }
                 }
@@ -430,7 +443,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         type: 'scatter',
                         mode: 'lines',
                         name: 'gy',
-                        y: [" + string.Join(", ", gy.ToArray()) + @"],
+                        y: [" + AntiXssEncoder.HtmlEncode(string.Join(", ", gy.ToArray()), true) + @"],
                         x: [" + seconds + @"],
                         line: { color: '#99d594' }
                 }
@@ -439,7 +452,7 @@ namespace NUSMed_WebApp.Classes.Entity
                         type: 'scatter',
                         mode: 'lines',
                         name: 'gz',
-                        y: [" + string.Join(", ", gz.ToArray()) + @"],
+                        y: [" + AntiXssEncoder.HtmlEncode(string.Join(", ", gz.ToArray()), true) + @"],
                         x: [" + seconds + @"],
                         line: { color: '#3288bd' }
                 }
